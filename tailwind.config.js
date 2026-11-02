@@ -4,9 +4,9 @@ export default {
   theme: {
     extend: {
       colors: {
-        space: '#0D0D12',
-        panel: '#15151D',
-        neon: '#00FFD1',
+        space: '#0F172A',
+        panel: '#1E293B',
+        neon: '#6EE7B7',
         danger: '#FF4D4D',
         muted: '#90919F',
       },
@@ -14,7 +14,7 @@ export default {
         sans: ['Inter', 'Segoe UI', 'Microsoft YaHei', 'sans-serif'],
         mono: ['Consolas', 'monospace'],
       },
-      boxShadow: { neon: '0 0 32px #00ffd125' },
+      boxShadow: { neon: '0 0 32px #6ee7b725' },
     },
   },
   plugins: [],

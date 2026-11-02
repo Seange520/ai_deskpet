@@ -9,7 +9,11 @@ const Button = forwardRef(function Button({ disabled, children, ...props }, ref)
       ref={ref}
       type="button"
       disabled={disabled}
-      whileTap={disabled || reduced ? undefined : { scale: 0.95 }}
+      whileTap={
+        disabled || reduced
+          ? undefined
+          : { scale: 0.95, y: 2, boxShadow: '0 1px 0 rgba(0,0,0,0.15)' }
+      }
       transition={{ type: 'spring', stiffness: 420, damping: 28 }}
       {...props}
     >

@@ -22,6 +22,7 @@ export default defineConfig({
   webServer: {
     command: `npm run dev -- --port ${port} --strictPort`,
     url: baseURL,
-    reuseExistingServer: !process.env.CI,
+    // 不复用未知服务：同机的其他源码副本可能恰好占据相同端口。
+    reuseExistingServer: false,
   },
 });

@@ -229,13 +229,13 @@ export default function HardwareSimulator({ completed, onComplete, onNext }) {
                   <g key={source}>
                     <path
                       d={d}
-                      stroke="#00FFD1"
+                      stroke="#6EE7B7"
                       strokeWidth="8"
                       opacity=".3"
                       filter="url(#wireGlow)"
                       fill="none"
                     />
-                    <path d={d} stroke="#00FFD1" strokeWidth="3" fill="none" />
+                    <path d={d} stroke="#6EE7B7" strokeWidth="3" fill="none" />
                     <path
                       d={d}
                       className={success ? 'flow-wire' : ''}
@@ -253,7 +253,7 @@ export default function HardwareSimulator({ completed, onComplete, onNext }) {
                     sources.find((s) => s.id === drag.source),
                     drag,
                   )}
-                  stroke="#00FFD1"
+                  stroke="#6EE7B7"
                   strokeWidth="3"
                   strokeDasharray="6 5"
                   fill="none"
@@ -304,10 +304,10 @@ export default function HardwareSimulator({ completed, onComplete, onNext }) {
                       cy={p.y}
                       r="13"
                       fill="#0d171a"
-                      stroke={drag?.source === p.id ? '#fff' : '#00FFD1'}
+                      stroke={drag?.source === p.id ? '#fff' : '#6EE7B7'}
                       strokeWidth="2"
                     />
-                    <circle cx={p.x} cy={p.y} r="5" fill="#00FFD1" />
+                    <circle cx={p.x} cy={p.y} r="5" fill="#6EE7B7" />
                     <text
                       x={kind === 'source' ? p.x - 25 : p.x + 25}
                       y={p.y + 5}
@@ -345,7 +345,7 @@ export default function HardwareSimulator({ completed, onComplete, onNext }) {
                   {Array.from({ length: 24 }, (_, i) => (
                     <motion.i
                       key={i}
-                      style={{ background: i % 3 ? '#00ffd1' : '#fff' }}
+                      style={{ background: i % 3 ? '#6ee7b7' : '#fff' }}
                       initial={{ x: 0, y: 0, opacity: 1 }}
                       animate={{
                         x: Math.cos((i / 24) * Math.PI * 2) * 150,

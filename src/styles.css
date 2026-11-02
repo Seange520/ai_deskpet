@@ -134,7 +134,7 @@
   height: 5px;
   border-radius: 50%;
   background: #00b992;
-  box-shadow: 0 0 4px #00ffd166;
+  box-shadow: 0 0 4px #6ee7b766;
 }
 .pet-foot {
   position: absolute;
@@ -156,7 +156,7 @@
   position: relative;
   perspective: 1100px;
   overflow: hidden;
-  background: radial-gradient(ellipse at center, #00ffd108, transparent 65%);
+  background: radial-gradient(ellipse at center, #6ee7b708, transparent 65%);
 }
 .scene-grid {
   position: absolute;
@@ -213,7 +213,7 @@
 .part-label {
   position: absolute;
   font: 9px monospace;
-  color: #00ffd1;
+  color: #6ee7b7;
   z-index: 2;
 }
 .part-label span {

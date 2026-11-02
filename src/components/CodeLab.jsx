@@ -5,7 +5,7 @@ import { Code2, Radio, RotateCcw, Check, LockKeyhole, ArrowRight, Sparkles } fro
 import { Pet } from './Visuals';
 
 const themes = [
-  { label: '极光青', color: '#00FFD1' },
+  { label: '薄荷绿', color: '#6EE7B7' },
   { label: '星云紫', color: '#B39AFF' },
   { label: '日落橙', color: '#FFB36B' },
   { label: '樱花粉', color: '#FF8EB7' },
@@ -13,7 +13,7 @@ const themes = [
 export default function CodeLab({ unlocked, completed, onComplete, onHardware }) {
   // 参数作为唯一数据源，同时驱动伪代码文本与右侧 SVG 表情，修改即反馈。
   const [speed, setSpeed] = useState(2400),
-    [color, setColor] = useState('#00FFD1'),
+    [color, setColor] = useState('#6EE7B7'),
     [expression, setExpression] = useState('happy'),
     [modified, setModified] = useState(false);
   function change(fn, value) {
@@ -87,7 +87,7 @@ export default function CodeLab({ unlocked, completed, onComplete, onHardware })
                 aria-label="重置桌宠参数"
                 onClick={() => {
                   setSpeed(2400);
-                  setColor('#00FFD1');
+                  setColor('#6EE7B7');
                   setExpression('happy');
                   setModified(false);
                 }}

@@ -67,7 +67,7 @@ export function Board({ className = '' }) {
         WIRELESS • AI READY
       </text>
       <rect x="93" y="214" width="54" height="29" rx="3" fill="#0d1419" stroke="#667c79" />
-      <circle cx="159" cy="226" r="5" fill="#00ffd1" />
+      <circle cx="159" cy="226" r="5" fill="#6ee7b7" />
       <rect x="94" y="276" width="52" height="38" rx="6" fill="url(#metal)" stroke="#bbc5c7" />
       <rect x="102" y="295" width="36" height="11" rx="5" fill="#142124" />
       <text x="120" y="263" textAnchor="middle" fill="#9dc8b7" fontFamily="monospace" fontSize="9">
@@ -77,7 +77,7 @@ export function Board({ className = '' }) {
   );
 }
 
-export function Pet({ color = '#00FFD1', speed = 2400, expression = 'happy', className = '' }) {
+export function Pet({ color = '#6EE7B7', speed = 2400, expression = 'happy', className = '' }) {
   const reduced = useReducedMotion();
   return (
     <div className={`pet-device ${className}`} style={{ '--pet-color': color }}>

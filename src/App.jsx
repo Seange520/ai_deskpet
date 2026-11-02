@@ -17,6 +17,10 @@ import {
 import Dashboard from './components/Dashboard';
 import HardwareSimulator from './components/HardwareSimulator';
 import CodeLab from './components/CodeLab';
+import Companion from './components/Companion';
+import Materials from './components/Materials';
+import MakerRanking from './components/MakerRanking';
+import Graduation from './components/Graduation';
 
 const STORAGE = 'sparkmate.progress.v1';
 const initial = { materials: false, wiring: false, code: false };
@@ -24,12 +28,7 @@ const nav = [
   { id: 'dashboard', name: '学习仪表盘', en: 'Overview', icon: LayoutDashboard },
   { id: 'hardware', name: '硬件实验室', en: 'Hardware lab', icon: Cpu },
   { id: 'code', name: '代码魔改工坊', en: 'Code playground', icon: Code2 },
-];
-const materials = [
-  ['ESP32-S3 开发板', '支持 USB 供电与下载的主控板。'],
-  ['兼容显示屏', '建议先核对供电电压、接口与驱动支持。'],
-  ['I2S 数字麦克风', '采集声音；供电接线后还需单独连接音频信号线。'],
-  ['杜邦线与 USB 数据线', '准备公母接头匹配的跳线；USB 线需支持数据传输。'],
+  { id: 'ranking', name: '创客排位', en: '一起慢慢发光', icon: Trophy },
 ];
 
 function loadProgress() {
@@ -57,6 +56,14 @@ export default function App() {
   const [modal, setModal] = useState(null),
     [checked, setChecked] = useState([]),
     [storageError, setStorageError] = useState(false);
+  const [celebrations, setCelebrations] = useState(0);
+  const [kitAdded, setKitAdded] = useState(false);
+  const [toast, setToast] = useState('');
+  useEffect(() => {
+    if (!toast) return;
+    const timer = setTimeout(() => setToast(''), 3500);
+    return () => clearTimeout(timer);
+  }, [toast]);
   const xp =
     (progress.materials ? 100 : 0) + (progress.wiring ? 250 : 0) + (progress.code ? 150 : 0);
   useEffect(() => {
@@ -83,7 +90,10 @@ export default function App() {
       if (previous?.isConnected) previous.focus();
     };
   }, [modal]);
-  const complete = (key) => setProgress((p) => ({ ...p, [key]: true }));
+  function complete(key) {
+    setProgress((p) => ({ ...p, [key]: true }));
+    if (!progress[key]) setCelebrations((n) => n + 1);
+  }
   function navigate(id) {
     setPage(id);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -93,12 +103,15 @@ export default function App() {
     setChecked([]);
     setModal(null);
     setPage('dashboard');
+    setCelebrations(0);
+    setKitAdded(false);
+    setToast('');
   }
 
   return (
     <MotionConfig reducedMotion="user">
       <div className="app-shell">
-        <aside className="sidebar">
+        <aside className="sidebar" inert={modal ? '' : undefined}>
           <Button
             className="brand"
             onClick={() => navigate('dashboard')}
@@ -169,7 +182,7 @@ export default function App() {
             </div>
           </div>
         </aside>
-        <main className="main-content">
+        <main className="main-content" inert={modal ? '' : undefined}>
           <header className="topbar">
             <div className="breadcrumb">
               工作空间 <ChevronRight size={13} />
@@ -222,6 +235,8 @@ export default function App() {
                   onComplete={() => complete('wiring')}
                   onNext={() => navigate('code')}
                 />
+              ) : page === 'ranking' ? (
+                <MakerRanking xp={xp} />
               ) : (
                 <CodeLab
                   unlocked={progress.wiring}
@@ -242,6 +257,12 @@ export default function App() {
             <span>从 0 到 1，让好奇发生。</span>
           </footer>
         </main>
+        <Companion celebrations={celebrations} hidden={Boolean(modal)} />
+        {toast && (
+          <div className="kit-toast" role="status">
+            {toast}
+          </div>
+        )}
         <AnimatePresence>
           {modal && (
             <motion.div
@@ -252,7 +273,7 @@ export default function App() {
               onClick={() => setModal(null)}
             >
               <motion.section
-                className="modal panel"
+                className={`modal panel ${modal === 'materials' || modal === 'shop' ? 'materials-modal' : ''} ${modal === 'success' ? 'graduation-modal' : ''}`}
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="modal-title"
@@ -282,44 +303,24 @@ export default function App() {
                 >
                   <X size={20} />
                 </Button>
-                {modal === 'materials' ? (
-                  <>
-                    <Package className="text-neon" size={30} />
-                    <div className="eyebrow">LEVEL 01 / MAKER CHECKLIST</div>
-                    <h2 id="modal-title">认识你的创客工具箱</h2>
-                    <p>先逐一认识这些部件。不需要现在购买，理解用途即可。</p>
-                    <div className="checklist">
-                      {materials.map(([name, description], i) => (
-                        <label key={name}>
-                          <input
-                            type="checkbox"
-                            checked={checked.includes(i)}
-                            onChange={() =>
-                              setChecked((c) =>
-                                c.includes(i) ? c.filter((n) => n !== i) : [...c, i],
-                              )
-                            }
-                          />
-                          <span>
-                            <b>{name}</b>
-                            <small>{description}</small>
-                          </span>
-                        </label>
-                      ))}
-                    </div>
-                    <Button
-                      className="btn primary full"
-                      disabled={checked.length !== 4}
-                      onClick={() => {
-                        complete('materials');
-                        setModal(null);
-                        navigate('hardware');
-                      }}
-                    >
-                      <Check size={17} />
-                      我已认识全部物料 · +100 XP
-                    </Button>
-                  </>
+                {modal === 'materials' || modal === 'shop' ? (
+                  <Materials
+                    checked={checked}
+                    onCheck={(i) =>
+                      setChecked((c) => (c.includes(i) ? c.filter((n) => n !== i) : [...c, i]))
+                    }
+                    onComplete={() => {
+                      complete('materials');
+                      setModal(null);
+                      navigate('hardware');
+                    }}
+                    shop={modal === 'shop'}
+                    kitAdded={kitAdded}
+                    onAdd={() => {
+                      setKitAdded(true);
+                      setToast('已加入我的新手套装 · 不会产生订单或扣款');
+                    }}
+                  />
                 ) : modal === 'reset' ? (
                   <>
                     <RotateCcw className="text-neon" size={30} />
@@ -335,21 +336,13 @@ export default function App() {
                     </div>
                   </>
                 ) : (
-                  <>
-                    <Trophy className="text-neon" size={42} />
-                    <div className="eyebrow">ACHIEVEMENT UNLOCKED</div>
-                    <h2 id="modal-title">你好，桌宠创造者。</h2>
-                    <p>你已经完成供电连线，并用参数改变了桌宠。下一站，把这份好奇带进真实硬件。</p>
-                    <Button
-                      className="btn primary full"
-                      onClick={() => {
-                        setModal(null);
-                        navigate('dashboard');
-                      }}
-                    >
-                      查看我的成就 <ArrowUpRight size={17} />
-                    </Button>
-                  </>
+                  <Graduation
+                    onShop={() => setModal('shop')}
+                    onOverview={() => {
+                      setModal(null);
+                      navigate('dashboard');
+                    }}
+                  />
                 )}
               </motion.section>
             </motion.div>

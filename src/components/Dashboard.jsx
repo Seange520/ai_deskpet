@@ -130,6 +130,17 @@ export default function Dashboard({ progress, onNavigate, onMaterials }) {
             {progress.wiring ? '进入代码工坊' : '进入硬件实验室'}
             <ArrowRight size={17} />
           </Button>
+          <div className="guest-entry">
+            <span>不注册，不用准备硬件。先玩一下。</span>
+            <div>
+              <Button className="btn guest-button" onClick={() => onNavigate('hardware')}>
+                零门槛体验 · 虚拟连线
+              </Button>
+              <Button className="text-button" onClick={() => onNavigate('code')}>
+                直接体验代码调参 <ArrowUpRight size={15} />
+              </Button>
+            </div>
+          </div>
           <div className="hero-meta">
             <span>
               <Zap size={14} /> 三个关卡 · 一次创造

@@ -2,7 +2,7 @@
 :root {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
   color: #f5f5f7;
-  background: #0d0d12;
+  background: #0f172a;
   color-scheme: dark;
   font-synthesis: none;
   -webkit-font-smoothing: antialiased;
@@ -44,7 +44,7 @@ button:focus-visible,
 input:focus-visible,
 select:focus-visible,
 [tabindex]:focus-visible {
-  outline: 2px solid #00ffd1;
+  outline: 2px solid #6ee7b7;
   outline-offset: 5px;
 }
 svg {
@@ -68,10 +68,10 @@ select {
   -webkit-tap-highlight-color: transparent;
 }
 ::selection {
-  background: #00ffd133;
+  background: #6ee7b733;
 }
 .text-neon {
-  color: #00ffd1;
+  color: #6ee7b7;
 }
 .app-shell {
   isolation: isolate;
@@ -93,7 +93,7 @@ select {
   padding: 30px 16px 20px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: rgba(22, 22, 28, 0.85);
+  background: rgba(25, 38, 55, 0.88);
   backdrop-filter: blur(24px);
   z-index: var(--z-navigation);
   overflow-y: auto;
@@ -115,8 +115,8 @@ select {
   place-items: center;
   width: 35px;
   height: 40px;
-  color: #0d0d12;
-  background: #00ffd1;
+  color: #0f172a;
+  background: #6ee7b7;
   clip-path: polygon(22% 0, 100% 0, 78% 100%, 0 100%);
 }
 .brand small {
@@ -167,9 +167,9 @@ select {
   opacity: 0.6;
 }
 .nav-item.selected {
-  color: #00ffd1;
-  border-color: #00ffd11c;
-  background: #00ffd109;
+  color: #6ee7b7;
+  border-color: #6ee7b71c;
+  background: #6ee7b709;
 }
 .nav-item:hover {
   background: #ffffff07;
@@ -209,7 +209,7 @@ select {
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: #00ffd1;
+  background: #6ee7b7;
   flex-shrink: 0;
 }
 .tiny-progress,
@@ -226,7 +226,7 @@ select {
 .xp-track > div {
   display: block;
   height: 100%;
-  background: #00ffd1;
+  background: #6ee7b7;
   transition: width 0.6s;
 }
 .sidebar-project > span:last-child {
@@ -339,7 +339,7 @@ select {
 }
 .experience-text svg,
 .experience-text > span:last-child {
-  color: #00ffd1;
+  color: #6ee7b7;
 }
 .experience-text small {
   color: #8d8d9c;
@@ -401,7 +401,7 @@ select {
 }
 @media (hover: hover) {
   :is(.hero-panel, .level-card, .achievement-panel, .panel):not(.modal):hover {
-    border-color: #00ffd133;
+    border-color: #6ee7b733;
     animation: edge-breathe 3.2s ease-in-out infinite;
   }
 }
@@ -410,12 +410,12 @@ select {
   100% {
     box-shadow:
       var(--shadow),
-      0 0 20px rgba(0, 255, 209, 0.09);
+      0 0 20px rgba(167, 216, 190, 0.09);
   }
   50% {
     box-shadow:
       var(--shadow),
-      0 0 20px rgba(0, 255, 209, 0.3);
+      0 0 20px rgba(167, 216, 190, 0.16);
   }
 }
 .hero-panel {
@@ -474,7 +474,7 @@ select {
 }
 .btn.primary {
   color: #052920;
-  background: #00e8bf;
+  background: #8fcfb0;
   border-color: transparent;
 }
 .btn.primary:hover {
@@ -486,8 +486,8 @@ select {
   font-size: 12px;
 }
 .btn.active {
-  color: #00ffd1;
-  border-color: #00ffd144;
+  color: #6ee7b7;
+  border-color: #6ee7b744;
 }
 .btn.full {
   width: 100%;
@@ -511,7 +511,7 @@ select {
   position: relative;
   min-width: 0;
   overflow: hidden;
-  background: radial-gradient(ellipse, #00ffd10b, transparent 68%);
+  background: radial-gradient(ellipse, #6ee7b70b, transparent 68%);
 }
 .hero-pet {
   position: relative;
@@ -627,7 +627,7 @@ select {
 }
 .level-status.complete,
 .level-0 .level-status {
-  color: #00e8bf;
+  color: #8fcfb0;
 }
 .level-illustration {
   display: flex;
@@ -751,7 +751,7 @@ select {
   letter-spacing: 0.7px;
 }
 .app-footer i {
-  color: #00ffd1;
+  color: #6ee7b7;
   margin: 0 8px;
   font-style: normal;
 }
@@ -803,8 +803,8 @@ select {
   flex-shrink: 0;
 }
 .icon-btn:hover {
-  color: #00ffd1;
-  border-color: #00ffd144;
+  color: #6ee7b7;
+  border-color: #6ee7b744;
 }
 .exploded-scene {
   height: 460px;
@@ -892,7 +892,7 @@ select {
   inset-inline: 0;
   min-height: 126px;
   padding: 16px;
-  border: 1px solid #00ffd126;
+  border: 1px solid #6ee7b726;
   border-radius: 12px;
   background: #162823e8;
   backdrop-filter: blur(24px);
@@ -900,7 +900,7 @@ select {
   z-index: 3;
 }
 .pin-hud b {
-  color: #00e8bf;
+  color: #8fcfb0;
   font-size: 12px;
 }
 .pin-hud p {
@@ -944,9 +944,9 @@ select {
   border-color: #ff4d4d30;
 }
 .wire-feedback.is-success {
-  color: #00e8bf;
-  background: #00ffd106;
-  border-color: #00ffd120;
+  color: #8fcfb0;
+  background: #6ee7b706;
+  border-color: #6ee7b720;
 }
 .wiring-panel > .btn,
 .preview-panel > .btn {
@@ -1010,12 +1010,12 @@ select {
   font: 12px monospace;
 }
 .editor-tab svg {
-  color: #00ffd1;
+  color: #6ee7b7;
 }
 .editor-tab i {
   width: 5px;
   height: 5px;
-  background: #00ffd1;
+  background: #6ee7b7;
   border-radius: 50%;
 }
 .editor {
@@ -1091,7 +1091,7 @@ select {
 }
 .slider-label output {
   font: 23px monospace;
-  color: #00e8bf;
+  color: #8fcfb0;
 }
 .slider-label output small {
   font: 11px sans-serif;
@@ -1099,7 +1099,7 @@ select {
 }
 input[type='range'] {
   width: 100%;
-  accent-color: #00e8bf;
+  accent-color: #8fcfb0;
   margin: 24px 0 16px;
   height: 4px;
   cursor: pointer;
@@ -1173,7 +1173,7 @@ select {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #00e8bf;
+  background: #8fcfb0;
 }
 .preview-world {
   height: 330px;
@@ -1265,7 +1265,7 @@ select {
   white-space: nowrap;
   background: none;
   border: 0;
-  color: #00e8bf;
+  color: #8fcfb0;
   margin-left: auto;
 }
 .storage-note {
@@ -1320,7 +1320,7 @@ select {
   cursor: pointer;
 }
 .checklist input {
-  accent-color: #00ffd1;
+  accent-color: #6ee7b7;
   margin-top: 5px;
   width: 16px;
   height: 16px;
@@ -1415,7 +1415,7 @@ select {
     border: 0;
     border-bottom: 1px solid var(--line);
     border-radius: 0;
-    background: rgba(13, 13, 18, 0.94);
+    background: rgba(15, 23, 42, 0.94);
   }
   .sidebar nav {
     display: flex;
@@ -1734,6 +1734,6 @@ select {
   :is(.hero-panel, .level-card, .achievement-panel, .panel):hover {
     box-shadow:
       var(--shadow),
-      0 0 20px rgba(0, 255, 209, 0.15);
+      0 0 20px rgba(167, 216, 190, 0.15);
   }
 }
