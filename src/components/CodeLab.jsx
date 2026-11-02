@@ -2,6 +2,7 @@ import Button from './Button';
 import { useState } from 'react';
 import { Code2, Radio, RotateCcw, Check, LockKeyhole, ArrowRight, Sparkles } from 'lucide-react';
 import { Pet } from './Visuals';
+import { getHardwareRoute } from '../data/hardwareRoutes';
 
 const themes = [
   { label: '薄荷绿', color: '#6EE7B7' },
@@ -9,7 +10,14 @@ const themes = [
   { label: '日落橙', color: '#FFB36B' },
   { label: '樱花粉', color: '#FF8EB7' },
 ];
-export default function CodeLab({ unlocked, completed, onComplete, onHardware }) {
+export default function CodeLab({
+  routeId = 'classic',
+  unlocked,
+  completed,
+  onComplete,
+  onHardware,
+}) {
+  const route = getHardwareRoute(routeId);
   // 参数作为唯一数据源，同时驱动伪代码文本与右侧 SVG 表情，修改即反馈。
   const [speed, setSpeed] = useState(2400),
     [color, setColor] = useState('#6EE7B7'),
@@ -49,6 +57,9 @@ export default function CodeLab({ unlocked, completed, onComplete, onHardware })
           <Radio size={13} className="text-neon" /> LIVE PREVIEW
         </span>
       </div>
+      <p className="route-context code-route-context">
+        当前路线：{route.name}。这里沿用共享表情调参体验，不包含步态、电机或自平衡控制固件。
+      </p>
       {!unlocked && (
         <div className="unlock-note">
           <LockKeyhole size={18} />

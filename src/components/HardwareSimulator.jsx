@@ -10,23 +10,35 @@ import {
   Info,
   MousePointer2,
 } from 'lucide-react';
-import { Board, Pet, Microphone } from './Visuals';
+import ExplodedView from './ExplodedView';
+import RouteSelect from './RouteSelect';
+import { getHardwareRoute } from '../data/hardwareRoutes';
 
-// 坐标统一在 600×360 SVG 视口中，缩放时仍可准确命中。
-const sources = [
-  { id: 'VCC', x: 110, y: 145 },
-  { id: 'GND', x: 110, y: 245 },
-];
-const targets = [
-  { id: '3V3', x: 490, y: 145 },
-  { id: 'GND', x: 490, y: 245 },
-];
-const valid = { VCC: '3V3', GND: 'GND' };
 const pathFor = (a, b) => `M${a.x},${a.y} C${a.x + 140},${a.y} ${b.x - 140},${b.y} ${b.x},${b.y}`;
 
-export default function HardwareSimulator({ completed, onComplete, onNext }) {
+export default function HardwareSimulator({
+  routeId = 'classic',
+  onRouteChange,
+  onMaterials,
+  completed,
+  onComplete,
+  onNext,
+}) {
+  const route = getHardwareRoute(routeId),
+    lesson = route.wiring;
+  const sources = lesson.pairs.map(([id], i) => ({
+    id,
+    x: 110,
+    y: lesson.pairs.length === 2 ? 145 + i * 100 : 110 + i * 60,
+  }));
+  const targets = lesson.pairs.map(([, id], i) => ({
+    id,
+    x: 490,
+    y: lesson.pairs.length === 2 ? 145 + i * 100 : 110 + i * 60,
+  }));
+  const valid = Object.fromEntries(lesson.pairs);
   const [exploded, setExploded] = useState(false);
-  const [wires, setWires] = useState(completed ? { VCC: '3V3', GND: 'GND' } : {});
+  const [wires, setWires] = useState(completed ? Object.fromEntries(lesson.pairs) : {});
   const [drag, setDrag] = useState(null);
   const [error, setError] = useState(null);
   const [hud, setHud] = useState(null);
@@ -35,7 +47,7 @@ export default function HardwareSimulator({ completed, onComplete, onNext }) {
     errorTimer = useRef(null),
     celebrationTimer = useRef(null);
   const reduced = useReducedMotion();
-  const success = Object.keys(wires).length === 2;
+  const success = Object.keys(wires).length === lesson.pairs.length;
   useEffect(
     () => () => {
       clearTimeout(errorTimer.current);
@@ -64,7 +76,7 @@ export default function HardwareSimulator({ completed, onComplete, onNext }) {
     setError(null);
     const next = { ...wires, [source]: target };
     setWires(next);
-    if (Object.keys(next).length === 2) {
+    if (Object.keys(next).length === lesson.pairs.length) {
       setCelebrate(true);
       onComplete();
       clearTimeout(celebrationTimer.current);
@@ -114,18 +126,25 @@ export default function HardwareSimulator({ completed, onComplete, onNext }) {
           <h1>
             认识它，然后<span className="text-neon">连接它。</span>
           </h1>
-          <p>把抽象的电路，变成看得见的第一次成功。</p>
+          <p>{route.description}</p>
         </div>
         <span className="pill">
           <span className="status-dot" /> 虚拟实验环境
         </span>
+      </div>
+      <div className="route-toolbar">
+        <RouteSelect routeId={routeId} onChange={onRouteChange} />
+        <span className="route-context">{route.difficulty} · 本路线独立进度</span>
+        <Button className="btn" onClick={onMaterials}>
+          准备物料 · {route.name}
+        </Button>
       </div>
       <div className="lab-grid">
         <section className="panel hardware-gallery">
           <div className="panel-heading">
             <div>
               <span className="eyebrow">01 / EXPLORE</span>
-              <h2>一眼看懂，你的桌宠</h2>
+              <h2>{route.name}</h2>
             </div>
             <Button
               className={`btn small ${exploded ? 'active' : ''}`}
@@ -135,29 +154,7 @@ export default function HardwareSimulator({ completed, onComplete, onNext }) {
               {exploded ? '合拢' : '拆解'}
             </Button>
           </div>
-          <div className={`exploded-scene ${exploded ? 'is-exploded' : ''}`}>
-            <div className="scene-grid" />
-            <div className="assembly">
-              <div className="assembly-board">
-                <Board />
-              </div>
-              <div className="assembly-screen">
-                <Pet />
-              </div>
-              <div className="assembly-mic">
-                <Microphone />
-              </div>
-            </div>
-            <div className="part-label part-a">
-              01 <span>显示屏 / 表情窗口</span>
-            </div>
-            <div className="part-label part-b">
-              02 <span>ESP32-S3 / 大脑</span>
-            </div>
-            <div className="part-label part-c">
-              03 <span>I2S 麦克风 / 耳朵</span>
-            </div>
-          </div>
+          <ExplodedView routeId={routeId} exploded={exploded} />
           <div className="gallery-note">
             <Info size={16} />
             <span>点击「拆解」探索结构。示意布局不代表真实排针位置。</span>
@@ -173,13 +170,12 @@ export default function HardwareSimulator({ completed, onComplete, onNext }) {
               <RotateCcw size={17} />
             </Button>
           </div>
-          <p className="panel-description">
-            为麦克风连接电源：<b>VCC → 3V3</b>，<b>GND → GND</b>。
-          </p>
+          <p className="panel-description">{lesson.description}</p>
           <div className="wiring-stage">
             <div className="wire-device-labels">
               <span>
-                MICROPHONE<small>麦克风模块</small>
+                {lesson.sourceTitle}
+                <small>{lesson.sourceName}模块</small>
               </span>
               <span>
                 ESP32-S3<small>主控开发板</small>
@@ -189,7 +185,7 @@ export default function HardwareSimulator({ completed, onComplete, onNext }) {
               ref={svgRef}
               viewBox="0 0 600 360"
               className="wiring-svg"
-              aria-label="电源接线模拟器：拖拽左侧引脚到右侧，或使用 Tab 与回车操作"
+              aria-label={`${route.name}连线模拟器：拖拽左侧引脚到右侧，或使用 Tab 与回车操作`}
               onPointerMove={(e) => {
                 if (drag && !drag.keyboard) {
                   const p = point(e);
@@ -283,7 +279,7 @@ export default function HardwareSimulator({ completed, onComplete, onNext }) {
                     key={`${kind}-${p.id}`}
                     role="button"
                     tabIndex={0}
-                    aria-label={`${kind === 'source' ? '麦克风' : '主板'} ${p.id} 引脚`}
+                    aria-label={`${kind === 'source' ? lesson.sourceName : '主板'} ${p.id} 引脚`}
                     onPointerEnter={() => setHud(`${kind}-${p.id}`)}
                     onPointerLeave={() => setHud(null)}
                     onFocus={() => setHud(`${kind}-${p.id}`)}
@@ -330,12 +326,10 @@ export default function HardwareSimulator({ completed, onComplete, onNext }) {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0 }}
                 >
-                  <b>{hud.endsWith('GND') ? 'GND · 共同参考地' : 'VCC / 3V3 · 3.3V 电源'}</b>
-                  <p>
-                    GPIO 是可编程输入/输出引脚。I²C 是使用 SDA、SCL
-                    两根信号线的通信总线；本练习只接电源，I2S 麦克风的音频通信另需
-                    BCLK、WS、数据线。
-                  </p>
+                  <b>
+                    {hud.endsWith('GND') ? 'GND · 共同参考地' : lesson.sourceName + ' · 引脚提示'}
+                  </b>
+                  <p>{lesson.hud}</p>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -370,15 +364,15 @@ export default function HardwareSimulator({ completed, onComplete, onNext }) {
                 <AlertTriangle size={19} />
                 <span>
                   <b>危险！可能烧毁主板！</b>
-                  <small>这是模拟警告。请将 VCC 接到 3V3，GND 接到 GND。</small>
+                  <small>这是模拟警告。{lesson.description}</small>
                 </span>
               </>
             ) : success ? (
               <>
                 <CheckCircle2 size={19} />
                 <span>
-                  <b>电源连接正确！下一步已解锁。</b>
-                  <small>+250 XP · 你已掌握供电与共地的基本概念。</small>
+                  <b>{lesson.success}</b>
+                  <small>+250 XP · 本路线的示意接线已完成。</small>
                 </span>
               </>
             ) : (
@@ -399,11 +393,8 @@ export default function HardwareSimulator({ completed, onComplete, onNext }) {
       <div className="learning-tip">
         <Info size={19} />
         <div>
-          <b>创客知识卡 · 为什么要共地？</b>
-          <p>
-            GND 是电压比较的共同基准。真实接线前先断电，并核对具体开发板和麦克风的数据手册；不要把
-            VCC 接到未知 GPIO 或直接接 5V。本模块是电源概念模拟，不代表完整硬件连接或电路仿真。
-          </p>
+          <b>创客知识卡 · {route.name}接线范围</b>
+          <p>{lesson.note}</p>
         </div>
       </div>
     </div>

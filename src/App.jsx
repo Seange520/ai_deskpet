@@ -23,29 +23,15 @@ import Companion from './components/Companion';
 import Materials from './components/Materials';
 import MakerRanking from './components/MakerRanking';
 import Graduation from './components/Graduation';
+import useHardwareProgress from './hooks/useHardwareProgress';
+import { getHardwareRoute } from './data/hardwareRoutes';
 
-const STORAGE = 'sparkmate.progress.v1';
-const initial = { materials: false, wiring: false, code: false };
 const nav = [
   { id: 'dashboard', name: '学习仪表盘', en: 'Overview', icon: LayoutDashboard },
   { id: 'hardware', name: '硬件实验室', en: 'Hardware lab', icon: Cpu },
   { id: 'code', name: '代码魔改工坊', en: 'Code playground', icon: Code2 },
   { id: 'ranking', name: '创客排位', en: '一起慢慢发光', icon: Trophy },
 ];
-
-function loadProgress() {
-  // 仅接受布尔值，防止旧格式或损坏的本地记录影响页面。
-  try {
-    const p = JSON.parse(localStorage.getItem(STORAGE));
-    return {
-      materials: p?.materials === true,
-      wiring: p?.wiring === true,
-      code: p?.code === true && p?.wiring === true,
-    };
-  } catch {
-    return initial;
-  }
-}
 
 export default function App() {
   const reduced = useReducedMotion();
@@ -55,13 +41,31 @@ export default function App() {
     modalTrigger.current = document.activeElement;
     setModal(type);
   }
-  const [page, setPage] = useState('dashboard'),
-    [progress, setProgress] = useState(loadProgress);
+  const [page, setPage] = useState('dashboard');
+  const {
+    routeId,
+    progress,
+    allProgress,
+    selectRoute,
+    complete: markComplete,
+    storageError,
+    reset: resetProgress,
+  } = useHardwareProgress();
+  const route = getHardwareRoute(routeId);
+  function switchRoute(id) {
+    selectRoute(id);
+    setChecked(allProgress[id]?.materials ? getHardwareRoute(id).components.map((_, i) => i) : []);
+    setToast('');
+  }
+  function chooseRoute(id, destination) {
+    switchRoute(id);
+    navigate('hardware');
+    if (destination === 'materials') openModal('materials');
+  }
   const [modal, setModal] = useState(null),
-    [checked, setChecked] = useState([]),
-    [storageError, setStorageError] = useState(false);
+    [checked, setChecked] = useState([]);
   const [celebrations, setCelebrations] = useState(0);
-  const [kitAdded, setKitAdded] = useState(false);
+  const [kitAdded, setKitAdded] = useState({});
   const [toast, setToast] = useState('');
   useEffect(() => {
     if (!toast) return;
@@ -70,14 +74,6 @@ export default function App() {
   }, [toast]);
   const xp =
     (progress.materials ? 100 : 0) + (progress.wiring ? 250 : 0) + (progress.code ? 150 : 0);
-  useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE, JSON.stringify(progress));
-      setStorageError(false);
-    } catch {
-      setStorageError(true);
-    }
-  }, [progress]);
   // 弹窗打开时阻止背景滚动；关闭后把焦点还给触发按钮。
   useEffect(() => {
     if (!modal) return;
@@ -95,7 +91,7 @@ export default function App() {
     };
   }, [modal]);
   function complete(key) {
-    setProgress((p) => ({ ...p, [key]: true }));
+    markComplete(key);
     if (!progress[key]) setCelebrations((n) => n + 1);
   }
   function navigate(id) {
@@ -103,12 +99,12 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
   function reset() {
-    setProgress({ ...initial });
+    resetProgress();
     setChecked([]);
     setModal(null);
     setPage('dashboard');
     setCelebrations(0);
-    setKitAdded(false);
+    setKitAdded({});
     setToast('');
   }
 
@@ -158,7 +154,8 @@ export default function App() {
             <div className="project-chip">
               <Cpu size={20} />
               <div>
-                AI 实体桌宠<small>ESP32-S3 · 入门系列</small>
+                {route.name}
+                <small>ESP32-S3 · {route.difficulty}</small>
               </div>
               <span className="status-dot" />
             </div>
@@ -246,14 +243,23 @@ export default function App() {
               {page === 'dashboard' ? (
                 <Dashboard
                   progress={progress}
+                  routeId={routeId}
+                  onChooseRoute={chooseRoute}
                   onNavigate={navigate}
                   onMaterials={() => {
-                    setChecked(progress.materials ? [0, 1, 2, 3] : []);
+                    setChecked(progress.materials ? route.components.map((_, i) => i) : []);
                     openModal('materials');
                   }}
                 />
               ) : page === 'hardware' ? (
                 <HardwareSimulator
+                  key={routeId}
+                  routeId={routeId}
+                  onRouteChange={switchRoute}
+                  onMaterials={() => {
+                    setChecked(progress.materials ? route.components.map((_, i) => i) : []);
+                    openModal('materials');
+                  }}
                   completed={progress.wiring}
                   onComplete={() => complete('wiring')}
                   onNext={() => navigate('code')}
@@ -262,6 +268,8 @@ export default function App() {
                 <MakerRanking xp={xp} />
               ) : (
                 <CodeLab
+                  key={routeId}
+                  routeId={routeId}
                   unlocked={progress.wiring}
                   completed={progress.code}
                   onComplete={() => {
@@ -305,7 +313,9 @@ export default function App() {
                 onClick={(e) => e.stopPropagation()}
                 onKeyDown={(e) => {
                   if (e.key === 'Tab') {
-                    const buttons = e.currentTarget.querySelectorAll('button:not(:disabled),input');
+                    const buttons = e.currentTarget.querySelectorAll(
+                      'button:not(:disabled),input:not(:disabled),select:not(:disabled)',
+                    );
                     const first = buttons[0],
                       last = buttons[buttons.length - 1];
                     if (e.shiftKey && document.activeElement === first) {
@@ -328,6 +338,9 @@ export default function App() {
                 </Button>
                 {modal === 'materials' || modal === 'shop' ? (
                   <Materials
+                    key={routeId}
+                    routeId={routeId}
+                    onRouteChange={switchRoute}
                     checked={checked}
                     onCheck={(i) =>
                       setChecked((c) => (c.includes(i) ? c.filter((n) => n !== i) : [...c, i]))
@@ -338,9 +351,9 @@ export default function App() {
                       navigate('hardware');
                     }}
                     shop={modal === 'shop'}
-                    kitAdded={kitAdded}
+                    kitAdded={Boolean(kitAdded[routeId])}
                     onAdd={() => {
-                      setKitAdded(true);
+                      setKitAdded((current) => ({ ...current, [routeId]: true }));
                       setToast('已加入我的新手套装 · 不会产生订单或扣款');
                     }}
                   />
@@ -360,6 +373,7 @@ export default function App() {
                   </>
                 ) : (
                   <Graduation
+                    routeId={routeId}
                     onShop={() => setModal('shop')}
                     onOverview={() => {
                       setModal(null);

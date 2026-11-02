@@ -1,0 +1,182 @@
+/* 路线系统沿用现有玻璃材质、字体与主色，只补充新内容所需的布局。 */
+.route-gallery {
+  margin-top: 56px;
+}
+.route-gallery .section-title {
+  margin-top: 0;
+}
+.route-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+}
+.route-card {
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  min-width: 0;
+}
+.route-card.is-selected {
+  border-color: #a7d8be55;
+}
+.route-card-meta {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  color: #a7b9b0;
+  font-size: 10px;
+}
+.route-card-meta > span:last-child {
+  color: #dbc398;
+}
+.route-artwork {
+  margin: 20px 0;
+  height: 140px;
+  display: grid;
+  place-items: center;
+}
+.route-artwork svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.route-card h3 {
+  font-size: 18px;
+  line-height: 1.5;
+  font-weight: 500;
+  margin-bottom: 14px;
+}
+.route-card p {
+  font-size: 12px;
+  margin-bottom: 22px;
+}
+.route-card > .btn {
+  margin-top: auto;
+  font-size: 12px;
+  padding: 12px;
+}
+.route-card > .text-button {
+  font-size: 10px;
+  margin-top: 10px;
+}
+.route-select {
+  display: block;
+  min-width: 0;
+  color: #b8c7c2;
+  font-size: 12px;
+}
+.route-select > span {
+  display: block;
+  margin-bottom: 10px;
+}
+.route-select select {
+  margin-top: 0;
+  font-size: 13px;
+}
+.route-toolbar {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) auto auto;
+  align-items: end;
+  gap: 24px;
+  padding: 24px;
+  margin-bottom: 28px;
+  background: #ffffff04;
+  border: 1px solid #ffffff12;
+  border-radius: 24px;
+}
+.route-context {
+  font-size: 12px !important;
+  color: #b0c3b9;
+  line-height: 1.8;
+}
+.route-toolbar > .route-context {
+  padding-bottom: 10px;
+}
+.route-toolbar > .btn {
+  font-size: 12px;
+}
+.materials-modal > .route-select {
+  margin-top: 24px;
+}
+.materials-modal > .route-context {
+  margin-top: 12px;
+}
+.material-quantity {
+  white-space: nowrap;
+  color: #67806e;
+  font-size: 11px;
+}
+.route-parts-legend {
+  list-style: none;
+  padding: 0 30px 20px;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.route-parts-legend li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 10px;
+  line-height: 1.6;
+  color: #a2b4ac;
+}
+.route-parts-legend li > span {
+  color: #a7d8be;
+  font: 10px/1.6 monospace;
+}
+.code-route-context {
+  margin-bottom: 24px;
+}
+/* 四引脚练习延伸到画布底部时，伙伴对白让出操作区；保留伙伴本体与庆祝。 */
+.companion-bubble {
+  pointer-events: none;
+}
+.app-shell:has(.wiring-stage:hover) .companion-bubble,
+.app-shell:has(.wiring-stage:focus-within) .companion-bubble {
+  visibility: hidden;
+}
+@media (max-width: 1280px) {
+  .route-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .route-toolbar {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .route-toolbar > .route-context {
+    grid-column: 1/-1;
+    order: 3;
+    padding-bottom: 0;
+  }
+}
+@media (max-width: 700px) {
+  .route-gallery {
+    margin-top: 40px;
+  }
+  .route-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .route-card {
+    padding: 24px;
+  }
+  .route-artwork {
+    height: 150px;
+  }
+  .route-toolbar {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+    padding: 22px;
+  }
+  .route-toolbar > .btn {
+    width: 100%;
+  }
+  .route-parts-legend {
+    padding-inline: 24px;
+    gap: 10px;
+  }
+  .route-parts-legend li {
+    font-size: 9px;
+  }
+}

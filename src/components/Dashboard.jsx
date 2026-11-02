@@ -2,6 +2,8 @@ import Button from './Button';
 import { motion } from 'framer-motion';
 import { TiltSurface, Depth, HeroGlass, useFineMotion } from './MicroEffects';
 import { TACTILE } from '../motion';
+import RouteGallery from './RouteGallery';
+import { getHardwareRoute } from '../data/hardwareRoutes';
 import {
   ArrowUpRight,
   ArrowRight,
@@ -25,7 +27,14 @@ function TiltCard({ children, className = '' }) {
   );
 }
 
-export default function Dashboard({ progress, onNavigate, onMaterials }) {
+export default function Dashboard({
+  progress,
+  onNavigate,
+  onMaterials,
+  routeId = 'classic',
+  onChooseRoute,
+}) {
+  const route = getHardwareRoute(routeId);
   const fine = useFineMotion();
   // 关卡完成状态由 App 统一管理：经验和徽章都从状态派生，重复练习不会重复加分。
   const steps = [
@@ -95,7 +104,7 @@ export default function Dashboard({ progress, onNavigate, onMaterials }) {
         <div className="hero-copy">
           <div className="mini-label">
             <span>新手创造计划</span>
-            <span>ESP32-S3</span>
+            <span>{route.name}</span>
           </div>
           <h2>
             你的第一个 AI 伙伴，
@@ -150,6 +159,7 @@ export default function Dashboard({ progress, onNavigate, onMaterials }) {
           <span className="art-plus">+</span>
         </div>
       </motion.section>
+      <RouteGallery routeId={routeId} onChoose={onChooseRoute} />
       <div className="section-title">
         <h2>
           你的创造路线 <span>THE PLAYBOOK</span>

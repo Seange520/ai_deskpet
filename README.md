@@ -22,6 +22,27 @@ SparkMate 把芯片、接线与代码变成可探索的学习体验。从认识�
 
 ## 体验路径
 
+### 多路线硬件架构
+
+首页「选择你的创造路线」可直接进入四种作品，也可先打开对应物料清单；实验室的「切换路线」与物料弹窗的「物料路线」共享选择。
+
+| 路线 ID | 作品 | 主要部件 | 当前连线练习 |
+| --- | --- | --- | --- |
+| `classic` | 经典方块桌宠 | ESP32-S3、屏幕、麦克风；无舵机 | VCC→3V3、GND→GND |
+| `quadruped` | 迷你四足机器狗 | ESP32-S3、屏幕、8 个 SG90、机身与独立供电 | 单个关节 PWM→GPIO4、GND→GND |
+| `tracked` | 履带/麦轮小车 | ESP32-S3、履带底盘、电机驱动与独立供电 | 驱动 IN1→GPIO5、GND→GND |
+| `spherical` | 球形自平衡机器人 | ESP32-S3、IMU、球壳、内部执行机构与供电 | IMU 电源、SDA→GPIO8、SCL→GPIO9 |
+
+`src/data/hardwareRoutes.js` 是配置单一来源：包含 ID、名称、描述、难度、物料单价与数量、内联 SVG、爆炸图零件坐标及教学引脚配对。示例套装价格按「单价 × 数量」求和。`ExplodedView.jsx` 根据配置绘制主板、屏幕、八舵机阵列、底盘、驱动、IMU、球壳和内部机构，不需要外部素材。
+
+`src/hooks/useHardwareProgress.js` 使用 `sparkmate.routes.v2` 保存当前路线与各路线的三关状态。旧 `sparkmate.progress.v1` 仅迁移到经典路线，迁移成功后删除旧键，避免重置后恢复旧成就。经验条和排行榜显示当前路线积分。切换路线会清除未完成的拖线、警告和未确认的物料勾选，保留已完成关卡；重置会清空全部路线。
+
+这些是局部概念练习，不是完整制造方案。GPIO 为示例分配，真实硬件与固件需要核对同一配置。舵机、电机须使用匹配的驱动和独立供电并共地，不能让主板 GPIO 或 3V3 承担动力负载。参考：[Espressif 开发板指南](https://documentation.espressif.com/esp-dev-kits/en/latest/esp32s3/esp32-s3-devkitc-1/user_guide_v1.0.html)、[Adafruit 舵机供电和共地说明](https://learn.adafruit.com/using-servos-with-circuitpython/hardware)。
+
+小车路线当前以双电机履带为默认方案；麦轮扩展还需四轮独立驱动和相应通道。球形路线不提供姿态解算或闭环平衡算法，仅接 IMU 不会让球体自平衡。代码工坊沿用共享表情伪代码，证书只记录该路线虚拟体验完成，不代表已完成步态或平衡固件。
+
+`tests/routes.spec.js` 覆盖四路线入口、拆解、错误与正确配对、动态物料和数量、刷新恢复、旧进度迁移、隔离、损坏记录及 320px 手机布局。
+
 本次产品体验面向零基础工科学生：蓝灰背景、琥珀与薄荷绿主色、柔和玻璃卡片。首页的「零门槛体验」直接进入虚拟连线或代码调参，不需要登录、购买硬件或提供 API Key。
 
 - **常驻伙伴**：右下角的 CSS 桌宠会眨眼、悬浮时好奇张望，首次完成关卡时跳跃庆祝；点击可收起，减少动画偏好下关闭跳跃。
@@ -102,7 +123,7 @@ $env:PLAYWRIGHT_CHANNEL='msedge'
 npm run test:e2e
 ```
 
-Playwright 会启动或复用 `5173` 端口服务。首次下载依赖需要联网；安装完成后本应用的学习功能不调用外部服务。没有云账户、API Key 或后端服务要求。
+Playwright 会独占启动 `5173` 端口服务。首次下载依赖需要联网；安装完成后本应用的学习功能不调用外部服务。没有云账户、API Key 或后端服务要求。
 
 ## 项目结构
 
@@ -123,15 +144,24 @@ SparkMate/
 │   ├── App.jsx                   # 导航、进度、经验与弹窗
 │   ├── styles.css                # 纯 CSS 硬件视觉
 │   ├── design.css                # 全局布局、玻璃材质与层级规则
+│   ├── routes.css                # 多路线卡片、下拉菜单与图例
+│   ├── data/
+│   │   └── hardwareRoutes.js     # 四路线配置、SVG、物料与引脚配对
+│   ├── hooks/
+│   │   └── useHardwareProgress.js # 路线选择、独立进度与旧记录迁移
 │   └── components/
 │       ├── Dashboard.jsx         # 关卡与成就墙
 │       ├── HardwareSimulator.jsx # 爆炸图与连线验证
+│       ├── ExplodedView.jsx      # 配置驱动的零件拆解
+│       ├── RouteGallery.jsx      # 首页路线选择
+│       ├── RouteSelect.jsx       # 实验室与物料共用下拉菜单
 │       ├── CodeLab.jsx           # 参数控制与实时代码预览
 │       ├── Button.jsx            # 统一按钮按压反馈
 │       └── Visuals.jsx           # SVG 主板、麦克风与虚拟桌宠
 └── tests/
     ├── e2e.spec.js
     ├── layout.spec.js            # 六种屏宽、遮挡及动画验收
+    ├── routes.spec.js            # 四条路线与进度迁移验收
     └── sparkmate.spec.js
 ```
 
