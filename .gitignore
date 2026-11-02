@@ -1,0 +1,27 @@
+# 依赖与构建输出
+node_modules/
+dist/
+build/
+coverage/
+.vite/
+
+# 本地配置与密钥（保留配置模板）
+.env
+.env.*
+!.env.example
+*.local
+
+# 日志与系统文件
+*.log
+npm-debug.log*
+pnpm-debug.log*
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# 临时文件与浏览器测试产物
+*.tmp
+playwright-report/
+test-results/
