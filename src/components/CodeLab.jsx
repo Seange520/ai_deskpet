@@ -38,11 +38,17 @@ export default function CodeLab({
   // 参数作为唯一数据源，同时驱动伪代码文本与右侧 SVG 表情，修改即反馈。
   const [speed, setSpeed] = useState(2400),
     [color, setColor] = useState('#6EE7B7'),
-    [expression, setExpression] = useState('happy'),
-    [modified, setModified] = useState(false);
+    [expression, setExpression] = useState('happy');
+  const modified =
+    routeId === 'classic'
+      ? speed !== 2400 || color !== '#6EE7B7' || expression !== 'happy'
+      : routeId === 'quadruped'
+        ? angle !== 90
+        : routeId === 'tracked'
+          ? direction !== 'forward'
+          : tilt !== 0;
   function change(fn, value) {
     fn(value);
-    setModified(true);
     setVerified(false);
     setIdeStatus('参数已变化，请重新模拟验证');
   }
@@ -129,7 +135,6 @@ export default function CodeLab({
                   setSpeed(2400);
                   setColor('#6EE7B7');
                   setExpression('happy');
-                  setModified(false);
                   setAngle(90);
                   setDirection('forward');
                   setTilt(0);
@@ -293,7 +298,7 @@ export default function CodeLab({
                     ? '世界好大，一起探索吧。'
                     : '你好呀，我的小小创造者。'}
             </h2>
-            <p>你的每一次调整，都会在这里发生。</p>
+            <p>实时预览 · 改变默认参数并主动领取后，本路线首次奖励 150 XP。</p>
           </div>
           <div className="telemetry">
             <div>

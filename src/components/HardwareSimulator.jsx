@@ -1,3 +1,4 @@
+import { useLearningStore } from '../stores/useLearningStore';
 import Button from './Button';
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
@@ -26,6 +27,8 @@ export default function HardwareSimulator({
   onComplete,
   onNext,
 }) {
+  const fail = useLearningStore((s) => s.fail);
+  const recover = useLearningStore((s) => s.recover);
   const route = getHardwareRoute(routeId),
     lesson = route.wiring;
   const sources = lesson.pairs.map(([id], i) => ({
@@ -71,6 +74,7 @@ export default function HardwareSimulator({
     // 白名单验证只接受电源正确配对；错误线只是反馈，绝不计入已完成接线。
     if (success || burned) return;
     if (valid[source] !== target) {
+      fail(source === 'VCC' && target === 'GND');
       setError({ source, target, id: Date.now() });
       clearTimeout(errorTimer.current);
       if (source === 'VCC' && target === 'GND') {
@@ -118,6 +122,7 @@ export default function HardwareSimulator({
     }
   }
   function reset() {
+    recover();
     setBurned(false);
     setWires({});
     setDrag(null);

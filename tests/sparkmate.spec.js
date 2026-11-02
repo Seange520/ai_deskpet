@@ -38,7 +38,7 @@ test('完整学习流程：错线警告、拖拽连线、实时参数与进度�
   await expect(page.getByRole('button', { name: /前往代码魔改工坊/ })).toBeDisabled();
   await wire('VCC', '3V3');
   await wire('GND', 'GND');
-  await expect(page.getByRole('status')).toContainText('电源连接正确');
+  await expect(page.locator('.wire-feedback')).toContainText('电源连接正确');
   await page.screenshot({ path: 'test-results/hardware.png', fullPage: true });
   await page.getByRole('button', { name: /前往代码魔改工坊/ }).click();
   const slider = page.getByRole('slider', { name: '眨眼间隔' });
@@ -77,7 +77,7 @@ test('键盘连线、重置接线和成就锁定', async ({ page }) => {
   await page.getByRole('button', { name: '重置学习进度' }).click();
   await page.getByRole('button', { name: '确认重置' }).click();
   await expect(page.locator('.badge.unlocked')).toHaveCount(1);
-  await expect(page.locator('.experience-text')).toContainText('0 / 500 XP');
+  await expect(page.locator('.experience-text')).toContainText('0 / 2000 XP');
 });
 
 test('手机布局无横向溢出、损坏的存储可恢复', async ({ page }) => {

@@ -29,6 +29,7 @@ function TiltCard({ children, className = '' }) {
 
 export default function Dashboard({
   progress,
+  badges,
   onNavigate,
   onMaterials,
   routeId = 'classic',
@@ -36,7 +37,7 @@ export default function Dashboard({
 }) {
   const route = getHardwareRoute(routeId);
   const fine = useFineMotion();
-  // 关卡完成状态由 App 统一管理：经验和徽章都从状态派生，重复练习不会重复加分。
+  // 当前路线关卡与全局徽章均来自 Zustand；重复练习不重复奖励。
   const steps = [
     {
       title: '准备物料',
@@ -225,14 +226,14 @@ export default function Dashboard({
         <div>
           <div className="eyebrow">SMALL WINS, BIG SPARKS</div>
           <h2>每一步，都值得被记住</h2>
-          <p>把好奇心变成你的第一枚勋章。</p>
+          <p>全局成就墙 · 任一路线首次完成即可点亮勋章。</p>
         </div>
         <div className="badges">
           {[
             { name: '初入江湖', icon: Award, on: true },
-            { name: '物料侦探', icon: Package, on: progress.materials },
-            { name: '电路新星', icon: Cable, on: progress.wiring },
-            { name: '唤醒伙伴', icon: Sparkles, on: progress.code },
+            { name: '物料侦探', icon: Package, on: badges.materials },
+            { name: '电路新星', icon: Cable, on: badges.wiring },
+            { name: '唤醒伙伴', icon: Sparkles, on: badges.code },
           ].map((b) => (
             <div className={`badge ${b.on ? 'unlocked' : ''}`} key={b.name}>
               <div>{b.on ? <b.icon size={25} /> : <LockKeyhole size={21} />}</div>

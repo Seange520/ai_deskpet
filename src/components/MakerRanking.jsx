@@ -69,7 +69,8 @@ export default function MakerRanking({ xp }) {
         </ol>
       </section>
       <p className="rank-note">
-        其他同学、大学与积分为演示用 Mock 数据；你的积分来自本机学习进度。无需注册，不上传个人信息。
+        其他同学、大学与积分为演示用 Mock 数据；你的积分来自本机四路线累计 XP（每路线 500，上限
+        2000），重复练习不加分。无需注册，不上传个人信息。
       </p>
     </div>
   );

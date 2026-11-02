@@ -270,6 +270,15 @@
   justify-items: end;
   gap: 14px;
 }
+.companion.emotion-failure .companion-body {
+  border-color: #d9ad75;
+}
+.companion.emotion-failure .companion-face > b {
+  transform: rotate(180deg);
+}
+.companion.emotion-level .companion-body {
+  box-shadow: 0 0 24px #6ee7b733;
+}
 .companion[hidden] {
   display: none;
 }

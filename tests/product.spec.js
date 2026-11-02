@@ -27,7 +27,7 @@ test('物料电商卡片、示例价格、套装浮窗和学习反馈', async ({
   for (const checkbox of await dialog.getByRole('checkbox').all()) await checkbox.check();
   await dialog.getByRole('button', { name: /我已认识全部物料/ }).click();
   await expect(page.locator('.experience-text')).toContainText('100');
-  await expect(page.locator('.companion-bubble')).toContainText('我为你开心');
+  await expect(page.locator('.companion-bubble')).toContainText('物料准备好啦');
 });
 
 test('排行榜明确展示 Mock 数据与本机积分，手机不溢出', async ({ page }) => {

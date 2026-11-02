@@ -1,3 +1,5 @@
+import { totalXP, levelFor, globalBadges } from './stores/useLearningStore';
+import { playSound } from './lib/sounds';
 import Button from './components/Button';
 import { MOTION } from './motion';
 import { TiltSurface, Depth } from './components/MicroEffects';
@@ -15,6 +17,8 @@ import {
   Package,
   RotateCcw,
   Trophy,
+  Volume2,
+  VolumeX,
 } from 'lucide-react';
 import Dashboard from './components/Dashboard';
 import HardwareSimulator from './components/HardwareSimulator';
@@ -44,6 +48,9 @@ export default function App() {
   const [page, setPage] = useState('dashboard');
   const {
     routeId,
+    feedback,
+    muted,
+    toggleMuted,
     progress,
     allProgress,
     selectRoute,
@@ -72,8 +79,22 @@ export default function App() {
     const timer = setTimeout(() => setToast(''), 3500);
     return () => clearTimeout(timer);
   }, [toast]);
-  const xp =
-    (progress.materials ? 100 : 0) + (progress.wiring ? 250 : 0) + (progress.code ? 150 : 0);
+  const xp = totalXP(allProgress);
+  const badges = globalBadges(allProgress);
+  useEffect(() => {
+    setToast(feedback.toast);
+  }, [feedback.id, feedback.toast]);
+  useEffect(() => {
+    const click = (e) => {
+      if (
+        e.target.closest?.('button:not(:disabled), [role="button"]') &&
+        !e.target.closest?.('[data-sound-toggle]')
+      )
+        playSound('click', muted);
+    };
+    document.addEventListener('click', click, true);
+    return () => document.removeEventListener('click', click, true);
+  }, [muted]);
   // 弹窗打开时阻止背景滚动；关闭后把焦点还给触发按钮。
   useEffect(() => {
     if (!modal) return;
@@ -91,8 +112,7 @@ export default function App() {
     };
   }, [modal]);
   function complete(key) {
-    markComplete(key);
-    if (!progress[key]) setCelebrations((n) => n + 1);
+    if (markComplete(key)) setCelebrations((n) => n + 1);
   }
   function navigate(id) {
     setPage(id);
@@ -159,10 +179,20 @@ export default function App() {
               </div>
               <span className="status-dot" />
             </div>
-            <div className="tiny-progress">
-              <span style={{ width: `${xp / 5}%` }} />
+            <div
+              className="tiny-progress"
+              role="progressbar"
+              aria-label="全局学习进度"
+              aria-valuemin={0}
+              aria-valuemax={2000}
+              aria-valuenow={xp}
+            >
+              <span style={{ width: `${xp / 20}%` }} />
             </div>
-            <span>{Object.values(progress).filter(Boolean).length} / 3 关卡完成</span>
+            <span>
+              全局 {xp} / 2000 XP · 本路线 {Object.values(progress).filter(Boolean).length} / 3
+              关卡完成
+            </span>
           </div>
           <div className="sidebar-bottom">
             <div className="maker-note">
@@ -196,20 +226,30 @@ export default function App() {
             <div className="experience">
               <div className="experience-text">
                 <span>
-                  <Zap size={13} /> LV.{xp >= 500 ? '2' : '1'} {xp >= 500 ? '初级创客' : '新手创客'}
+                  <Zap size={13} /> LV.{levelFor(xp)} {xp >= 500 ? '进阶创客' : '新手创客'}
                 </span>
                 <span>
-                  {xp} <small>/ 500 XP</small>
+                  {xp} <small>/ 2000 XP</small>
                 </span>
               </div>
               <div className="xp-track">
                 <motion.div
                   initial={{ width: 0 }}
-                  animate={{ width: `${xp / 5}%` }}
+                  animate={{ width: `${xp / 20}%` }}
                   transition={MOTION}
                 />
               </div>
             </div>
+            <Button
+              className="icon-btn"
+              data-sound-toggle
+              aria-label={muted ? '开启音效' : '静音音效'}
+              aria-pressed={muted}
+              title={muted ? '音效已静音' : '音效已开启'}
+              onClick={toggleMuted}
+            >
+              {muted ? <VolumeX size={18} /> : <Volume2 size={18} />}
+            </Button>
             <span className="top-avatar">S</span>
           </header>
           {storageError && (
@@ -243,6 +283,7 @@ export default function App() {
               {page === 'dashboard' ? (
                 <Dashboard
                   progress={progress}
+                  badges={badges}
                   routeId={routeId}
                   onChooseRoute={chooseRoute}
                   onNavigate={navigate}
@@ -288,7 +329,7 @@ export default function App() {
             <span>从 0 到 1，让好奇发生。</span>
           </footer>
         </main>
-        <Companion celebrations={celebrations} hidden={Boolean(modal)} />
+        <Companion celebrations={celebrations} feedback={feedback} hidden={Boolean(modal)} />
         {toast && (
           <div className="kit-toast" role="status">
             {toast}

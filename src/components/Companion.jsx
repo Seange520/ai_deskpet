@@ -3,7 +3,7 @@ import { motion, useAnimationControls, useReducedMotion } from 'framer-motion';
 import Button from './Button';
 
 // 常驻伙伴用 CSS 绘制，避免与实验室的 SVG 教学图产生语义定位冲突。
-export default function Companion({ celebrations, hidden }) {
+export default function Companion({ celebrations, feedback, hidden }) {
   const [curious, setCurious] = useState(false),
     [small, setSmall] = useState(false);
   const controls = useAnimationControls(),
@@ -16,14 +16,13 @@ export default function Companion({ celebrations, hidden }) {
       });
   }, [celebrations, controls, reduced]);
   return (
-    <div className={`companion ${small ? 'is-small' : ''}`} hidden={hidden}>
+    <div
+      className={`companion ${small ? 'is-small' : ''} emotion-${feedback.type}`}
+      hidden={hidden}
+    >
       {!small && (
         <span className="companion-bubble" aria-live="polite">
-          {curious
-            ? '在看什么？带上我呀。'
-            : celebrations
-              ? '又学会一点，我为你开心！'
-              : '慢慢来，我陪着你。'}
+          {feedback.id > 0 ? feedback.message : curious ? '在看什么？带上我呀。' : feedback.message}
         </span>
       )}
       <motion.div

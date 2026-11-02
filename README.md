@@ -4,11 +4,12 @@
 
 **让好奇发光，让代码成为你的第一个 AI 伙伴。**
 
-面向零基础创客的 ESP32-S3 实体桌宠交互教学工作台。
+面向零基础工科大学生的多路线 ESP32-S3 桌宠教学软件 · 第四阶段完成。
 
 ![React](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3-38BDF8?style=flat-square&logo=tailwindcss&logoColor=white)
 ![Framer Motion](https://img.shields.io/badge/Framer_Motion-11-B39AFF?style=flat-square&logo=framer&logoColor=white)
+![Zustand](https://img.shields.io/badge/Zustand-global_state-7abb9b?style=flat-square)
 ![Version](https://img.shields.io/badge/version-0.1.0-00FFD1?style=flat-square)
 ![Status](https://img.shields.io/badge/status-interactive_prototype-FFB36B?style=flat-square)
 
@@ -26,22 +27,34 @@ SparkMate 把芯片、接线与代码变成可探索的学习体验。从认识�
 
 首页「选择你的创造路线」可直接进入四种作品，也可先打开对应物料清单；实验室的「切换路线」与物料弹窗的「物料路线」共享选择。
 
-| 路线 ID | 作品 | 主要部件 | 当前连线练习 |
-| --- | --- | --- | --- |
-| `classic` | 经典方块桌宠 | ESP32-S3、屏幕、麦克风；无舵机 | VCC→3V3、GND→GND |
-| `quadruped` | 迷你四足机器狗 | ESP32-S3、屏幕、8 个 SG90、机身与独立供电 | 舵机 VCC→独立电源 EXT5V、GND→GND、PWM→GPIO4 |
-| `tracked` | 履带/麦轮小车 | ESP32-S3、履带底盘、L298N 与独立供电 | IN1→GPIO5、IN2→GPIO6、ENA→GPIO7、GND→GND |
-| `spherical` | 球形自平衡机器人 | ESP32-S3、MPU6050、球壳、内部执行机构与供电 | 传感器电源、SDA→GPIO8、SCL→GPIO9 |
+| 路线 ID     | 作品             | 主要部件                                    | 当前连线练习                                |
+| ----------- | ---------------- | ------------------------------------------- | ------------------------------------------- |
+| `classic`   | 经典方块桌宠     | ESP32-S3、屏幕、麦克风；无舵机              | VCC→3V3、GND→GND                            |
+| `quadruped` | 迷你四足机器狗   | ESP32-S3、屏幕、8 个 SG90、机身与独立供电   | 舵机 VCC→独立电源 EXT5V、GND→GND、PWM→GPIO4 |
+| `tracked`   | 履带/麦轮小车    | ESP32-S3、履带底盘、L298N 与独立供电        | IN1→GPIO5、IN2→GPIO6、ENA→GPIO7、GND→GND    |
+| `spherical` | 球形自平衡机器人 | ESP32-S3、MPU6050、球壳、内部执行机构与供电 | 传感器电源、SDA→GPIO8、SCL→GPIO9            |
 
 `src/data/hardwareRoutes.js` 是配置单一来源：包含 ID、名称、描述、难度、物料单价与数量、内联 SVG、爆炸图零件坐标及教学引脚配对。示例套装价格按「单价 × 数量」求和。`ExplodedView.jsx` 根据配置绘制主板、屏幕、八舵机阵列、底盘、驱动、IMU、球壳和内部机构，不需要外部素材。
 
-`src/hooks/useHardwareProgress.js` 使用 `sparkmate.routes.v2` 保存当前路线与各路线的三关状态。旧 `sparkmate.progress.v1` 仅迁移到经典路线，迁移成功后删除旧键，避免重置后恢复旧成就。经验条和排行榜显示当前路线积分。切换路线会清除未完成的拖线、警告和未确认的物料勾选，保留已完成关卡；重置会清空全部路线。
+`src/hooks/useHardwareProgress.js` 适配统一 Zustand store（`src/stores/useLearningStore.js`），使用 `sparkmate.routes.v2` 保存当前路线、各路线三关状态和静音偏好。旧 `sparkmate.progress.v1` 仅迁移到经典路线，迁移成功后删除旧键，避免重置后恢复旧成就。经验条、侧栏、排行榜显示四路线累计积分（上限 2000 XP），成就墙显示全局徽章。切换路线会清除未完成的拖线、警告和未确认的物料勾选，保留已完成关卡；重置会清空全部路线。
 
 这些是局部概念练习，不是完整制造方案。GPIO 为示例分配，真实硬件与固件需要核对同一配置。舵机、电机须使用匹配的驱动和独立供电并共地，不能让主板 GPIO 或 3V3 承担动力负载。参考：[Espressif 开发板指南](https://documentation.espressif.com/esp-dev-kits/en/latest/esp32s3/esp32-s3-devkitc-1/user_guide_v1.0.html)、[Adafruit 舵机供电和共地说明](https://learn.adafruit.com/using-servos-with-circuitpython/hardware)。
 
 小车路线当前以双电机履带为默认方案；麦轮扩展还需四轮独立驱动和相应通道。代码工坊已按路线提供不同实验；证书只记录虚拟体验完成，不代表已完成实体整机、步态或自平衡固件。
 
-### 第三阶段：工作台与路线专属实验
+### 第四阶段：全局状态、音效与情感反馈
+
+- **统一状态**：Zustand 是路线完成、XP、徽章、静音与反馈事件的唯一来源。`useHardwareProgress` 只是兼容适配器，不再持有 React 进度副本。XP 由四路线已完成关卡计算，不另存可漂移的积分余额。
+- **奖励口径**：每路线首次认识物料 +100、全部正确接线 +250、有效调参后主动领取 +150。参数偏离本路线默认值才可领取；滑动实时预览、恢复默认、重复接线、切换路线与刷新均不额外奖励。每 500 XP 升一级，从 LV.1 到 LV.5；进度条表示全局 0–2000 XP，排行榜按同一累计值实时排序，其他人仍为 Mock。
+- **兼容记录**：保持 `sparkmate.routes.v2` 的 `{ routeId, routes }` 原结构，新增 `muted`；原 v2 四路线布尔值直接折算累计 XP。旧 `sparkmate.progress.v1` 只迁移到 classic，成功写入 v2 后删除旧键。非法布尔值、无接线的 code 状态不计分；无法使用存储时降级为内存状态并提示。
+- **成就与 Toast**：「初入江湖」初始点亮，「物料侦探」「电路新星」「唤醒伙伴」在任一路线首次完成对应任务时解锁。未解锁呈灰色，首次解锁 Toast 同时显示奖励；跨路线可获取该路线首次 XP，但不会重复发同一徽章。刷新不重播反馈，重置接线或模拟烧板保留已获 XP 和徽章；侧栏重置清空四路线学习记录，保留静音偏好。
+- **合成音效**：`src/lib/sounds.js` 通过 Web Audio API 合成清脆点击、双音叮声与低频烧板嗡声，无外部素材。AudioContext 仅在交互后创建或恢复；顶部音量按钮可静音并立即停止已有声音，偏好随刷新保存。API 缺失、构造失败、恢复被拒绝均静默降级，不阻断关卡。
+- **桌宠情感**：实际成功、错线、烧板、恢复和升级事件更新气泡及表情/高亮，成功跳跃遵守减少动画偏好。状态渲染本身不会触发音效、奖励或重复成就 Toast。
+- **回归验收**：`tests/global.spec.js` 补充全局分数、实时排名、侧栏进度、调参领奖幂等、v2 折算、音频合成/静音/三类降级、失败恢复和存储不可用测试。原有四路线、烧板 Portal、键盘、触屏与微交互测试继续保留。
+
+实现参考：[Zustand 官方源码与用法](https://github.com/pmndrs/zustand)、[AudioContext.resume](https://developer.mozilla.org/en-US/docs/Web/API/AudioContext/resume)。
+
+### 工作台与路线专属实验
 
 - **实验室质感**：仅硬件实验室加入低对比的防静电桌垫网格，保持现有主色。黄色「老创客的避坑笔记」随路线切换：供电极性、八舵机压降/复位、接头性别、L298N 供电和 IMU 角速度误读。
 - **经典方块**：保留 `pet.setExpression("happy")`、眨眼间隔、主题和表情预览。
@@ -78,17 +91,18 @@ SparkMate 把芯片、接线与代码变成可探索的学习体验。从认识�
 - 玻璃背景离屏或页面隐藏时暂停流动；触屏关闭磁吸、倾斜和 SVG 折射，保留原生滚动。减少动画模式进一步关闭涟漪与遮罩运动，保留功能及语义定位。
 - `tests/micro.spec.js` 包含字体、材质覆盖面积、分层视差、鼠标/键盘、触屏和减少动画回归；帧间隔采样附件用于评估当前无头浏览器环境，不代表所有设备的帧率保证。
 
-| 模块         | 学习任务                       | 交互反馈                                        |
-| ------------ | ------------------------------ | ----------------------------------------------- |
-| 学习仪表盘   | 认识主控、屏幕、麦克风与线材   | 3D 倾斜关卡卡片、经验条、成就墙                 |
-| 硬件实验室   | 理解 3.3V 供电、共地与结构层次 | 2.5D 爆炸图、拖拽接线、错误警告、流动光线和粒子 |
-| 代码魔改工坊 | 表情、关节角度、H 桥方向与静态姿态 | 路线专属代码、模拟 IDE 与对应硬件预览 |
+| 模块         | 学习任务                           | 交互反馈                                        |
+| ------------ | ---------------------------------- | ----------------------------------------------- |
+| 学习仪表盘   | 认识主控、屏幕、麦克风与线材       | 3D 倾斜关卡卡片、经验条、成就墙                 |
+| 硬件实验室   | 理解 3.3V 供电、共地与结构层次     | 2.5D 爆炸图、拖拽接线、错误警告、流动光线和粒子 |
+| 代码魔改工坊 | 表情、关节角度、H 桥方向与静态姿态 | 路线专属代码、模拟 IDE 与对应硬件预览           |
 
-三关分别奖励 **100 / 250 / 150 XP**，总计 500 XP。完成状态在本机浏览器中保存；重复练习不会重复累计经验。可从侧栏重置全部学习进度。
+每路线三关分别奖励 **100 / 250 / 150 XP**，单路线 500 XP，四路线累计上限 **2000 XP**。完成状态在本机浏览器中保存；重复练习不会重复累计经验。可从侧栏重置全部学习进度。
 
 ## 技术栈
 
-- React 18：组件化视图与状态管理。
+- React 18：组件化视图；Zustand 5：统一学习状态、事件反馈与持久化。
+- Web Audio API：用户交互触发的本地合成音效。
 - Tailwind CSS 3：配色主题与工具类；CSS 实现细致硬件视觉。
 - Framer Motion 11：页面过渡、卡片视差、反馈与表情动画。
 - Lucide React：统一线条图标。
@@ -124,7 +138,7 @@ npm run format
 如果 5173 正在运行另一份项目副本，请用独立端口验收当前工作区，避免复用旧页面：
 
 ```powershell
-$env:SPARKMATE_TEST_PORT='5187'
+$env:SPARKMATE_TEST_PORT='5219'
 npm run test:e2e
 ```
 
@@ -163,8 +177,12 @@ SparkMate/
 │   ├── data/
 │   │   ├── hardwareRoutes.js     # 四路线配置、SVG、物料与引脚配对
 │   │   └── routeLessons.js       # 专属示例代码与创客避坑笔记
+│   ├── stores/
+│   │   └── useLearningStore.js   # Zustand 路线、全局奖励与反馈事件
+│   ├── lib/
+│   │   └── sounds.js             # Web Audio 合成与静音
 │   ├── hooks/
-│   │   └── useHardwareProgress.js # 路线选择、独立进度与旧记录迁移
+│   │   └── useHardwareProgress.js # Zustand 兼容适配器
 │   └── components/
 │       ├── Dashboard.jsx         # 关卡与成就墙
 │       ├── HardwareSimulator.jsx # 爆炸图与连线验证
@@ -180,19 +198,23 @@ SparkMate/
     ├── e2e.spec.js
     ├── layout.spec.js            # 六种屏宽、遮挡及动画验收
     ├── routes.spec.js            # 四条路线与进度迁移验收
+    ├── global.spec.js            # 全局 XP、幂等、音效与反馈
     ├── workshop.spec.js          # 四种代码实验、模拟 IDE 与烧板恢复
     └── sparkmate.spec.js
 ```
 
 ## 手动验收
 
+2026-11-03 第四阶段验证：`npm run build` 通过；独占端口 5219 的全量 Playwright **44 项全部通过**（原有 36 项与新增 8 项）。音量和音色仍需在真实浏览器中试听。
+
 1. 在仪表盘打开物料清单，逐项勾选并确认，经验增加至 100 XP。
 2. 点击「拆解」，观察显示屏、主板和麦克风分层。
-3. 将麦克风 VCC 拖到主板 GND，确认出现红线与「危险！可能烧毁主板！」警告。
+3. 将麦克风 VCC 拖到主板 GND，确认全屏模拟烧板、警告嗡声和焦点锁定，再重置模拟开发板。
 4. 将 VCC→3V3、GND→GND 正确连接，确认两条青色线和下一步解锁；可用 Tab、回车及 Esc 完成键盘操作。
 5. 进入代码工坊，修改滑块、主题与表情，确认伪代码和桌宠同步变化。
-6. 领取成就，返回仪表盘并刷新，确认 500 XP 与四枚徽章保留。
-7. 重置学习进度，确认回到 0 XP，仅「初入江湖」解锁。
+6. 领取成就，返回仪表盘并刷新，确认本路线贡献 500 XP、四枚全局徽章保留；切换路线后全局 XP 不下降。
+7. 在另一条路线完成接线，确认全局 XP 和 Mock 排名同步上升；重复练习不加分。点击顶部音量按钮，确认静音与刷新后偏好保持；试听点击、叮声与烧板嗡声。
+8. 重置学习进度，确认回到 0 XP，仅「初入江湖」解锁。
 
 应用尊重系统的减少动画偏好。键盘焦点有高亮提示，错误信息带有可访问通知，窄屏自动切换顶部导航。浏览器禁止本地存储时会提示本次进度无法持久保存。
 
@@ -212,6 +234,8 @@ SparkMate/
 - [x] 四条路线独立物料、爆炸图、配对规则和学习进度
 - [x] 四类代码实验、模拟 IDE 与参数驱动预览
 - [x] 分路线避坑笔记与可重置的模拟烧板结局
+- [x] Zustand 全局 XP、排行联动、成就 Toast 与事件驱动桌宠
+- [x] Web Audio 合成音效、静音持久化与不可用降级
 - [ ] 确定具体开发板、屏幕和麦克风型号，提供可复现 BOM
 - [ ] 补充 SPI / I2C / I2S 信号与芯片基础课程
 - [ ] 提供与指定硬件匹配、可编译的 ESP32-S3 固件
