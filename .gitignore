@@ -25,3 +25,5 @@ Thumbs.db
 *.tmp
 playwright-report/
 test-results/
+QA_REPORT.md
+QA_HANDOFF_REPORT.md
