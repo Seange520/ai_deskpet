@@ -105,7 +105,7 @@ function ModuleDrawing({ type, label }) {
             <rect key={x} x={x} y="118" width="7" height="22" rx="2" fill="#d4be8a" />
           ))}
           <text x="110" y="76" textAnchor="middle" fill="#dbe8dd" fontSize="12">
-            {type === 'imu' ? 'IMU' : 'DRIVER'}
+            {type === 'imu' ? 'MPU6050' : 'L298N'}
           </text>
         </>
       )}

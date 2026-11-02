@@ -51,7 +51,8 @@ const wiring = (
   note,
   hud,
   success = '连线正确！下一步已解锁。',
-) => ({ sourceName, sourceTitle, pairs, description, note, hud, success });
+  options = {},
+) => ({ sourceName, sourceTitle, pairs, description, note, hud, success, ...options });
 
 export const hardwareRoutes = [
   {
@@ -154,12 +155,15 @@ export const hardwareRoutes = [
       '舵机',
       'SG90 × 8',
       [
-        ['PWM', 'GPIO4'],
+        ['VCC', 'EXT5V'],
         ['GND', 'GND'],
+        ['PWM', 'GPIO4'],
       ],
-      '先练习一个关节：PWM → GPIO4，GND → GND。',
+      '单关节供电与信号：VCC → 独立电源 EXT5V，GND → GND，PWM → GPIO4。',
       '这是一个舵机信号与共地的示意练习，不是八舵机完整接线。舵机使用按规格选定的独立电源；其地与主板共地。GPIO4 仅为示例分配，真实系统还需其余关节的 PWM 通道、屏幕接口和供电设计。',
       'PWM 脉冲用来表达关节目标位置；GND 提供共同参考。舵机电源不接主板 3V3。',
+      '连线正确！下一步已解锁。',
+      { targetNames: { EXT5V: '独立电源' }, targetTitle: 'ESP32-S3 + EXT5V' },
     ),
   },
   {
@@ -181,7 +185,7 @@ export const hardwareRoutes = [
       },
       {
         id: 'driver',
-        name: '兼容 3.3V 逻辑的电机驱动',
+        name: 'L298N 电机驱动模块',
         quantity: 1,
         price: 25,
         visual: 'driver',
@@ -207,7 +211,7 @@ export const hardwareRoutes = [
       parts: [
         part('chassis', 'tracks', '履带底盘与减速电机', 210, -30, 65, 0, -25, 0, 30),
         part('board', 'board', 'ESP32-S3 主控', 100, 8, 10, 20, 65, -35, -15),
-        part('driver', 'driver', '电机驱动模块', 100, 70, 55, 45, 145, 35, -15),
+        part('driver', 'driver', 'L298N 电机驱动', 100, 70, 55, 45, 145, 35, -15),
       ],
     },
     wiring: wiring(
@@ -215,10 +219,12 @@ export const hardwareRoutes = [
       'MOTOR DRIVER',
       [
         ['IN1', 'GPIO5'],
+        ['IN2', 'GPIO6'],
+        ['ENA', 'GPIO7'],
         ['GND', 'GND'],
       ],
-      '先练习驱动输入：IN1 → GPIO5，GND → GND。',
-      '这里只连接一个逻辑输入与共地，不是完整电机接线。电机必须经过匹配的驱动与独立供电；真实方案还需方向、使能和其余通道。麦轮需要四轮独立控制，不能直接照搬双电机配置。',
+      'L298N 的一个 H 桥：IN1 → GPIO5、IN2 → GPIO6、ENA → GPIO7、GND → GND。',
+      '本练习验证单个 H 桥的方向、使能与共地。L298N 逻辑电源、电机电源和输出端仍需按具体模块接好；ENA 跳帽与 GPIO 控制方案须核对。麦轮需要四轮独立控制，不能直接照搬双电机配置。',
       'GPIO 提供控制信号，不直接驱动电机。IN1 是本练习的示意输入，具体模块的引脚名称与逻辑门限以资料为准。',
     ),
   },
@@ -231,7 +237,7 @@ export const hardwareRoutes = [
       board,
       {
         id: 'imu',
-        name: '3.3V 兼容 IMU 模块',
+        name: 'MPU6050 六轴陀螺仪模块',
         quantity: 1,
         price: 25,
         visual: 'imu',
@@ -275,13 +281,13 @@ export const hardwareRoutes = [
       parts: [
         part('actuator', 'actuator', '内部执行机构与支架', 150, 0, 92, 0, -25, 0, 25),
         part('board', 'board', 'ESP32-S3 主控', 100, 25, 20, 15, 40, -40, 0),
-        part('imu', 'imu', 'IMU 姿态传感器', 80, 85, 80, 35, 105, 40, 5),
+        part('imu', 'imu', 'MPU6050 六轴传感器', 80, 85, 80, 35, 105, 40, 5),
         part('shell', 'shell', '球形外壳', 210, -30, -10, 70, 170, -15, -30),
       ],
     },
     wiring: wiring(
       'IMU',
-      'IMU / I²C',
+      'MPU6050 / I²C',
       [
         ['VCC', '3V3'],
         ['GND', 'GND'],

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Award, Share2, ShoppingBag, ArrowUpRight } from 'lucide-react';
 import Button from './Button';
 import { getHardwareRoute } from '../data/hardwareRoutes';
+import { routeLessons } from '../data/routeLessons';
 
 export default function Graduation({ routeId = 'classic', onShop, onOverview }) {
   const route = getHardwareRoute(routeId);
@@ -12,7 +13,10 @@ export default function Graduation({ routeId = 'classic', onShop, onOverview }) 
       '<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800"><rect width="1200" height="800" rx="40" fill="#f6f1e7"/><rect x="32" y="32" width="1136" height="736" rx="28" fill="none" stroke="#ba9457"/><g text-anchor="middle" font-family="sans-serif" fill="#203a36"><text x="600" y="150" font-size="26">SparkMate · 我的第一次创造</text><text x="600" y="290" font-size="64">你好，桌宠创造者。</text><text x="600" y="400" font-size="28">我完成了虚拟电源接线与代码调参</text><text x="600" y="470" font-size="26">从零开始，也能让好奇发光。</text><text x="600" y="660" font-size="18">虚拟创作体验纪念 · 非学历或职业资格证明</text></g></svg>';
     const routeSvg = svg
       .replace('SparkMate · 我的第一次创造', `SparkMate · ${route.name}`)
-      .replace('我完成了虚拟电源接线与代码调参', '我完成了示意连线与共享表情调参');
+      .replace(
+        '我完成了虚拟电源接线与代码调参',
+        `我完成了示意接线与${routeLessons[route.id].title}`,
+      );
     const file = new File([routeSvg], 'SparkMate-我的作品.svg', { type: 'image/svg+xml' });
     try {
       if (navigator.canShare?.({ files: [file] }) && navigator.share) {
@@ -47,9 +51,11 @@ export default function Graduation({ routeId = 'classic', onShop, onOverview }) 
         <p>颁给勇敢迈出第一步的你</p>
         <div className="certificate-rule" />
         <p>
-          你已完成本路线示意连线与共享表情调参，
+          你已完成示意接线与{routeLessons[route.id].title}，
           <br />
-          让自己的第一个小伙伴有了表情。
+          {route.id === 'classic'
+            ? '让自己的第一个小伙伴有了表情。'
+            : '把一个想法，变成了看得见的实验。'}
         </p>
         <b>把「我不会」，变成「我做到了」。</b>
         <small>学习体验纪念，非学历或职业资格证明</small>

@@ -13,6 +13,8 @@ import {
 import ExplodedView from './ExplodedView';
 import RouteSelect from './RouteSelect';
 import { getHardwareRoute } from '../data/hardwareRoutes';
+import { routeLessons } from '../data/routeLessons';
+import BurnoutOverlay from './BurnoutOverlay';
 
 const pathFor = (a, b) => `M${a.x},${a.y} C${a.x + 140},${a.y} ${b.x - 140},${b.y} ${b.x},${b.y}`;
 
@@ -43,11 +45,12 @@ export default function HardwareSimulator({
   const [error, setError] = useState(null);
   const [hud, setHud] = useState(null);
   const [celebrate, setCelebrate] = useState(false);
+  const [burned, setBurned] = useState(false);
   const svgRef = useRef(null),
     errorTimer = useRef(null),
     celebrationTimer = useRef(null);
   const reduced = useReducedMotion();
-  const success = Object.keys(wires).length === lesson.pairs.length;
+  const success = !burned && Object.keys(wires).length === lesson.pairs.length;
   useEffect(
     () => () => {
       clearTimeout(errorTimer.current);
@@ -66,11 +69,16 @@ export default function HardwareSimulator({
   }
   function connect(source, target) {
     // 白名单验证只接受电源正确配对；错误线只是反馈，绝不计入已完成接线。
-    if (success) return;
+    if (success || burned) return;
     if (valid[source] !== target) {
       setError({ source, target, id: Date.now() });
       clearTimeout(errorTimer.current);
-      errorTimer.current = setTimeout(() => setError(null), 2500);
+      if (source === 'VCC' && target === 'GND') {
+        setBurned(true);
+        setCelebrate(false);
+        setHud(null);
+        clearTimeout(celebrationTimer.current);
+      } else errorTimer.current = setTimeout(() => setError(null), 2500);
       return;
     }
     setError(null);
@@ -110,6 +118,7 @@ export default function HardwareSimulator({
     }
   }
   function reset() {
+    setBurned(false);
     setWires({});
     setDrag(null);
     setError(null);
@@ -119,7 +128,8 @@ export default function HardwareSimulator({
   }
 
   return (
-    <div className="page">
+    <div className="page workbench-page">
+      {burned && <BurnoutOverlay onReset={reset} />}
       <div className="page-heading compact">
         <div>
           <div className="eyebrow">LEVEL 02 / THE HARDWARE LAB</div>
@@ -178,7 +188,8 @@ export default function HardwareSimulator({
                 <small>{lesson.sourceName}模块</small>
               </span>
               <span>
-                ESP32-S3<small>主控开发板</small>
+                {lesson.targetTitle || 'ESP32-S3'}
+                <small>主控 / 参考地{lesson.targetNames ? ' / 独立电源' : ''}</small>
               </span>
             </div>
             <svg
@@ -279,7 +290,7 @@ export default function HardwareSimulator({
                     key={`${kind}-${p.id}`}
                     role="button"
                     tabIndex={0}
-                    aria-label={`${kind === 'source' ? lesson.sourceName : '主板'} ${p.id} 引脚`}
+                    aria-label={`${kind === 'source' ? lesson.sourceName : lesson.targetNames?.[p.id] || '主板'} ${p.id} 引脚`}
                     onPointerEnter={() => setHud(`${kind}-${p.id}`)}
                     onPointerLeave={() => setHud(null)}
                     onFocus={() => setHud(`${kind}-${p.id}`)}
@@ -356,7 +367,7 @@ export default function HardwareSimulator({
           </div>
           <div
             className={`wire-feedback ${error ? 'is-error' : success ? 'is-success' : ''}`}
-            role={error ? 'alert' : 'status'}
+            role={burned ? undefined : error ? 'alert' : 'status'}
             aria-live="polite"
           >
             {error ? (
@@ -388,6 +399,21 @@ export default function HardwareSimulator({
           <Button className="btn primary full" disabled={!success} onClick={onNext}>
             前往代码魔改工坊 <ArrowRight size={17} />
           </Button>
+          <section className="workbench-warnings" aria-label="创客避坑指南">
+            <h3>
+              <AlertTriangle size={18} />
+              老创客的避坑笔记
+            </h3>
+            {routeLessons[route.id].warnings.map((w) => (
+              <div className="pitfall-card" key={w.title}>
+                <AlertTriangle size={16} />
+                <div>
+                  <b>{w.text}</b>
+                  <p>{w.detail}</p>
+                </div>
+              </div>
+            ))}
+          </section>
         </section>
       </div>
       <div className="learning-tip">

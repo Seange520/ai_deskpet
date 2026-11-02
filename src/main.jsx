@@ -9,6 +9,7 @@ import './design.css';
 import './product.css';
 import './micro.css';
 import './routes.css';
+import './workshop.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

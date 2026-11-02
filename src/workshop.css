@@ -1,0 +1,263 @@
+/* 仅实验室使用防静电桌垫纹理，保持全站蓝灰与薄荷绿主题。 */
+.workbench-page {
+  position: relative;
+  isolation: isolate;
+}
+.workbench-page:before {
+  content: '';
+  position: absolute;
+  inset: 32px -12px 0;
+  z-index: -1;
+  pointer-events: none;
+  border-radius: 24px;
+  background-color: #8aae9b03;
+  background-image:
+    linear-gradient(#9ab6a509 1px, transparent 1px),
+    linear-gradient(90deg, #9ab6a509 1px, transparent 1px),
+    linear-gradient(#9ab6a505 1px, transparent 1px),
+    linear-gradient(90deg, #9ab6a505 1px, transparent 1px);
+  background-size:
+    24px 24px,
+    24px 24px,
+    120px 120px,
+    120px 120px;
+}
+.workbench-warnings {
+  margin: 8px 30px 30px;
+  border-top: 1px solid #d5b87520;
+  padding-top: 22px;
+}
+.workbench-warnings h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #e5c78d;
+  margin-bottom: 18px;
+}
+.pitfall-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 14px;
+  padding: 16px;
+  background: #d9ad6810;
+  border: 1px solid #d9ad6826;
+  border-radius: 14px;
+}
+.pitfall-card > svg {
+  color: #e8c27b;
+  margin-top: 2px;
+}
+.pitfall-card b {
+  color: #dfc89f;
+  font-size: 12px;
+  line-height: 1.9;
+  font-weight: 500;
+}
+.pitfall-card p {
+  margin-top: 10px;
+  color: #a9b4be;
+  font-size: 10px;
+  line-height: 1.9;
+}
+.ide-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 14px 22px;
+  background: #719c880c;
+  border-bottom: 1px solid #ffffff0b;
+}
+.ide-tool {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid #a7d8be26;
+  border-radius: 9px;
+  background: #a7d8be0b;
+  color: #b8d7c6;
+  font-size: 11px;
+  padding: 9px 12px;
+}
+.ide-toolbar > span {
+  font-size: 10px;
+  color: #9baea4;
+  margin-left: auto;
+}
+.ide-feedback {
+  font-size: 10px;
+  min-height: 46px;
+  line-height: 1.8;
+  padding: 12px 22px;
+  border-bottom: 1px solid #ffffff0a;
+  color: #9fbaa9;
+}
+.experiment-control-note {
+  font-size: 11px;
+  color: #a9b8ad;
+  margin-top: 22px;
+}
+.preview-world > .experiment-preview {
+  width: 100% !important;
+  max-width: 360px;
+  padding: 12px 20px;
+}
+.experiment-preview svg {
+  width: 100%;
+  display: block;
+  max-height: 210px;
+}
+.experiment-readout {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+.experiment-readout > span {
+  font-size: 10px;
+  color: #a9bbae;
+}
+.experiment-readout b {
+  font-size: 28px;
+  color: #bde0c9;
+  font-weight: 500;
+}
+.experiment-readout small {
+  font-size: 10px;
+  color: #879e93;
+}
+.motor-wheel {
+  animation: motor-turn 0.9s linear infinite;
+}
+.motor-wheel.reverse {
+  animation-direction: reverse;
+}
+.motor-wheel.stop {
+  animation-play-state: paused;
+}
+@keyframes motor-turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+/* 异常结局通过 Portal 绘制到 body，层级高于导航、伙伴及普通弹窗。 */
+.burnout-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  isolation: isolate;
+  overflow: auto;
+  display: grid;
+  place-items: center;
+  padding: 40px 24px;
+  background: #040609f7;
+  color: #ead9ba;
+}
+.burnout-haze {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 35%, #c28d5a22, transparent 50%);
+  opacity: 0.7;
+}
+.burnout-content {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  max-width: 680px;
+  gap: 24px;
+}
+.burnout-kicker {
+  font: 10px monospace;
+  letter-spacing: 2px;
+  color: #ac896b;
+}
+.burnout-content > svg {
+  color: #e6b675;
+}
+.burnout-content h2 {
+  font-size: clamp(23px, 3vw, 36px);
+  line-height: 1.6;
+  font-weight: 500;
+  letter-spacing: -0.8px;
+}
+.burnout-content > p[role='alert'] {
+  color: #dd946f;
+  font-size: 13px;
+}
+.burnout-content > p {
+  color: #a8a293;
+  font-size: 12px;
+  line-height: 1.9;
+}
+.burnout-content > small {
+  color: #827d70;
+  font-size: 11px;
+}
+.charred-board {
+  position: relative;
+  width: 100px;
+  height: 125px;
+  border: 1px solid #675a47;
+  border-radius: 14px;
+  background: repeating-linear-gradient(35deg, #5f564020 0 1px, transparent 1px 10px), #171b18;
+  transform: rotate(-9deg);
+  box-shadow:
+    0 0 60px #b9864a12,
+    inset 0 0 30px #000;
+}
+.charred-board > span {
+  position: absolute;
+  inset: 26px 23px;
+  background: #080b09;
+  border: 1px solid #514835;
+  border-radius: 5px;
+  box-shadow: 0 0 25px #a76b3b18;
+}
+.charred-board > i {
+  position: absolute;
+  left: -5px;
+  right: -5px;
+  height: 5px;
+  top: 33px;
+  background: repeating-linear-gradient(90deg, #978669 0 5px, transparent 5px 13px);
+  z-index: -1;
+}
+.charred-board > i:nth-child(3) {
+  top: 66px;
+}
+.charred-board > i:nth-child(4) {
+  top: 99px;
+}
+@media (max-width: 700px) {
+  .workbench-warnings {
+    margin-inline: 24px;
+  }
+  .ide-toolbar {
+    padding: 14px 18px;
+    gap: 8px;
+  }
+  .ide-toolbar > span {
+    width: 100%;
+    margin: 0;
+  }
+  .ide-feedback {
+    padding-inline: 18px;
+  }
+  .burnout-overlay {
+    padding: 30px 20px;
+  }
+  .burnout-content {
+    gap: 18px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .motor-wheel {
+    animation: none;
+  }
+}

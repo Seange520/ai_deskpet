@@ -33,6 +33,8 @@ test('完整学习流程：错线警告、拖拽连线、实时参数与进度�
   }
   await wire('VCC', 'GND');
   await expect(page.getByRole('alert')).toContainText('危险！可能烧毁主板！');
+  await expect(page.getByRole('alertdialog')).toContainText('BOOM！');
+  await page.getByRole('button', { name: '重置模拟开发板' }).click();
   await expect(page.getByRole('button', { name: /前往代码魔改工坊/ })).toBeDisabled();
   await wire('VCC', '3V3');
   await wire('GND', 'GND');

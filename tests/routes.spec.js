@@ -21,8 +21,9 @@ const cases = [
     count: 6,
     total: 280,
     pairs: [
-      ['PWM', 'GPIO4'],
+      ['VCC', 'EXT5V'],
       ['GND', 'GND'],
+      ['PWM', 'GPIO4'],
     ],
   },
   {
@@ -34,6 +35,8 @@ const cases = [
     total: 204,
     pairs: [
       ['IN1', 'GPIO5'],
+      ['IN2', 'GPIO6'],
+      ['ENA', 'GPIO7'],
       ['GND', 'GND'],
     ],
   },
@@ -81,6 +84,10 @@ for (const route of cases) {
       .getByRole('button', { name: `主板 ${route.pairs[1][1]} 引脚`, exact: true })
       .press('Enter');
     await expect(page.getByRole('alert')).toContainText('危险！可能烧毁主板！');
+    if (route.pairs[0][0] === 'VCC') {
+      await expect(page.getByRole('alertdialog')).toContainText('BOOM！');
+      await page.getByRole('button', { name: '重置模拟开发板' }).click();
+    }
     await expect(page.getByRole('button', { name: /前往代码魔改工坊/ })).toBeDisabled();
     for (const [source, target] of route.pairs) {
       if (route.id === 'spherical') {
@@ -88,7 +95,10 @@ for (const route of cases) {
           .getByRole('button', { name: `${route.source} ${source} 引脚`, exact: true })
           .boundingBox();
         const b = await page
-          .getByRole('button', { name: `主板 ${target} 引脚`, exact: true })
+          .getByRole('button', {
+            name: `${target === 'EXT5V' ? '独立电源' : '主板'} ${target} 引脚`,
+            exact: true,
+          })
           .boundingBox();
         await page.mouse.move(a.x + a.width / 2, a.y + a.height / 2);
         await page.mouse.down();
@@ -99,7 +109,12 @@ for (const route of cases) {
       await page
         .getByRole('button', { name: `${route.source} ${source} 引脚`, exact: true })
         .press('Enter');
-      await page.getByRole('button', { name: `主板 ${target} 引脚`, exact: true }).press('Enter');
+      await page
+        .getByRole('button', {
+          name: `${target === 'EXT5V' ? '独立电源' : '主板'} ${target} 引脚`,
+          exact: true,
+        })
+        .press('Enter');
     }
     await expect(page.getByRole('button', { name: /前往代码魔改工坊/ })).toBeEnabled();
     await expect(page.locator('.experience-text')).toContainText('250');
