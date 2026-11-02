@@ -1,3 +1,4 @@
+import Button from './Button';
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import {
@@ -126,13 +127,13 @@ export default function HardwareSimulator({ completed, onComplete, onNext }) {
               <span className="eyebrow">01 / EXPLORE</span>
               <h2>一眼看懂，你的桌宠</h2>
             </div>
-            <button
+            <Button
               className={`btn small ${exploded ? 'active' : ''}`}
               onClick={() => setExploded(!exploded)}
             >
               <Layers3 size={16} />
               {exploded ? '合拢' : '拆解'}
-            </button>
+            </Button>
           </div>
           <div className={`exploded-scene ${exploded ? 'is-exploded' : ''}`}>
             <div className="scene-grid" />
@@ -168,9 +169,9 @@ export default function HardwareSimulator({ completed, onComplete, onNext }) {
               <span className="eyebrow">02 / CONNECT</span>
               <h2>让第一束电流，找到方向</h2>
             </div>
-            <button className="icon-btn" aria-label="重置接线" onClick={reset}>
+            <Button className="icon-btn" aria-label="重置接线" onClick={reset}>
               <RotateCcw size={17} />
-            </button>
+            </Button>
           </div>
           <p className="panel-description">
             为麦克风连接电源：<b>VCC → 3V3</b>，<b>GND → GND</b>。
@@ -390,9 +391,9 @@ export default function HardwareSimulator({ completed, onComplete, onNext }) {
               </>
             )}
           </div>
-          <button className="btn primary full" disabled={!success} onClick={onNext}>
+          <Button className="btn primary full" disabled={!success} onClick={onNext}>
             前往代码魔改工坊 <ArrowRight size={17} />
-          </button>
+          </Button>
         </section>
       </div>
       <div className="learning-tip">

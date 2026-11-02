@@ -1,3 +1,4 @@
+import Button from './Button';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Code2, Radio, RotateCcw, Check, LockKeyhole, ArrowRight, Sparkles } from 'lucide-react';
@@ -53,9 +54,9 @@ export default function CodeLab({ unlocked, completed, onComplete, onHardware })
         <div className="unlock-note">
           <LockKeyhole size={18} />
           <span>可以先体验实时预览。完成正确接线后，即可领取本关成就。</span>
-          <button onClick={onHardware}>
+          <Button onClick={onHardware}>
             去接线 <ArrowRight size={14} />
-          </button>
+          </Button>
         </div>
       )}
       <div className="code-grid">
@@ -81,7 +82,7 @@ export default function CodeLab({ unlocked, completed, onComplete, onHardware })
           <div className="controls">
             <div className="control-heading">
               <h3>试着改变一点什么</h3>
-              <button
+              <Button
                 className="icon-btn"
                 aria-label="重置桌宠参数"
                 onClick={() => {
@@ -92,7 +93,7 @@ export default function CodeLab({ unlocked, completed, onComplete, onHardware })
                 }}
               >
                 <RotateCcw size={16} />
-              </button>
+              </Button>
             </div>
             <label className="slider-label" htmlFor="blink-speed">
               眨眼间隔{' '}
@@ -118,7 +119,7 @@ export default function CodeLab({ unlocked, completed, onComplete, onHardware })
                 <legend>屏幕主题</legend>
                 <div className="swatches">
                   {themes.map((t) => (
-                    <button
+                    <Button
                       key={t.color}
                       title={t.label}
                       aria-label={t.label}
@@ -128,7 +129,7 @@ export default function CodeLab({ unlocked, completed, onComplete, onHardware })
                       onClick={() => change(setColor, t.color)}
                     >
                       {color === t.color && <Check size={14} />}
-                    </button>
+                    </Button>
                   ))}
                 </div>
               </fieldset>
@@ -189,7 +190,7 @@ export default function CodeLab({ unlocked, completed, onComplete, onHardware })
               <b>浏览器模拟</b>
             </div>
           </div>
-          <button
+          <Button
             className="btn primary full"
             disabled={!unlocked || !modified || completed}
             onClick={onComplete}
@@ -202,7 +203,7 @@ export default function CodeLab({ unlocked, completed, onComplete, onHardware })
                 : !modified
                   ? '先调整一个参数，唤醒你的伙伴'
                   : '唤醒伙伴 · 领取 150 XP'}
-          </button>
+          </Button>
         </section>
       </div>
       <div className="learning-tip">

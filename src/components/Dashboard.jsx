@@ -1,3 +1,4 @@
+import Button from './Button';
 import { useRef } from 'react';
 import { motion, useMotionValue, useSpring, useTransform, useReducedMotion } from 'framer-motion';
 import {
@@ -122,13 +123,13 @@ export default function Dashboard({ progress, onNavigate, onMaterials }) {
             <br />
             不止学会电路，更要把想法变成现实。
           </p>
-          <button
+          <Button
             className="btn primary"
             onClick={() => onNavigate(progress.wiring ? 'code' : 'hardware')}
           >
             {progress.wiring ? '进入代码工坊' : '进入硬件实验室'}
             <ArrowRight size={17} />
-          </button>
+          </Button>
           <div className="hero-meta">
             <span>
               <Zap size={14} /> 三个关卡 · 一次创造
@@ -201,10 +202,10 @@ export default function Dashboard({ progress, onNavigate, onMaterials }) {
             <span className="level-en">{s.en}</span>
             <h3>{s.title}</h3>
             <p>{s.text}</p>
-            <button className="card-action" onClick={s.action}>
+            <Button className="card-action" onClick={s.action}>
               {s.done ? '再次探索' : i === 0 ? '查看物料清单' : '开始探索'}
               <ArrowUpRight size={17} />
-            </button>
+            </Button>
             <span className="level-time">
               {s.time} · +{[100, 250, 150][i]} XP
             </span>

@@ -36,6 +36,7 @@ SparkMate 把芯片、接线与代码变成可探索的学习体验。从认识�
 - Tailwind CSS 3：配色主题与工具类；CSS 实现细致硬件视觉。
 - Framer Motion 11：页面过渡、卡片视差、反馈与表情动画。
 - Lucide React：统一线条图标。
+- 全局视觉：Grid / Flex 留白布局、统一深色毛玻璃卡片、按钮按压反馈和分层弹窗；布局样式集中在 `src/design.css`，硬件绘图保留在 `src/styles.css`。
 - Vite 6：本地开发和静态构建。
 - Playwright：覆盖鼠标、键盘、移动端布局与本地状态的浏览器测试。
 
@@ -64,6 +65,13 @@ npm run test:e2e
 npm run format
 ```
 
+如果 5173 正在运行另一份项目副本，请用独立端口验收当前工作区，避免复用旧页面：
+
+```powershell
+$env:SPARKMATE_TEST_PORT='5175'
+npm run test:e2e
+```
+
 测试需要已安装 Chrome，也支持 `PLAYWRIGHT_CHANNEL=msedge` 使用本机 Edge。PowerShell 可运行：
 
 ```powershell
@@ -90,13 +98,17 @@ SparkMate/
 ├── src/
 │   ├── main.jsx
 │   ├── App.jsx                   # 导航、进度、经验与弹窗
-│   ├── styles.css                # 响应式布局与纯 CSS 硬件视觉
+│   ├── styles.css                # 纯 CSS 硬件视觉
+│   ├── design.css                # 全局布局、玻璃材质与层级规则
 │   └── components/
 │       ├── Dashboard.jsx         # 关卡与成就墙
 │       ├── HardwareSimulator.jsx # 爆炸图与连线验证
 │       ├── CodeLab.jsx           # 参数控制与实时代码预览
+│       ├── Button.jsx            # 统一按钮按压反馈
 │       └── Visuals.jsx           # SVG 主板、麦克风与虚拟桌宠
 └── tests/
+    ├── e2e.spec.js
+    ├── layout.spec.js            # 六种屏宽、遮挡及动画验收
     └── sparkmate.spec.js
 ```
 

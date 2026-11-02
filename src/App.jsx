@@ -1,3 +1,4 @@
+import Button from './components/Button';
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, MotionConfig, motion } from 'framer-motion';
 import {
@@ -98,7 +99,7 @@ export default function App() {
     <MotionConfig reducedMotion="user">
       <div className="app-shell">
         <aside className="sidebar">
-          <button
+          <Button
             className="brand"
             onClick={() => navigate('dashboard')}
             aria-label="SparkMate 首页"
@@ -109,13 +110,13 @@ export default function App() {
             <span>
               SparkMate<small>IDEAS INTO LITTLE FRIENDS</small>
             </span>
-          </button>
+          </Button>
           <div className="workspace-label">
             WORKSPACE <span>个人学习空间</span>
           </div>
           <nav aria-label="主导航">
             {nav.map((n) => (
-              <button
+              <Button
                 className={`nav-item ${page === n.id ? 'selected' : ''}`}
                 key={n.id}
                 aria-label={n.name}
@@ -128,7 +129,7 @@ export default function App() {
                   <small>{n.en}</small>
                 </span>
                 {page === n.id && <ChevronRight size={14} />}
-              </button>
+              </Button>
             ))}
           </nav>
           <div className="sidebar-project">
@@ -154,9 +155,9 @@ export default function App() {
                 <span>下一个火花，就在你手中。</span>
               </p>
             </div>
-            <button className="reset-link" onClick={() => openModal('reset')}>
+            <Button className="reset-link" onClick={() => openModal('reset')}>
               <RotateCcw size={13} /> 重置学习进度
-            </button>
+            </Button>
             <div className="profile">
               <div className="avatar">
                 S<span />
@@ -273,14 +274,14 @@ export default function App() {
                   }
                 }}
               >
-                <button
+                <Button
                   autoFocus
                   className="modal-close icon-btn"
                   aria-label="关闭弹窗"
                   onClick={() => setModal(null)}
                 >
                   <X size={20} />
-                </button>
+                </Button>
                 {modal === 'materials' ? (
                   <>
                     <Package className="text-neon" size={30} />
@@ -306,7 +307,7 @@ export default function App() {
                         </label>
                       ))}
                     </div>
-                    <button
+                    <Button
                       className="btn primary full"
                       disabled={checked.length !== 4}
                       onClick={() => {
@@ -317,7 +318,7 @@ export default function App() {
                     >
                       <Check size={17} />
                       我已认识全部物料 · +100 XP
-                    </button>
+                    </Button>
                   </>
                 ) : modal === 'reset' ? (
                   <>
@@ -325,12 +326,12 @@ export default function App() {
                     <h2 id="modal-title">重新开启创造之旅？</h2>
                     <p>这会清除本机保存的经验与关卡徽章，恢复「初入江湖」初始成就。</p>
                     <div className="modal-actions">
-                      <button className="btn" onClick={() => setModal(null)}>
+                      <Button className="btn" onClick={() => setModal(null)}>
                         保留进度
-                      </button>
-                      <button className="btn danger-btn" onClick={reset}>
+                      </Button>
+                      <Button className="btn danger-btn" onClick={reset}>
                         确认重置
-                      </button>
+                      </Button>
                     </div>
                   </>
                 ) : (
@@ -339,7 +340,7 @@ export default function App() {
                     <div className="eyebrow">ACHIEVEMENT UNLOCKED</div>
                     <h2 id="modal-title">你好，桌宠创造者。</h2>
                     <p>你已经完成供电连线，并用参数改变了桌宠。下一站，把这份好奇带进真实硬件。</p>
-                    <button
+                    <Button
                       className="btn primary full"
                       onClick={() => {
                         setModal(null);
@@ -347,7 +348,7 @@ export default function App() {
                       }}
                     >
                       查看我的成就 <ArrowUpRight size={17} />
-                    </button>
+                    </Button>
                   </>
                 )}
               </motion.section>
