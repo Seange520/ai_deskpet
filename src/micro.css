@@ -1,0 +1,272 @@
+/* Google Fonts 的本地可变字体；不向第三方发送字体请求，离线也保持排版。 */
+:root {
+  --ease-physical: cubic-bezier(0.16, 1, 0.3, 1);
+  font-family:
+    'Inter Variable',
+    -apple-system,
+    'Segoe UI',
+    'Microsoft YaHei',
+    sans-serif;
+}
+code,
+pre,
+.code-line code,
+.line-number {
+  font-family: 'JetBrains Mono Variable', Consolas, monospace;
+}
+.micro-button {
+  position: relative;
+  isolation: isolate;
+  translate: var(--magnet-x, 0px) var(--magnet-y, 0px);
+  transition:
+    translate 0.4s var(--ease-physical),
+    background 0.4s var(--ease-physical),
+    border-color 0.4s var(--ease-physical),
+    color 0.4s var(--ease-physical);
+}
+.micro-button:hover,
+.micro-button:active {
+  will-change: transform, translate;
+}
+.ripple-viewport {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 3;
+}
+.button-ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.16;
+  pointer-events: none;
+  animation: material-ripple 0.4s var(--ease-physical) forwards;
+  will-change: transform, opacity;
+}
+@keyframes material-ripple {
+  from {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0.16;
+  }
+  to {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
+  }
+}
+/* 固定的环形遮罩裁去填充，只旋转内侧渐变；不让光照改变原有主色。 */
+.cta-shimmer {
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0.15;
+  z-index: 2;
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+}
+.cta-shimmer i {
+  position: absolute;
+  inset: -250%;
+  background: conic-gradient(
+    from 45deg,
+    transparent 0 65%,
+    #f4e3bf 75%,
+    #c6ead5 85%,
+    transparent 95%
+  );
+  animation: shimmer-turn 14s linear infinite;
+  animation-play-state: paused;
+}
+body:not(:has(.modal-backdrop)) .cta-shimmer i,
+.modal .cta-shimmer i {
+  animation-play-state: running;
+}
+@keyframes shimmer-turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+/* 第三方容器仅承担材质，原来的两列 Grid 和内容元素保持在原位置。 */
+.hero-liquid {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  border-radius: inherit;
+  contain: layout paint style;
+}
+.hero-ambient {
+  position: absolute;
+  inset: -20%;
+  opacity: 0.14;
+  background:
+    radial-gradient(ellipse at 25% 45%, #a7d8be 0%, transparent 45%),
+    radial-gradient(ellipse at 75% 65%, #e6bd7c 0%, transparent 40%);
+  animation: ambient-drift 14s ease-in-out infinite alternate paused;
+}
+.hero-liquid[data-flow='true'] .hero-ambient {
+  animation-play-state: running;
+  will-change: transform;
+}
+@keyframes ambient-drift {
+  to {
+    transform: translate3d(4%, -3%, 0) scale(1.04);
+  }
+}
+.hero-liquid .hero-glass {
+  position: absolute;
+  inset: 0;
+  display: block;
+  font-weight: inherit;
+  box-shadow: none;
+}
+.hero-glass .liquidGlass-inner {
+  height: 100%;
+}
+.hero-glass > .liquidGlass-wrapper {
+  height: 100%;
+  width: 100%;
+  box-shadow: none;
+}
+.hero-glass-content {
+  height: 100%;
+}
+@supports not ((backdrop-filter: blur(8px)) or (-webkit-backdrop-filter: blur(8px))) {
+  .hero-glass .liquidGlass-effect {
+    filter: none;
+    background: rgba(226, 232, 240, 0.03);
+  }
+}
+.hero-copy,
+.hero-art {
+  position: relative;
+  z-index: 1;
+}
+.hero-panel {
+  transform-origin: center;
+}
+.hero-panel:hover {
+  will-change: transform;
+}
+.hero-panel:before {
+  z-index: 1;
+}
+.tilt-anchor {
+  min-width: 0;
+  position: relative;
+  translate: var(--magnet-x, 0px) var(--magnet-y, 0px);
+  transition: translate 0.4s var(--ease-physical);
+}
+.card-tilt-anchor,
+.card-tilt-anchor > div,
+.card-tilt,
+.card-tilt > div:first-child {
+  height: 100%;
+}
+.tilt-surface {
+  background: transparent;
+  border: none;
+  border-radius: var(--rtilt-radius, 24px);
+}
+.tilt-surface [data-tilt-light] {
+  opacity: 0;
+  transition: opacity .4s var(--ease-physical);
+}
+.tilt-anchor:hover .tilt-surface > [data-tilt-light] {
+  opacity: 0.12;
+}
+.tilt-anchor:hover > .tilt-surface,
+.tilt-anchor:hover > div > .tilt-surface {
+  will-change: transform;
+}
+.tilt-surface .level-card {
+  height: 100%;
+  transform-style: preserve-3d;
+}
+.tilt-surface .level-illustration,
+.tilt-surface h3,
+.tilt-surface p {
+  transform-style: preserve-3d;
+}
+.nav-tilt .nav-item {
+  transform-style: preserve-3d;
+}
+.nav-item > span:first-child {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+.nav-item > span:nth-child(2) {
+  flex: 1;
+}
+.nav-tilt {
+  --rtilt-radius: 12px;
+}
+.nav-tilt [data-tilt-light] {
+  z-index: 2 !important;
+}
+.page-transition {
+  isolation: isolate;
+}
+.page-transition[style*='inset'] {
+  will-change: auto;
+}
+.pet-idle {
+  animation: pet-hover 5s ease-in-out infinite;
+}
+@keyframes pet-hover {
+  50% {
+    transform: translateY(-5px);
+  }
+}
+@media (max-width: 960px) {
+  .sidebar nav > .nav-tilt-anchor {
+    flex-shrink: 0;
+  }
+}
+@media (max-width: 700px) {
+  .nav-item > span:nth-child(2) {
+    display: none;
+  }
+  .nav-item > span:first-child {
+    display: inline-flex;
+  }
+}
+@media (prefers-reduced-motion: reduce), (hover: none), (pointer: coarse) {
+  .micro-button,
+  .tilt-anchor {
+    translate: none !important;
+  }
+  .hero-ambient,
+  .cta-shimmer i,
+  .pet-idle {
+    animation: none;
+  }
+  .tilt-surface [data-tilt-light] {
+    display: none;
+  }
+  .hero-glass .liquidGlass-effect {
+    filter: none;
+    backdrop-filter: blur(8px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .page-transition {
+    clip-path: none !important;
+    will-change: auto;
+  }
+  .button-ripple {
+    display: none;
+  }
+}

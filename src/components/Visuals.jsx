@@ -96,9 +96,11 @@ export function Pet({ color = '#6EE7B7', speed = 2400, expression = 'happy', cla
             style={{ transformOrigin: '120px 75px' }}
             animate={reduced ? {} : { scaleY: [1, 1, 0.08, 1, 1] }}
             transition={{
-              duration: speed / 1000,
+              duration: 0.4,
+              ease: [0.16, 1, 0.3, 1],
+              repeatDelay: Math.max(0, speed / 1000 - 0.4),
               repeat: Infinity,
-              times: [0, 0.78, 0.83, 0.88, 1],
+              times: [0, 0.3, 0.5, 0.7, 1],
             }}
           >
             {expression === 'sleepy' ? (

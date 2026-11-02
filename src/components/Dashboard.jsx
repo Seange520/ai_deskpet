@@ -1,6 +1,7 @@
 import Button from './Button';
-import { useRef } from 'react';
-import { motion, useMotionValue, useSpring, useTransform, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { TiltSurface, Depth, HeroGlass, useFineMotion } from './MicroEffects';
+import { TACTILE } from '../motion';
 import {
   ArrowUpRight,
   ArrowRight,
@@ -15,40 +16,17 @@ import {
 } from 'lucide-react';
 import { Board, Pet } from './Visuals';
 
-// MotionValue 更新绕过 React 重渲染，弹簧让倾斜效果平滑回正。
+// 外层负责倾斜，article 保留原有语义与布局，内部图文按深度分别视差。
 function TiltCard({ children, className = '' }) {
-  const ref = useRef(null);
-  const x = useMotionValue(0),
-    y = useMotionValue(0);
-  const reduced = useReducedMotion();
-  const rx = useSpring(useTransform(y, [-0.5, 0.5], [7, -7]), { stiffness: 180, damping: 22 });
-  const ry = useSpring(useTransform(x, [-0.5, 0.5], [-7, 7]), { stiffness: 180, damping: 22 });
   return (
-    <motion.article
-      ref={ref}
-      className={`level-card ${className}`}
-      style={{
-        rotateX: reduced ? 0 : rx,
-        rotateY: reduced ? 0 : ry,
-        transformStyle: 'preserve-3d',
-      }}
-      onPointerMove={(e) => {
-        if (e.pointerType === 'touch') return;
-        const r = ref.current.getBoundingClientRect();
-        x.set((e.clientX - r.left) / r.width - 0.5);
-        y.set((e.clientY - r.top) / r.height - 0.5);
-      }}
-      onPointerLeave={() => {
-        x.set(0);
-        y.set(0);
-      }}
-    >
-      {children}
-    </motion.article>
+    <TiltSurface>
+      <article className={`level-card ${className}`}>{children}</article>
+    </TiltSurface>
   );
 }
 
 export default function Dashboard({ progress, onNavigate, onMaterials }) {
+  const fine = useFineMotion();
   // 关卡完成状态由 App 统一管理：经验和徽章都从状态派生，重复练习不会重复加分。
   const steps = [
     {
@@ -107,7 +85,13 @@ export default function Dashboard({ progress, onNavigate, onMaterials }) {
           </span>
         </div>
       </div>
-      <section className="hero-panel">
+      <motion.section
+        className="hero-panel"
+        whileHover={fine ? { scale: 1.003 } : undefined}
+        whileTap={fine ? { scale: 0.997 } : undefined}
+        transition={TACTILE}
+      >
+        <HeroGlass />
         <div className="hero-copy">
           <div className="mini-label">
             <span>新手创造计划</span>
@@ -165,7 +149,7 @@ export default function Dashboard({ progress, onNavigate, onMaterials }) {
           </div>
           <span className="art-plus">+</span>
         </div>
-      </section>
+      </motion.section>
       <div className="section-title">
         <h2>
           你的创造路线 <span>THE PLAYBOOK</span>
@@ -191,7 +175,7 @@ export default function Dashboard({ progress, onNavigate, onMaterials }) {
                 )}
               </span>
             </div>
-            <div className={`level-illustration illustration-${i}`}>
+            <Depth as="div" depth={1.2} className={`level-illustration illustration-${i}`}>
               {i === 0 ? (
                 <Board />
               ) : i === 1 ? (
@@ -209,10 +193,14 @@ export default function Dashboard({ progress, onNavigate, onMaterials }) {
                   <span>/&gt;</span>
                 </div>
               )}
-            </div>
+            </Depth>
             <span className="level-en">{s.en}</span>
-            <h3>{s.title}</h3>
-            <p>{s.text}</p>
+            <Depth as="h3" depth={0.5}>
+              {s.title}
+            </Depth>
+            <Depth as="p" depth={0.25}>
+              {s.text}
+            </Depth>
             <Button className="card-action" onClick={s.action}>
               {s.done ? '再次探索' : i === 0 ? '查看物料清单' : '开始探索'}
               <ArrowUpRight size={17} />

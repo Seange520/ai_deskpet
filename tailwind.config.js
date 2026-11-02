@@ -11,8 +11,8 @@ export default {
         muted: '#90919F',
       },
       fontFamily: {
-        sans: ['Inter', 'Segoe UI', 'Microsoft YaHei', 'sans-serif'],
-        mono: ['Consolas', 'monospace'],
+        sans: ['Inter Variable', 'Segoe UI', 'Microsoft YaHei', 'sans-serif'],
+        mono: ['JetBrains Mono Variable', 'Consolas', 'monospace'],
       },
       boxShadow: { neon: '0 0 32px #6ee7b725' },
     },

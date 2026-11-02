@@ -271,7 +271,7 @@ export default function HardwareSimulator({ completed, onComplete, onNext }) {
                   strokeWidth="4"
                   fill="none"
                   animate={reduced ? {} : { x: [0, -7, 7, -5, 5, 0] }}
-                  transition={{ duration: 0.4 }}
+                  transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                 />
               )}
               {[
@@ -340,7 +340,7 @@ export default function HardwareSimulator({ completed, onComplete, onNext }) {
               )}
             </AnimatePresence>
             <AnimatePresence>
-              {celebrate && (
+              {celebrate && !reduced && (
                 <div className="particles" aria-hidden="true">
                   {Array.from({ length: 24 }, (_, i) => (
                     <motion.i
@@ -353,7 +353,7 @@ export default function HardwareSimulator({ completed, onComplete, onNext }) {
                         opacity: 0,
                         scale: 0,
                       }}
-                      transition={{ duration: reduced ? 0.01 : 1.2, delay: i * 0.008 }}
+                      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1], delay: i * 0.008 }}
                     />
                   ))}
                 </div>

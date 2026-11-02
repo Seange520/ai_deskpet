@@ -1,6 +1,8 @@
 import Button from './components/Button';
+import { MOTION } from './motion';
+import { TiltSurface, Depth } from './components/MicroEffects';
 import { useEffect, useRef, useState } from 'react';
-import { AnimatePresence, MotionConfig, motion } from 'framer-motion';
+import { AnimatePresence, MotionConfig, motion, useReducedMotion } from 'framer-motion';
 import {
   Zap,
   LayoutDashboard,
@@ -46,6 +48,8 @@ function loadProgress() {
 }
 
 export default function App() {
+  const reduced = useReducedMotion();
+  const pageRef = useRef(null);
   const modalTrigger = useRef(null);
   function openModal(type) {
     modalTrigger.current = document.activeElement;
@@ -109,7 +113,7 @@ export default function App() {
   }
 
   return (
-    <MotionConfig reducedMotion="user">
+    <MotionConfig reducedMotion="user" transition={MOTION}>
       <div className="app-shell">
         <aside className="sidebar" inert={modal ? '' : undefined}>
           <Button
@@ -129,20 +133,24 @@ export default function App() {
           </div>
           <nav aria-label="主导航">
             {nav.map((n) => (
-              <Button
-                className={`nav-item ${page === n.id ? 'selected' : ''}`}
-                key={n.id}
-                aria-label={n.name}
-                onClick={() => navigate(n.id)}
-                aria-current={page === n.id ? 'page' : undefined}
-              >
-                <n.icon size={19} />
-                <span>
-                  {n.name}
-                  <small>{n.en}</small>
-                </span>
-                {page === n.id && <ChevronRight size={14} />}
-              </Button>
+              <TiltSurface key={n.id} navigation>
+                <Button
+                  className={`nav-item ${page === n.id ? 'selected' : ''}`}
+                  key={n.id}
+                  aria-label={n.name}
+                  onClick={() => navigate(n.id)}
+                  aria-current={page === n.id ? 'page' : undefined}
+                >
+                  <Depth depth={1}>
+                    <n.icon size={19} />
+                  </Depth>
+                  <Depth depth={0.35}>
+                    {n.name}
+                    <small>{n.en}</small>
+                  </Depth>
+                  {page === n.id && <ChevronRight size={14} />}
+                </Button>
+              </TiltSurface>
             ))}
           </nav>
           <div className="sidebar-project">
@@ -201,7 +209,7 @@ export default function App() {
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: `${xp / 5}%` }}
-                  transition={{ type: 'spring', stiffness: 65, damping: 20 }}
+                  transition={MOTION}
                 />
               </div>
             </div>
@@ -215,10 +223,25 @@ export default function App() {
           <AnimatePresence mode="wait">
             <motion.div
               key={page}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.22 }}
+              ref={pageRef}
+              className="page-transition"
+              onAnimationStart={() => {
+                if (pageRef.current)
+                  pageRef.current.style.willChange = reduced ? 'auto' : 'clip-path, opacity';
+              }}
+              onAnimationComplete={() => {
+                if (pageRef.current) pageRef.current.style.willChange = 'auto';
+              }}
+              initial={
+                reduced ? { opacity: 0 } : { opacity: 0, clipPath: 'inset(0 0 6% 0 round 20px)' }
+              }
+              animate={
+                reduced ? { opacity: 1 } : { opacity: 1, clipPath: 'inset(0 0 0% 0 round 0px)' }
+              }
+              exit={
+                reduced ? { opacity: 0 } : { opacity: 0, clipPath: 'inset(0 0 3% 0 round 16px)' }
+              }
+              transition={MOTION}
             >
               {page === 'dashboard' ? (
                 <Dashboard

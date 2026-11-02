@@ -1,6 +1,5 @@
 import Button from './Button';
 import { useState } from 'react';
-import { motion } from 'framer-motion';
 import { Code2, Radio, RotateCcw, Check, LockKeyhole, ArrowRight, Sparkles } from 'lucide-react';
 import { Pet } from './Visuals';
 
@@ -155,12 +154,9 @@ export default function CodeLab({ unlocked, completed, onComplete, onHardware })
           </div>
           <div className="preview-world">
             <div className="preview-orbit" />
-            <motion.div
-              animate={{ y: [0, -7, 0] }}
-              transition={{ repeat: Infinity, duration: 5, ease: 'easeInOut' }}
-            >
+            <div className="pet-idle">
               <Pet color={color} speed={speed} expression={expression} />
-            </motion.div>
+            </div>
             <div className="pet-shadow" />
           </div>
           <div className="preview-caption">

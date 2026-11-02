@@ -10,7 +10,10 @@ export default function Companion({ celebrations, hidden }) {
     reduced = useReducedMotion();
   useEffect(() => {
     if (celebrations > 0 && !reduced)
-      controls.start({ y: [0, -26, 0, -10, 0], transition: { duration: 0.65 } });
+      controls.start({
+        y: [0, -26, 0, -10, 0],
+        transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] },
+      });
   }, [celebrations, controls, reduced]);
   return (
     <div className={`companion ${small ? 'is-small' : ''}`} hidden={hidden}>
