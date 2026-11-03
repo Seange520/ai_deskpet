@@ -1,0 +1,143 @@
+* {
+  box-sizing: border-box;
+}
+:root {
+  font-family: 'Inter Variable', system-ui, sans-serif;
+  color: #e4ede8;
+  background: #111c2b;
+  color-scheme: dark;
+}
+body {
+  margin: 0;
+  min-width: 280px;
+  background: radial-gradient(ellipse at 70% 15%, #29413c55, transparent 60%), #111c2b;
+}
+a {
+  color: #afe2c8;
+  text-decoration: none;
+}
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid #6ee7b7;
+  outline-offset: 5px;
+}
+.stage3d-page {
+  max-width: 1160px;
+  margin: auto;
+  padding: 28px 30px 36px;
+}
+.stage3d-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding-bottom: 26px;
+  border-bottom: 1px solid #ffffff16;
+}
+.stage3d-brand {
+  font-size: 22px;
+  font-weight: 650;
+}
+.stage3d-header > span,
+.stage3d-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: #9fb8ae;
+}
+.stage3d-heading {
+  padding: 30px 0 22px;
+}
+.stage3d-heading h1 {
+  font-size: clamp(27px, 4vw, 42px);
+  margin: 16px 0;
+  letter-spacing: -0.03em;
+}
+.stage3d-heading > p:last-child {
+  font-size: 14px;
+  color: #aabbba;
+  line-height: 1.8;
+  max-width: 650px;
+}
+.stage3d-panel {
+  border: 1px solid #b8d9c92a;
+  background: #ffffff04;
+  border-radius: 26px;
+  overflow: hidden;
+  box-shadow: 0 18px 60px #00000018;
+}
+.stage3d-toolbar,
+.stage3d-caption {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  padding: 16px 24px;
+  color: #b9cdc3;
+  font-size: 12px;
+}
+.stage3d-toolbar {
+  border-bottom: 1px solid #ffffff0d;
+}
+.stage3d-toolbar button {
+  color: #baffdd;
+  border: 1px solid #6ee7b744;
+  background: #6ee7b708;
+  border-radius: 12px;
+  min-height: 40px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+.stage3d-toolbar button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.stage3d-canvas {
+  height: clamp(360px, 55vh, 600px);
+}
+.stage3d-canvas canvas {
+  display: block;
+  touch-action: none;
+}
+.stage3d-caption {
+  border-top: 1px solid #ffffff0d;
+  color: #9fb8ae;
+}
+.stage3d-caption output {
+  color: #baffdd;
+  font-variant-numeric: tabular-nums;
+}
+.stage3d-fallback {
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 18px;
+  height: 100%;
+  text-align: center;
+  padding: 28px;
+  font-size: 14px;
+  line-height: 1.8;
+  color: #ddc69f;
+}
+.stage3d-page footer {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 24px;
+  color: #8fa49d;
+  font-size: 12px;
+  line-height: 1.8;
+}
+@media (max-width: 600px) {
+  .stage3d-page {
+    padding: 20px 16px;
+  }
+  .stage3d-header {
+    flex-wrap: wrap;
+  }
+  .stage3d-toolbar,
+  .stage3d-caption {
+    padding: 14px 16px;
+  }
+}
