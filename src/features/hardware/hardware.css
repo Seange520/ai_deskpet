@@ -1,0 +1,84 @@
+.hardware-connection {
+  margin: 24px 0;
+  padding: 22px;
+}
+.hardware-connection-heading,
+.hardware-connection-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+  justify-content: space-between;
+}
+.hardware-connection-heading h2 {
+  margin: 8px 0;
+  font-size: 21px;
+}
+.hardware-connection-actions {
+  justify-content: flex-start;
+  gap: 10px;
+}
+.hardware-connection-actions label {
+  display: grid;
+  gap: 6px;
+  font-size: 11px;
+  color: #9bafbf;
+}
+.hardware-connection-actions select {
+  min-height: 40px;
+  border: 1px solid #6ee7b733;
+  border-radius: 8px;
+  background: #101b27;
+  color: #d5e5df;
+  padding: 6px 10px;
+}
+.hardware-connection-help,
+.hardware-connection-status,
+.hardware-connection-notice {
+  font-size: 12px;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+.hardware-connection-help {
+  color: #9bafbf;
+  margin: 16px 0;
+}
+.hardware-connection-status {
+  color: #b8d9c9;
+}
+.hardware-connection-status.has-error {
+  color: #ff9797;
+}
+.hardware-connection-notice {
+  color: #e8c27b;
+}
+.hardware-readings {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 22px;
+  margin: 18px 0 0;
+}
+.hardware-readings > div {
+  min-width: 90px;
+}
+.hardware-readings dt {
+  color: #9bafbf;
+  font-size: 11px;
+}
+.hardware-readings dd {
+  color: #c9eddc;
+  font-size: 22px;
+  font-variant-numeric: tabular-nums;
+  margin: 6px 0 0;
+}
+@media (max-width: 480px) {
+  .hardware-connection {
+    padding: 18px;
+  }
+  .hardware-connection-actions {
+    width: 100%;
+  }
+  .hardware-connection-actions .btn {
+    width: 100%;
+  }
+}

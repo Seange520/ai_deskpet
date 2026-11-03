@@ -1,4 +1,5 @@
 import CodeRunner from './CodeRunner';
+import HardwareConnectionPanel from '../features/hardware/HardwareConnectionPanel';
 import Button from './Button';
 import { useState } from 'react';
 import {
@@ -69,8 +70,10 @@ export default function CodeLab({
         </span>
       </div>
       <p className="route-context code-route-context">
-        当前路线：{route.name} · {lesson.title}。所有预览均为浏览器模拟，不读取或控制真实硬件。
+        当前路线：{route.name} · {lesson.title}
+        。课程预览仍为浏览器模拟；下方硬件入口仅读取设备数据。
       </p>
+      <HardwareConnectionPanel />
       <CodeRunner />
       <h2 className="route-experiment-heading">路线参数实验</h2>
       {!unlocked && (

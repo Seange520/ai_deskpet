@@ -1,0 +1,34 @@
+# Phase 4 第一刀：Web Serial 只读连接
+
+入口在主应用“代码魔改工坊”，位于代码沙盒上方。必须由用户点击“连接真实 ESP32”并在浏览器中选择 USB 串口，才调用 requestPort / open；没有自动申请权限或自动重连。默认 115200 baud，可选择 9600，需与设备配置一致。
+
+支持能力按安全上下文和 navigator.serial.requestPort 检测，不按浏览器名字或手机 UA 判断。能力不存在时按钮禁用并提示“不支持硬件连接”；取消选择、拒绝授权、打开失败、读取中断和设备拔出均显示可恢复说明，不影响原课程与桌宠。
+
+## 数据约定
+
+设备发送 UTF-8、以换行结束的 JSON，例如：
+
+```json
+{ "temp": 25, "light": 300 }
+```
+
+要求 temp 与 light 都是有限数值；temp 按摄氏度展示，light 按设备原始读数展示，不假定已标定为 lux。支持分包、连续多行、UTF-8 字符跨包和 CRLF。空行忽略；启动日志、非法 JSON、字段类型错误和超过 8192 字符的行会被忽略并提示，下一个合法数据行可继续显示。仅保存最新合法读数及接收/坏行计数，不累积原始数据。
+
+读取结果进入新增的 `useHardwareStore.hardwareData`（temp、light、receivedAt）。该独立 Zustand store 仅保留本次会话的串口状态和遥测，没有持久化，不修改 useLearningStore 的结构、存档、XP、关卡、路线或 3D runtime。断开后清空读数，重连清零计数；刷新不恢复设备连接或遥测。
+
+连接器负责 reader.cancel → read loop 结束 → releaseLock → port.close，移除 disconnect 监听。离开代码工坊、切换导致组件卸载或 pagehide 时主动断开；晚于取消完成的串口选择/打开不会更新界面，已打开的迟到端口会关闭。pagehide 清理为浏览器页面生命周期中的尽力释放。
+
+## 边界与虚拟串口
+
+此阶段仅完成串口选择、打开与接收，没有固件、烧录、设备身份验证、协议 ACK、发送控制指令或从遥测驱动桌宠的行为。“串口已连接”表示 open 成功，不代表已经核验设备确为 ESP32；收到合法数据才显示数值。
+
+`createSerialConnection` 接受可注入的 getSerial provider，预留与 navigator.serial 相同接口的虚拟串口。正式界面只使用浏览器 API；mock 只由单独测试脚本通过 addInitScript 注入，网页不加载 mock，也不生成冒充真实设备的示例读数。
+
+## 验证
+
+- `node --test tests/serial.unit.mjs`：8 项分包解析、拒绝授权、EOF/断开、取消竞态、锁释放与关闭错误单测。
+- `npm run dev -- --port 5242 --strictPort` 后执行 `node scripts/check-web-serial.mjs`：不支持、拒绝、取消、打开失败及虚拟数据流 UI 补验；可用 SPARKMATE_SERIAL_URL 指定本地主场服务。脚本验证学习状态和 localStorage 不变、无写串口、断开/离页清理，并生成明确标记为 mock 的截图。
+- 原有 `npx playwright test` 保持 65 项，不改变任何既有用例或断言。
+- `npm run build:local` 验证本机 Windows 构建。
+
+真实 USB ESP32 与实体固件尚未验证。参考：[Chrome 官方 Web Serial 指南](https://developer.chrome.com/docs/capabilities/serial)。
