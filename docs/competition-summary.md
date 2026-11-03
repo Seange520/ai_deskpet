@@ -9,7 +9,7 @@
 | 项目名称 | SparkMate —— 多形态 AI 桌宠硬件教学平台                                   |
 | 项目类别 | 广东工业大学大学生创新创业训练计划（大创）                                |
 | 技术形态 | 纯前端 Web 应用（Vite + React 18 + Zustand 5）                            |
-| 在线体验 | <https://ai-deskpet-xi.vercel.app/>                                       |
+| 在线体验 | <https://www.seange.cn>                                       |
 | 当前阶段 | 第四阶段完成：四路线、全局状态、音效与成就闭环，44 项 Playwright E2E 通过 |
 
 ## 2. 痛点（Why）

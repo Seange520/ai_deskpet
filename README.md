@@ -9,9 +9,9 @@
 [![Vite](https://img.shields.io/badge/Vite-6-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vite.dev)
 [![React](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev)
 [![Zustand](https://img.shields.io/badge/Zustand-5-2D3748?style=flat-square)](https://zustand.docs.pmnd.rs)
-[![Vercel](https://img.shields.io/badge/Vercel-Deployed-000000?style=flat-square&logo=vercel&logoColor=white)](https://ai-deskpet-xi.vercel.app)
+[![Vercel](https://img.shields.io/badge/Vercel-Deployed-000000?style=flat-square&logo=vercel&logoColor=white)](https://www.seange.cn)
 
-### [🚀 在线体验 SparkMate](https://ai-deskpet-xi.vercel.app/)
+### [🚀 在线体验 SparkMate](https://www.seange.cn)
 
 无需注册、无需硬件、无需 API Key —— 打开浏览器，三分钟完成第一个「AI 桌宠」作品。
 
