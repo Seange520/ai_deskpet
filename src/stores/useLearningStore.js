@@ -1,3 +1,9 @@
+import {
+  LEARNING_LEVELS,
+  levelForRoute,
+  challengePassed,
+  restoreLevels,
+} from '../data/learningLevels';
 import { executeProgram, COMMANDS } from '../lib/codeRunner';
 import { create } from 'zustand';
 import { hardwareRoutes, DEFAULT_ROUTE_ID, isRouteId } from '../data/hardwareRoutes';
@@ -17,6 +23,8 @@ export const globalBadges = (routes) =>
   );
 const empty = () => ({
   routeId: DEFAULT_ROUTE_ID,
+  unlockedLevels: ['L1'],
+  completedLevels: [],
   routes: Object.fromEntries(
     hardwareRoutes.map((r) => [r.id, { materials: false, wiring: false, code: false }]),
   ),
@@ -42,6 +50,9 @@ function load() {
     state.routeId = isRouteId(saved.routeId) ? saved.routeId : DEFAULT_ROUTE_ID;
     for (const r of hardwareRoutes) state.routes[r.id] = clean(saved.routes[r.id]);
   } else state.routes.classic = clean(parse('sparkmate.progress.v1'));
+  Object.assign(state, restoreLevels(saved, state.routes, state.routeId));
+  if (!state.unlockedLevels.includes(levelForRoute(state.routeId).id))
+    state.routeId = DEFAULT_ROUTE_ID;
   return { ...state, muted: saved?.muted === true };
 }
 const blankRuntime = () => ({ action: 'stop', led: false, runId: 0, status: 'idle', logs: [] });
@@ -55,6 +66,7 @@ export const useLearningStore = create((set, get) => ({
   ...load(),
   storageError: false,
   runtime: blankRuntime(),
+  challengeEvent: { id: 0, levelId: null, nextId: null },
   feedback: { id: 0, type: 'idle', message: '慢慢来，我陪着你。', toast: '' },
   movePet: (action) => {
     if (!COMMANDS.move.includes(action)) throw new Error('不支持的移动参数');
@@ -70,6 +82,8 @@ export const useLearningStore = create((set, get) => ({
   },
   runProgram: (source) => {
     try {
+      if (!get().unlockedLevels.includes(levelForRoute(get().routeId).id))
+        throw new Error('请先完成前置挑战');
       const instructions = executeProgram(source, {
         move: get().movePet,
         light: get().setPetLight,
@@ -80,6 +94,8 @@ export const useLearningStore = create((set, get) => ({
           ...state.runtime,
           runId: state.runtime.runId + 1,
           status: 'success',
+          routeId: state.routeId,
+          instructions,
           logs: instructions.map(
             ({ command, value }) =>
               command +
@@ -106,6 +122,7 @@ export const useLearningStore = create((set, get) => ({
             (state.runtime.led ? '已点亮。' : '已关闭。'),
         ),
       }));
+      get().unlockNextLevel();
       return true;
     } catch (error) {
       set((state) => ({
@@ -122,10 +139,46 @@ export const useLearningStore = create((set, get) => ({
   resetRuntime: () =>
     set((state) => ({
       runtime: blankRuntime(),
+      challengeEvent: { id: 0, levelId: null, nextId: null },
       feedback: feedback(state, 'idle', '模拟桌宠已复位，试试你的下一段代码。'),
     })),
+  unlockNextLevel: () => {
+    const state = get(),
+      level = levelForRoute(state.routeId);
+    if (
+      !state.unlockedLevels.includes(level.id) ||
+      state.completedLevels.includes(level.id) ||
+      state.runtime.status !== 'success' ||
+      state.runtime.routeId !== state.routeId ||
+      !challengePassed(level.id, state.runtime.instructions)
+    )
+      return false;
+    const next = LEARNING_LEVELS[LEARNING_LEVELS.indexOf(level) + 1];
+    set({
+      completedLevels: [...state.completedLevels, level.id],
+      unlockedLevels: next
+        ? [...new Set([...state.unlockedLevels, next.id])]
+        : state.unlockedLevels,
+      challengeEvent: {
+        id: state.challengeEvent.id + 1,
+        levelId: level.id,
+        nextId: next?.id || null,
+      },
+    });
+    if (!state.runtime.instructions.some((i) => i.command === 'play' && i.value === 'success'))
+      playSound('success', state.muted);
+    return true;
+  },
   selectRoute: (routeId) => {
-    if (isRouteId(routeId)) set({ routeId });
+    if (!isRouteId(routeId)) return false;
+    if (!get().unlockedLevels.includes(levelForRoute(routeId).id)) {
+      set((state) => ({
+        feedback: feedback(state, 'failure', '请先完成前置挑战', '请先完成前置挑战'),
+      }));
+      return false;
+    }
+    set({ routeId });
+    return true;
   },
   complete: (key) => {
     if (!Object.hasOwn(REWARDS, key)) return false;
@@ -182,6 +235,7 @@ export const useLearningStore = create((set, get) => ({
     set((state) => ({
       ...empty(),
       runtime: blankRuntime(),
+      challengeEvent: { id: 0, levelId: null, nextId: null },
       feedback: feedback(state, 'idle', '新的旅程开始啦，我陪着你。'),
     }));
   },
@@ -190,7 +244,14 @@ function save(state) {
   try {
     localStorage.setItem(
       ROUTE_STORAGE,
-      JSON.stringify({ routeId: state.routeId, routes: state.routes, muted: state.muted }),
+      JSON.stringify({
+        routeId: state.routeId,
+        routes: state.routes,
+        muted: state.muted,
+        levelVersion: 1,
+        unlockedLevels: state.unlockedLevels,
+        completedLevels: state.completedLevels,
+      }),
     );
     localStorage.removeItem('sparkmate.progress.v1');
     if (state.storageError) useLearningStore.setState({ storageError: false });
@@ -202,7 +263,9 @@ useLearningStore.subscribe((state, previous) => {
   if (
     state.routes !== previous.routes ||
     state.routeId !== previous.routeId ||
-    state.muted !== previous.muted
+    state.muted !== previous.muted ||
+    state.unlockedLevels !== previous.unlockedLevels ||
+    state.completedLevels !== previous.completedLevels
   )
     save(state);
 });

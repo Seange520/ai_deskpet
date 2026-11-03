@@ -1,3 +1,4 @@
+import { unlockThrough } from './level-helpers';
 import { test, expect } from '@playwright/test';
 
 const cases = [
@@ -61,6 +62,7 @@ for (const route of cases) {
     const errors = [];
     page.on('pageerror', (e) => errors.push(e.message));
     await page.goto('/');
+    await unlockThrough(page);
     await page.getByRole('button', { name: `探索${route.name}`, exact: true }).click();
     await expect(page.getByLabel('切换路线', { exact: true })).toHaveValue(route.id);
     await expect(page.locator('.exploded-scene')).toHaveAttribute('data-route', route.id);
@@ -144,6 +146,7 @@ for (const route of cases) {
 
 test('切换时清除未完成的接线、拖线与警告，不串用物料勾选和成就', async ({ page }) => {
   await page.goto('/');
+  await unlockThrough(page);
   await page.getByRole('button', { name: '硬件实验室', exact: true }).click();
   await page.getByRole('button', { name: '麦克风 VCC 引脚', exact: true }).press('Enter');
   await page.getByRole('button', { name: '主板 3V3 引脚', exact: true }).press('Enter');
@@ -172,6 +175,7 @@ test('旧进度迁移到经典路线，其他路线独立，重置清空全部�
     ),
   );
   await page.goto('/');
+  await unlockThrough(page);
   await expect(page.locator('.experience-text')).toContainText('350');
   await page.getByRole('button', { name: '硬件实验室', exact: true }).click();
   await page.getByLabel('切换路线', { exact: true }).selectOption('quadruped');
@@ -197,6 +201,7 @@ test('手机直接选物料与四路线切换无横向溢出，损坏记录安�
     ),
   );
   await page.goto('/');
+  await unlockThrough(page);
   await expect(page.locator('.experience-text')).toContainText('0 / 2000 XP');
   await page.getByRole('button', { name: '准备物料 · 球形自平衡机器人', exact: true }).click();
   await expect(page.getByRole('dialog').getByLabel('物料路线', { exact: true })).toHaveValue(

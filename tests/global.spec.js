@@ -1,3 +1,4 @@
+import { unlockThrough } from './level-helpers';
 import { test, expect } from '@playwright/test';
 
 async function wire(page, source, target, module = '麦克风', board = '主板') {
@@ -12,6 +13,7 @@ const xp = (page) => page.locator('.experience-text');
 
 test('全局 XP、徽章 Toast、排名、重复接线与切路重载保持一致', async ({ page }) => {
   await page.goto('/');
+  await unlockThrough(page, 1);
   await page.getByRole('button', { name: '硬件实验室', exact: true }).click();
   await classic(page);
   await expect(xp(page)).toContainText('250 / 2000 XP');

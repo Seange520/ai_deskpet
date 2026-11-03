@@ -1,10 +1,26 @@
-import { useState } from 'react';
+import { levelForRoute } from '../data/learningLevels';
+import { useEffect, useState } from 'react';
 import { Play, RotateCcw, Terminal } from 'lucide-react';
 import Button from './Button';
 import { DEFAULT_PROGRAM } from '../lib/codeRunner';
 import { useLearningStore } from '../stores/useLearningStore';
 
 export default function CodeRunner() {
+  const [celebration, setCelebration] = useState(null);
+  useEffect(() => {
+    if (!celebration) return;
+    const timer = setTimeout(() => setCelebration(null), 3200);
+    return () => clearTimeout(timer);
+  }, [celebration]);
+  const routeId = useLearningStore((s) => s.routeId);
+  const completedLevels = useLearningStore((s) => s.completedLevels);
+  const level = levelForRoute(routeId);
+  function runChallenge() {
+    const before = useLearningStore.getState().challengeEvent.id;
+    run(source);
+    const event = useLearningStore.getState().challengeEvent;
+    if (event.id !== before) setCelebration(event);
+  }
   const [source, setSource] = useState(DEFAULT_PROGRAM);
   const runtime = useLearningStore((s) => s.runtime);
   const run = useLearningStore((s) => s.runProgram);
@@ -19,6 +35,38 @@ export default function CodeRunner() {
           <p>你可以尝试修改括号里的参数，再点击运行。这里运行的是桌宠教学指令。</p>
         </div>
       </div>
+      <section className="challenge-target" aria-label="通关目标">
+        <strong>
+          {level.id} · {level.title}
+        </strong>
+        <p>{level.target}</p>
+        <span>
+          {completedLevels.includes(level.id)
+            ? '已通关 · 重复练习不重复解锁'
+            : '待挑战 · 同一次运行需完成全部目标'}
+        </span>
+      </section>
+      {celebration && (
+        <div className="challenge-celebration" role="status">
+          <strong>
+            {celebration.levelId} 通关！
+            {celebration.nextId ? '已解锁 ' + celebration.nextId : '四关挑战全部完成！'}
+          </strong>
+          <span>回到学习仪表盘查看路线。原有 XP 与关卡记录保持不变。</span>
+          <div className="challenge-confetti" aria-hidden="true">
+            {Array.from({ length: 18 }, (_, i) => (
+              <i
+                key={i}
+                style={{
+                  left: i * 5.5 + '%',
+                  animationDelay: (i % 6) * 0.05 + 's',
+                  background: i % 2 ? '#6ee7b7' : '#ffb36b',
+                }}
+              />
+            ))}
+          </div>
+        </div>
+      )}
       <div className="runner-grid">
         <section className="panel runner-editor" aria-label="教学代码编辑区">
           <div className="editor-tab">
@@ -47,7 +95,7 @@ export default function CodeRunner() {
             onChange={(e) => setSource(e.target.value)}
           />
           <div className="runner-actions">
-            <Button className="btn primary" onClick={() => run(source)}>
+            <Button className="btn primary" onClick={runChallenge}>
               <Play size={16} />
               运行代码
             </Button>

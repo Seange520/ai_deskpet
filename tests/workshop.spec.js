@@ -1,3 +1,4 @@
+import { unlockThrough } from './level-helpers';
 import { test, expect } from '@playwright/test';
 
 const routes = [
@@ -106,6 +107,7 @@ test('VCC 误接 GND 的全屏模拟烧板、键盘焦点与重置恢复', async
 
 test('避坑提示按路线切换，普通信号接错仅红线，不触发烧板', async ({ page }) => {
   await page.goto('/');
+  await unlockThrough(page);
   await page.getByRole('button', { name: '硬件实验室', exact: true }).click();
   await expect(page.getByRole('region', { name: '创客避坑指南' })).toContainText('VCC 和 GND');
   await page.getByLabel('切换路线', { exact: true }).selectOption('quadruped');

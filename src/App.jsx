@@ -60,12 +60,13 @@ export default function App() {
   } = useHardwareProgress();
   const route = getHardwareRoute(routeId);
   function switchRoute(id) {
-    selectRoute(id);
+    if (!selectRoute(id)) return false;
     setChecked(allProgress[id]?.materials ? getHardwareRoute(id).components.map((_, i) => i) : []);
     setToast('');
+    return true;
   }
   function chooseRoute(id, destination) {
-    switchRoute(id);
+    if (!switchRoute(id)) return;
     navigate('hardware');
     if (destination === 'materials') openModal('materials');
   }
