@@ -1,0 +1,186 @@
+.code-runner {
+  margin: 28px 0 40px;
+}
+.runner-heading h2 {
+  font-size: 24px;
+  margin: 10px 0;
+}
+.runner-heading p,
+.runner-help {
+  color: #9bafbf;
+  font-size: 12px;
+  line-height: 1.8;
+}
+.runner-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 24px;
+  margin-top: 22px;
+  align-items: start;
+}
+.runner-editor,
+.runner-preview {
+  overflow: hidden;
+}
+.runner-label {
+  display: block;
+  margin: 20px 22px 6px;
+  font-size: 13px;
+  color: #d5e5df;
+}
+.runner-help {
+  margin: 12px 22px 20px;
+  overflow-wrap: anywhere;
+}
+.runner-textarea {
+  display: block;
+  width: calc(100% - 44px);
+  margin: 0 22px;
+  min-height: 230px;
+  max-height: 560px;
+  resize: vertical;
+  padding: 18px;
+  border: 1px solid #6ee7b733;
+  border-radius: 12px;
+  background: #101b27;
+  color: #c9eddc;
+  font-family: 'JetBrains Mono Variable', monospace;
+  font-size: 13px;
+  line-height: 1.9;
+  tab-size: 2;
+}
+.runner-textarea:focus-visible {
+  outline: 2px solid #6ee7b7;
+  outline-offset: 3px;
+}
+.runner-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 20px 22px;
+}
+.runner-console {
+  border-top: 1px solid #ffffff12;
+  background: #0b1420;
+  color: #a7d8be;
+  padding: 18px 22px;
+  min-height: 110px;
+  max-height: 280px;
+  overflow: auto;
+  font:
+    12px/1.8 'JetBrains Mono Variable',
+    monospace;
+  overflow-wrap: anywhere;
+}
+.runner-console p {
+  margin: 6px 0 0;
+  white-space: pre-wrap;
+}
+.runner-console.has-error {
+  color: #ff9797;
+  border-top-color: #ff979750;
+}
+.runner-stage {
+  display: grid;
+  place-items: center;
+  min-height: 280px;
+  background: radial-gradient(ellipse, #6ee7b710, transparent 70%);
+  overflow: hidden;
+}
+.runner-actor .companion-body {
+  width: 120px;
+  height: 108px;
+  padding: 14px;
+}
+.runner-actor .companion-face {
+  gap: 20px;
+}
+.runner-actor .companion-face > i {
+  width: 12px;
+  height: 20px;
+}
+.runner-readout {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 18px;
+  padding: 20px;
+  color: #c9eddc;
+  font-size: 13px;
+  border-top: 1px solid #ffffff12;
+}
+.command-led {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #4b5c55;
+  box-shadow: none;
+  z-index: 1;
+}
+.command-led.is-lit {
+  background: #6ee7b7;
+  box-shadow: 0 0 8px 3px #6ee7b780;
+}
+.pet-command-forward {
+  transform: translateX(22px);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.pet-command-backward {
+  transform: translateX(-22px);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.pet-command-stop {
+  transform: translateX(0);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.runner-actor.pet-command-forward {
+  animation: command-forward 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.runner-actor.pet-command-backward {
+  animation: command-backward 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes command-forward {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(22px);
+  }
+}
+@keyframes command-backward {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-22px);
+  }
+}
+.route-experiment-heading {
+  font-size: 20px;
+  margin: 28px 0 20px;
+}
+@media (max-width: 900px) {
+  .runner-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 480px) {
+  .runner-actions .btn {
+    width: 100%;
+  }
+  .runner-textarea {
+    font-size: 12px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .runner-actor,
+  .pet-command-forward,
+  .pet-command-backward,
+  .pet-command-stop {
+    animation: none !important;
+    transition: none !important;
+  }
+}

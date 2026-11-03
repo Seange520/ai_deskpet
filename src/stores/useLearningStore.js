@@ -1,3 +1,4 @@
+import { executeProgram, COMMANDS } from '../lib/codeRunner';
 import { create } from 'zustand';
 import { hardwareRoutes, DEFAULT_ROUTE_ID, isRouteId } from '../data/hardwareRoutes';
 import { playSound, silence } from '../lib/sounds';
@@ -43,6 +44,7 @@ function load() {
   } else state.routes.classic = clean(parse('sparkmate.progress.v1'));
   return { ...state, muted: saved?.muted === true };
 }
+const blankRuntime = () => ({ action: 'stop', led: false, runId: 0, status: 'idle', logs: [] });
 const feedback = (state, type, message, toast = '') => ({
   id: state.feedback.id + 1,
   type,
@@ -52,7 +54,76 @@ const feedback = (state, type, message, toast = '') => ({
 export const useLearningStore = create((set, get) => ({
   ...load(),
   storageError: false,
+  runtime: blankRuntime(),
   feedback: { id: 0, type: 'idle', message: '慢慢来，我陪着你。', toast: '' },
+  movePet: (action) => {
+    if (!COMMANDS.move.includes(action)) throw new Error('不支持的移动参数');
+    set((state) => ({ runtime: { ...state.runtime, action } }));
+  },
+  setPetLight: (value) => {
+    if (!COMMANDS.light.includes(value)) throw new Error('不支持的灯光参数');
+    set((state) => ({ runtime: { ...state.runtime, led: value === 'on' } }));
+  },
+  playPetSound: (value) => {
+    if (!COMMANDS.play.includes(value)) throw new Error('不支持的音效参数');
+    playSound(value, get().muted);
+  },
+  runProgram: (source) => {
+    try {
+      const instructions = executeProgram(source, {
+        move: get().movePet,
+        light: get().setPetLight,
+        play: get().playPetSound,
+      });
+      set((state) => ({
+        runtime: {
+          ...state.runtime,
+          runId: state.runtime.runId + 1,
+          status: 'success',
+          logs: instructions.map(
+            ({ command, value }) =>
+              command +
+              '("' +
+              value +
+              '") → ' +
+              (command === 'move'
+                ? { forward: '前进', backward: '后退', stop: '停止' }[value]
+                : command === 'light'
+                  ? value === 'on'
+                    ? 'LED 已点亮'
+                    : 'LED 已关闭'
+                  : state.muted
+                    ? '音效已触发（当前静音）'
+                    : '成功音效已触发（是否可听取决于浏览器音频支持）'),
+          ),
+        },
+        feedback: feedback(
+          state,
+          'success',
+          '代码收到！我正在' +
+            { forward: '前进', backward: '后退', stop: '原地待命' }[state.runtime.action] +
+            '，LED ' +
+            (state.runtime.led ? '已点亮。' : '已关闭。'),
+        ),
+      }));
+      return true;
+    } catch (error) {
+      set((state) => ({
+        runtime: {
+          ...state.runtime,
+          status: 'error',
+          logs: [error.message || '运行失败，请检查代码。'],
+        },
+        feedback: feedback(state, 'failure', '这段代码还差一点，看看控制台提示再试试。'),
+      }));
+      return false;
+    }
+  },
+  resetRuntime: () =>
+    set((state) => ({
+      runtime: blankRuntime(),
+      feedback: feedback(state, 'idle', '模拟桌宠已复位，试试你的下一段代码。'),
+    })),
   selectRoute: (routeId) => {
     if (isRouteId(routeId)) set({ routeId });
   },
@@ -110,6 +181,7 @@ export const useLearningStore = create((set, get) => ({
     silence();
     set((state) => ({
       ...empty(),
+      runtime: blankRuntime(),
       feedback: feedback(state, 'idle', '新的旅程开始啦，我陪着你。'),
     }));
   },

@@ -1,3 +1,4 @@
+import CodeRunner from './CodeRunner';
 import Button from './Button';
 import { useState } from 'react';
 import {
@@ -70,6 +71,8 @@ export default function CodeLab({
       <p className="route-context code-route-context">
         当前路线：{route.name} · {lesson.title}。所有预览均为浏览器模拟，不读取或控制真实硬件。
       </p>
+      <CodeRunner />
+      <h2 className="route-experiment-heading">路线参数实验</h2>
       {!unlocked && (
         <div className="unlock-note">
           <LockKeyhole size={18} />
