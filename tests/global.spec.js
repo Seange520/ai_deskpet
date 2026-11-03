@@ -16,7 +16,7 @@ test('全局 XP、徽章 Toast、排名、重复接线与切路重载保持一�
   await unlockThrough(page, 1);
   await page.getByRole('button', { name: '硬件实验室', exact: true }).click();
   await classic(page);
-  await expect(xp(page)).toContainText('250 / 2000 XP');
+  await expect(xp(page)).toContainText('250 / 2200 XP');
   await expect(page.locator('.kit-toast')).toContainText('解锁「电路新星」');
   await expect(page.locator('.companion-bubble')).toContainText('接线成功');
   await expect(page.getByRole('progressbar', { name: '全局学习进度' })).toHaveAttribute(
@@ -25,22 +25,22 @@ test('全局 XP、徽章 Toast、排名、重复接线与切路重载保持一�
   );
   await page.getByRole('button', { name: '重置接线', exact: true }).click();
   await classic(page);
-  await expect(xp(page)).toContainText('250 / 2000 XP');
+  await expect(xp(page)).toContainText('250 / 2200 XP');
   await expect(page.locator('.kit-toast')).toHaveCount(0);
   await page.getByLabel('切换路线', { exact: true }).selectOption('quadruped');
-  await expect(xp(page)).toContainText('250 / 2000 XP');
+  await expect(xp(page)).toContainText('250 / 2200 XP');
   await wire(page, 'VCC', 'EXT5V', '舵机', '独立电源');
   await wire(page, 'GND', 'GND', '舵机');
   await wire(page, 'PWM', 'GPIO4', '舵机');
   await expect(xp(page)).toContainText('LV.2');
-  await expect(xp(page)).toContainText('500 / 2000 XP');
+  await expect(xp(page)).toContainText('500 / 2200 XP');
   await expect(page.locator('.companion-bubble')).toContainText('升级啦');
   await expect(page.locator('.kit-toast')).not.toContainText('解锁');
   await page.getByRole('button', { name: '创客排位', exact: true }).click();
   await expect(page.locator('.rank-summary')).toContainText('第 4 名');
   await expect(page.locator('.is-you')).toContainText('500');
   await page.reload();
-  await expect(xp(page)).toContainText('500 / 2000 XP');
+  await expect(xp(page)).toContainText('500 / 2200 XP');
   await expect(page.locator('.badge.unlocked')).toHaveCount(2);
   await expect(page.locator('.kit-toast')).toHaveCount(0);
 });
@@ -56,16 +56,16 @@ test('调参只在有效修改后主动领取一次，重置参数和恢复默�
   await expect(page.getByRole('button', { name: '先调整一个参数，唤醒你的伙伴' })).toBeDisabled();
   await slider.fill('800');
   await slider.fill('1000');
-  await expect(xp(page)).toContainText('250 / 2000 XP');
+  await expect(xp(page)).toContainText('250 / 2200 XP');
   await page.getByRole('button', { name: /唤醒伙伴 · 领取/ }).click();
   await expect(page.locator('.kit-toast')).toContainText('唤醒伙伴');
   await page.getByRole('button', { name: '查看我的成就' }).click();
-  await expect(xp(page)).toContainText('400 / 2000 XP');
+  await expect(xp(page)).toContainText('400 / 2200 XP');
   await page.getByRole('button', { name: '代码魔改工坊', exact: true }).click();
   await slider.fill('600');
   await expect(page.getByRole('button', { name: '伙伴已唤醒 · 成就已领取' })).toBeDisabled();
   await page.reload();
-  await expect(xp(page)).toContainText('400 / 2000 XP');
+  await expect(xp(page)).toContainText('400 / 2200 XP');
 });
 
 test('v2 四路线存量折算全局 XP，损坏关卡不误发积分', async ({ page }) => {
@@ -86,10 +86,10 @@ test('v2 四路线存量折算全局 XP，损坏关卡不误发积分', async ({
     );
   });
   await page.goto('/');
-  await expect(xp(page)).toContainText('850 / 2000 XP');
+  await expect(xp(page)).toContainText('850 / 2200 XP');
   await expect(page.locator('.badge.unlocked')).toHaveCount(4);
   await page.reload();
-  await expect(xp(page)).toContainText('850 / 2000 XP');
+  await expect(xp(page)).toContainText('850 / 2200 XP');
   await expect(page.locator('.kit-toast')).toHaveCount(0);
 });
 
@@ -181,11 +181,11 @@ for (const mode of ['missing', 'throws', 'rejected']) {
     await page.getByRole('button', { name: '重置模拟开发板' }).press('Escape');
     await expect(page.locator('.companion-bubble')).toContainText('重新接线');
     await classic(page);
-    await expect(xp(page)).toContainText('250 / 2000 XP');
+    await expect(xp(page)).toContainText('250 / 2200 XP');
     await page.getByRole('button', { name: '重置接线', exact: true }).click();
     await wire(page, 'VCC', 'GND');
     await page.getByRole('button', { name: '重置模拟开发板' }).click();
-    await expect(xp(page)).toContainText('250 / 2000 XP');
+    await expect(xp(page)).toContainText('250 / 2200 XP');
     await page.getByRole('button', { name: '学习仪表盘', exact: true }).click();
     await expect(page.locator('.badge.unlocked')).toHaveCount(2);
     expect(errors).toEqual([]);
@@ -202,5 +202,5 @@ test('存储不可用时仍能获得 XP 与徽章', async ({ page }) => {
   await expect(page.locator('.storage-note')).toContainText('浏览器存储不可用');
   await page.getByRole('button', { name: '硬件实验室', exact: true }).click();
   await classic(page);
-  await expect(xp(page)).toContainText('250 / 2000 XP');
+  await expect(xp(page)).toContainText('250 / 2200 XP');
 });

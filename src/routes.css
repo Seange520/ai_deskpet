@@ -180,3 +180,52 @@
     font-size: 9px;
   }
 }
+
+.route-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 18px;
+}
+.route-card .route-level-title {
+  margin: 14px 0 12px;
+  font-size: 23px;
+  line-height: 1.35;
+}
+.route-task-progress {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  font-size: 12px;
+  color: #b7c9bf;
+}
+.route-task-progress small {
+  font-size: 10px;
+  line-height: 1.6;
+  color: #94a79e;
+}
+.route-task-progress progress {
+  appearance: none;
+  width: 100%;
+  height: 5px;
+  border: 0;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #ffffff12;
+}
+.route-task-progress progress::-webkit-progress-bar {
+  background: #ffffff12;
+}
+.route-task-progress progress::-webkit-progress-value {
+  background: #a7d8be;
+  border-radius: 4px;
+}
+.route-task-progress progress::-moz-progress-bar {
+  background: #a7d8be;
+}
+.route-card .route-name {
+  font-size: 16px;
+  line-height: 1.5;
+  font-weight: 500;
+  margin: 0 0 14px;
+}

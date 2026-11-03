@@ -16,7 +16,7 @@ export default function MakerRanking({ xp }) {
       color: '#7abb9b',
       self: true,
     },
-  ].sort((a, b) => b.score - a.score || Number(b.self) - Number(a.self));
+  ].sort((a, b) => b.score - a.score || Number(Boolean(b.self)) - Number(Boolean(a.self)));
   const position = rows.findIndex((r) => r.self) + 1;
   return (
     <div className="page ranking-page">
@@ -69,8 +69,8 @@ export default function MakerRanking({ xp }) {
         </ol>
       </section>
       <p className="rank-note">
-        其他同学、大学与积分为演示用 Mock 数据；你的积分来自本机四路线累计 XP（每路线 500，上限
-        2000），重复练习不加分。无需注册，不上传个人信息。
+        其他同学、大学与积分为演示用 Mock 数据；你的积分来自本机四路线累计 XP（基础课程每路线 500
+        XP，故障题每题 25 XP，总上限 2200），重复练习不加分。无需注册，不上传个人信息。
       </p>
     </div>
   );

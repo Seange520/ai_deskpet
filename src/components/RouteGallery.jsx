@@ -16,6 +16,7 @@ export function RouteArtwork({ route }) {
 }
 export default function RouteGallery({ routeId, onChoose }) {
   const unlockedLevels = useLearningStore((s) => s.unlockedLevels);
+  const allProgress = useLearningStore((s) => s.routes);
   const completedLevels = useLearningStore((s) => s.completedLevels);
   return (
     <section className="route-gallery" aria-labelledby="route-gallery-title">
@@ -27,6 +28,9 @@ export default function RouteGallery({ routeId, onChoose }) {
         {hardwareRoutes.map((route) => {
           const level = levelForRoute(route.id),
             locked = !unlockedLevels.includes(level.id);
+          const count =
+            Object.values(allProgress[route.id]).filter(Boolean).length +
+            Number(completedLevels.includes(level.id));
           return (
             <section
               className={`panel route-card ${locked ? 'is-locked' : ''} ${routeId === route.id ? 'is-selected' : ''}`}
@@ -37,25 +41,30 @@ export default function RouteGallery({ routeId, onChoose }) {
               aria-label={`${route.name}路线卡片`}
             >
               <div className="route-card-meta">
-                <span>
-                  {level.id} · {route.difficulty}
-                </span>
-                <span>
+                <span className="route-status">
                   {locked ? (
                     <>
                       <LockKeyhole size={13} /> 未解锁
                     </>
-                  ) : completedLevels.includes(level.id) ? (
-                    '挑战已通关'
+                  ) : count === 4 ? (
+                    '已完成'
                   ) : routeId === route.id ? (
                     '当前路线'
                   ) : (
-                    '已解锁'
+                    '继续挑战'
                   )}
                 </span>
               </div>
+              <h3 className="route-level-title">
+                {level.id} · {route.difficulty}
+              </h3>
+              <div className="route-task-progress">
+                <span>任务进度 {count} / 4</span>
+                <progress aria-label={route.name + '任务进度'} max="4" value={count} />
+                <small>物料 · 接线 · 参数 · 代码挑战</small>
+              </div>
               <RouteArtwork route={route} />
-              <h3>{route.name}</h3>
+              <h4 className="route-name">{route.name}</h4>
               <p>{route.description}</p>
               {locked && (
                 <p className="route-lock-hint">请先完成前置挑战 · 上一关代码目标通关后解锁</p>

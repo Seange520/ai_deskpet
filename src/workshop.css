@@ -261,3 +261,132 @@
     animation: none;
   }
 }
+
+.lab-mode {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.lab-mode [aria-pressed='true'] {
+  border-color: #6ee7b7;
+  color: #b7efd8;
+  background: #6ee7b710;
+}
+.debug-challenge {
+  padding: 26px;
+}
+.debug-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+.debug-heading h2 {
+  font-size: 21px;
+}
+.debug-heading > span {
+  color: #a7d8be;
+  font-size: 12px;
+}
+.debug-picker {
+  display: block;
+  max-width: 440px;
+  font-size: 13px;
+  margin: 22px 0;
+}
+.debug-challenge p {
+  font-size: 13px;
+  line-height: 1.8;
+  color: #afc0b8;
+  margin: 14px 0;
+  overflow-wrap: anywhere;
+}
+.debug-layout {
+  display: grid;
+  grid-template-columns: minmax(150px, 0.5fr) minmax(0, 1.5fr);
+  gap: 24px;
+  align-items: center;
+  margin: 24px 0;
+}
+.debug-layout h3 {
+  font-size: 14px;
+  color: #d5e5df;
+}
+.debug-pairs {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+  margin-top: 16px;
+  color: #b8d9c9;
+  font:
+    13px 'JetBrains Mono Variable',
+    monospace;
+}
+.debug-svg {
+  display: block;
+  width: 100%;
+  touch-action: pan-y;
+}
+.debug-wire,
+.debug-pin {
+  cursor: pointer;
+}
+.debug-wire:focus-visible,
+.debug-pin:focus-visible {
+  outline: 2px solid #6ee7b7;
+  outline-offset: 4px;
+}
+.debug-feedback {
+  padding: 18px;
+  border: 1px solid #ffffff20;
+  border-radius: 14px;
+  color: #b8d9c9;
+  font-size: 13px;
+  line-height: 1.8;
+  margin-bottom: 18px;
+  overflow-wrap: anywhere;
+}
+.debug-feedback.is-success {
+  border-color: #6ee7b777;
+  background: #6ee7b70d;
+  color: #6ee7b7;
+}
+.debug-feedback.is-error {
+  border-color: #ff858577;
+  background: #ff85850d;
+  color: #ff9797;
+}
+@media (max-width: 700px) {
+  .debug-challenge {
+    padding: 18px;
+  }
+  .debug-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+  }
+  .lab-mode .btn {
+    flex: 1;
+  }
+}
+
+.debug-mobile-wires {
+  display: none;
+}
+@media (max-width: 700px) {
+  .debug-svg text {
+    font-size: 24px;
+  }
+  .debug-mobile-wires {
+    display: grid;
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .debug-mobile-wires .btn {
+    width: 100%;
+    min-height: 44px;
+    font-family: 'JetBrains Mono Variable', monospace;
+  }
+}

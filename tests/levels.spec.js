@@ -98,7 +98,7 @@ test('目标须同次显式执行，最终状态匹配；失败不解锁，通�
   await page.getByRole('button', { name: '代码魔改工坊', exact: true }).click();
   await expect(page.locator('.challenge-celebration')).toHaveCount(0);
   await expect(page.getByRole('region', { name: '通关目标' })).toContainText('已通关');
-  await expect(page.locator('.experience-text')).toContainText('0 / 2000 XP');
+  await expect(page.locator('.experience-text')).toContainText('0 / 2200 XP');
 });
 
 test('四关顺序通关、静音、减少动画与重置', async ({ page }) => {
@@ -138,7 +138,7 @@ test('旧记录保留路线访问、XP，损坏新解锁记录回退连续前缀
   await page.goto('/');
   expect((await saved(page)).unlockedLevels).toEqual(['L1', 'L2', 'L3']);
   expect((await saved(page)).completedLevels).toEqual([]);
-  await expect(page.locator('.experience-text')).toContainText('750 / 2000 XP');
+  await expect(page.locator('.experience-text')).toContainText('750 / 2200 XP');
   await page.evaluate(() =>
     localStorage.setItem(
       'sparkmate.routes.v2',

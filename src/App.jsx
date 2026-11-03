@@ -1,4 +1,4 @@
-import { totalXP, levelFor, globalBadges } from './stores/useLearningStore';
+import { totalXP, levelFor, globalBadges, MAX_XP } from './stores/useLearningStore';
 import { playSound } from './lib/sounds';
 import Button from './components/Button';
 import { MOTION } from './motion';
@@ -53,6 +53,7 @@ export default function App() {
     toggleMuted,
     progress,
     allProgress,
+    debugProgress,
     selectRoute,
     complete: markComplete,
     storageError,
@@ -80,7 +81,7 @@ export default function App() {
     const timer = setTimeout(() => setToast(''), 3500);
     return () => clearTimeout(timer);
   }, [toast]);
-  const xp = totalXP(allProgress);
+  const xp = totalXP(allProgress, debugProgress);
   const badges = globalBadges(allProgress);
   useEffect(() => {
     setToast(feedback.toast);
@@ -185,13 +186,13 @@ export default function App() {
               role="progressbar"
               aria-label="全局学习进度"
               aria-valuemin={0}
-              aria-valuemax={2000}
+              aria-valuemax={MAX_XP}
               aria-valuenow={xp}
             >
-              <span style={{ width: `${xp / 20}%` }} />
+              <span style={{ width: `${(xp / MAX_XP) * 100}%` }} />
             </div>
             <span>
-              全局 {xp} / 2000 XP · 本路线 {Object.values(progress).filter(Boolean).length} / 3
+              全局 {xp} / {MAX_XP} XP · 本路线 {Object.values(progress).filter(Boolean).length} / 3
               关卡完成
             </span>
           </div>
@@ -230,13 +231,13 @@ export default function App() {
                   <Zap size={13} /> LV.{levelFor(xp)} {xp >= 500 ? '进阶创客' : '新手创客'}
                 </span>
                 <span>
-                  {xp} <small>/ 2000 XP</small>
+                  {xp} <small>/ {MAX_XP} XP</small>
                 </span>
               </div>
               <div className="xp-track">
                 <motion.div
                   initial={{ width: 0 }}
-                  animate={{ width: `${xp / 20}%` }}
+                  animate={{ width: `${(xp / MAX_XP) * 100}%` }}
                   transition={MOTION}
                 />
               </div>

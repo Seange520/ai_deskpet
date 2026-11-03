@@ -22,7 +22,7 @@ test('默认指令、全局伙伴联动、跨页保留、刷新复位且不奖�
   await expect(page.locator('.companion .command-led')).toHaveClass(/is-lit/);
   await expect(page.locator('.companion .pet-command-forward')).toHaveCount(1);
   await expect(page.locator('.companion-bubble')).toContainText('正在前进');
-  await expect(page.locator('.experience-text')).toContainText('0 / 2000 XP');
+  await expect(page.locator('.experience-text')).toContainText('0 / 2200 XP');
   await page.getByRole('button', { name: '学习仪表盘', exact: true }).click();
   await expect(page.locator('.companion .command-led')).toHaveClass(/is-lit/);
   await page.getByRole('button', { name: '代码魔改工坊', exact: true }).click();

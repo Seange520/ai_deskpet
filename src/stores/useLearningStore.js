@@ -6,16 +6,35 @@ import {
 } from '../data/learningLevels';
 import { executeProgram, COMMANDS } from '../lib/codeRunner';
 import { create } from 'zustand';
-import { hardwareRoutes, DEFAULT_ROUTE_ID, isRouteId } from '../data/hardwareRoutes';
+import {
+  hardwareRoutes,
+  DEFAULT_ROUTE_ID,
+  isRouteId,
+  getHardwareRoute,
+} from '../data/hardwareRoutes';
 import { playSound, silence } from '../lib/sounds';
 export const ROUTE_STORAGE = 'sparkmate.routes.v2';
 export const REWARDS = { materials: 100, wiring: 250, code: 150 };
 export const BADGES = { materials: '物料侦探', wiring: '电路新星', code: '唤醒伙伴' };
-export const totalXP = (routes) =>
+export const DEBUG_REWARD = 25;
+export const MAX_XP =
+  hardwareRoutes.length * 500 +
+  hardwareRoutes.reduce((n, route) => n + route.faultyCircuits.length * DEBUG_REWARD, 0);
+export const totalXP = (routes, debugProgress = {}) =>
   Object.values(routes).reduce(
     (sum, p) => sum + Object.entries(REWARDS).reduce((n, [key, xp]) => n + (p[key] ? xp : 0), 0),
     0,
+  ) +
+  hardwareRoutes.reduce(
+    (sum, route) =>
+      sum +
+      route.faultyCircuits.reduce(
+        (n, fault) => n + (debugProgress[route.id]?.[fault.id] === true ? DEBUG_REWARD : 0),
+        0,
+      ),
+    0,
   );
+const emptyDebugProgress = () => Object.fromEntries(hardwareRoutes.map((route) => [route.id, {}]));
 export const levelFor = (xp) => Math.floor(xp / 500) + 1;
 export const globalBadges = (routes) =>
   Object.fromEntries(
@@ -23,6 +42,7 @@ export const globalBadges = (routes) =>
   );
 const empty = () => ({
   routeId: DEFAULT_ROUTE_ID,
+  debugProgress: emptyDebugProgress(),
   unlockedLevels: ['L1'],
   completedLevels: [],
   routes: Object.fromEntries(
@@ -50,6 +70,12 @@ function load() {
     state.routeId = isRouteId(saved.routeId) ? saved.routeId : DEFAULT_ROUTE_ID;
     for (const r of hardwareRoutes) state.routes[r.id] = clean(saved.routes[r.id]);
   } else state.routes.classic = clean(parse('sparkmate.progress.v1'));
+  for (const route of hardwareRoutes) {
+    for (const fault of route.faultyCircuits) {
+      if (saved?.debugProgress?.[route.id]?.[fault.id] === true)
+        state.debugProgress[route.id][fault.id] = true;
+    }
+  }
   Object.assign(state, restoreLevels(saved, state.routes, state.routeId));
   if (!state.unlockedLevels.includes(levelForRoute(state.routeId).id))
     state.routeId = DEFAULT_ROUTE_ID;
@@ -68,6 +94,42 @@ export const useLearningStore = create((set, get) => ({
   runtime: blankRuntime(),
   challengeEvent: { id: 0, levelId: null, nextId: null },
   feedback: { id: 0, type: 'idle', message: '慢慢来，我陪着你。', toast: '' },
+  attemptFaultRepair: (faultId, choice) => {
+    const state = get(),
+      route = getHardwareRoute(state.routeId);
+    const fault = route.faultyCircuits.find((item) => item.id === faultId);
+    if (!fault || !state.unlockedLevels.includes(levelForRoute(route.id).id))
+      return { status: 'error', awarded: 0 };
+    const correct =
+      choice?.kind === 'wire'
+        ? choice.source === fault.source
+        : choice?.kind === 'target' && choice.target === fault.wrongTarget;
+    if (!correct) {
+      playSound('warning', state.muted);
+      set({ feedback: feedback(state, 'failure', '模拟短路警告：这里不是故障点，再核对配对表。') });
+      return { status: 'error', awarded: 0 };
+    }
+    const awarded = state.debugProgress[route.id]?.[faultId] ? 0 : DEBUG_REWARD;
+    const debugProgress = awarded
+      ? {
+          ...state.debugProgress,
+          [route.id]: { ...state.debugProgress[route.id], [faultId]: true },
+        }
+      : state.debugProgress;
+    const xp = totalXP(state.routes, debugProgress);
+    const leveled = levelFor(xp) > levelFor(totalXP(state.routes, state.debugProgress));
+    playSound('success', state.muted);
+    set({
+      debugProgress,
+      feedback: feedback(
+        state,
+        leveled ? 'level' : 'success',
+        leveled ? '修复成功，升级至 LV.' + levelFor(xp) + '！' : '修复成功！我记住这个故障啦。',
+        awarded ? '修复成功 · +' + awarded + ' XP' : '',
+      ),
+    });
+    return { status: 'success', awarded };
+  },
   movePet: (action) => {
     if (!COMMANDS.move.includes(action)) throw new Error('不支持的移动参数');
     set((state) => ({ runtime: { ...state.runtime, action } }));
@@ -191,7 +253,9 @@ export const useLearningStore = create((set, get) => ({
       return false;
     }
     const routes = { ...state.routes, [state.routeId]: { ...p, [key]: true } };
-    const leveled = levelFor(totalXP(routes)) > levelFor(totalXP(state.routes));
+    const leveled =
+      levelFor(totalXP(routes, state.debugProgress)) >
+      levelFor(totalXP(state.routes, state.debugProgress));
     const badge = globalBadges(state.routes)[key] ? '' : ` · 解锁「${BADGES[key]}」`;
     set({
       routes,
@@ -199,7 +263,7 @@ export const useLearningStore = create((set, get) => ({
         state,
         leveled ? 'level' : 'success',
         leveled
-          ? `升级啦！现在是 LV.${levelFor(totalXP(routes))}，一起继续发光！`
+          ? `升级啦！现在是 LV.${levelFor(totalXP(routes, state.debugProgress))}，一起继续发光！`
           : key === 'wiring'
             ? '接线成功！第一束电流找到方向啦。'
             : key === 'code'
@@ -251,6 +315,7 @@ function save(state) {
         levelVersion: 1,
         unlockedLevels: state.unlockedLevels,
         completedLevels: state.completedLevels,
+        debugProgress: state.debugProgress,
       }),
     );
     localStorage.removeItem('sparkmate.progress.v1');
@@ -265,7 +330,8 @@ useLearningStore.subscribe((state, previous) => {
     state.routeId !== previous.routeId ||
     state.muted !== previous.muted ||
     state.unlockedLevels !== previous.unlockedLevels ||
-    state.completedLevels !== previous.completedLevels
+    state.completedLevels !== previous.completedLevels ||
+    state.debugProgress !== previous.debugProgress
   )
     save(state);
 });

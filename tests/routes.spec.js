@@ -164,7 +164,7 @@ test('切换时清除未完成的接线、拖线与警告，不串用物料勾�
   ).toBe(true);
   await page.getByRole('button', { name: '关闭弹窗' }).press('Escape');
   await expect(page.getByRole('button', { name: 'IMU SDA 引脚', exact: true })).toBeVisible();
-  await expect(page.locator('.experience-text')).toContainText('0 / 2000 XP');
+  await expect(page.locator('.experience-text')).toContainText('0 / 2200 XP');
 });
 
 test('旧进度迁移到经典路线，其他路线独立，重置清空全部路线', async ({ page }) => {
@@ -179,7 +179,7 @@ test('旧进度迁移到经典路线，其他路线独立，重置清空全部�
   await expect(page.locator('.experience-text')).toContainText('350');
   await page.getByRole('button', { name: '硬件实验室', exact: true }).click();
   await page.getByLabel('切换路线', { exact: true }).selectOption('quadruped');
-  await expect(page.locator('.experience-text')).toContainText('350 / 2000 XP');
+  await expect(page.locator('.experience-text')).toContainText('350 / 2200 XP');
   await page.getByLabel('切换路线', { exact: true }).selectOption('classic');
   await expect(page.locator('.experience-text')).toContainText('350');
   await page.getByRole('button', { name: '重置学习进度' }).click();
@@ -202,7 +202,7 @@ test('手机直接选物料与四路线切换无横向溢出，损坏记录安�
   );
   await page.goto('/');
   await unlockThrough(page);
-  await expect(page.locator('.experience-text')).toContainText('0 / 2000 XP');
+  await expect(page.locator('.experience-text')).toContainText('0 / 2200 XP');
   await page.getByRole('button', { name: '准备物料 · 球形自平衡机器人', exact: true }).click();
   await expect(page.getByRole('dialog').getByLabel('物料路线', { exact: true })).toHaveValue(
     'spherical',

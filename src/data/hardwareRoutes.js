@@ -54,13 +54,49 @@ const wiring = (
   options = {},
 ) => ({ sourceName, sourceTitle, pairs, description, note, hud, success, ...options });
 
+// Debug 题目只做离线诊断；接线表为课程示例，修复不会给真实硬件通电。
+function buildFaultyCircuits(route) {
+  const wires = route.wiring.pairs.map(([source, target]) => ({ source, target }));
+  const power = wires.find((w) => w.source === 'VCC') || wires.find((w) => w.source === 'ENA');
+  const signal = wires.find((w) => !['VCC', 'GND', 'ENA'].includes(w.source)) || {
+    source: 'SD',
+    target: 'GPIO4',
+  };
+  return [
+    {
+      id: 'power-line',
+      title: power.source === 'VCC' ? '电源线误接地' : '使能线误插引脚',
+      source: power.source,
+      target: power.target,
+      wrongTarget: power.source === 'VCC' ? 'GND' : 'GPIO5',
+      wires,
+      hint:
+        power.source === 'VCC'
+          ? '供电极性错误可能导致短路；先断电，再核对 VCC 与 GND。'
+          : 'ENA 是使能信号，请核对课程表中的引脚。',
+    },
+    {
+      id: 'signal-line',
+      title: '信号线插错引脚',
+      source: signal.source,
+      target: signal.target,
+      wrongTarget:
+        signal.target === 'GPIO8' ? 'GPIO9' : signal.target === 'GPIO5' ? 'GPIO6' : 'GPIO8',
+      wires: wires.some((w) => w.source === signal.source) ? wires : [...wires, signal],
+      hint:
+        signal.source === 'SD'
+          ? '额外演示 I2S SD 数据线的示例 GPIO4；这不等于完整 I2S 接线，固件也须使用对应引脚。'
+          : '信号与供电不同；请按正确配对表核对目标引脚。',
+    },
+  ];
+}
 export const hardwareRoutes = [
   {
     id: 'classic',
     name: '经典方块桌宠',
     description:
       '从一块屏幕、一对小耳朵开始，做一个安静陪伴你的桌面伙伴。没有舵机，适合第一次创造。',
-    difficulty: '入门 · 1 / 4',
+    difficulty: '入门',
     components: [
       board,
       screen,
@@ -105,7 +141,7 @@ export const hardwareRoutes = [
     id: 'quadruped',
     name: '迷你四足机器狗',
     description: '用 8 个 SG90 舵机搭起四条腿，再用小屏幕表达心情。先认识关节，再探索步态。',
-    difficulty: '进阶 · 3 / 4',
+    difficulty: '进阶',
     components: [
       board,
       { ...screen },
@@ -171,7 +207,7 @@ export const hardwareRoutes = [
     name: '履带/麦轮小车',
     description:
       '让创意动起来。本练习以双电机履带底盘为例；麦轮扩展需要四轮独立驱动与额外控制通道。',
-    difficulty: '探索 · 2 / 4',
+    difficulty: '探索',
     components: [
       board,
       {
@@ -232,7 +268,7 @@ export const hardwareRoutes = [
     id: 'spherical',
     name: '球形自平衡机器人',
     description: '用 IMU 感知姿态，在球壳内探索平衡与运动。需要执行机构和闭环控制，适合继续挑战。',
-    difficulty: '挑战 · 4 / 4',
+    difficulty: '挑战',
     components: [
       board,
       {
@@ -299,7 +335,7 @@ export const hardwareRoutes = [
       'I²C 的 SDA 传输数据、SCL 提供时钟；它们不同于供电引脚。这里 GPIO8/9 是示例选择，实际分配应避开其他外设并核对开发板资料。',
     ),
   },
-];
+].map((route) => ({ ...route, faultyCircuits: buildFaultyCircuits(route) }));
 
 export const DEFAULT_ROUTE_ID = 'classic';
 export function isRouteId(id) {
