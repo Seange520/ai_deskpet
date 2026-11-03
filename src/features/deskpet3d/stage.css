@@ -141,3 +141,44 @@ button:focus-visible {
     padding: 14px 16px;
   }
 }
+
+.stage3d-note {
+  margin-top: 20px;
+  color: #aabbba;
+  font-size: 13px;
+  line-height: 1.8;
+}
+.stage3d-runner .panel {
+  border: 1px solid #b8d9c92a;
+  border-radius: 18px;
+  background: #ffffff04;
+}
+.stage3d-runner .editor-tab {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 16px 22px;
+  border-bottom: 1px solid #ffffff12;
+  color: #9fb8ae;
+  font-size: 12px;
+}
+.stage3d-runner .editor-tab > span,
+.stage3d-runner .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.stage3d-runner .btn {
+  position: relative;
+  overflow: hidden;
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 1px solid #6ee7b744;
+  border-radius: 12px;
+  background: #6ee7b708;
+  color: #baffdd;
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+}
