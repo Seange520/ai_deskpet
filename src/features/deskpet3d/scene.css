@@ -1,0 +1,15 @@
+.deskpet3d-scene {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+.deskpet3d-scene canvas {
+  display: block;
+}
+.deskpet3d-unavailable {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  font-size: 12px;
+}

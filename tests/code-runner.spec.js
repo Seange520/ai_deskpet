@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { readCompanionScene } from './deskpet3d-helpers';
 
 async function open(page) {
   await page.goto('/');
@@ -19,18 +20,35 @@ test('默认指令、全局伙伴联动、跨页保留、刷新复位且不奖�
   await expect(result(page)).toContainText('LED：亮');
   await expect(page.locator('.runner-console')).toContainText('运行完成');
   await expect(page.locator('.runner-console')).toContainText('成功音效已触发');
-  await expect(page.locator('.companion .command-led')).toHaveClass(/is-lit/);
-  await expect(page.locator('.companion .pet-command-forward')).toHaveCount(1);
+  await expect(page.locator('.companion canvas')).toBeVisible();
+  await expect(page.locator('.companion').getByTestId('deskpet3d-scene')).toHaveAttribute(
+    'data-led',
+    'on',
+  );
+  await expect.poll(async () => (await readCompanionScene(page))?.eyes).toEqual([2.2, 2.2]);
+  await expect(page.locator('.companion').getByTestId('deskpet3d-scene')).toHaveCount(1);
+  await expect(page.locator('.companion').getByTestId('deskpet3d-scene')).toHaveAttribute(
+    'data-action',
+    'forward',
+  );
+  await expect.poll(async () => (await readCompanionScene(page))?.z).toBeGreaterThan(0.37);
   await expect(page.locator('.companion-bubble')).toContainText('正在前进');
   await expect(page.locator('.experience-text')).toContainText('0 / 2200 XP');
   await page.getByRole('button', { name: '学习仪表盘', exact: true }).click();
-  await expect(page.locator('.companion .command-led')).toHaveClass(/is-lit/);
+  await expect(page.locator('.companion canvas')).toBeVisible();
+  await expect(page.locator('.companion').getByTestId('deskpet3d-scene')).toHaveAttribute(
+    'data-led',
+    'on',
+  );
+  await expect.poll(async () => (await readCompanionScene(page))?.eyes).toEqual([2.2, 2.2]);
   await page.getByRole('button', { name: '代码魔改工坊', exact: true }).click();
   await expect(result(page)).toContainText('LED：亮');
   await page.reload();
   await page.getByRole('button', { name: '代码魔改工坊', exact: true }).click();
   await expect(result(page)).toContainText('动作：停止');
   await expect(result(page)).toContainText('LED：灭');
+  await expect.poll(async () => (await readCompanionScene(page))?.z).toBe(0);
+  await expect.poll(async () => (await readCompanionScene(page))?.eyes).toEqual([0.15, 0.15]);
   expect(errors).toEqual([]);
 });
 
@@ -51,6 +69,7 @@ test('错误整段不执行，红色控制台与修正恢复、复位', async ({
   await input.fill('move("backward"); light("on");');
   await page.getByRole('button', { name: '运行代码', exact: true }).click();
   await expect(result(page)).toContainText('动作：后退');
+  await expect.poll(async () => (await readCompanionScene(page))?.z).toBeLessThan(-0.37);
   await expect(result(page)).toContainText('LED：亮');
   await input.fill('move("stop"); light("off");');
   await page.getByRole('button', { name: '运行代码', exact: true }).click();

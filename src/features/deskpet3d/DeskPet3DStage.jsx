@@ -1,16 +1,14 @@
-import { Component, useEffect, useRef, useState } from 'react';
+import { Component, forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { useReducedMotion } from 'framer-motion';
-import { useDemoRuntime } from './useDemoRuntime';
-import DemoCodeRunner from './DemoCodeRunner';
-import '../../runner.css';
+import './scene.css';
 
 const INITIAL_CAMERA = [4, 2.8, 5.2];
 export const CAMERA_LIMITS = { min: 4.8, max: 11 };
 
-// Read only the isolated demo runtime; no learning-store actions or persistence.
-function PetModel({ runtime, reducedMotion }) {
+// Pure visual consumer: the caller supplies real or isolated runtime.
+function PetModel({ runtime, reducedMotion, paused }) {
   const body = useRef(null);
   const eyes = useRef([]);
   const phase = useRef(0);
@@ -22,10 +20,10 @@ function PetModel({ runtime, reducedMotion }) {
   useEffect(() => {
     phase.current = 0;
     invalidate();
-  }, [runtime, reducedMotion, invalidate]);
+  }, [runtime, reducedMotion, paused, invalidate]);
 
   useFrame((_, delta) => {
-    if (!body.current) return;
+    if (!body.current || paused) return;
     const dt = Math.min(delta, 0.05);
     phase.current += dt;
     const moving = direction !== 0 && !reducedMotion;
@@ -110,27 +108,54 @@ function PetModel({ runtime, reducedMotion }) {
 }
 
 function UnsupportedWebGL() {
-  return (
-    <div className="stage3d-fallback" role="status">
-      当前浏览器无法显示 WebGL 展台。可以尝试开启硬件加速或换一个支持 WebGL 的浏览器。
-      <a href="/">返回原有学习工作台</a>
-    </div>
-  );
+  return <span className="deskpet3d-unavailable">3D 暂不可用</span>;
 }
+
 class StageBoundary extends Component {
   state = { failed: false };
   static getDerivedStateFromError() {
     return { failed: true };
+  }
+  componentDidCatch() {
+    this.props.onUnsupported?.();
   }
   render() {
     return this.state.failed ? <UnsupportedWebGL /> : this.props.children;
   }
 }
 
-export default function DeskPet3DStage() {
-  const runtime = useDemoRuntime((state) => state.runtime);
+function ContextGuard({ onUnsupported }) {
+  const canvas = useThree((state) => state.gl.domElement);
+  useEffect(() => {
+    const lost = (event) => {
+      event.preventDefault();
+      onUnsupported?.();
+    };
+    canvas.addEventListener('webglcontextlost', lost);
+    return () => canvas.removeEventListener('webglcontextlost', lost);
+  }, [canvas, onUnsupported]);
+  return null;
+}
+
+const DeskPet3DStage = forwardRef(function DeskPet3DStage(
+  { runtime, compact = false, paused = false, still = false, onUnsupported },
+  ref,
+) {
   const reducedMotion = useReducedMotion();
+  const controls = useRef(null);
   const lastRun = useRef(0);
+  useImperativeHandle(
+    ref,
+    () => ({
+      resetView() {
+        if (!controls.current) return;
+        controls.current.object.position.set(...INITIAL_CAMERA);
+        controls.current.target.set(0, 0, 0);
+        controls.current.update();
+      },
+    }),
+    [],
+  );
   useEffect(() => {
     if (runtime.status === 'idle') {
       lastRun.current = 0;
@@ -142,93 +167,46 @@ export default function DeskPet3DStage() {
       console.log(`[3D DeskPet] Received command: ${command}`, value);
     }
   }, [runtime]);
-  const controls = useRef(null);
-  const [ready, setReady] = useState(false);
-  const [distance, setDistance] = useState(Math.hypot(...INITIAL_CAMERA));
-  const updateDistance = () => {
-    if (controls.current)
-      setDistance(controls.current.object.position.distanceTo(controls.current.target));
-  };
-  function resetView() {
-    if (!controls.current) return;
-    controls.current.object.position.set(...INITIAL_CAMERA);
-    controls.current.target.set(0, 0, 0);
-    controls.current.update();
-    updateDistance();
-  }
+  const action = runtime.status === 'success' ? runtime.action : 'stop';
+  const led = runtime.status === 'success' && runtime.led;
   return (
-    <main className="stage3d-page">
-      <header className="stage3d-header">
-        <a href="/" className="stage3d-brand">
-          ⚡ SparkMate
-        </a>
-        <span>PHASE 3 · 指令动画实验</span>
-      </header>
-      <div className="stage3d-heading">
-        <p className="stage3d-eyebrow">DESKPET / GEOMETRY STUDY 001</p>
-        <h1>换个角度，看看小伙伴。</h1>
-        <p>在本页下方运行教学指令，观察桌宠移动与眼睛亮度。停止或恢复状态可让模型归位。</p>
-      </div>
-      <section className="stage3d-panel" aria-label="指令联动 3D 桌宠展台">
-        <div className="stage3d-toolbar">
-          <span>拖拽旋转 · 滚轮缩放</span>
-          <button type="button" onClick={resetView} disabled={!ready}>
-            重置视角
-          </button>
-        </div>
-        <div className="stage3d-canvas" role="group" aria-label="可旋转和缩放的三维桌宠">
-          <StageBoundary>
-            <Canvas
-              frameloop="demand"
-              dpr={[1, 1.5]}
-              camera={{ position: INITIAL_CAMERA, fov: 40, near: 0.1, far: 40 }}
-              gl={{ antialias: true, alpha: true }}
-              fallback={<UnsupportedWebGL />}
-              onCreated={() => setReady(true)}
-            >
-              <ambientLight intensity={1.3} />
-              <directionalLight position={[4, 6, 5]} intensity={2.2} />
-              <directionalLight position={[-3, 2, -4]} intensity={0.8} color="#8dc6d0" />
-              <PetModel runtime={runtime} reducedMotion={reducedMotion} />
-              <OrbitControls
-                ref={controls}
-                target={[0, 0, 0]}
-                enablePan={false}
-                enableDamping={false}
-                minDistance={CAMERA_LIMITS.min}
-                maxDistance={CAMERA_LIMITS.max}
-                minPolarAngle={0.2}
-                maxPolarAngle={1.4}
-                onChange={updateDistance}
-              />
-            </Canvas>
-          </StageBoundary>
-        </div>
-        <div className="stage3d-caption">
-          <span role="status">
-            {ready ? '3D 展台已就绪' : '正在准备 3D 展台'} · 动作：
-            {runtime.status === 'success'
-              ? { forward: '前进', backward: '后退', stop: '停止' }[runtime.action]
-              : '停止'}
-            {' · LED：'}
-            {runtime.status === 'success' && runtime.led ? '亮' : '灭'}
-          </span>
-          <span>
-            观察距离 <output aria-label="观察距离">{distance.toFixed(2)}</output> · 范围 4.8–11
-          </span>
-        </div>
-      </section>
-      <aside className="stage3d-note">
-        本页为独立指令预览，不发放 XP、不解锁关卡，也不读取或保存学习记录。
-        运行态仅在本页有效，不跨标签页同步，刷新后复位。
-        {reducedMotion && ' 已启用减少动画：以静态位置和亮度反馈指令。'}
-      </aside>
-      <div className="stage3d-runner">
-        <DemoCodeRunner />
-      </div>
-      <footer>
-        独立 3D 实验 · 原有学习工作台与 2D 伙伴保持不变。<a href="/">返回学习工作台 →</a>
-      </footer>
-    </main>
+    <div
+      className="deskpet3d-scene"
+      data-testid="deskpet3d-scene"
+      data-action={action}
+      data-led={led ? 'on' : 'off'}
+      data-paused={paused ? 'true' : 'false'}
+      role="img"
+      aria-label={`3D 桌宠：${{ forward: '前进', backward: '后退', stop: '停止' }[action]}，LED ${led ? '亮' : '灭'}`}
+    >
+      <StageBoundary onUnsupported={onUnsupported}>
+        <Canvas
+          frameloop={paused ? 'never' : 'demand'}
+          dpr={compact ? 1 : [1, 1.5]}
+          camera={{ position: INITIAL_CAMERA, fov: 40, near: 0.1, far: 40 }}
+          gl={{ antialias: !compact, alpha: true, powerPreference: 'low-power' }}
+          fallback={<UnsupportedWebGL />}
+        >
+          <ambientLight intensity={1.3} />
+          <directionalLight position={[4, 6, 5]} intensity={2.2} />
+          <directionalLight position={[-3, 2, -4]} intensity={0.8} color="#8dc6d0" />
+          <PetModel runtime={runtime} reducedMotion={reducedMotion || still} paused={paused} />
+          <ContextGuard onUnsupported={onUnsupported} />
+          {!compact && (
+            <OrbitControls
+              ref={controls}
+              target={[0, 0, 0]}
+              enablePan={false}
+              enableDamping={false}
+              minDistance={CAMERA_LIMITS.min}
+              maxDistance={CAMERA_LIMITS.max}
+              minPolarAngle={0.2}
+              maxPolarAngle={1.4}
+            />
+          )}
+        </Canvas>
+      </StageBoundary>
+    </div>
   );
-}
+});
+export default DeskPet3DStage;

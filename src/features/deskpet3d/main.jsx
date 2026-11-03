@@ -1,11 +1,11 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import '@fontsource-variable/inter';
-import DeskPet3DStage from './DeskPet3DStage';
+import DeskPet3DDemo from './DeskPet3DDemo';
 import './stage.css';
 
 createRoot(document.getElementById('deskpet3d-root')).render(
   <React.StrictMode>
-    <DeskPet3DStage />
+    <DeskPet3DDemo />
   </React.StrictMode>,
 );

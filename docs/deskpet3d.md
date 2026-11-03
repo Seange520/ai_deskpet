@@ -1,42 +1,41 @@
-# Phase 3：独立 3D 指令实验
+# Phase 3：主线 3D 伙伴与独立实验
 
-入口：本地开发或生产预览的 `/lab/deskpet3d/`。独立 HTML 页面及 React root，主应用仍使用原来的 2D 伙伴，不导入 3D 模块。Vite 保留多 HTML 入口，Vercel 保留原 SPA rewrite；没有新增线上入口，线上独立路径仍待单独确认。
+## 主界面
 
-## 固定版本
+原 App 中的常驻 `Companion` 挂载点保持不变，组件内部默认渲染 `DeskPet3DStage`。它通过现有 `useLearningStore(state => state.runtime)` 读取真实沙盒结果，再以 props 传给纯展示的 3D 组件。没有替换业务运行器，原 `CodeRunner` 的解析、通关、音效、复位和保存行为保持原样；代码工坊内原有教学预览也保留。
 
-沿用 React / React DOM 18.3.1、@react-three/fiber 8.18.0、@react-three/drei 9.122.0、three 0.170.0。没有安装或升级依赖。
+3D 不导入学习 store、demo store 或运行器，不调用 action、音效或持久化函数。主应用不加载 `DemoCodeRunner`、`useDemoRuntime`、demo 页面或全局展台样式。默认主页面右下角是实际 Canvas 与几何模型，保留悬停消息、键盘收起/展开、庆祝反馈、弹窗隐藏和原 z-index 层级。
 
-## 指令来源与只读边界
+原 2D `Companion` 完整保存在 `src/components/Companion2D.jsx`，原 CSS 与其他 2D 教学资源未删除。3D chunk 加载期间临时使用原 2D，WebGL 初始化失败或上下文丢失后也回退到原 2D，继续读取同一真实运行态。
 
-原 `CodeRunner` 内部直接调用学习 store，无法在不改业务源码的情况下传入拦截回调；该 store 导入时还会执行初始化保存。因此 demo 不再加载原 `CodeRunner` 或 `useLearningStore`，改用专用 `DemoCodeRunner` 和仅在内存中的 `useDemoRuntime`。
+## 展示行为
 
-专用运行器复用原 `executeProgram` 白名单解析与执行逻辑，将 move/light/play 的回调限定为更新临时运行态或空操作。它不包含 XP、关卡、路线、持久化、通关 action 或音效调用。没有修改解析器或业务 store，也没有覆盖全局 Zustand action、修改 Storage API 或事后恢复存档。
+- 成功执行后按最终 action 前进/后退，沿 Z 轴平滑偏移并轻微浮动，底座固定。
+- 双眼发光强度随 LED 从 0.15 平滑变为 2.2；停止、复位或错误时平滑归位。
+- 按 runId 去重打印 `[3D DeskPet] Received command: ...`，不因重新渲染、导航或材质更新重复执行指令或音效。
+- 减少动画模式采用静态位移与亮度反馈；收起模式停止持续浮动。
+- 常驻视图只展示模型，不拦截触屏滚动或提供 OrbitControls；原收起/展开按钮保留键盘语义。
 
-`DeskPet3DStage` 只读订阅 `useDemoRuntime((state) => state.runtime)`，读取 action、led、status、runId 和 instructions 驱动动画。临时运行态只在本页有效，刷新复位，不与主应用或其他标签页同步。
+## 性能与生命周期
 
-隔离验收命令：先 `npm run dev -- --port 5220 --strictPort`，再运行 `node scripts/check-deskpet3d.mjs`（可用 SPARKMATE_DEMO_URL 指定本地主场服务）。补验独立于原 64 项 Playwright 用例，覆盖新用户、已有进度和旧版迁移存档：加载、符合通关条件的运行、重复运行、错误、复位和刷新全过程 localStorage 字节不变，存储读写调用均为 0，并检查主应用内存中的 XP 和关卡未变，以及实际 3D 位移与眼睛亮度。
+通过 React.lazy 独立加载 3D chunk，避免阻塞原页面交互。常驻伙伴在页面状态切换之外，导航复用同一 Canvas；小型 Canvas 固定 DPR 1，关闭抗锯齿和空间后处理，使用基础材质与几何，无外部模型或纹理。
 
-## 动画与清理
+保留 demand 渲染，静止后休眠。弹窗隐藏、页面进入后台或烧板 Portal 设置 app-shell inert 时暂停 Canvas，恢复后按最新运行态显示。visibility 事件、MutationObserver 和 WebGL context 监听均随组件卸载清理；几何与 renderer 的释放交由现有 Fiber 生命周期处理。
 
-- 成功运行后按最终 `runtime.action` 展示：前进/后退沿 Z 轴平滑偏移，并轻微上下浮动；底座保持固定。
-- `runtime.led` 为真时，双眼 emissiveIntensity 从 0.15 平滑升至 2.2；关灯恢复 0.15。
-- `move("stop")` 平滑回到原位；恢复示例与状态、清空运行态或运行失败时，3D 平滑回到原位和默认亮度。解析失败时不执行整段指令，3D 以 status 判断本地归位。
-- 指令由原白名单执行器和临时回调同步执行，3D 展示最终状态，不另行逐条重放。`play` 只记录接收日志，不新增 3D 音效或可选旋转动画。
-- 以 `runId` 去重记录 `[3D DeskPet] Received command: move` 等日志（附参数）；每次成功执行的每条指令各一条。相机变化、渲染或同次运行的其他 store 更新不会重复打印；复位后允许新的 runId 从头计数。
-- 动画使用 `useFrame` 与 delta 阻尼，不在帧循环里更新 React 或业务状态。保留 demand 渲染，仅动画或过渡期间请求下一帧，静止后休眠。
-- 减少动画模式使用静态位移与亮度反馈，无持续浮动。
+运行 `node scripts/check-main-deskpet3d.mjs` 可检查真实指令与 L1 解锁、动画期间无额外保存、反复导航后 Canvas/几何数量稳定、弹窗/烧板暂停恢复、WebGL 丢失和缺失时的原 2D 降级，以及主界面截图。默认开发服务是 `http://127.0.0.1:5232`，可设置 SPARKMATE_MAIN_URL。它是单独补验脚本，不改变原 64 项用例数量。帧间隔只是本机无头 Chrome 样本，不代表全部设备，也不构成长期内存无泄漏的保证。
 
-OrbitControls 保留旋转、缩放和重置视角，禁用平移，距离限制 4.8–11。重置视角只重置相机；模型复位使用 demo 的“恢复示例与状态”。保留 WebGL 降级，无远程模型、HDR、图片或 API Key。
+## 构建与开发实验入口
+
+`vite.config.js` 恢复单 SPA HTML 入口，不再输出 `dist/lab/deskpet3d/index.html`。主界面不依赖独立路由，Vercel 原 SPA rewrite 未改，不要求线上独立实验路径可访问。
+
+原 `lab/deskpet3d/index.html` 与隔离实验代码继续保留，仅供 Vite dev 环境的 `/lab/deskpet3d/` 使用。`DeskPet3DDemo` 单独组装展示、`DemoCodeRunner` 和仅在内存中的 `useDemoRuntime`，依旧不加载真实业务 store。其旧隔离验收可用 `SPARKMATE_DEMO_URL=http://127.0.0.1:5232 node scripts/check-deskpet3d.mjs`（PowerShell 请用 `$env:SPARKMATE_DEMO_URL=...`）检查，不要求生产提供此入口。
+
+## 验收与边界
+
+- `npm run build:local`：Windows 本机构建，标准 `npm run build` 不变。
+- `$env:SPARKMATE_TEST_PORT='5231'; npx playwright test`：原 64 项 E2E；只将 code-runner.spec.js 中的常驻 2D 选择器换为 3D Canvas / data-testid，并增加真实 mesh 位移和材质断言，原业务断言不减。
+- 原 Zustand 数据结构、路线数据、解析器、关卡、Debug、XP、迁移和音效实现未修改。
+- React / React DOM 18.3.1、Fiber 8.18.0、Drei 9.122.0、three 0.170.0 版本未变，没有安装依赖。
+- 本机 TEMP 权限问题继续使用既有 build:local 包装，仅设置构建子进程临时目录，不修改系统环境或线上构建。未验证 Linux/Vercel 等价构建。
 
 参考：[Fiber useFrame / invalidate](https://r3f.docs.pmnd.rs/api/hooks)。
-
-## 验收
-
-- `npm run build:local`：本机 Windows 构建。
-- `$env:SPARKMATE_TEST_PORT='5219'; npx playwright test`：原有 64 项 E2E，原断言和配置不变。
-- 额外检查本页的前进/后退、亮灯/关灯、停止、错误、复位、刷新、日志去重、减少动画与移动端布局；检查真实模型位置与材质亮度。
-- 检查主页面无 Canvas、不请求 3D 模块。
-
-## Windows 构建环境
-
-本机系统 TEMP 存在 esbuild 临时文件清理 Access is denied 的已知问题。默认 `npm run build` 保持原生 `vite build`；仅显式 `npm run build:local` 使用既有 `scripts/build.mjs`，在 Windows 构建子进程中把 TEMP/TMP 指向被忽略的 `node_modules/.cache/sparkmate-build-tmp`。不修改系统环境或权限，不改变线上构建。未验证 Linux/Vercel 等价构建。

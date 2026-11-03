@@ -1,0 +1,33 @@
+.companion-3d {
+  gap: 4px;
+}
+.companion3d-button {
+  position: relative;
+  width: 138px;
+  height: 148px;
+  padding: 0;
+  border: 0;
+  border-radius: 24px;
+  background: radial-gradient(ellipse at 50% 75%, #6ee7b712, transparent 70%);
+  cursor: pointer;
+}
+.companion3d-button .deskpet3d-scene {
+  pointer-events: none;
+}
+.companion3d-button canvas {
+  pointer-events: none;
+}
+.companion-3d.is-small .companion3d-button {
+  width: 66px;
+  height: 72px;
+}
+@media (max-width: 700px) {
+  .companion3d-button {
+    width: 72px;
+    height: 80px;
+  }
+  .companion-3d.is-small .companion3d-button {
+    width: 48px;
+    height: 52px;
+  }
+}
