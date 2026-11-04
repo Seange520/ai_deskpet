@@ -1,0 +1,71 @@
+.achievement-panel.achievement-milestones {
+  min-width: 0;
+  margin: 24px 0;
+  padding: 28px;
+  gap: 28px;
+}
+
+.achievement-milestones > div {
+  min-width: 0;
+}
+
+.achievement-summary {
+  display: grid;
+  grid-template-columns: minmax(0, 0.7fr) minmax(0, 1fr);
+  gap: 16px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+
+.achievement-fault-stat {
+  margin: 0;
+}
+
+.achievement-fault-stat dt,
+.achievement-next > span {
+  display: block;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.achievement-fault-stat dd {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.achievement-fault-stat strong {
+  color: #c6ead5;
+  font-size: 26px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.achievement-next > strong {
+  display: block;
+  margin-top: 8px;
+  color: #e6bd7c;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+.achievement-summary .achievement-next p {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+@media (max-width: 600px) {
+  .achievement-panel.achievement-milestones {
+    padding: 20px 16px;
+    gap: 24px;
+  }
+
+  .achievement-summary {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

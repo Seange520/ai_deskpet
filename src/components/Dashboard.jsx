@@ -5,6 +5,9 @@ import { motion } from 'framer-motion';
 import { TiltSurface, Depth, HeroGlass, useFineMotion } from './MicroEffects';
 import { TACTILE } from '../motion';
 import RouteGallery from './RouteGallery';
+import GrowthOverview from './GrowthOverview';
+import RouteTaskMatrix from './RouteTaskMatrix';
+import AchievementSummary from './AchievementSummary';
 import { getHardwareRoute } from '../data/hardwareRoutes';
 import {
   ArrowUpRight,
@@ -165,6 +168,30 @@ export default function Dashboard({
           <span className="art-plus">+</span>
         </div>
       </motion.section>
+      <GrowthOverview />
+      <RouteTaskMatrix />
+      <section className="achievement-panel achievement-milestones" aria-labelledby="achievement-milestones-title">
+        <div>
+          <div className="eyebrow">SMALL WINS, BIG SPARKS</div>
+          <h2 id="achievement-milestones-title">每一步，都值得被记住</h2>
+          <p>全局成就墙 · 任一路线首次完成即可点亮勋章。</p>
+          <AchievementSummary badges={badges} />
+        </div>
+        <div className="badges">
+          {[
+            { name: '初入江湖', icon: Award, on: true },
+            { name: '物料侦探', icon: Package, on: badges.materials },
+            { name: '电路新星', icon: Cable, on: badges.wiring },
+            { name: '唤醒伙伴', icon: Sparkles, on: badges.code },
+          ].map((b) => (
+            <div className={`badge ${b.on ? 'unlocked' : ''}`} key={b.name}>
+              <div>{b.on ? <b.icon size={25} /> : <LockKeyhole size={21} />}</div>
+              <span>{b.name}</span>
+              <small>{b.on ? '已解锁' : '待解锁'}</small>
+            </div>
+          ))}
+        </div>
+      </section>
       <RouteGallery routeId={routeId} onChoose={onChooseRoute} />
       <div className="section-title">
         <h2>
@@ -227,27 +254,6 @@ export default function Dashboard({
           </TiltCard>
         ))}
       </div>
-      <section className="achievement-panel">
-        <div>
-          <div className="eyebrow">SMALL WINS, BIG SPARKS</div>
-          <h2>每一步，都值得被记住</h2>
-          <p>全局成就墙 · 任一路线首次完成即可点亮勋章。</p>
-        </div>
-        <div className="badges">
-          {[
-            { name: '初入江湖', icon: Award, on: true },
-            { name: '物料侦探', icon: Package, on: badges.materials },
-            { name: '电路新星', icon: Cable, on: badges.wiring },
-            { name: '唤醒伙伴', icon: Sparkles, on: badges.code },
-          ].map((b) => (
-            <div className={`badge ${b.on ? 'unlocked' : ''}`} key={b.name}>
-              <div>{b.on ? <b.icon size={25} /> : <LockKeyhole size={21} />}</div>
-              <span>{b.name}</span>
-              <small>{b.on ? '已解锁' : '待解锁'}</small>
-            </div>
-          ))}
-        </div>
-      </section>
       <div className="bottom-note">
         <span className="status-dot" /> MAKE SOMETHING THAT MAKES YOU SMILE.
         <span>专为第一次创造而设计</span>

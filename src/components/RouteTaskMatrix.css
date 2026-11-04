@@ -1,0 +1,118 @@
+.task-matrix {
+  min-width: 0;
+  margin: 24px 0;
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--glass);
+}
+
+.task-matrix h2 {
+  margin: 8px 0;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.task-matrix-intro,
+.task-matrix-note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.task-matrix-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 20px;
+}
+
+.task-matrix-table thead th {
+  padding: 0 4px 12px;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 400;
+  text-align: center;
+}
+
+.task-matrix-table thead th:first-child {
+  width: 36%;
+  text-align: left;
+}
+
+.task-matrix-row > * {
+  padding: 16px 6px;
+  border-top: 1px solid var(--line);
+}
+
+.task-matrix-row[data-current='true'] > * {
+  background: rgba(167, 216, 190, 0.06);
+}
+
+.task-matrix-route {
+  border-left: 2px solid transparent;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.task-matrix-row[data-current='true'] > .task-matrix-route {
+  border-left-color: #a7d8be;
+}
+
+.task-matrix-route-state {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 400;
+}
+
+.task-matrix-row[data-current='true'] .task-matrix-route-state {
+  color: #c6ead5;
+}
+
+.task-matrix-cell {
+  text-align: center;
+}
+
+.task-matrix-status {
+  display: inline-block;
+  color: #94a79e;
+  font-family: 'JetBrains Mono Variable', monospace;
+  font-size: 13px;
+  white-space: pre;
+}
+
+.task-matrix-status[data-complete='true'] {
+  color: #c6ead5;
+}
+
+.task-matrix-note {
+  margin-top: 16px;
+  font-size: 11px;
+}
+
+@media (max-width: 600px) {
+  .task-matrix {
+    padding: 20px 16px;
+  }
+
+  .task-matrix-row > * {
+    padding: 12px 4px;
+  }
+
+  .task-matrix-route {
+    font-size: 11px;
+  }
+
+  .task-matrix-status {
+    font-size: 12px;
+  }
+}
