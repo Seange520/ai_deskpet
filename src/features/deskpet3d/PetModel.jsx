@@ -16,11 +16,16 @@ export default function PetModel(props) {
             props.onPetHead();
           }}
         >
-          {props.petting > 0 &&
+          {(props.petting > 0 || props.dizzy > 0) &&
+            !props.environment?.idleSleeping &&
             !props.paused &&
             !props.interaction.dark &&
             !props.interaction.sleeping && (
-              <PetAffection burst={props.petting} reducedMotion={props.reducedMotion} />
+              <PetAffection
+                burst={props.dizzy || props.petting}
+                dizzy={props.dizzy > 0}
+                reducedMotion={props.reducedMotion}
+              />
             )}
           <mesh position={[0, 0.65, 0]}>
             <boxGeometry args={[1.85, 1.3, 1.05]} />

@@ -2,11 +2,17 @@ import { Html } from '@react-three/drei';
 import { motion } from 'framer-motion';
 
 // Html projects this head-local anchor through the active camera on each rendered frame.
-export default function PetAffection({ burst, reducedMotion }) {
+export default function PetAffection({ burst, reducedMotion, dizzy = false }) {
   return (
     <Html position={[0, 1.95, 0]} center style={{ pointerEvents: 'none' }} zIndexRange={[1, 0]}>
-      <span className="pet-affection" key={burst} aria-hidden="true" data-testid="pet-affection">
-        {['❤️', '✨', '❤️'].map((symbol, index) => (
+      <span
+        className="pet-affection"
+        key={`${dizzy ? 'dizzy' : 'happy'}-${burst}`}
+        aria-hidden="true"
+        data-testid="pet-affection"
+        data-emotion={dizzy ? 'dizzy' : 'happy'}
+      >
+        {(dizzy ? ['✨', '💫', '⭐'] : ['❤️', '✨', '❤️']).map((symbol, index) => (
           <motion.span
             key={index}
             initial={{ opacity: 0, x: (index - 1) * 18, y: 0 }}
@@ -15,7 +21,7 @@ export default function PetAffection({ burst, reducedMotion }) {
                 ? { opacity: [0, 1, 0] }
                 : { opacity: [0, 1, 0], x: (index - 1) * 55, y: -70 - index * 12 }
             }
-            transition={{ duration: reducedMotion ? 0.7 : 1.05, delay: index * 0.06 }}
+            transition={{ duration: reducedMotion ? 0.7 : dizzy ? 1.8 : 1.05, delay: index * 0.06 }}
           >
             {symbol}
           </motion.span>

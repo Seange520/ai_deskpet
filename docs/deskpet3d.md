@@ -42,6 +42,10 @@ node scripts/check-pet-focus.mjs
 
 脚本通过实际头部屏幕投影坐标发送鼠标点击，检查旋转/缩放、拖拽过滤、同一 Canvas、焦点恢复、后台暂停、减少动画、静音、暗光优先、存档无写入以及聚焦中 WebGL 丢失回退；截图与报告输出到忽略提交的 `test-results/`。它独立于原 65 项 E2E，不调整原测试断言。
 
+## 昼夜与情绪
+
+`Companion` 将独立环境状态作为 props 传入 Stage。`EnvironmentLighting.jsx` 用自己的灯光引用做阻尼过渡，不重置沙盒指令、动作事件或模型实例；夜间的半闭眼和轻微低头只影响局部表情。闲置睡眠与原硬件/手动睡眠取并集，活动唤醒只清除闲置原因。连续摸头的晕圈由局部 `usePetAffection` 和头部 Y 轴动画实现，不改沙盒或学习存档。详见 [昼夜与情绪设计](environment.md)。
+
 ## 构建与开发实验入口
 
 `vite.config.js` 恢复单 SPA HTML 入口，不再输出 `dist/lab/deskpet3d/index.html`。主界面不依赖独立路由，Vercel 原 SPA rewrite 未改，不要求线上独立实验路径可访问。

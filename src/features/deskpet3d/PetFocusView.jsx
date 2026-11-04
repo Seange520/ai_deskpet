@@ -2,6 +2,7 @@ import { useLayoutEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Heart, RotateCcw, X } from 'lucide-react';
 import Button from '../../components/Button';
+import EnvironmentControls from '../environment/EnvironmentControls';
 import './focus.css';
 
 // A stable portal target moves the existing Canvas; opening never creates a second renderer.
@@ -88,6 +89,7 @@ export default function PetFocusView({ focused, onClose, onReset, onPet, childre
             <footer className="pet-focus-footer">
               <p id="pet-focus-hint">拖拽旋转 · 滚轮或双指缩放 · 点击头部，送它一颗爱心</p>
               <div>
+                <EnvironmentControls />
                 <Button className="btn" onClick={onPet}>
                   <Heart size={16} />
                   摸摸头

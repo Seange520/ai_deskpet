@@ -2,6 +2,7 @@ import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react'
 import { motion, useAnimationControls, useReducedMotion } from 'framer-motion';
 import { useLearningStore } from '../stores/useLearningStore';
 import Button from './Button';
+import { useEnvironment } from '../features/environment/useEnvironment';
 import { Maximize2 } from 'lucide-react';
 import PetFocusView from '../features/deskpet3d/PetFocusView';
 import { playSound } from '../lib/sounds';
@@ -13,6 +14,12 @@ import { useHardwareStore } from '../features/hardware/useHardwareStore';
 const DeskPet3DStage = lazy(() => import('../features/deskpet3d/DeskPet3DStage'));
 
 export default function Companion({ celebrations, feedback, hidden }) {
+  const environmentSound = useCallback(
+    (night) =>
+      playSound(night ? 'night' : 'day', useLearningStore.getState().muted, { ambient: true }),
+    [],
+  );
+  const environment = useEnvironment(environmentSound);
   const runtime = useLearningStore((state) => state.runtime);
   const interaction = usePetActions();
   const light = useHardwareStore((state) => state.hardwareData?.light ?? null);
@@ -106,9 +113,10 @@ export default function Companion({ celebrations, feedback, hidden }) {
                 ref={stage}
                 runtime={runtime}
                 interaction={interaction}
+                environment={environment}
                 compact={!focused}
                 still={small && !focused}
-                onPet={() => playSound('success', useLearningStore.getState().muted)}
+                onPet={(kind) => playSound(kind, useLearningStore.getState().muted)}
                 paused={hidden || suspended}
                 onUnsupported={fail}
               />

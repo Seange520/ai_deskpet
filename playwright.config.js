@@ -20,6 +20,8 @@ export default defineConfig({
     screenshot: 'only-on-failure',
   },
   webServer: {
+    // Keep the original business suite independent of wall-clock time and inactivity.
+    env: { VITE_SPARKMATE_ENVIRONMENT: 'regression' },
     command: `npm run dev -- --port ${port} --strictPort`,
     url: baseURL,
     // 不复用未知服务：同机的其他源码副本可能恰好占据相同端口。

@@ -2,14 +2,30 @@ import { useEffect, useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 
 // Canvas-local refs and visual transitions. No store writes, persistence or sound.
-export function usePetAnimation({ runtime, reducedMotion, paused, interaction, petting = 0 }) {
+export function usePetAnimation({
+  runtime,
+  reducedMotion,
+  paused,
+  interaction,
+  petting = 0,
+  dizzy = 0,
+  environment = {},
+}) {
   const body = useRef(null);
   const eyes = useRef([]);
   const eyeMeshes = useRef([]);
   const head = useRef(null);
   const invalidate = useThree((state) => state.invalidate);
   const animation = useRef({ type: 'idle', elapsed: 0, start: 0 });
-  const asleep = interaction.dark || interaction.sleeping;
+  const asleep = interaction.dark || interaction.sleeping || environment.idleSleeping;
+  const dizzyMotion = useRef(0);
+  useEffect(() => {
+    dizzyMotion.current = 0;
+    invalidate();
+  }, [dizzy, invalidate]);
+  useEffect(() => {
+    invalidate();
+  }, [environment.night, invalidate]);
   useEffect(() => {
     if (body.current)
       body.current.rotation.y = ((body.current.rotation.y + Math.PI) % (Math.PI * 2)) - Math.PI;
@@ -40,6 +56,8 @@ export function usePetAnimation({ runtime, reducedMotion, paused, interaction, p
     const dt = Math.min(delta, 0.05);
     phase.current += dt;
     const motion = animation.current;
+    dizzyMotion.current += dt;
+    const dazed = dizzy > 0 && dizzyMotion.current < 1.8 && !asleep && !reducedMotion;
     if (asleep) motion.type = 'idle';
     motion.elapsed += dt;
     const jump = motion.type === 'jump' && motion.elapsed < 0.9 && !reducedMotion;
@@ -80,14 +98,27 @@ export function usePetAnimation({ runtime, reducedMotion, paused, interaction, p
     } else if (Math.abs(turn) > 0.0001) settling = true;
     if (head.current) {
       const tilt =
-        (asleep ? 0.32 : happy ? Math.sin(motion.elapsed * 18) * 0.16 * joy : 0) -
-        head.current.rotation.x;
+        (asleep
+          ? 0.32
+          : happy
+            ? Math.sin(motion.elapsed * 18) * 0.16 * joy
+            : environment.night
+              ? 0.08
+              : 0) - head.current.rotation.x;
       head.current.rotation.x += tilt * alpha;
       if (Math.abs(tilt) > 0.0001) settling = true;
+      const shake =
+        (dazed
+          ? Math.sin(dizzyMotion.current * 26) *
+            0.5 *
+            Math.sin((Math.PI * dizzyMotion.current) / 1.8)
+          : 0) - head.current.rotation.y;
+      head.current.rotation.y += shake * alpha;
+      if (Math.abs(shake) > 0.0001) settling = true;
     }
     for (const mesh of eyeMeshes.current) {
       if (!mesh) continue;
-      const difference = (asleep ? 0.08 : 1.6) - mesh.scale.y;
+      const difference = (asleep ? 0.08 : environment.night ? 0.85 : 1.6) - mesh.scale.y;
       mesh.scale.y += difference * alpha;
       if (Math.abs(difference) > 0.0001) settling = true;
     }
@@ -99,7 +130,15 @@ export function usePetAnimation({ runtime, reducedMotion, paused, interaction, p
       else settling = true;
     }
     // Demand rendering sleeps once stop/reset and the light transition have settled.
-    if (moving || jump || happy || (asleep && !reducedMotion) || (spin && t < 1) || settling)
+    if (
+      moving ||
+      jump ||
+      happy ||
+      dazed ||
+      (asleep && !reducedMotion) ||
+      (spin && t < 1) ||
+      settling
+    )
       invalidate();
   });
 
