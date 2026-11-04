@@ -1,3 +1,4 @@
+import PetAffection from './PetAffection';
 import { usePetAnimation } from './usePetAnimation';
 
 // Geometry only; behavior and refs are provided by the Canvas-local animation hook.
@@ -6,7 +7,21 @@ export default function PetModel(props) {
   return (
     <group>
       <group ref={body} name="command-pet">
-        <group ref={head} name="command-head">
+        <group
+          ref={head}
+          name="command-head"
+          onClick={(event) => {
+            if (!props.onPetHead || event.button !== 0 || event.delta > 5) return;
+            event.stopPropagation();
+            props.onPetHead();
+          }}
+        >
+          {props.petting > 0 &&
+            !props.paused &&
+            !props.interaction.dark &&
+            !props.interaction.sleeping && (
+              <PetAffection burst={props.petting} reducedMotion={props.reducedMotion} />
+            )}
           <mesh position={[0, 0.65, 0]}>
             <boxGeometry args={[1.85, 1.3, 1.05]} />
             <meshStandardMaterial color="#d8d9c2" roughness={0.6} />

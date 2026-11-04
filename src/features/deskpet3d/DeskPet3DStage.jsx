@@ -1,4 +1,12 @@
-import { Component, forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
+import {
+  Component,
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react';
 import { Canvas, useThree } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { useReducedMotion } from 'framer-motion';
@@ -46,6 +54,7 @@ const DeskPet3DStage = forwardRef(function DeskPet3DStage(
     paused = false,
     still = false,
     onUnsupported,
+    onPet,
     interaction = EMPTY_INTERACTION,
   },
   ref,
@@ -53,9 +62,37 @@ const DeskPet3DStage = forwardRef(function DeskPet3DStage(
   const reducedMotion = useReducedMotion();
   const controls = useRef(null);
   const lastRun = useRef(0);
+  const lastPet = useRef(-Infinity);
+  const [petting, setPetting] = useState(0);
+  const petHead = useCallback(() => {
+    if (compact || paused || interaction.dark || interaction.sleeping) return;
+    const now = performance.now();
+    if (now - lastPet.current < 700) return;
+    lastPet.current = now;
+    setPetting((value) => value + 1);
+    onPet?.();
+  }, [compact, paused, interaction.dark, interaction.sleeping, onPet]);
+  useEffect(() => {
+    if (!petting) return;
+    if (compact || paused || interaction.dark || interaction.sleeping) {
+      setPetting(0);
+      return;
+    }
+    const timer = setTimeout(() => setPetting(0), 1300);
+    return () => clearTimeout(timer);
+  }, [petting, compact, paused, interaction.dark, interaction.sleeping]);
+  // Compact mode always returns to the original view; the Canvas stays mounted.
+  useEffect(() => {
+    if (compact && controls.current) {
+      controls.current.object.position.set(...INITIAL_CAMERA);
+      controls.current.target.set(0, 0, 0);
+      controls.current.update();
+    }
+  }, [compact]);
   useImperativeHandle(
     ref,
     () => ({
+      petHead,
       resetView() {
         if (!controls.current) return;
         controls.current.object.position.set(...INITIAL_CAMERA);
@@ -63,7 +100,7 @@ const DeskPet3DStage = forwardRef(function DeskPet3DStage(
         controls.current.update();
       },
     }),
-    [],
+    [petHead],
   );
   useEffect(() => {
     if (runtime.status === 'idle') {
@@ -106,20 +143,21 @@ const DeskPet3DStage = forwardRef(function DeskPet3DStage(
             reducedMotion={reducedMotion || still}
             paused={paused}
             interaction={interaction}
+            petting={petting}
+            onPetHead={compact ? undefined : petHead}
           />
           <ContextGuard onUnsupported={onUnsupported} />
-          {!compact && (
-            <OrbitControls
-              ref={controls}
-              target={[0, 0, 0]}
-              enablePan={false}
-              enableDamping={false}
-              minDistance={CAMERA_LIMITS.min}
-              maxDistance={CAMERA_LIMITS.max}
-              minPolarAngle={0.2}
-              maxPolarAngle={1.4}
-            />
-          )}
+          <OrbitControls
+            ref={controls}
+            enabled={!compact && !paused}
+            target={[0, 0, 0]}
+            enablePan={false}
+            enableDamping={false}
+            minDistance={CAMERA_LIMITS.min}
+            maxDistance={CAMERA_LIMITS.max}
+            minPolarAngle={0.2}
+            maxPolarAngle={1.4}
+          />
         </Canvas>
       </StageBoundary>
     </div>

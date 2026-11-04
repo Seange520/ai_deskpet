@@ -4,7 +4,7 @@
 
 原 App 中的常驻 `Companion` 挂载点保持不变，组件内部默认渲染 `DeskPet3DStage`。它通过现有 `useLearningStore(state => state.runtime)` 读取真实沙盒结果，再以 props 传给纯展示的 3D 组件。没有替换业务运行器，原 `CodeRunner` 的解析、通关、音效、复位和保存行为保持原样；代码工坊内原有教学预览也保留。
 
-3D 不导入学习 store、demo store 或运行器，不调用 action、音效或持久化函数。主应用不加载 `DemoCodeRunner`、`useDemoRuntime`、demo 页面或全局展台样式。默认主页面右下角是实际 Canvas 与几何模型，保留悬停消息、键盘收起/展开、庆祝反馈、弹窗隐藏和原 z-index 层级。
+3D 不导入学习 store、demo store 或运行器，不调用学习 action 或持久化函数。摸头音效由 Companion 传入回调，仅从用户交互调用共享音效模块，并只读全局静音设置。主应用不加载 `DemoCodeRunner`、`useDemoRuntime`、demo 页面或全局展台样式。默认主页面右下角是实际 Canvas 与几何模型，保留悬停消息、键盘收起/展开、庆祝反馈、弹窗隐藏和原 z-index 层级。
 
 原 2D `Companion` 完整保存在 `src/components/Companion2D.jsx`，原 CSS 与其他 2D 教学资源未删除。3D chunk 加载期间临时使用原 2D，WebGL 初始化失败或上下文丢失后也回退到原 2D，继续读取同一真实运行态。
 
@@ -23,6 +23,24 @@
 保留 demand 渲染，静止后休眠。弹窗隐藏、页面进入后台或烧板 Portal 设置 app-shell inert 时暂停 Canvas，恢复后按最新运行态显示。visibility 事件、MutationObserver 和 WebGL context 监听均随组件卸载清理；几何与 renderer 的释放交由现有 Fiber 生命周期处理。
 
 运行 `node scripts/check-main-deskpet3d.mjs` 可检查真实指令与 L1 解锁、动画期间无额外保存、反复导航后 Canvas/几何数量稳定、弹窗/烧板暂停恢复、WebGL 丢失和缺失时的原 2D 降级，以及主界面截图。默认开发服务是 `http://127.0.0.1:5232`，可设置 SPARKMATE_MAIN_URL。它是单独补验脚本，不改变原 64 项用例数量。帧间隔只是本机无头 Chrome 样本，不代表全部设备，也不构成长期内存无泄漏的保证。
+
+## 沉浸模式与摸头反馈
+
+- `PetFocusView.jsx` 使用稳定的 DOM portal 容器，在常驻槽位与 body 下的全屏模态框之间移动同一个 Canvas，不创建第二个 renderer。打开后支持 OrbitControls 旋转和缩放；关闭恢复原视角，保留实时 runtime 和原收起状态。
+- 模态框设置背景 app-shell inert、锁定滚动，约束 Tab 焦点，支持 Esc 和关闭按钮；退出或 WebGL 降级时清理并恢复焦点、inert 和滚动状态。自身的 inert 不暂停正在互动的展台；原业务弹窗、烧板遮罩和页面后台暂停保持生效。
+- `PetModel.jsx` 在头部 group 绑定 `onClick`，R3F 对其子 mesh 自动执行射线命中检测。仅接收主键，过滤移动超过 5px 的拖拽，避免旋转时误触。键盘「摸摸头」调用相同展示入口。
+- 摸头事件局限于 Stage 的 React state，700ms 节流；不写 useLearningStore、usePetActions 或 localStorage。暗光或休眠时忽略摸头，原休眠优先级不变。
+- `usePetAnimation.js` 增加约 1.1 秒的轻微起伏与点头，用 ref 和 useFrame 阻尼归位。`PetAffection.jsx` 在头部局部坐标 `[0, 1.95, 0]` 放置 Drei Html，以相机投影自动对齐头部移动、旋转和视口缩放，再由 Framer Motion 播放三枚 DOM 爱心/星星的上浮淡出。
+- 特效不接收指针事件，1.3 秒后移除；关闭、后台暂停、进入休眠或组件卸载时清理。保持 demand 渲染和 DPR 上限 1.5，常驻恢复 DPR 1；减少动画时不点头、不上浮，仅静态淡入淡出。音效复用共享成功提示，遵守静音和无 AudioContext 的降级。
+
+补验在已有独立开发服务上运行，URL 按实际空闲端口填写：
+
+```powershell
+$env:SPARKMATE_FOCUS_URL='http://127.0.0.1:5232'
+node scripts/check-pet-focus.mjs
+```
+
+脚本通过实际头部屏幕投影坐标发送鼠标点击，检查旋转/缩放、拖拽过滤、同一 Canvas、焦点恢复、后台暂停、减少动画、静音、暗光优先、存档无写入以及聚焦中 WebGL 丢失回退；截图与报告输出到忽略提交的 `test-results/`。它独立于原 65 项 E2E，不调整原测试断言。
 
 ## 构建与开发实验入口
 

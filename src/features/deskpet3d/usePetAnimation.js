@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 
 // Canvas-local refs and visual transitions. No store writes, persistence or sound.
-export function usePetAnimation({ runtime, reducedMotion, paused, interaction }) {
+export function usePetAnimation({ runtime, reducedMotion, paused, interaction, petting = 0 }) {
   const body = useRef(null);
   const eyes = useRef([]);
   const eyeMeshes = useRef([]);
@@ -20,6 +20,11 @@ export function usePetAnimation({ runtime, reducedMotion, paused, interaction })
     };
     invalidate();
   }, [interaction.event.id, invalidate]);
+  useEffect(() => {
+    if (petting > 0) animation.current = { type: 'happy', elapsed: 0, start: 0 };
+    else if (animation.current.type === 'happy') animation.current.type = 'idle';
+    invalidate();
+  }, [petting, invalidate]);
   const phase = useRef(0);
   const active = runtime.status === 'success';
   const direction = active ? { forward: 1, backward: -1 }[runtime.action] || 0 : 0;
@@ -38,6 +43,8 @@ export function usePetAnimation({ runtime, reducedMotion, paused, interaction })
     if (asleep) motion.type = 'idle';
     motion.elapsed += dt;
     const jump = motion.type === 'jump' && motion.elapsed < 0.9 && !reducedMotion;
+    const happy = motion.type === 'happy' && motion.elapsed < 1.1 && !reducedMotion;
+    const joy = happy ? Math.sin((Math.PI * motion.elapsed) / 1.1) : 0;
     const spin = motion.type === 'spin' && !reducedMotion;
     const moving = !asleep && direction !== 0 && !reducedMotion;
     const targetZ = asleep ? 0 : direction * 0.38;
@@ -47,9 +54,11 @@ export function usePetAnimation({ runtime, reducedMotion, paused, interaction })
         : 0.02 + (1 + Math.sin(phase.current * 1.8)) * 0.01
       : jump
         ? Math.sin((Math.PI * motion.elapsed) / 0.9) ** 2 * 0.65
-        : moving
-          ? (1 - Math.cos(phase.current * 5)) * 0.035
-          : 0;
+        : happy
+          ? joy * 0.12
+          : moving
+            ? (1 - Math.cos(phase.current * 5)) * 0.035
+            : 0;
     const alpha = reducedMotion ? 1 : 1 - Math.exp(-10 * dt);
     let settling = false;
     for (const [axis, target] of [
@@ -70,7 +79,9 @@ export function usePetAnimation({ runtime, reducedMotion, paused, interaction })
       motion.type = 'idle';
     } else if (Math.abs(turn) > 0.0001) settling = true;
     if (head.current) {
-      const tilt = (asleep ? 0.32 : 0) - head.current.rotation.x;
+      const tilt =
+        (asleep ? 0.32 : happy ? Math.sin(motion.elapsed * 18) * 0.16 * joy : 0) -
+        head.current.rotation.x;
       head.current.rotation.x += tilt * alpha;
       if (Math.abs(tilt) > 0.0001) settling = true;
     }
@@ -88,7 +99,8 @@ export function usePetAnimation({ runtime, reducedMotion, paused, interaction })
       else settling = true;
     }
     // Demand rendering sleeps once stop/reset and the light transition have settled.
-    if (moving || jump || (asleep && !reducedMotion) || (spin && t < 1) || settling) invalidate();
+    if (moving || jump || happy || (asleep && !reducedMotion) || (spin && t < 1) || settling)
+      invalidate();
   });
 
   return { body, head, eyes, eyeMeshes };
