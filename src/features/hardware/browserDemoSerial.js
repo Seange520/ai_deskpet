@@ -10,6 +10,7 @@ export function createBrowserDemoSerialProvider({
   let startupTimer = null;
   let sampleTimer = null;
   let rejectOpen = null;
+  let paused = false;
   let opened = false;
   let closed = false;
   let listening = false;
@@ -19,14 +20,14 @@ export function createBrowserDemoSerialProvider({
     sampleTimer = null;
   }
   function emit() {
-    if (!opened || closed || visibility?.hidden || !controller) return;
+    if (!opened || closed || paused || visibility?.hidden || !controller) return;
     // At most one unread chunk: a stalled reader must not grow the queue.
     if (controller.desiredSize > 0)
       controller.enqueue(encoder.encode(JSON.stringify({ light }) + '\n'));
   }
   function schedule() {
     stopSampling();
-    if (!opened || closed || visibility?.hidden) return;
+    if (!opened || closed || paused || visibility?.hidden) return;
     sampleTimer = timers.setTimeout(() => {
       sampleTimer = null;
       emit();
@@ -95,6 +96,21 @@ export function createBrowserDemoSerialProvider({
       if (!opened || closed || ![50, 300].includes(value)) return false;
       light = value;
       emit();
+      return true;
+    },
+    setPaused(value) {
+      if (!opened || closed || typeof value !== 'boolean') return false;
+      paused = value;
+      stopSampling();
+      if (!paused) { emit(); schedule(); }
+      return true;
+    },
+    injectInvalidLine() {
+      if (!opened || closed || paused || visibility?.hidden || !controller || controller.desiredSize <= 0) return false;
+      stopSampling();
+      controller.enqueue(encoder.encode('error\n'));
+      // The next ordinary sample recovers through the unchanged shared decoder.
+      schedule();
       return true;
     },
     dispose,

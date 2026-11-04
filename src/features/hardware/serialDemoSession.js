@@ -42,6 +42,13 @@ export function createSerialDemoSession(store, onChange) {
         : '模拟发送未执行，请检查演示连接。')].slice(-40);
       publish();
     },
+    recordEvent(message, kind = 'simulator') {
+      if (disposed) return;
+      const state = store.getState();
+      if (state.source !== 'demo' || state.status !== 'connected') return;
+      events = [...events, event(kind, message)].slice(-40);
+      publish();
+    },
     dispose() {
       disposed = true;
       unsubscribe();

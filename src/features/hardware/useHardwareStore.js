@@ -91,6 +91,16 @@ export const hardwareConnection = {
     if (state.source !== 'demo' || state.status !== 'connected') return false;
     return demoProvider?.setLight(light) ?? false;
   },
+  pauseDemo(paused) {
+    const state = useHardwareStore.getState();
+    if (state.source !== 'demo' || state.status !== 'connected') return false;
+    return demoProvider?.setPaused(paused) ?? false;
+  },
+  injectDemoInvalid() {
+    const state = useHardwareStore.getState();
+    if (state.source !== 'demo' || state.status !== 'connected') return false;
+    return demoProvider?.injectInvalidLine() ?? false;
+  },
   async disconnect() {
     const connection = demo;
     const provider = demoProvider;

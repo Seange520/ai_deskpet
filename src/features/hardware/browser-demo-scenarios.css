@@ -1,0 +1,13 @@
+.demo-scenarios {
+  min-width: 0;
+  margin-top: 16px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+.demo-scenarios summary { min-height: 44px; display: list-item; align-content: center; cursor: pointer; color: #c6ead5; font-size: 12px; }
+.demo-scenarios summary:focus-visible { outline: 2px solid #a7d8be; outline-offset: 3px; }
+.demo-scenarios p { margin: 8px 0; font-size: 11px; line-height: 1.7; color: #a9bdb7; }
+.demo-scenario-actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+.demo-scenarios .demo-scenario-result { color: #e6bd7c; }
+@media (max-width: 480px) { .demo-scenario-actions .btn { flex: 1 1 100%; } }
