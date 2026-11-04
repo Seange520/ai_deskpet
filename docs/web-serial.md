@@ -20,14 +20,23 @@
 
 ## 边界与虚拟串口
 
-USB 路径仍仅完成串口选择、打开与接收，没有固件、烧录、设备身份验证、协议 ACK 或发送控制指令。本期增加只读光照到独立桌宠动作状态的联动，不改变真实沙盒 runtime。“串口已连接”表示 open 成功，不代表已经核验设备确为 ESP32；收到合法数据才显示数值。
+USB 路径仍仅完成串口选择、打开与接收，不执行烧录、设备身份验证、协议 ACK 或发送控制指令；可通过下方固件面板复制独立 Arduino 示例。本期增加只读光照到独立桌宠动作状态的联动，不改变真实沙盒 runtime。“串口已连接”表示 open 成功，不代表已经核验设备确为 ESP32；收到合法数据才显示数值。
 
 `createSerialConnection` 接受可注入的 getSerial provider，预留与 navigator.serial 相同接口的虚拟串口。正式界面默认使用浏览器 API；用户也可明确选择“连接虚拟光感”，读取仅监听 127.0.0.1 的 Node 模拟器。两种连接互斥，均复用现有读取/清理链路；mock 仍只用于测试，不冒充真实设备。详见 [动作与手势控制](phase4-interaction.md)。
+
+## ESP32 固件代码面板
+
+在「连接真实 ESP32」下方展开「获取 ESP32 固件代码」。复制到 Arduino IDE，选择对应开发板与端口后烧录，接上 USB，再在网页上方以 115200 波特率连接；连接前关闭 IDE 串口监视器，避免占用同一端口。使用原生 USB 的开发板时，需按该板说明配置 USB CDC，让 Serial 输出到所连接的 USB 串口。
+
+`esp32Firmware.js` 是纯前端 Arduino 字符串模板，只有 Arduino 核心依赖：通过 Serial 每秒输出一行 `{"light":300,"temp":25.0}`，没有 GPIO 读取或执行器控制；温度与光照均为模拟值。可把代码中的 light 改成 50，观察现有暗光休眠联动。示例与原遥测解码器兼容，不代表已在实体 ESP32 上编译或烧录验收。
+
+面板默认折叠，只在点击复制时调用 Clipboard API；权限拒绝或 API 缺失时选中代码并提示手动复制。生成、展开和复制只使用组件本地状态，不请求串口权限、不发网络请求、不写入学习 Store 或 localStorage。
 
 ## 验证
 
 - `node --test tests/serial.unit.mjs`：8 项分包解析、拒绝授权、EOF/断开、取消竞态、锁释放与关闭错误单测。
 - `npm run dev -- --port 5242 --strictPort` 后执行 `node scripts/check-web-serial.mjs`：不支持、拒绝、取消、打开失败及虚拟数据流 UI 补验；可用 SPARKMATE_SERIAL_URL 指定本地主场服务。脚本验证学习状态和 localStorage 不变、无写串口、断开/离页清理，并生成明确标记为 mock 的截图。
+- 设置 `SPARKMATE_FIRMWARE_URL` 为独立开发服务地址，运行 `node scripts/check-firmware-generator.mjs`：验证键盘折叠、完整代码复制、拒绝权限/API 缺失时手动选择、320px 布局，以及无串口申请和学习存档写入；报告与截图位于 `test-results/`。
 - 原有 `npx playwright test` 保持 65 项，不改变任何既有用例或断言。
 - `npm run build:local` 验证本机 Windows 构建。
 
