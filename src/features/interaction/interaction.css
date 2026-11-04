@@ -46,3 +46,43 @@
     flex: 1 1 40%;
   }
 }
+
+.gesture-engine-status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 18px;
+  color: #b8d9c9;
+  font-size: 12px;
+}
+.gesture-engine-status > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  overflow-wrap: anywhere;
+}
+.gesture-engine-status i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #788692;
+  flex-shrink: 0;
+}
+.gesture-engine-status i.is-running {
+  background: #6ee7b7;
+}
+.gesture-engine-status small {
+  color: #9bafbf;
+}
+.pet-interaction-message,
+.pet-interaction-hint {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 480px) {
+  .pet-interaction-header > .btn {
+    width: 100%;
+    min-height: 44px;
+  }
+  .pet-action-buttons .btn {
+    min-height: 44px;
+  }
+}

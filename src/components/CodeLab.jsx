@@ -58,7 +58,7 @@ export default function CodeLab({
   }
   const lines = getLessonCode(route.id, { speed, color, expression, angle, direction, tilt });
   return (
-    <div className="page">
+    <div className="page min-w-0">
       <div className="page-heading compact">
         <div>
           <div className="eyebrow">LEVEL 03 / CREATIVE CODE LAB</div>
@@ -89,7 +89,7 @@ export default function CodeLab({
           </Button>
         </div>
       )}
-      <div className="code-grid">
+      <div className="code-grid !gap-4 lg:!gap-6">
         <section className="panel editor-panel">
           <div className="editor-tab">
             <span>

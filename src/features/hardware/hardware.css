@@ -87,3 +87,15 @@
 .hardware-connection-actions input {
   width: 92px;
 }
+
+.hardware-connection-actions > * {
+  min-width: 0;
+}
+.hardware-connection-actions .btn {
+  min-height: 44px;
+  white-space: normal;
+}
+.hardware-connection-actions select,
+.hardware-connection-actions input {
+  max-width: 100%;
+}

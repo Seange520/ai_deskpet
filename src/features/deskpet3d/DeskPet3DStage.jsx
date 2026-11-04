@@ -12,6 +12,7 @@ import { OrbitControls } from '@react-three/drei';
 import { useReducedMotion } from 'framer-motion';
 import './scene.css';
 import PetModel from './PetModel';
+import { useSceneQuality } from './useSceneQuality';
 
 const INITIAL_CAMERA = [4, 2.8, 5.2];
 export const CAMERA_LIMITS = { min: 4.8, max: 11 };
@@ -60,6 +61,7 @@ const DeskPet3DStage = forwardRef(function DeskPet3DStage(
   ref,
 ) {
   const reducedMotion = useReducedMotion();
+  const constrained = useSceneQuality();
   const controls = useRef(null);
   const lastRun = useRef(0);
   const lastPet = useRef(-Infinity);
@@ -130,9 +132,9 @@ const DeskPet3DStage = forwardRef(function DeskPet3DStage(
       <StageBoundary onUnsupported={onUnsupported}>
         <Canvas
           frameloop={paused ? 'never' : 'demand'}
-          dpr={compact ? 1 : [1, 1.5]}
+          dpr={compact || constrained ? 1 : [1, 1.5]}
           camera={{ position: INITIAL_CAMERA, fov: 40, near: 0.1, far: 40 }}
-          gl={{ antialias: !compact, alpha: true, powerPreference: 'low-power' }}
+          gl={{ antialias: !compact && !constrained, alpha: true, powerPreference: 'low-power' }}
           fallback={<UnsupportedWebGL />}
         >
           <ambientLight intensity={1.3} />

@@ -31,17 +31,27 @@ Node 进程不是操作系统 USB COM 设备。页面需要主动点击“连接
 
 直接依赖精确锁定 @mediapipe/tasks-vision 1.2.2；Drei 的原 0.10.17 传递依赖保留于其子目录，Fiber/Drei/Three/React 版本没有升级。模型为官方 gesture_recognizer float16/1，来源与 SHA-256 见 public/models/README.md。
 
-useHandGesture 负责用户授权、视频与资源生命周期。用户明确开启后只请求视频（audio:false），优先 320×240 / 12 FPS。授权成功后按需创建独立 Worker，以本地 WASM 与模型运行 GestureRecognizer 的 VIDEO / CPU 模式。每次只有一帧在途，推理在 Worker 中执行，间隔至少 100ms；视频不录制、不上传。ImageBitmap 在 Worker 或取消路径释放。
+useHandGesture 负责用户授权、视频与资源生命周期。用户明确开启后只请求视频（audio:false），优先前置摄像头、320×240 / 10 FPS，使用 ideal facingMode；仅在约束不兼容且会话仍有效时退回通用视频请求，不重试权限拒绝。授权成功后按需创建独立 Worker，以本地 WASM 与模型运行 GestureRecognizer 的 VIDEO 模式。Worker 检测 navigator.gpu，存在时尝试 GPU delegate；初始化异常则重试 CPU，不存在则直接 CPU，两者失败沿用原禁用降级。每次只有一帧在途，推理开始时间间隔至少 100ms，按已耗时调度下一帧，最高 10 FPS；视频不录制、不上传。ImageBitmap 在 Worker 或取消路径释放。
 
-Open_Palm → jump；Closed_Fist → sleep。采用 0.75 置信度、250ms 稳定窗口、1200ms 冷却，并对持续手势去重；识别到其他姿态或丢手后才允许再次触发。手动按钮也能独立预览 jump/spin/sleep/wake。
+Open_Palm → jump；Closed_Fist → sleep。采用 0.65 置信度、150ms 稳定窗口、1200ms 冷却，并对持续手势去重；识别到其他姿态或丢手后才允许再次触发。手动按钮也能独立预览 jump/spin/sleep/wake。
 
 首次开启按需加载约 14.6MB WASM 与 8.4MB 模型（未压缩体积），不会进入默认首屏下载；由站点同源提供，不依赖运行时模型 CDN。Vite 使用 ES Worker 格式并固定 SDK 开发期预优化，避免首次开启引发整页刷新。
 
 能力检查覆盖安全上下文、getUserMedia、Worker、WebAssembly 和 ImageBitmap。拒绝权限、设备/模型异常、初始化超过 25s 或单帧推理超过 5s 均捕获、关闭摄像头并禁用手势入口，提示刷新/调整权限；课程和手动动作仍可操作。关闭开关、离页、页面进入后台时停止 tracks、定时器和 Worker，清空 video.srcObject；迟到授权得到的流也立即停止，不会重新打开摄像头。
 
+## 状态展示与移动端适配
+
+面板在初始化成功后才显示实际 GPU/CPU 模式，同时展示运行指示灯、当前英文手势名和 WebGPU API 能力；没有手势显示 None，关闭/失败后清空引擎和手势状态。GPU 初始化失败时显示已切换 CPU。MediaPipe 的 GPU delegate 不等同于 WebGPU 后端，当前 SDK 使用 WebGL 上下文，部分模型算子仍由 CPU 执行；不把能力探测当成推理后端或性能保证。
+
+USB 串口仍按 getBrowserSerial 的能力探测禁用，不按手机 UA 禁用；缺失能力时明确提示「当前设备不支持 USB 连接，请在电脑端体验」，不会弹权限或自动连接。摄像头能力与 USB 独立，在支持的移动浏览器上继续提供显式开启入口。
+
+硬件控制区用响应式单列/双列/桌面布局；小屏手动动作两列，主要触摸按钮至少 44px。聚焦视图短屏可滚动，加入安全区边距；画布的 touch-action:none 将手势交给 OrbitControls，画布外仍可滚动，不在全局屏蔽触摸。小屏（宽度 <=700px）或 hardwareConcurrency <=4 / deviceMemory <=4 的设备按 DPR 1 渲染，其他聚焦设备上限 1.5；没有 WebGL 时沿用原 2D 回退，不依赖 WebGPU 才能显示 3D。
+
 ## 验证边界
 
 - 原 `npx playwright test` 仍为 65 项，未修改已有用例或断言。
+- `node --test tests/gesture-adaptive.unit.mjs`：GPU/CPU 成功与失败回退、0.65/150ms 边界、摄像头约束兼容及取消/拒绝时不二次申请。
+- `SPARKMATE_ADAPTIVE_URL` 指向独立开发服务后运行 `node scripts/check-adaptive-mobile.mjs`：使用确定性 Worker 分类验证引擎状态、推理限速、单帧在途、移动摄像头约束回退、USB 禁用、低端 DPR、真实浏览器触摸旋转/双指缩放及短屏滚动。报告与截图位于 `test-results/`；真实 SDK 推理另由下列 Phase 4 脚本验证。
 - `node --test tests/interaction.unit.mjs tests/serial.unit.mjs`：光照阈值、真实 Node 数据流、手势去重、Worker 取消/超时及原串口生命周期。
 - `node scripts/check-phase4-interaction.mjs`（SPARKMATE_INTERACTION_URL 默认 http://127.0.0.1:5252）：权限拒绝/缺失/迟到/模型失败降级，实际几何位置/旋转/闭眼低头，Node 键盘明暗与自动休眠/唤醒，业务内存与存档不变，摄像头关闭和 Worker 释放。
 - `--model-only --production` 可对生产预览独立运行真实 MediaPipe 模型，使用合成视频帧；生产模式不依赖 Vite 内部模块探针。

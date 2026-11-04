@@ -71,7 +71,7 @@ export default function Dashboard({
     },
   ];
   return (
-    <div className="page dashboard">
+    <div className="page dashboard min-w-0">
       <div className="page-heading">
         <div>
           <div className="eyebrow">
@@ -169,7 +169,7 @@ export default function Dashboard({
           循序渐进，每一步都算数 <ArrowUpRight size={15} />
         </span>
       </div>
-      <div className="level-grid">
+      <div className="level-grid !gap-4 lg:!gap-6">
         {steps.map((s, i) => (
           <TiltCard key={s.number} className={`level-${i}`}>
             <div className="level-top">

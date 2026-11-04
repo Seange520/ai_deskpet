@@ -1,5 +1,5 @@
 // Require stable, high-confidence recognition; hold gestures do not repeat actions.
-export function createGestureGate({ stableMs = 250, cooldownMs = 1200, score = 0.75 } = {}) {
+export function createGestureGate({ stableMs = 150, cooldownMs = 1200, score = 0.65 } = {}) {
   let candidate = '',
     since = 0,
     fired = '',

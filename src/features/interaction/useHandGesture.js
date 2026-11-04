@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { requestGestureCamera } from './gestureCamera';
 import { createGestureGate } from './gestureGate';
 import { usePetActions } from './usePetActions';
 
@@ -16,10 +17,13 @@ export function cameraSupported() {
   }
 }
 
+const EMPTY_ENGINE = { delegate: null, webgpuAvailable: false, category: '', fallback: false };
+
 export function useHandGesture() {
   const videoRef = useRef(null);
   const session = useRef(null);
   const [state, setState] = useState({
+    ...EMPTY_ENGINE,
     status: 'idle',
     message: '摄像头未开启。',
     disabled: false,
@@ -40,12 +44,14 @@ export function useHandGesture() {
       videoRef.current.pause();
       videoRef.current.srcObject = null;
     }
-    if (notify) setState((old) => ({ ...old, status: 'idle', message: '摄像头已关闭。' }));
+    if (notify)
+      setState((old) => ({ ...old, ...EMPTY_ENGINE, status: 'idle', message: '摄像头已关闭。' }));
   }, []);
   const start = useCallback(async () => {
     if (session.current) return;
     if (!cameraSupported()) {
       setState({
+        ...EMPTY_ENGINE,
         status: 'unavailable',
         disabled: true,
         message: '当前环境不支持摄像头手势控制。',
@@ -60,6 +66,7 @@ export function useHandGesture() {
       stop(false);
       const denied = ['NotAllowedError', 'SecurityError'].includes(error?.name);
       setState({
+        ...EMPTY_ENGINE,
         status: 'unavailable',
         disabled: true,
         message: denied
@@ -67,17 +74,14 @@ export function useHandGesture() {
           : '手势控制暂不可用，摄像头已关闭；请刷新后重试。',
       });
     };
-    setState({ status: 'starting', disabled: false, message: '正在申请摄像头权限…' });
+    setState({
+      ...EMPTY_ENGINE,
+      status: 'starting',
+      disabled: false,
+      message: '正在申请摄像头权限…',
+    });
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: {
-          facingMode: 'user',
-          width: { ideal: 320 },
-          height: { ideal: 240 },
-          frameRate: { ideal: 12, max: 12 },
-        },
-        audio: false,
-      });
+      const stream = await requestGestureCamera(navigator.mediaDevices, live);
       if (!live()) {
         stream.getTracks().forEach((track) => track.stop());
         return;
@@ -89,6 +93,7 @@ export function useHandGesture() {
       await videoRef.current.play();
       if (!live()) return;
       setState({
+        ...EMPTY_ENGINE,
         status: 'starting',
         disabled: false,
         message: '正在加载本地手势模型，可随时关闭摄像头…',
@@ -105,10 +110,19 @@ export function useHandGesture() {
       }
       current.engine = engine;
       const gate = createGestureGate();
-      setState({ status: 'running', disabled: false, message: '识别中：张开手掌跳跃，握拳休眠。' });
+      setState({
+        ...EMPTY_ENGINE,
+        delegate: engine.delegate,
+        webgpuAvailable: engine.webgpuAvailable,
+        fallback: engine.fallback,
+        status: 'running',
+        disabled: false,
+        message: '识别中：张开手掌跳跃，握拳休眠。',
+      });
       let previous = -1;
       const tick = async () => {
         if (!live()) return;
+        let nextFrameAt = performance.now() + 100;
         try {
           const video = videoRef.current;
           if (video.readyState >= 2 && video.currentTime !== previous) {
@@ -118,19 +132,31 @@ export function useHandGesture() {
               bitmap.close();
               return;
             }
-            const result = await engine.recognize(bitmap, performance.now());
+            const timestamp = performance.now();
+            nextFrameAt = timestamp + 100;
+            const result = await engine.recognize(bitmap, timestamp);
             if (!live()) return;
             const action = gate.update(result.category, result.score, performance.now());
-            if (action) {
-              usePetActions.getState().trigger(action, 'gesture');
-              setState({
-                status: 'running',
-                disabled: false,
-                message: action === 'jump' ? '已识别张开手掌：跳跃。' : '已识别握拳：休眠。',
-              });
-            }
+            if (action) usePetActions.getState().trigger(action, 'gesture');
+            const category = result.category || '';
+            setState((old) => {
+              if (!action && old.category === category) return old;
+              return {
+                ...old,
+                category,
+                message: action
+                  ? action === 'jump'
+                    ? '已识别张开手掌：跳跃。'
+                    : '已识别握拳：休眠。'
+                  : old.message,
+              };
+            });
           }
-          if (live()) current.timer = setTimeout(tick, 100);
+          if (live())
+            current.timer = setTimeout(
+              tick,
+              Math.max(0, Math.ceil(nextFrameAt - performance.now())),
+            );
         } catch (error) {
           fail(error);
         }

@@ -23,7 +23,17 @@ export default function GestureControlPanel() {
           {active ? '关闭摄像头' : '开启手势摄像头'}
         </Button>
       </div>
-      <div className="pet-action-buttons">
+      <div className="gesture-engine-status" aria-live="polite">
+        <span data-testid="gesture-engine-mode" data-engine={gesture.delegate || 'idle'}>
+          <i className={gesture.status === 'running' ? 'is-running' : ''} aria-hidden="true" />
+          引擎：{gesture.delegate || (gesture.status === 'starting' ? '加载中' : '未启动')}
+          {gesture.delegate === 'GPU' && ' · GPU 加速'}
+        </span>
+        <span data-testid="gesture-current-name">手势：{gesture.category || 'None'}</span>
+        {gesture.webgpuAvailable && <small>WebGPU API 可用</small>}
+        {gesture.fallback && <small>GPU 初始化失败，已切换 CPU</small>}
+      </div>
+      <div className="pet-action-buttons grid !grid-cols-2 sm:!flex">
         {[
           ['jump', '跳跃'],
           ['spin', '旋转一圈'],

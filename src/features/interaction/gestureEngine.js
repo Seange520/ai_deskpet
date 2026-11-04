@@ -35,6 +35,9 @@ export function createGestureEngine({ modelURL, signal, frameTimeoutMs = 5000 })
       if (data.type === 'ready') {
         clearTimeout(timeout);
         resolve({
+          delegate: data.delegate === 'GPU' ? 'GPU' : 'CPU',
+          webgpuAvailable: data.webgpuAvailable === true,
+          fallback: data.fallback === true,
           recognize(bitmap, timestamp) {
             if (closed || pending) {
               bitmap.close();

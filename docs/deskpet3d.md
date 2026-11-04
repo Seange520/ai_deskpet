@@ -31,7 +31,7 @@
 - `PetModel.jsx` 在头部 group 绑定 `onClick`，R3F 对其子 mesh 自动执行射线命中检测。仅接收主键，过滤移动超过 5px 的拖拽，避免旋转时误触。键盘「摸摸头」调用相同展示入口。
 - 摸头事件局限于 Stage 的 React state，700ms 节流；不写 useLearningStore、usePetActions 或 localStorage。暗光或休眠时忽略摸头，原休眠优先级不变。
 - `usePetAnimation.js` 增加约 1.1 秒的轻微起伏与点头，用 ref 和 useFrame 阻尼归位。`PetAffection.jsx` 在头部局部坐标 `[0, 1.95, 0]` 放置 Drei Html，以相机投影自动对齐头部移动、旋转和视口缩放，再由 Framer Motion 播放三枚 DOM 爱心/星星的上浮淡出。
-- 特效不接收指针事件，1.3 秒后移除；关闭、后台暂停、进入休眠或组件卸载时清理。保持 demand 渲染和 DPR 上限 1.5，常驻恢复 DPR 1；减少动画时不点头、不上浮，仅静态淡入淡出。音效复用共享成功提示，遵守静音和无 AudioContext 的降级。
+- 特效不接收指针事件，1.3 秒后移除；关闭、后台暂停、进入休眠或组件卸载时清理。保持 demand 渲染；聚焦时小屏或低性能设备 DPR 固定为 1，其他设备上限 1.5，常驻恢复 DPR 1；减少动画时不点头、不上浮，仅静态淡入淡出。音效复用共享成功提示，遵守静音和无 AudioContext 的降级。
 
 补验在已有独立开发服务上运行，URL 按实际空闲端口填写：
 

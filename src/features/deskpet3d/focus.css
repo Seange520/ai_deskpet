@@ -7,7 +7,7 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  min-height: 32px;
+  min-height: 44px;
   padding: 6px 12px;
   border: 1px solid #baffdd33;
   border-radius: 100px;
@@ -21,11 +21,15 @@
   z-index: 260;
   isolation: isolate;
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto minmax(140px, 1fr) auto;
   padding: clamp(18px, 4vw, 48px);
-  overflow: hidden;
+  overflow: auto;
+  overscroll-behavior: contain;
   background: radial-gradient(ellipse at 50% 55%, #254b437d, transparent 65%), #080f19ed;
   backdrop-filter: blur(20px);
+  padding-top: max(clamp(18px, 4vw, 48px), env(safe-area-inset-top));
+  padding-bottom: max(clamp(18px, 4vw, 48px), env(safe-area-inset-bottom));
   color: #e6f0e9;
 }
 .pet-focus-header {
@@ -58,12 +62,14 @@
   color: inherit;
 }
 .pet-focus-stage {
+  min-width: 0;
   min-height: 0;
   width: 100%;
   max-width: 1100px;
   justify-self: center;
 }
 .pet-focus-stage canvas {
+  /* Let OrbitControls handle one/two-finger gestures instead of browser page gestures. */
   touch-action: none;
 }
 .pet-focus-footer {
@@ -117,4 +123,15 @@
   .pet-focus-footer {
     gap: 6px;
   }
+}
+
+@media (max-width: 700px) {
+  .pet-focus-overlay {
+    backdrop-filter: blur(8px);
+  }
+}
+
+.pet-focus-header > div {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }

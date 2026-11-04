@@ -28,7 +28,7 @@ export default function HardwareConnectionPanel() {
           <span className="eyebrow">USB SERIAL · 只读数据</span>
           <h2>连接真实 ESP32</h2>
         </div>
-        <div className="hardware-connection-actions">
+        <div className="hardware-connection-actions !grid !w-full !grid-cols-1 sm:!grid-cols-2 lg:!flex lg:!w-auto">
           <label>
             波特率
             <select
@@ -96,7 +96,7 @@ export default function HardwareConnectionPanel() {
       >
         {supported || source === 'virtual'
           ? message
-          : '当前浏览器或环境不支持硬件连接（USB 串口），可使用本地虚拟光感。'}
+          : '当前设备不支持 USB 连接，请在电脑端体验。当前环境不支持硬件连接（USB 串口）；本地虚拟光感仍可使用。'}
       </p>
       {notice && (
         <p className="hardware-connection-notice" aria-live="polite">
