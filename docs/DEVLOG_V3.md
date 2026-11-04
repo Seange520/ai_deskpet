@@ -1,16 +1,17 @@
-# SparkMate 项目总指挥交接文档 3.0
+# SparkMate 开发日志与规范 3.0
 
-生成时间：2026-11-04（Asia/Singapore）。本文件在 Phase 4 封版提交推送成功后生成，尚未纳入该提交，供用户审核。
+本文档记录了我近期在开发 SparkMate 时，对 3D 架构、软硬结合模块的拆分思考，以及为避免项目后期失控而制定的红线与规范。
 
 ## 1. 工作区指纹与封版基线
 
 - 唯一主场：`D:\deepseek_file\ai_deskpet`。禁止在 C 盘旧副本或其他副本操作；每条工具命令显式指定工作目录。
 - 分支：`main`；远端：`https://github.com/Seange520/ai_deskpet.git`。
-- 最新封版 commit：`fb6e618e384044f854f3e267c6b74524bc6217fc`，已推送并核对 `origin/main` 一致。
+- Phase 4 源代码封版 commit：`fb6e618e384044f854f3e267c6b74524bc6217fc`，已推送并核对 `origin/main` 一致。
 - 提交信息：`feat: 集成 AI 手势控制、虚拟串口光感联动与 3D 动作库。`
+- 本轮文档整理起点：`1e75d9af82abfc490770d4b4f3b6ed63a4115d40`（仅文档提交，业务代码与上述封版一致）。
 - 上一基线：`ee9f1128562f841905869c72c97e26d813c99991`。
 - 本次源代码提交共 27 个文件：原 Phase 4 的 25 个文件，加上拆分的 `PetModel.jsx`、`usePetAnimation.js`。
-- 接手先运行 `git status --short`、`git rev-parse HEAD`、`git remote -v`，确认目录、基线与用户改动，再按任务读取相关模块。
+- 开始维护前先运行 `git status --short`、`git rev-parse HEAD`、`git remote -v`，确认目录、基线与用户改动，再按任务读取相关模块。
 
 ### 技术栈与实际安装版本
 
@@ -162,11 +163,11 @@ node scripts/check-main-deskpet3d.mjs
 
 Windows 本地沿用 build:local 包装器；标准 build、qa 流程保留，不把本地通过误报为 Linux/Vercel 或所有 QA 均通过。生产预览可用 `npm run preview -- --port 5174 --strictPort`，并设置相应检查 URL；手势脚本支持 `--model-only --production` 验证生产真实模型。
 
-## 7. 接手时的最小阅读路径
+## 7. 后续维护的最小阅读路径
 
 先读本文并核对指纹，再按任务选择：动作读 usePetAnimation/PetModel；摄像头生命周期读 useHandGesture；推理通信读 gestureEngine/worker/gate；连接协议读 serialConnection/virtualSerial。避免每次通读 App、全部路线或依赖目录。新增核心文件接近 300 行时按职责抽离，保持生命周期归属清楚，拆分后验证行为不变。
 
-细节参考同目录的 [Phase 4 交互说明](phase4-interaction.md)、[Web Serial 说明](web-serial.md)、[3D 桌宠说明](deskpet3d.md)、[架构说明](architecture.md)。当前交接文档生成于推送之后，是预期的本地未提交文件；下一次接手先确认它是否已被用户批准纳入版本。
+细节参考同目录的 [Phase 4 交互说明](phase4-interaction.md)、[Web Serial 说明](web-serial.md)、[3D 桌宠说明](deskpet3d.md)、[架构说明](architecture.md)。本文整理了 Phase 4 的开发记录与维护规范，后续迭代前先核对仓库状态与任务范围。
 
 ## 8. 待办池（Backlog）
 
