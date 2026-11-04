@@ -1,3 +1,4 @@
+import { revealDevTools } from './dev-tools-fixture.mjs';
 import { chromium, expect } from '@playwright/test';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { startVirtualEsp32 } from './virtual-esp32.mjs';
@@ -86,6 +87,7 @@ for (const width of [1440, 320]) {
     expect((await hardwareState()).source).toBe('demo');
     expect(await resources()).toEqual({ timers: 1, listeners: 1, usb: 0 });
     await expect(hardware.getByRole('button', { name: '连接真实 ESP32', exact: true })).toBeDisabled();
+    await revealDevTools(hardware);
     await expect(hardware.getByRole('button', { name: '连接虚拟光感', exact: true })).toBeDisabled();
     expect(await page.evaluate(async (url) => {
       const { hardwareConnection } = await import(url);
@@ -139,6 +141,7 @@ for (const width of [1440, 320]) {
     await page.getByRole('button', { name: '代码魔改工坊', exact: true }).click();
     // Existing Node bridge remains a separate, explicitly selected regression fixture.
     device = await startVirtualEsp32({ port: 0, output: { write() {} } });
+    await revealDevTools(hardware);
     await hardware.getByLabel('虚拟光感端口', { exact: true }).fill(String(device.port));
     await hardware.getByRole('button', { name: '连接虚拟光感', exact: true }).click();
     await expect(hardware.getByTestId('hardware-light')).toHaveText('300');

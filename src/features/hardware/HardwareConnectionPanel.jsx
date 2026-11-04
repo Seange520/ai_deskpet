@@ -1,17 +1,41 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Button from '../../components/Button';
 import { getBrowserSerial } from './serialConnection';
 import { hardwareConnection, useHardwareStore } from './useHardwareStore';
 import './hardware.css';
 import BrowserDemoPanel from './BrowserDemoPanel';
+import DevToolsPanel from './DevToolsPanel';
 
 export default function HardwareConnectionPanel() {
   const supported = Boolean(getBrowserSerial());
   const { status, source, hardwareData, receivedCount, notice, message } = useHardwareStore();
   const [baudRate, setBaudRate] = useState(115200);
-  const [virtualPort, setVirtualPort] = useState(8765);
+  const [devToolsOpen, setDevToolsOpen] = useState(false);
+  const titleClicks = useRef({ count: 0, lastAt: 0 });
+  const titleRef = useRef(null);
   const connected = status === 'connected';
   const busy = ['requesting', 'connecting', 'disconnecting'].includes(status);
+  const virtual = source === 'virtual';
+  const ordinaryMessage = supported
+    ? '尚未连接硬件。'
+    : '当前设备不支持 USB 连接，请在电脑端体验。当前环境不支持硬件连接（USB 串口），可直接体验浏览器光感演示。';
+  function revealFromTitle() {
+    const now = performance.now();
+    const previous = titleClicks.current;
+    const count = now - previous.lastAt <= 1500 ? previous.count + 1 : 1;
+    titleClicks.current = { count, lastAt: now };
+    if (count === 5) {
+      titleClicks.current.count = 0;
+      setDevToolsOpen(true);
+    }
+  }
+  function closeDevTools() {
+    // Do not leave an invisible Node session running after its controls are hidden.
+    if (virtual) void hardwareConnection.disconnect();
+    titleClicks.current = { count: 0, lastAt: 0 };
+    setDevToolsOpen(false);
+    titleRef.current?.focus();
+  }
   useEffect(() => {
     const close = () => {
       void hardwareConnection.disconnect();
@@ -23,11 +47,37 @@ export default function HardwareConnectionPanel() {
     };
   }, []);
   return (
-    <section className="panel hardware-connection" aria-label="真实硬件连接">
+    <section
+      className="panel hardware-connection"
+      aria-label="真实硬件连接"
+      onKeyDown={(event) => {
+        if (
+          event.ctrlKey &&
+          event.shiftKey &&
+          !event.altKey &&
+          !event.metaKey &&
+          event.key.toLowerCase() === 'd' &&
+          !event.repeat
+        ) {
+          event.preventDefault();
+          setDevToolsOpen(true);
+        }
+      }}
+    >
       <div className="hardware-connection-heading">
         <div>
           <span className="eyebrow">USB SERIAL · 只读数据</span>
-          <h2>连接真实 ESP32</h2>
+          <h2 aria-label="连接真实 ESP32">
+            <button
+              ref={titleRef}
+              type="button"
+              aria-label="硬件面板标题"
+              className="hardware-title-trigger"
+              onClick={revealFromTitle}
+            >
+              连接真实 ESP32
+            </button>
+          </h2>
         </div>
         <div className="hardware-connection-actions !grid !w-full !grid-cols-1 sm:!grid-cols-2 lg:!flex lg:!w-auto">
           <label>
@@ -51,28 +101,7 @@ export default function HardwareConnectionPanel() {
           >
             连接真实 ESP32
           </Button>
-          <label>
-            虚拟端口
-            <input
-              aria-label="虚拟光感端口"
-              type="number"
-              min="1024"
-              max="65535"
-              value={virtualPort}
-              disabled={busy || connected}
-              onChange={(event) => setVirtualPort(Number(event.target.value))}
-            />
-          </label>
-          <Button
-            className="btn"
-            disabled={busy || connected}
-            onClick={() => {
-              void hardwareConnection.connectVirtual(virtualPort);
-            }}
-          >
-            连接虚拟光感
-          </Button>
-          {(connected || busy) && (
+          {!virtual && (connected || busy) && (
             <Button
               className="btn"
               disabled={status === 'disconnecting'}
@@ -85,21 +114,20 @@ export default function HardwareConnectionPanel() {
           )}
         </div>
       </div>
+      <BrowserDemoPanel />
       <p className="hardware-connection-help">
-        USB 接收真实读数；虚拟光感接收本机 Node 模拟器数据并驱动暗光休眠。支持 {'{"light":300}'} 或{' '}
-        {'{"temp":25,"light":300}'}。 虚拟模拟器：node
-        scripts/virtual-esp32.mjs。离开代码工坊后断开连接。
+        USB 接收真实 ESP32 读数；没有硬件也可直接开启上方的浏览器光感演示。离开代码工坊后断开连接。
       </p>
       <p
-        className={'hardware-connection-status ' + (status === 'error' ? 'has-error' : '')}
+        className={
+          'hardware-connection-status ' + (!virtual && status === 'error' ? 'has-error' : '')
+        }
         aria-live="polite"
         data-testid="hardware-connection-status"
       >
-        {supported || source === 'virtual' || source === 'demo'
-          ? message
-          : '当前设备不支持 USB 连接，请在电脑端体验。当前环境不支持硬件连接（USB 串口）；本地虚拟光感仍可使用。'}
+        {virtual ? ordinaryMessage : supported || source === 'demo' ? message : ordinaryMessage}
       </p>
-      {notice && (
+      {!virtual && notice && (
         <p className="hardware-connection-notice" aria-live="polite">
           {notice}
         </p>
@@ -118,7 +146,7 @@ export default function HardwareConnectionPanel() {
           <dd data-testid="hardware-received">{receivedCount} 条</dd>
         </div>
       </dl>
-      <BrowserDemoPanel />
+      {devToolsOpen && <DevToolsPanel onClose={closeDevTools} />}
     </section>
   );
 }

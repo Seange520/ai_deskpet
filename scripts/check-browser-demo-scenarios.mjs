@@ -1,3 +1,4 @@
+import { revealDevTools } from './dev-tools-fixture.mjs';
 import { chromium, expect } from '@playwright/test';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { startVirtualEsp32 } from './virtual-esp32.mjs';
@@ -118,6 +119,7 @@ for (const width of [1440, 320]) {
     await panel.getByRole('button', { name: '结束浏览器演示', exact: true }).click();
     await expect.poll(resources).toEqual({ timers: 0, visibility: 0, subscriptions: 0 });
     device = await startVirtualEsp32({ port: 0, output: { write() {} } });
+    await revealDevTools(hardware);
     await hardware.getByLabel('虚拟光感端口', { exact: true }).fill(String(device.port));
     await hardware.getByRole('button', { name: '连接虚拟光感', exact: true }).click();
     await expect(hardware.getByTestId('hardware-light')).toHaveText('300');

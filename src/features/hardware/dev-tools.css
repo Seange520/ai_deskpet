@@ -1,0 +1,47 @@
+.dev-tools {
+  min-width: 0;
+  margin-top: 22px;
+  padding: 18px;
+  border: 1px dashed #8da59e66;
+  border-radius: 16px;
+  background: #101b2766;
+}
+.dev-tools-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.dev-tools h3 {
+  margin: 8px 0 0;
+  font-size: 17px;
+}
+.dev-tools .btn {
+  min-height: 44px;
+  white-space: normal;
+}
+.hardware-title-trigger {
+  display: inline-block;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: default;
+}
+.hardware-title-trigger:focus-visible {
+  outline: 2px solid #a7d8be;
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+@media (max-width: 480px) {
+  .dev-tools {
+    padding: 14px;
+  }
+  .dev-tools-heading > .btn {
+    width: 100%;
+  }
+}

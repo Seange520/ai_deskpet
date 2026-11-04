@@ -1,3 +1,4 @@
+import { revealDevTools } from './dev-tools-fixture.mjs';
 import { chromium, expect } from '@playwright/test';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { spawn } from 'node:child_process';
@@ -270,6 +271,7 @@ try {
               .toBeGreaterThan(0.002);
             await close.click();
             const hardware = page.getByRole('region', { name: '真实硬件连接', exact: true });
+            await revealDevTools(hardware);
             await hardware.getByLabel('虚拟光感端口', { exact: true }).fill(String(simulatorPort));
             await hardware.getByRole('button', { name: '连接虚拟光感', exact: true }).click();
             await expect(hardware.getByTestId('hardware-light')).toHaveText('300');
