@@ -1,15 +1,29 @@
 /* 布局与材质统一在这里管理。硬件绘图保留于 styles.css，避免响应式规则互相覆盖。 */
 :root {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
-  color: #f5f5f7;
-  background: #0f172a;
+  color: var(--text);
+  background: var(--surface-base);
   color-scheme: dark;
   font-synthesis: none;
   -webkit-font-smoothing: antialiased;
-  --muted: #a1a1ad;
-  --line: rgba(255, 255, 255, 0.1);
-  --glass: rgba(255, 255, 255, 0.05);
-  --shadow: 0 24px 64px -28px rgba(0, 0, 0, 0.6);
+  --surface-base: #1b1626;
+  --surface-panel: #221b2e;
+  --surface-raised: #2a2233;
+  --fog: #4c4a7a;
+  --fog-soft: #6b6398;
+  --accent: #ffc98b;
+  --accent-soft: #ffd9a0;
+  --lamp-core: #ffb868;
+  --blush: #f2a6a0;
+  --rose: #e8b4c8;
+  --life: #a9d3b4;
+  --text: #f3ede6;
+  --text-secondary: #c3b8b0;
+  --text-subtle: #8e8279;
+  --muted: var(--text-secondary);
+  --line: rgba(243, 237, 230, 0.07);
+  --glass: rgba(42, 34, 51, 0.72);
+  --shadow: 0 8px 20px rgba(19, 15, 28, 0.12), 0 24px 56px -28px rgba(19, 15, 28, 0.24);
   --radius: 24px;
   /* 独立层级：绘图局部 < 内容 < 导航 < 全局弹窗。 */
   --z-content: 0;
@@ -44,7 +58,7 @@ button:focus-visible,
 input:focus-visible,
 select:focus-visible,
 [tabindex]:focus-visible {
-  outline: 2px solid #6ee7b7;
+  outline: 2px solid #ffc98b;
   outline-offset: 5px;
 }
 svg {
@@ -68,10 +82,10 @@ select {
   -webkit-tap-highlight-color: transparent;
 }
 ::selection {
-  background: #6ee7b733;
+  background: #ffc98b33;
 }
 .text-neon {
-  color: #6ee7b7;
+  color: var(--accent);
 }
 .app-shell {
   isolation: isolate;
@@ -80,7 +94,7 @@ select {
   grid-template-columns: 248px minmax(0, 1fr);
   gap: 48px;
   padding: 24px 40px 0 24px;
-  background: radial-gradient(ellipse at 70% 0%, #26333224, transparent 45%);
+  background: radial-gradient(ellipse at 70% 0%, #4c4a7a24, transparent 45%);
 }
 .sidebar {
   position: sticky;
@@ -93,7 +107,7 @@ select {
   padding: 30px 16px 20px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: rgba(25, 38, 55, 0.88);
+  background: rgba(34, 27, 46, 0.88);
   backdrop-filter: blur(24px);
   z-index: var(--z-navigation);
   overflow-y: auto;
@@ -115,8 +129,8 @@ select {
   place-items: center;
   width: 35px;
   height: 40px;
-  color: #0f172a;
-  background: #6ee7b7;
+  color: #1b1626;
+  background: #ffc98b;
   clip-path: polygon(22% 0, 100% 0, 78% 100%, 0 100%);
 }
 .brand small {
@@ -130,7 +144,7 @@ select {
   margin: 52px 14px 22px;
   font: 10px monospace;
   letter-spacing: 1.6px;
-  color: #7e7e8d;
+  color: #a89b92;
 }
 .workspace-label span {
   display: block;
@@ -167,9 +181,9 @@ select {
   opacity: 0.6;
 }
 .nav-item.selected {
-  color: #6ee7b7;
-  border-color: #6ee7b71c;
-  background: #6ee7b709;
+  color: #ffc98b;
+  border-color: #ffc98b1c;
+  background: #ffc98b09;
 }
 .nav-item:hover {
   background: #ffffff07;
@@ -185,7 +199,7 @@ select {
   gap: 9px;
   font: 10px/1.6 monospace;
   letter-spacing: 1.8px;
-  color: #92929f;
+  color: #a89b92;
 }
 .project-chip {
   display: flex;
@@ -209,7 +223,7 @@ select {
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: #6ee7b7;
+  background: #ffc98b;
   flex-shrink: 0;
 }
 .tiny-progress,
@@ -226,12 +240,12 @@ select {
 .xp-track > div {
   display: block;
   height: 100%;
-  background: #6ee7b7;
+  background: #ffc98b;
   transition: width 0.6s;
 }
 .sidebar-project > span:last-child {
   font-size: 10px;
-  color: #8c8c99;
+  color: #a89b92;
 }
 .sidebar-bottom {
   margin-top: auto;
@@ -250,7 +264,7 @@ select {
 }
 .maker-note p span {
   font-size: 10px;
-  color: #7c7c89;
+  color: #a89b92;
 }
 .reset-link {
   display: flex;
@@ -274,7 +288,7 @@ select {
   display: block;
   font: 8px monospace;
   margin-top: 6px;
-  color: #878794;
+  color: #a89b92;
 }
 .avatar,
 .top-avatar {
@@ -284,9 +298,9 @@ select {
   height: 34px;
   border: 1px solid #ffffff16;
   border-radius: 50%;
-  background: #27332f;
+  background: #2a2233;
   font: 12px monospace;
-  color: #c5d5ce;
+  color: #e8b4c8;
 }
 .online-indicator {
   margin-left: auto;
@@ -314,12 +328,12 @@ select {
   align-items: center;
   gap: 12px;
   flex: 1;
-  color: #8b8b98;
+  color: #a89b92;
   font-size: 12px;
 }
 .breadcrumb b {
   font-weight: 400;
-  color: #c9c9d1;
+  color: #f3ede6;
 }
 .experience {
   width: 240px;
@@ -339,10 +353,10 @@ select {
 }
 .experience-text svg,
 .experience-text > span:last-child {
-  color: #6ee7b7;
+  color: #ffc98b;
 }
 .experience-text small {
-  color: #8d8d9c;
+  color: #a89b92;
   font-size: 10px;
 }
 .xp-track {
@@ -375,7 +389,7 @@ select {
 .chapter-tag {
   font: 10px monospace;
   letter-spacing: 1px;
-  color: #8c8c99;
+  color: #a89b92;
   white-space: nowrap;
 }
 .chapter-tag span {
@@ -384,7 +398,7 @@ select {
   margin-top: 12px;
   color: #cbcbcf;
 }
-/* 同一套毛玻璃材质：低对比边框与环境阴影，青色仅在悬浮时出现。 */
+/* 同一套毛玻璃材质：低对比边框与环境阴影，暖色仅在悬浮时出现。 */
 .hero-panel,
 .level-card,
 .achievement-panel,
@@ -401,7 +415,7 @@ select {
 }
 @media (hover: hover) {
   :is(.hero-panel, .level-card, .achievement-panel, .panel):not(.modal):hover {
-    border-color: #6ee7b733;
+    border-color: #ffc98b20;
     animation: edge-breathe 3.2s ease-in-out infinite;
   }
 }
@@ -410,12 +424,12 @@ select {
   100% {
     box-shadow:
       var(--shadow),
-      0 0 20px rgba(167, 216, 190, 0.09);
+      0 8px 24px rgba(19, 15, 28, 0.04);
   }
   50% {
     box-shadow:
       var(--shadow),
-      0 0 20px rgba(167, 216, 190, 0.16);
+      0 8px 24px rgba(19, 15, 28, 0.08);
   }
 }
 .hero-panel {
@@ -433,7 +447,7 @@ select {
   display: flex;
   align-items: center;
   gap: 14px;
-  color: #a4bdb4;
+  color: #c3b8b0;
   font-size: 11px;
 }
 .mini-label span:first-child {
@@ -473,12 +487,12 @@ select {
   background: #ffffff0d;
 }
 .btn.primary {
-  color: #052920;
-  background: #8fcfb0;
+  color: #352417;
+  background: var(--accent);
   border-color: transparent;
 }
 .btn.primary:hover {
-  background: #60f6d9;
+  background: var(--accent-soft);
 }
 .btn.small {
   padding: 10px 14px;
@@ -486,8 +500,8 @@ select {
   font-size: 12px;
 }
 .btn.active {
-  color: #6ee7b7;
-  border-color: #6ee7b744;
+  color: #ffc98b;
+  border-color: #ffc98b44;
 }
 .btn.full {
   width: 100%;
@@ -498,7 +512,7 @@ select {
   gap: 16px;
   margin-top: 24px;
   font-size: 10px;
-  color: #939b98;
+  color: #c3b8b0;
 }
 .hero-meta span {
   display: flex;
@@ -511,7 +525,7 @@ select {
   position: relative;
   min-width: 0;
   overflow: hidden;
-  background: radial-gradient(ellipse, #6ee7b70b, transparent 68%);
+  background: radial-gradient(ellipse, #6b63981f, transparent 68%);
 }
 .hero-pet {
   position: relative;
@@ -537,7 +551,7 @@ select {
   right: 30px;
   font: 9px monospace;
   letter-spacing: 1px;
-  color: #6f817b;
+  color: #a89b92;
 }
 .float-label {
   display: flex;
@@ -549,8 +563,8 @@ select {
   border: 1px solid #ffffff0d;
   border-radius: 8px;
   backdrop-filter: blur(24px);
-  background: #18251f99;
-  color: #afc0b8;
+  background: #2a223399;
+  color: #c3b8b0;
   font-size: 10px;
 }
 .label-one {
@@ -581,7 +595,7 @@ select {
   margin-left: 18px;
   font: 9px monospace;
   letter-spacing: 1px;
-  color: #72727f;
+  color: #a89b92;
 }
 .section-title > span {
   display: flex;
@@ -627,7 +641,7 @@ select {
 }
 .level-status.complete,
 .level-0 .level-status {
-  color: #8fcfb0;
+  color: #a9d3b4;
 }
 .level-illustration {
   display: flex;
@@ -645,7 +659,7 @@ select {
 .level-en {
   font: 9px/1.6 monospace;
   letter-spacing: 1px;
-  color: #90909e;
+  color: #a89b92;
 }
 .level-card h3 {
   font-size: 24px;
@@ -670,7 +684,7 @@ select {
   font-size: 13px;
 }
 .level-time {
-  color: #8a8a98;
+  color: #a89b92;
   font: 10px monospace;
 }
 .achievement-panel {
@@ -697,7 +711,7 @@ select {
 }
 .badge {
   text-align: center;
-  color: #83838f;
+  color: #a89b92;
 }
 .badge > div {
   display: grid;
@@ -733,7 +747,7 @@ select {
   margin-top: 40px;
   font: 9px monospace;
   letter-spacing: 1px;
-  color: #7b7b88;
+  color: #a89b92;
 }
 .bottom-note > span:last-child {
   margin-left: auto;
@@ -747,11 +761,11 @@ select {
   padding: 28px 0;
   border-top: 1px solid var(--line);
   font: 9px monospace;
-  color: #777785;
+  color: #a89b92;
   letter-spacing: 0.7px;
 }
 .app-footer i {
-  color: #6ee7b7;
+  color: #ffc98b;
   margin: 0 8px;
   font-style: normal;
 }
@@ -763,7 +777,7 @@ select {
   border: 1px solid var(--line);
   border-radius: 30px;
   font: 11px monospace;
-  color: #a5a5b1;
+  color: #c3b8b0;
   white-space: nowrap;
 }
 .lab-grid,
@@ -799,12 +813,12 @@ select {
   border: 1px solid var(--line);
   background: #ffffff04;
   border-radius: 10px;
-  color: #a7a7b2;
+  color: #c3b8b0;
   flex-shrink: 0;
 }
 .icon-btn:hover {
-  color: #6ee7b7;
-  border-color: #6ee7b744;
+  color: #ffc98b;
+  border-color: #ffc98b44;
 }
 .exploded-scene {
   height: 460px;
@@ -843,7 +857,7 @@ select {
   font-size: 12px;
 }
 .panel-description b {
-  color: #cad8d2;
+  color: #f3ede6;
   font-weight: 400;
 }
 /* 引脚提示在画布下方占据独立空间，不再覆盖操作区。 */
@@ -862,13 +876,13 @@ select {
   left: 8px;
   right: 8px;
   font: 10px monospace;
-  color: #c0c0ca;
+  color: #c3b8b0;
   letter-spacing: 1px;
 }
 .wire-device-labels small {
   display: block;
   font: 11px sans-serif;
-  color: #8e8e9b;
+  color: #a89b92;
   margin-top: 10px;
 }
 .wire-device-labels > span:last-child {
@@ -883,7 +897,7 @@ select {
   cursor: crosshair;
 }
 .pin:focus-visible circle:nth-child(2) {
-  stroke: #fff;
+  stroke: #f3ede6;
   stroke-width: 4px;
 }
 .pin-hud {
@@ -892,15 +906,15 @@ select {
   inset-inline: 0;
   min-height: 126px;
   padding: 16px;
-  border: 1px solid #6ee7b726;
+  border: 1px solid #ffc98b26;
   border-radius: 12px;
-  background: #162823e8;
+  background: #221b2ee8;
   backdrop-filter: blur(24px);
   pointer-events: none;
   z-index: 3;
 }
 .pin-hud b {
-  color: #8fcfb0;
+  color: #a9d3b4;
   font-size: 12px;
 }
 .pin-hud p {
@@ -944,9 +958,9 @@ select {
   border-color: #ff4d4d30;
 }
 .wire-feedback.is-success {
-  color: #8fcfb0;
-  background: #6ee7b706;
-  border-color: #6ee7b720;
+  color: #a9d3b4;
+  background: #ffc98b06;
+  border-color: #ffc98b20;
 }
 .wiring-panel > .btn,
 .preview-panel > .btn {
@@ -999,7 +1013,7 @@ select {
   gap: 12px;
   padding: 22px 26px;
   border-bottom: 1px solid var(--line);
-  color: #92929e;
+  color: #a89b92;
   font-size: 10px;
 }
 .editor-tab > span:first-child {
@@ -1010,12 +1024,12 @@ select {
   font: 12px monospace;
 }
 .editor-tab svg {
-  color: #6ee7b7;
+  color: #ffc98b;
 }
 .editor-tab i {
   width: 5px;
   height: 5px;
-  background: #6ee7b7;
+  background: #ffc98b;
   border-radius: 50%;
 }
 .editor {
@@ -1087,11 +1101,11 @@ select {
   justify-content: space-between;
   gap: 16px;
   font-size: 13px;
-  color: #c0c0ca;
+  color: #c3b8b0;
 }
 .slider-label output {
   font: 23px monospace;
-  color: #8fcfb0;
+  color: #a9d3b4;
 }
 .slider-label output small {
   font: 11px sans-serif;
@@ -1099,7 +1113,7 @@ select {
 }
 input[type='range'] {
   width: 100%;
-  accent-color: #8fcfb0;
+  accent-color: #a9d3b4;
   margin: 24px 0 16px;
   height: 4px;
   cursor: pointer;
@@ -1109,7 +1123,7 @@ input[type='range'] {
   justify-content: space-between;
   gap: 16px;
   font-size: 10px;
-  color: #9696a3;
+  color: #a89b92;
 }
 .control-row {
   display: grid;
@@ -1125,7 +1139,7 @@ input[type='range'] {
 }
 .control-row legend,
 .control-row > label {
-  color: #c0c0ca;
+  color: #c3b8b0;
   font-size: 12px;
 }
 .swatches {
@@ -1156,8 +1170,8 @@ select {
   margin-top: 12px;
   padding: 11px 12px;
   border: 1px solid var(--line);
-  background: #202027;
-  color: #dedee5;
+  background: var(--surface-raised);
+  color: #f3ede6;
   border-radius: 10px;
   font-size: 12px;
 }
@@ -1166,14 +1180,14 @@ select {
   align-items: center;
   gap: 7px;
   font-size: 11px;
-  color: #8fb8ab;
+  color: #a9d3b4;
 }
 .live-dot:before {
   content: '';
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #8fcfb0;
+  background: #a9d3b4;
 }
 .preview-world {
   height: 330px;
@@ -1211,7 +1225,7 @@ select {
 .preview-caption > span {
   font: 10px monospace;
   letter-spacing: 2px;
-  color: #90909c;
+  color: #a89b92;
 }
 .preview-caption h2 {
   font-size: 20px;
@@ -1232,13 +1246,13 @@ select {
 }
 .telemetry span {
   display: block;
-  color: #92929e;
+  color: #a89b92;
   font-size: 10px;
   margin-bottom: 12px;
 }
 .telemetry b {
   font: 12px monospace;
-  color: #d4dbd8;
+  color: #f3ede6;
 }
 .telemetry small {
   font-size: 10px;
@@ -1265,7 +1279,7 @@ select {
   white-space: nowrap;
   background: none;
   border: 0;
-  color: #8fcfb0;
+  color: #a9d3b4;
   margin-left: auto;
 }
 .storage-note {
@@ -1289,7 +1303,7 @@ select {
   max-height: calc(100dvh - 48px);
   overflow-y: auto;
   padding: 44px;
-  background: rgba(30, 30, 37, 0.92);
+  background: rgba(34, 27, 46, 0.92);
 }
 .modal-close {
   position: absolute;
@@ -1320,7 +1334,7 @@ select {
   cursor: pointer;
 }
 .checklist input {
-  accent-color: #6ee7b7;
+  accent-color: #ffc98b;
   margin-top: 5px;
   width: 16px;
   height: 16px;
@@ -1415,7 +1429,7 @@ select {
     border: 0;
     border-bottom: 1px solid var(--line);
     border-radius: 0;
-    background: rgba(15, 23, 42, 0.94);
+    background: rgba(27, 22, 38, 0.94);
   }
   .sidebar nav {
     display: flex;
@@ -1734,6 +1748,6 @@ select {
   :is(.hero-panel, .level-card, .achievement-panel, .panel):hover {
     box-shadow:
       var(--shadow),
-      0 0 20px rgba(167, 216, 190, 0.15);
+      0 8px 24px rgba(19, 15, 28, 0.06);
   }
 }

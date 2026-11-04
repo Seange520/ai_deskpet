@@ -37,7 +37,7 @@
 }
 
 .achievement-fault-stat strong {
-  color: #c6ead5;
+  color: #ffd9a0;
   font-size: 26px;
   font-weight: 500;
   font-variant-numeric: tabular-nums;
@@ -46,7 +46,7 @@
 .achievement-next > strong {
   display: block;
   margin-top: 8px;
-  color: #e6bd7c;
+  color: #ffb868;
   font-size: 13px;
   font-weight: 500;
   line-height: 1.6;

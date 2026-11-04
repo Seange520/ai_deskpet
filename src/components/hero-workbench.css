@@ -1,0 +1,143 @@
+/* The stage must not group/clip its 3D children; only the backdrop is clipped. */
+.hero-panel.hero-workbench {
+  overflow: visible;
+  isolation: auto;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  perspective: 1200px;
+  perspective-origin: 50% 40%;
+  transform-style: preserve-3d;
+  background:
+    radial-gradient(ellipse at 78% 30%, #ffc98b14, transparent 55%),
+    radial-gradient(ellipse at 42% 80%, #6b639826, transparent 65%), #221b2e;
+}
+.hero-workbench > .hero-liquid {
+  transform: translateZ(0);
+}
+.hero-workbench > .hero-particles {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 1;
+  transform: translateZ(2px);
+}
+.hero-workbench > .hero-copy {
+  z-index: 3;
+  transform: translateZ(40px) scale(0.9666667);
+}
+.hero-workbench > .hero-art {
+  overflow: visible;
+  isolation: auto;
+  transform-style: preserve-3d;
+  transform: translateZ(10px);
+  background: radial-gradient(ellipse at 55% 42%, #ffd9a00d, transparent 65%);
+}
+.hero-workbench .orbit {
+  width: min(320px, 90%);
+  height: auto;
+  aspect-ratio: 1;
+}
+.hero-workbench .orbit-two {
+  width: min(420px, 100%);
+}
+.hero-workbench .hero-pet {
+  transform-style: preserve-3d;
+  filter: none;
+}
+.hero-pet-float {
+  animation: workbench-breathe 4s ease-in-out infinite paused;
+  filter: drop-shadow(0 24px 20px #130f1c40);
+}
+.hero-workbench[data-active='true'] .hero-pet-float {
+  animation-play-state: running;
+}
+@keyframes workbench-breathe {
+  0%,
+  100% {
+    transform: translateZ(0);
+  }
+  50% {
+    transform: translateZ(20px);
+  }
+}
+.hero-workbench-surface,
+.hero-workbench-glow {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 50%;
+}
+.hero-workbench-surface {
+  width: 86%;
+  height: 35%;
+  bottom: 11%;
+  transform: rotateX(62deg);
+  border: 1px solid #ffc98b18;
+  background: radial-gradient(ellipse at 50% 32%, #ffd9a00d, #4c4a7a30 65%, #1b162650);
+  box-shadow: 0 28px 48px -24px #100c1c66;
+}
+.hero-workbench-glow {
+  width: 66%;
+  height: 14%;
+  bottom: 20%;
+  transform: rotateX(55deg) translateZ(1px);
+  background: radial-gradient(ellipse, #a9d3b426, #8bc4b414 38%, #100c1c50 64%, transparent 75%);
+}
+.hero-workbench[data-active='false'] .hero-ambient,
+body:has(.modal-backdrop) .hero-workbench .hero-pet-float {
+  animation-play-state: paused;
+}
+/* Static backgrounds on small screens, touch, reduced motion and legacy initial paint. */
+.hero-workbench[data-depth='false'] {
+  perspective: none;
+  transform-style: flat;
+}
+.hero-workbench[data-depth='false']
+  :is(.hero-copy, .hero-art, .hero-particles, .hero-pet-float, .hero-workbench-glow) {
+  transform: none;
+  animation: none;
+}
+.hero-workbench[data-depth='false'] .hero-workbench-surface {
+  display: none;
+}
+.hero-workbench[data-depth='false'] :is(.hero-art, .hero-pet) {
+  transform-style: flat;
+}
+.hero-workbench[data-depth='false'] .hero-art {
+  overflow: clip;
+}
+@media (max-width: 767px), (pointer: coarse), (hover: none), (prefers-reduced-motion: reduce) {
+  .hero-panel.hero-workbench {
+    perspective: none;
+    transform-style: flat;
+  }
+  .hero-workbench :is(.hero-copy, .hero-art, .hero-pet-float, .hero-workbench-glow) {
+    transform: none;
+    animation: none;
+  }
+  .hero-workbench .hero-art {
+    overflow: clip;
+    transform-style: flat;
+  }
+  .hero-workbench .hero-pet {
+    transform: none;
+    transform-style: flat;
+  }
+  .hero-workbench .hero-workbench-surface,
+  .hero-workbench .hero-particles {
+    display: none;
+  }
+  .hero-workbench .hero-ambient,
+  .hero-workbench .cta-shimmer i,
+  .hero-workbench .pet-idle {
+    animation: none;
+  }
+  .hero-workbench .liquidGlass-effect {
+    filter: none;
+  }
+  .hero-workbench .hero-workbench-glow {
+    bottom: 12%;
+  }
+}

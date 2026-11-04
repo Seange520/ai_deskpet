@@ -1,16 +1,16 @@
-/* 治愈系产品层：柔和的纸张色与蓝灰玻璃，降低界面信息密度。 */
+/* 治愈系产品层：暮色环境光与暖色玻璃，降低界面信息密度。 */
 :root {
-  --muted: #b3becb;
-  --glass: rgba(226, 232, 240, 0.055);
-  --shadow: 0 20px 60px -30px #02061766;
+  --muted: var(--text-secondary);
+  --glass: rgba(42, 34, 51, 0.72);
+  --shadow: 0 8px 20px #130f1c1f, 0 20px 60px -30px #130f1c3d;
 }
 .app-shell {
-  background: radial-gradient(ellipse at 75% 5%, #a9c6b014, transparent 50%);
+  background: radial-gradient(ellipse at 75% 5%, #6b639814, transparent 50%);
   padding-bottom: 80px;
 }
 .hero-panel {
   position: relative;
-  background: linear-gradient(120deg, #dcece00c, #fcdba40a);
+  background: linear-gradient(120deg, #4c4a7a0c, #ffd9a00a);
 }
 .hero-panel:before {
   content: '';
@@ -27,22 +27,22 @@
   padding-block: 44px;
 }
 .hero-copy h2 {
-  color: #f5f1e8;
+  color: #f3ede6;
 }
 .brand-mark {
-  background: #e6bd7c;
+  background: #ffb868;
   border-radius: 12px;
   clip-path: none;
 }
 .btn.primary {
-  color: #153d31;
-  background: #a7d8be;
+  color: #352417;
+  background: #ffc98b;
   box-shadow:
-    0 4px 0 #477e6855,
+    0 4px 0 #93653633,
     0 8px 20px #0206171a;
 }
 .btn.primary:hover {
-  background: #bee5ce;
+  background: var(--accent-soft);
 }
 .btn {
   box-shadow: 0 3px 0 #02061724;
@@ -55,7 +55,7 @@
   background: none;
   border: 0;
   padding: 10px 0;
-  color: #c9d8d0;
+  color: #e8b4c8;
   font-size: 12px;
 }
 .guest-entry {
@@ -63,7 +63,7 @@
 }
 .guest-entry > span {
   display: block;
-  color: #bac8bf;
+  color: #c3b8b0;
   font-size: 11px;
   margin-bottom: 12px;
 }
@@ -75,18 +75,18 @@
 }
 .guest-button {
   color: #f1d3a2;
-  border-color: #e6bd7c40;
-  background: #e6bd7c0b;
+  border-color: #ffb86840;
+  background: #ffb8680b;
   font-size: 12px;
   padding: 11px 16px;
 }
 .hero-meta {
-  color: #a4b5ae;
+  color: #c3b8b0;
 }
 .nav-item.selected {
-  color: #b5e0ca;
-  background: #a7d8be0c;
-  border-color: #a7d8be26;
+  color: #ffd9a0;
+  background: #ffc98b0c;
+  border-color: #ffc98b26;
 }
 .nav-item small {
   font-family: inherit;
@@ -98,7 +98,7 @@
   letter-spacing: 0.8px;
 }
 .modal {
-  background: #1b2a3bee;
+  background: #221b2eee;
 }
 .modal.materials-modal {
   width: 780px;
@@ -254,7 +254,7 @@
   max-width: calc(100vw - 48px);
   padding: 16px 22px;
   border-radius: 16px;
-  border: 1px solid #a7d8be50;
+  border: 1px solid #ffc98b50;
   background: #d9e9dd;
   color: #2d5946;
   box-shadow: 0 10px 32px #02061733;
@@ -387,11 +387,11 @@
   gap: 24px;
   padding: 32px;
   margin-bottom: 28px;
-  color: #a7d8be;
+  color: #ffc98b;
 }
 .rank-summary > svg:last-child {
   margin-left: auto;
-  color: #e6bd7c;
+  color: #ffb868;
 }
 .rank-summary span {
   color: #bdc7d3;
@@ -437,8 +437,8 @@
   border-radius: 18px;
 }
 .rank-board li.is-you {
-  background: #a7d8be0e;
-  border-color: #a7d8be25;
+  background: #ffc98b0e;
+  border-color: #ffc98b25;
 }
 .rank-number {
   color: #a7adbb;
@@ -492,7 +492,7 @@
 .graduation-modal {
   background: #f4efdf !important;
   color: #384b40;
-  border-color: #e6bd7c77;
+  border-color: #ffb86877;
 }
 .graduation-modal .modal-close {
   color: #707c6e;

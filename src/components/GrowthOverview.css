@@ -5,7 +5,7 @@
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background:
-    radial-gradient(ellipse at 100% 0%, rgba(167, 216, 190, 0.06), transparent 65%),
+    radial-gradient(ellipse at 100% 0%, rgba(255, 201, 139, 0.06), transparent 65%),
     var(--glass);
 }
 
@@ -49,7 +49,7 @@
 }
 
 .growth-ring-fill {
-  stroke: #a7d8be;
+  stroke: #ffc98b;
 }
 
 .growth-ring-value {
@@ -70,7 +70,7 @@
 }
 
 .growth-ring-value strong {
-  color: #c6ead5;
+  color: #ffd9a0;
   font-size: 32px;
   font-weight: 500;
   line-height: 1.2;
@@ -85,8 +85,8 @@
   display: inline-block;
   padding: 5px 10px;
   border-radius: 8px;
-  background: rgba(167, 216, 190, 0.08);
-  color: #a7d8be;
+  background: rgba(255, 201, 139, 0.08);
+  color: #ffc98b;
   font-size: 11px;
 }
 
@@ -97,7 +97,7 @@
 }
 
 .growth-next strong {
-  color: #e6bd7c;
+  color: #ffb868;
   font-weight: 500;
 }
 
@@ -135,18 +135,18 @@
   width: 9px;
   height: 9px;
   margin: 0 auto 10px;
-  border: 1px solid #667b75;
+  border: 1px solid #8e8279;
   border-radius: 50%;
-  background: #1b2a35;
+  background: #221b2e;
 }
 
 .growth-milestones li[data-reached='true'] {
-  color: #c6ead5;
+  color: #ffd9a0;
 }
 
 .growth-milestones li[data-reached='true']::before {
-  background: #a7d8be;
-  border-color: #a7d8be;
+  background: #ffc98b;
+  border-color: #ffc98b;
 }
 
 .growth-milestones li > span:not(.sr-only) {

@@ -1,9 +1,10 @@
+import { useRef } from 'react';
+import useDashboardDepth from './useDashboardDepth';
 import Button from './Button';
 import SpotlightCard from './ui/SpotlightCard';
 import ShineBorder from './ui/ShineBorder';
-import { motion } from 'framer-motion';
-import { TiltSurface, Depth, HeroGlass, useFineMotion } from './MicroEffects';
-import { TACTILE } from '../motion';
+import HeroWorkbench from './HeroWorkbench';
+import { TiltSurface, Depth } from './MicroEffects';
 import RouteGallery from './RouteGallery';
 import GrowthOverview from './GrowthOverview';
 import RouteTaskMatrix from './RouteTaskMatrix';
@@ -42,7 +43,8 @@ export default function Dashboard({
   onChooseRoute,
 }) {
   const route = getHardwareRoute(routeId);
-  const fine = useFineMotion();
+  const achievementsRef = useRef(null);
+  useDashboardDepth(achievementsRef);
   // 当前路线关卡与全局徽章均来自 Zustand；重复练习不重复奖励。
   const steps = [
     {
@@ -103,13 +105,7 @@ export default function Dashboard({
           </span>
         </div>
       </div>
-      <motion.section
-        className="hero-panel"
-        whileHover={fine ? { scale: 1.003 } : undefined}
-        whileTap={fine ? { scale: 0.997 } : undefined}
-        transition={TACTILE}
-      >
-        <HeroGlass />
+      <HeroWorkbench>
         <div className="hero-copy">
           <div className="mini-label">
             <span>新手创造计划</span>
@@ -156,8 +152,12 @@ export default function Dashboard({
           <div className="orbit orbit-one" />
           <div className="orbit orbit-two" />
           <span className="art-coordinate">COMPANION_001</span>
+          <span className="hero-workbench-surface" />
+          <span className="hero-workbench-glow" />
           <div className="hero-pet">
-            <Pet />
+            <div className="hero-pet-float">
+              <Pet />
+            </div>
           </div>
           <div className="float-label label-one">
             <span className="status-dot" /> 等待与你相遇
@@ -167,10 +167,14 @@ export default function Dashboard({
           </div>
           <span className="art-plus">+</span>
         </div>
-      </motion.section>
+      </HeroWorkbench>
       <GrowthOverview />
       <RouteTaskMatrix />
-      <section className="achievement-panel achievement-milestones" aria-labelledby="achievement-milestones-title">
+      <section
+        ref={achievementsRef}
+        className="achievement-panel achievement-milestones dashboard-depth"
+        aria-labelledby="achievement-milestones-title"
+      >
         <div>
           <div className="eyebrow">SMALL WINS, BIG SPARKS</div>
           <h2 id="achievement-milestones-title">每一步，都值得被记住</h2>

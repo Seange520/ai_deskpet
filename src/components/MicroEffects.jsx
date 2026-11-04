@@ -89,7 +89,7 @@ export function TiltSurface({ children, navigation = false, lightEffect = true }
         radius={navigation ? 12 : 24}
         lightEffect={fine && lightEffect}
         lightOverlay
-        lightColor="rgb(167,216,190)"
+        lightColor="rgb(255,201,139)"
         lightIntensity={0.1}
         lightSize={65}
         hoverScale={1}
@@ -100,7 +100,7 @@ export function TiltSurface({ children, navigation = false, lightEffect = true }
   );
 }
 
-export function HeroGlass() {
+export function HeroGlass({ enabled = true }) {
   const ref = useRef(null),
     inView = useInView(ref),
     fine = useFineMotion();
@@ -111,19 +111,24 @@ export function HeroGlass() {
     return () => document.removeEventListener('visibilitychange', sync);
   }, []);
   return (
-    <div ref={ref} className="hero-liquid" aria-hidden="true" data-flow={fine && inView && visible}>
+    <div
+      ref={ref}
+      className="hero-liquid"
+      aria-hidden="true"
+      data-flow={enabled && fine && inView && visible}
+    >
       <span className="hero-ambient" />
       <LiquidGlass
         className="hero-glass"
         contentClassName="hero-glass-content"
         blur={8}
-        tint="rgba(226,232,240,0.018)"
-        borderColor="rgba(226,232,240,0.1)"
+        tint="rgba(243,237,230,0.018)"
+        borderColor="rgba(243,237,230,0.055)"
         borderRadius={24}
         enableBorderAnimation={false}
         enableClickAnimation={false}
         enableShadow={false}
-        enableGlassEffect={fine}
+        enableGlassEffect={enabled && fine}
         displacementScale={8}
         turbulenceFrequency={0.009}
         turbulenceOctaves={1}

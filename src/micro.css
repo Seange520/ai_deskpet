@@ -80,8 +80,8 @@ pre,
   background: conic-gradient(
     from 45deg,
     transparent 0 65%,
-    #f4e3bf 75%,
-    #c6ead5 85%,
+    #ffd9a0 75%,
+    #ffd9a0 85%,
     transparent 95%
   );
   animation: shimmer-turn 14s linear infinite;
@@ -111,8 +111,8 @@ body:not(:has(.modal-backdrop)) .cta-shimmer i,
   inset: -20%;
   opacity: 0.14;
   background:
-    radial-gradient(ellipse at 25% 45%, #a7d8be 0%, transparent 45%),
-    radial-gradient(ellipse at 75% 65%, #e6bd7c 0%, transparent 40%);
+    radial-gradient(ellipse at 25% 45%, #4c4a7a 0%, transparent 45%),
+    radial-gradient(ellipse at 75% 65%, #ffc98b 0%, transparent 40%);
   animation: ambient-drift 14s ease-in-out infinite alternate paused;
 }
 .hero-liquid[data-flow='true'] .hero-ambient {
@@ -145,7 +145,7 @@ body:not(:has(.modal-backdrop)) .cta-shimmer i,
 @supports not ((backdrop-filter: blur(8px)) or (-webkit-backdrop-filter: blur(8px))) {
   .hero-glass .liquidGlass-effect {
     filter: none;
-    background: rgba(226, 232, 240, 0.03);
+    background: rgba(243, 237, 230, 0.03);
   }
 }
 .hero-copy,

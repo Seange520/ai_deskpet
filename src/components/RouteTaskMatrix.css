@@ -48,7 +48,7 @@
 }
 
 .task-matrix-row[data-current='true'] > * {
-  background: rgba(167, 216, 190, 0.06);
+  background: rgba(255, 201, 139, 0.06);
 }
 
 .task-matrix-route {
@@ -61,7 +61,7 @@
 }
 
 .task-matrix-row[data-current='true'] > .task-matrix-route {
-  border-left-color: #a7d8be;
+  border-left-color: #ffc98b;
 }
 
 .task-matrix-route-state {
@@ -75,7 +75,7 @@
 }
 
 .task-matrix-row[data-current='true'] .task-matrix-route-state {
-  color: #c6ead5;
+  color: #ffd9a0;
 }
 
 .task-matrix-cell {
@@ -84,14 +84,14 @@
 
 .task-matrix-status {
   display: inline-block;
-  color: #94a79e;
+  color: #a89b92;
   font-family: 'JetBrains Mono Variable', monospace;
   font-size: 13px;
   white-space: pre;
 }
 
 .task-matrix-status[data-complete='true'] {
-  color: #c6ead5;
+  color: #ffd9a0;
 }
 
 .task-matrix-note {

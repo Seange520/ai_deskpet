@@ -4,7 +4,7 @@ test('字体、原有主色与液态玻璃实际覆盖面积', async ({ page }) 
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await page.goto('/');
   await expect(page.locator('.hero-liquid')).toHaveAttribute('data-flow', 'true');
-  await expect(page.locator('html')).toHaveCSS('background-color', 'rgb(15, 23, 42)');
+  await expect(page.locator('html')).toHaveCSS('background-color', 'rgb(27, 22, 38)');
   await expect(page.locator('html')).toHaveCSS('font-family', /Inter Variable/);
   const a = await page.locator('.hero-panel').boundingBox(),
     b = await page.locator('.liquidGlass-effect').boundingBox();

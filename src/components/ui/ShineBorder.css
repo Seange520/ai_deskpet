@@ -16,8 +16,8 @@
   z-index: 3;
   background-image: radial-gradient(
     transparent 35%,
-    #a7d8be 48%,
-    #e6bd7c 52%,
+    #7c7ab8 48%,
+    #ffc98b 52%,
     transparent 65%
   );
   background-size: 300% 300%;
@@ -30,7 +30,7 @@
     linear-gradient(#fff 0 0) content-box,
     linear-gradient(#fff 0 0);
   mask-composite: exclude;
-  opacity: 0.3;
+  opacity: 0.18;
   animation: shine-border-travel 16s ease-in-out infinite;
 }
 
@@ -51,7 +51,7 @@ body:has(.modal-backdrop) .shine-border > .shine-border-light {
 @media (prefers-reduced-motion: reduce) {
   .shine-border > .shine-border-light {
     animation: none;
-    background-image: radial-gradient(ellipse at 50% 0%, #a7d8be, transparent 70%);
+    background-image: radial-gradient(ellipse at 50% 0%, #7c7ab8, transparent 70%);
     background-size: 100% 100%;
     background-position: 50% 0%;
     opacity: 0.035;

@@ -12,7 +12,7 @@
   z-index: 2;
   background: radial-gradient(
     260px circle at var(--spotlight-x, 50%) var(--spotlight-y, 0%),
-    #a7d8be,
+    var(--accent, #ffc98b),
     transparent 75%
   );
   -webkit-mask:
@@ -33,7 +33,7 @@
 
 @media (prefers-reduced-motion: reduce), (hover: none), (pointer: coarse) {
   .spotlight-card > .spotlight-border {
-    background: radial-gradient(260px circle at 50% 0%, #a7d8be, transparent 75%);
+    background: radial-gradient(260px circle at 50% 0%, var(--accent, #ffc98b), transparent 75%);
     opacity: 0.025;
     transition: none;
     animation: none;

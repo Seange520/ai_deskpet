@@ -3,6 +3,7 @@ import { motion, useInView, useReducedMotion } from 'framer-motion';
 import { levelFor, MAX_XP, totalXP, useLearningStore } from '../stores/useLearningStore';
 import NumberTicker from './ui/NumberTicker';
 import './GrowthOverview.css';
+import useDashboardDepth from './useDashboardDepth';
 
 const milestones = [500, 1000, 1500, 2000];
 
@@ -15,6 +16,7 @@ export default function GrowthOverview() {
   const remaining = Math.max(0, Math.min(nextLevelXP, MAX_XP) - xp);
   const progress = Math.min(1, Math.max(0, xp / MAX_XP));
   const ref = useRef(null);
+  useDashboardDepth(ref);
   const inView = useInView(ref, { once: true, amount: 0.2 });
   const reducedMotion = useReducedMotion();
   const ring = {
@@ -31,7 +33,11 @@ export default function GrowthOverview() {
   };
 
   return (
-    <section ref={ref} className="growth-overview" aria-labelledby="growth-overview-title">
+    <section
+      ref={ref}
+      className="growth-overview dashboard-depth"
+      aria-labelledby="growth-overview-title"
+    >
       <div className="growth-heading">
         <div className="eyebrow">EVERY SPARK COUNTS</div>
         <h2 id="growth-overview-title">成长总览</h2>
@@ -40,7 +46,14 @@ export default function GrowthOverview() {
       <div className="growth-body">
         <div className="growth-ring" role="img" aria-label={`课程经验 ${xp} / ${MAX_XP} XP`}>
           <svg viewBox="0 0 160 160" aria-hidden="true" focusable="false">
-            <circle className="growth-ring-track" cx="80" cy="80" r="64" fill="none" strokeWidth="8" />
+            <circle
+              className="growth-ring-track"
+              cx="80"
+              cy="80"
+              r="64"
+              fill="none"
+              strokeWidth="8"
+            />
             {reducedMotion !== false ? (
               <circle {...ring} strokeDashoffset={1 - progress} />
             ) : (
@@ -54,21 +67,33 @@ export default function GrowthOverview() {
           </svg>
           <div className="growth-ring-value" aria-hidden="true">
             <span>累计 XP</span>
-            <strong><NumberTicker value={xp} /></strong>
+            <strong>
+              <NumberTicker value={xp} />
+            </strong>
             <small>/ {MAX_XP} XP</small>
           </div>
         </div>
         <div className="growth-details">
-          <div className="growth-level">LV.{level} · {xp >= 500 ? '进阶创客' : '新手创客'}</div>
+          <div className="growth-level">
+            LV.{level} · {xp >= 500 ? '进阶创客' : '新手创客'}
+          </div>
           <p className="growth-next">
-            {complete ? '课程 XP 已集齐' : finalStretch ? (
-              <>距课程 XP 集齐还差 <strong>{remaining} XP</strong></>
+            {complete ? (
+              '课程 XP 已集齐'
+            ) : finalStretch ? (
+              <>
+                距课程 XP 集齐还差 <strong>{remaining} XP</strong>
+              </>
             ) : (
-              <>距 LV.{level + 1} 还差 <strong>{remaining} XP</strong></>
+              <>
+                距 LV.{level + 1} 还差 <strong>{remaining} XP</strong>
+              </>
             )}
           </p>
           <p className="growth-caption">
-            {complete ? '所有课程经验已收集，继续探索你的创作可能。' : '四条路线与故障挑战的累计经验，都会在这里留下印记。'}
+            {complete
+              ? '所有课程经验已收集，继续探索你的创作可能。'
+              : '四条路线与故障挑战的累计经验，都会在这里留下印记。'}
           </p>
           <ol className="growth-milestones" aria-label="等级里程碑">
             {milestones.map((threshold, index) => (

@@ -1,3 +1,5 @@
+import { useRef } from 'react';
+import useDashboardDepth from './useDashboardDepth';
 import { LockKeyhole } from 'lucide-react';
 import { hardwareRoutes } from '../data/hardwareRoutes';
 import { levelForRoute } from '../data/learningLevels';
@@ -12,13 +14,15 @@ const tasks = [
 ];
 
 export default function RouteTaskMatrix() {
+  const ref = useRef(null);
+  useDashboardDepth(ref);
   const routeId = useLearningStore((state) => state.routeId);
   const routes = useLearningStore((state) => state.routes);
   const unlockedLevels = useLearningStore((state) => state.unlockedLevels);
   const completedLevels = useLearningStore((state) => state.completedLevels);
 
   return (
-    <section className="task-matrix" aria-labelledby="task-matrix-title">
+    <section ref={ref} className="task-matrix dashboard-depth" aria-labelledby="task-matrix-title">
       <div className="eyebrow">YOUR LEARNING MAP</div>
       <h2 id="task-matrix-title">路线任务矩阵</h2>
       <p className="task-matrix-intro">每条路线的四项任务，一眼看清下一步。</p>
@@ -27,7 +31,11 @@ export default function RouteTaskMatrix() {
         <thead>
           <tr>
             <th scope="col">创造路线</th>
-            {tasks.map((task) => <th scope="col" key={task.key}>{task.label}</th>)}
+            {tasks.map((task) => (
+              <th scope="col" key={task.key}>
+                {task.label}
+              </th>
+            ))}
           </tr>
         </thead>
         <tbody>
@@ -43,7 +51,12 @@ export default function RouteTaskMatrix() {
               challenge: completedLevels.includes(level.id),
             };
             return (
-              <tr className="task-matrix-row" data-route-id={route.id} data-current={current} key={route.id}>
+              <tr
+                className="task-matrix-row"
+                data-route-id={route.id}
+                data-current={current}
+                key={route.id}
+              >
                 <th scope="row" className="task-matrix-route">
                   <span>{route.name}</span>
                   <small className="task-matrix-route-state">
@@ -64,7 +77,11 @@ export default function RouteTaskMatrix() {
           })}
         </tbody>
       </table>
-      <p className="task-matrix-note">[x] 已完成 · [ ] 未完成<br />参数实验与代码挑战分别记录。</p>
+      <p className="task-matrix-note">
+        [x] 已完成 · [ ] 未完成
+        <br />
+        参数实验与代码挑战分别记录。
+      </p>
     </section>
   );
 }

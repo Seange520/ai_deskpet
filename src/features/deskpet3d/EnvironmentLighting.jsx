@@ -16,7 +16,7 @@ export default function EnvironmentLighting({ night, paused, reducedMotion }) {
     let settling = false;
     for (const [ref, target] of [
       [ambient, night ? 0.55 : 1.3],
-      [key, night ? 0.9 : 2.2],
+      [key, night ? 0.9 : 1.6],
       [fill, night ? 0.35 : 0.8],
     ]) {
       if (!ref.current) continue;
@@ -31,9 +31,14 @@ export default function EnvironmentLighting({ night, paused, reducedMotion }) {
   });
   return (
     <>
-      <ambientLight ref={ambient} name="environment-ambient" intensity={1.3} />
-      <directionalLight ref={key} position={[4, 6, 5]} intensity={2.2} />
-      <directionalLight ref={fill} position={[-3, 2, -4]} intensity={0.8} color="#8dc6d0" />
+      <ambientLight ref={ambient} name="environment-ambient" intensity={1.3} color="#FFC79A" />
+      <directionalLight ref={key} position={[4, 6, 5]} intensity={1.6} color="#FFC79A" />
+      <directionalLight
+        ref={fill}
+        position={[-3, 2, -4]}
+        intensity={0.8}
+        color={night ? '#FFB868' : '#7C7AB8'}
+      />
     </>
   );
 }
