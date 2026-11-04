@@ -51,3 +51,11 @@ USB 路径仍仅完成串口选择、打开与接收，不执行烧录、设备�
 不持久化，不申请 USB/摄像头权限，不写串口、不新增后端；本阶段不含波形、日志或异常场景控制。
 
 补验：`node --test tests/browser-demo-serial.unit.mjs tests/serial.unit.mjs tests/interaction.unit.mjs`；正常开发服务（不设置 regression 参数）下，用 `SPARKMATE_DEMO_URL` 指定独立服务地址后执行 `node scripts/check-browser-demo.mjs`。脚本验证 1440/320px 的明暗闭环、原 Node 桥接、互斥、学习/存档不变及多轮取消/连接/离页后的演示资源清理；截图与报告位于 `test-results`。这属于有限轮次清理验证，不代表所有设备长期堆内存验收。
+
+## 浏览器演示可视化（第二阶段）
+
+浏览器演示连接期间显示 SVG 光照折线与事件日志；真实 USB、Node 桥接及演示结束后不显示。曲线按采样顺序展示最近 60 个已解析样本，标注“原始读数”，没有 lux 标定含义；相同读数的不同包也逐包保留，波形直接更新，不延迟真实读数。
+
+日志最新在前，最多 40 行，区分“模拟器事件”“已解析遥测”“异常提示”。模拟按钮事件只表示本地模拟发送，解析数据不称为原始字节。默认新行短暂淡入，弱动画时取消入场动画；SVG 折线始终即时静态更新。第二阶段没有新增异常场景控制。
+
+`useSerialDemoSession` 独占会话观察器；样本、日志和订阅均不写全局 Store 或 localStorage。结束、离页、切换来源会清空历史并退订，重新连接开始新会话。单测：`node --test tests/serial-demo-session.unit.mjs`。正常环境下指定 `SPARKMATE_DEMO_URL` 后运行 `node scripts/check-browser-demo-insights.mjs`，覆盖 1440/320px、十轮明暗切换、100 包压力更新、60/40 上限、弱动画、Node 来源隔离、重新连接与退订清理；这属于有限轮次资源验证，不代表所有设备长期堆内存结论。

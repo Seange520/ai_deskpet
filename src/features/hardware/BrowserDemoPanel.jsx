@@ -1,6 +1,8 @@
 import Button from '../../components/Button';
 import { hardwareConnection, useHardwareStore } from './useHardwareStore';
 import './browser-demo.css';
+import { useSerialDemoSession } from './useSerialDemoSession';
+import BrowserDemoInsights from './BrowserDemoInsights';
 
 export default function BrowserDemoPanel() {
   const { source, status, hardwareData, receivedCount } = useHardwareStore();
@@ -10,6 +12,8 @@ export default function BrowserDemoPanel() {
   const starting = active && ['requesting', 'connecting'].includes(status);
   const blocked = ['requesting', 'connecting', 'connected', 'disconnecting'].includes(status);
   const receiving = running && Boolean(hardwareData);
+  const showInsights = active && ['requesting', 'connecting', 'connected', 'error'].includes(status);
+  const session = useSerialDemoSession(showInsights);
   const feedback = !supported
     ? '当前环境不支持浏览器演示。'
     : starting
@@ -52,12 +56,12 @@ export default function BrowserDemoPanel() {
       <div className="browser-demo-controls">
         <div>
           <Button className="btn" disabled={!receiving} aria-pressed={receiving && hardwareData.light === 50}
-            onClick={() => hardwareConnection.setDemoLight(50)}>遮住光感</Button>
+            onClick={() => session.sendLight(50)}>遮住光感</Button>
           <code>模拟发送 {'{"light":50}'}</code>
         </div>
         <div>
           <Button className="btn" disabled={!receiving} aria-pressed={receiving && hardwareData.light === 300}
-            onClick={() => hardwareConnection.setDemoLight(300)}>恢复光照</Button>
+            onClick={() => session.sendLight(300)}>恢复光照</Button>
           <code>模拟发送 {'{"light":300}'}</code>
         </div>
       </div>
@@ -66,6 +70,7 @@ export default function BrowserDemoPanel() {
           className={`browser-demo-indicator ${receiving ? 'is-receiving' : ''}`} />
         <span role="status">{feedback}</span>
       </p>
+      {showInsights && <BrowserDemoInsights samples={session.samples} events={session.events} />}
     </section>
   );
 }
