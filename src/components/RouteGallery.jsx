@@ -3,6 +3,7 @@ import { levelForRoute } from '../data/learningLevels';
 import { ArrowUpRight, LockKeyhole } from 'lucide-react';
 import { hardwareRoutes } from '../data/hardwareRoutes';
 import Button from './Button';
+import NumberTicker from './ui/NumberTicker';
 
 // SVG 仅来自本地受信配置，不接受用户输入或远程 HTML。
 export function RouteArtwork({ route }) {
@@ -59,7 +60,9 @@ export default function RouteGallery({ routeId, onChoose }) {
                 {level.id} · {route.difficulty}
               </h3>
               <div className="route-task-progress">
-                <span>任务进度 {count} / 4</span>
+                <span>
+                  任务进度 <NumberTicker value={count} /> / 4
+                </span>
                 <progress aria-label={route.name + '任务进度'} max="4" value={count} />
                 <small>物料 · 接线 · 参数 · 代码挑战</small>
               </div>

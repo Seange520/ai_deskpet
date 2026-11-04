@@ -1,0 +1,41 @@
+.spotlight-card {
+  position: relative;
+}
+
+/* Mask only the overlay: clipping or opacity on the article would flatten its 3D children. */
+.spotlight-card > .spotlight-border {
+  position: absolute;
+  inset: -1px;
+  padding: 1px;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 2;
+  background: radial-gradient(
+    260px circle at var(--spotlight-x, 50%) var(--spotlight-y, 0%),
+    #a7d8be,
+    transparent 75%
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  opacity: 0.025;
+  transition: opacity 0.4s var(--ease-physical);
+}
+
+.spotlight-card[data-spotlight-active='true'] > .spotlight-border {
+  opacity: 0.12;
+}
+
+@media (prefers-reduced-motion: reduce), (hover: none), (pointer: coarse) {
+  .spotlight-card > .spotlight-border {
+    background: radial-gradient(260px circle at 50% 0%, #a7d8be, transparent 75%);
+    opacity: 0.025;
+    transition: none;
+    animation: none;
+  }
+}

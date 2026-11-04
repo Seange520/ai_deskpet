@@ -68,7 +68,7 @@ export function Depth({ as: Tag = 'span', depth = 0.5, style, ...props }) {
   );
 }
 
-export function TiltSurface({ children, navigation = false }) {
+export function TiltSurface({ children, navigation = false, lightEffect = true }) {
   const fine = useFineMotion();
   const magnet = useMagnet(fine && !navigation);
   return (
@@ -87,7 +87,7 @@ export function TiltSurface({ children, navigation = false }) {
         transitionDuration={400}
         transitionEasing="cubic-bezier(.16,1,.3,1)"
         radius={navigation ? 12 : 24}
-        lightEffect={fine}
+        lightEffect={fine && lightEffect}
         lightOverlay
         lightColor="rgb(167,216,190)"
         lightIntensity={0.1}

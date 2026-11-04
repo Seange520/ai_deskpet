@@ -68,7 +68,7 @@ test('分层视差、低亮度聚光灯与实际帧间隔采样', async ({ page 
       }),
     )
     .toBeGreaterThan(1);
-  await expect(page.locator('.card-tilt [data-tilt-light]').first()).toHaveCSS('opacity', '0.12');
+  await expect(page.locator('.card-tilt [data-spotlight-border]').first()).toHaveCSS('opacity', '0.12');
   const samples = await card.evaluate(
     (el) =>
       new Promise((resolve) => {

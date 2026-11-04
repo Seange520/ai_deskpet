@@ -21,6 +21,7 @@ import {
   VolumeX,
 } from 'lucide-react';
 import Dashboard from './components/Dashboard';
+import NumberTicker from './components/ui/NumberTicker';
 import HardwareSimulator from './components/HardwareSimulator';
 import CodeLab from './components/CodeLab';
 import Companion from './components/Companion';
@@ -231,7 +232,7 @@ export default function App() {
                   <Zap size={13} /> LV.{levelFor(xp)} {xp >= 500 ? '进阶创客' : '新手创客'}
                 </span>
                 <span>
-                  {xp} <small>/ {MAX_XP} XP</small>
+                  <NumberTicker value={xp} /> <small>/ {MAX_XP} XP</small>
                 </span>
               </div>
               <div className="xp-track">

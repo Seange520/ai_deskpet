@@ -1,4 +1,5 @@
 import Button from './Button';
+import SpotlightCard from './ui/SpotlightCard';
 import { motion } from 'framer-motion';
 import { TiltSurface, Depth, HeroGlass, useFineMotion } from './MicroEffects';
 import { TACTILE } from '../motion';
@@ -21,8 +22,8 @@ import { Board, Pet } from './Visuals';
 // 外层负责倾斜，article 保留原有语义与布局，内部图文按深度分别视差。
 function TiltCard({ children, className = '' }) {
   return (
-    <TiltSurface>
-      <article className={`level-card ${className}`}>{children}</article>
+    <TiltSurface lightEffect={false}>
+      <SpotlightCard className={`level-card ${className}`}>{children}</SpotlightCard>
     </TiltSurface>
   );
 }
