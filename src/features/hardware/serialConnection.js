@@ -12,13 +12,13 @@ export function createTelemetryDecoder(onData, onInvalid) {
       if (
         !data ||
         Array.isArray(data) ||
-        !Number.isFinite(data.temp) ||
+        (Object.hasOwn(data, 'temp') && !Number.isFinite(data.temp)) ||
         !Number.isFinite(data.light)
       )
         throw new Error('schema');
-      onData({ temp: data.temp, light: data.light, receivedAt: Date.now() });
+      onData({ temp: data.temp ?? null, light: data.light, receivedAt: Date.now() });
     } catch {
-      onInvalid('已忽略无效数据，请确认设备发送 temp、light 数值组成的 JSON 行。');
+      onInvalid('已忽略无效数据，请确认设备发送包含 light 数值、可选 temp 数值的 JSON 行。');
     }
   }
   function consume(text) {
@@ -114,6 +114,7 @@ export function createSerialConnection({
       message: '正在断开硬件连接…',
     });
     session.unlisten?.();
+    session.port?.cancelOpen?.();
     try {
       await session.reader?.cancel();
     } catch {

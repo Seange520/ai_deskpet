@@ -1,5 +1,6 @@
 import CodeRunner from './CodeRunner';
 import HardwareConnectionPanel from '../features/hardware/HardwareConnectionPanel';
+import GestureControlPanel from '../features/interaction/GestureControlPanel';
 import Button from './Button';
 import { useState } from 'react';
 import {
@@ -74,6 +75,7 @@ export default function CodeLab({
         。课程预览仍为浏览器模拟；下方硬件入口仅读取设备数据。
       </p>
       <HardwareConnectionPanel />
+      <GestureControlPanel />
       <CodeRunner />
       <h2 className="route-experiment-heading">路线参数实验</h2>
       {!unlocked && (

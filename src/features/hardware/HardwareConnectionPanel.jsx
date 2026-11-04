@@ -6,8 +6,9 @@ import './hardware.css';
 
 export default function HardwareConnectionPanel() {
   const supported = Boolean(getBrowserSerial());
-  const { status, hardwareData, receivedCount, notice, message } = useHardwareStore();
+  const { status, source, hardwareData, receivedCount, notice, message } = useHardwareStore();
   const [baudRate, setBaudRate] = useState(115200);
+  const [virtualPort, setVirtualPort] = useState(8765);
   const connected = status === 'connected';
   const busy = ['requesting', 'connecting', 'disconnecting'].includes(status);
   useEffect(() => {
@@ -49,6 +50,27 @@ export default function HardwareConnectionPanel() {
           >
             连接真实 ESP32
           </Button>
+          <label>
+            虚拟端口
+            <input
+              aria-label="虚拟光感端口"
+              type="number"
+              min="1024"
+              max="65535"
+              value={virtualPort}
+              disabled={busy || connected}
+              onChange={(event) => setVirtualPort(Number(event.target.value))}
+            />
+          </label>
+          <Button
+            className="btn"
+            disabled={busy || connected}
+            onClick={() => {
+              void hardwareConnection.connectVirtual(virtualPort);
+            }}
+          >
+            连接虚拟光感
+          </Button>
           {(connected || busy) && (
             <Button
               className="btn"
@@ -63,17 +85,18 @@ export default function HardwareConnectionPanel() {
         </div>
       </div>
       <p className="hardware-connection-help">
-        通过 USB 选择串口后读取温度和光照。设备需发送 UTF-8 JSON 行，例如{' '}
-        {'{"temp":25,"light":300}'}。 仅读取数据，不烧录或下发控制指令；离开代码工坊后断开连接。
+        USB 接收真实读数；虚拟光感接收本机 Node 模拟器数据并驱动暗光休眠。支持 {'{"light":300}'} 或{' '}
+        {'{"temp":25,"light":300}'}。 虚拟模拟器：node
+        scripts/virtual-esp32.mjs。离开代码工坊后断开连接。
       </p>
       <p
         className={'hardware-connection-status ' + (status === 'error' ? 'has-error' : '')}
         aria-live="polite"
         data-testid="hardware-connection-status"
       >
-        {supported
+        {supported || source === 'virtual'
           ? message
-          : '当前浏览器或环境不支持硬件连接，请使用支持 Web Serial 的桌面浏览器，并通过 HTTPS 或本地开发地址打开。'}
+          : '当前浏览器或环境不支持硬件连接（USB 串口），可使用本地虚拟光感。'}
       </p>
       {notice && (
         <p className="hardware-connection-notice" aria-live="polite">
@@ -83,7 +106,7 @@ export default function HardwareConnectionPanel() {
       <dl className="hardware-readings">
         <div>
           <dt>温度（℃）</dt>
-          <dd data-testid="hardware-temp">{hardwareData ? hardwareData.temp : '—'}</dd>
+          <dd data-testid="hardware-temp">{hardwareData?.temp ?? '—'}</dd>
         </div>
         <div>
           <dt>光照读数</dt>

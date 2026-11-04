@@ -17,6 +17,7 @@
     "@fontsource-variable/jetbrains-mono": "^5.3.0",
     "@gfazioli/react-tilt": "^1.0.1",
     "@khvicha/react-liquid-glass": "^1.0.14",
+    "@mediapipe/tasks-vision": "1.2.2",
     "@react-three/drei": "9.122.0",
     "@react-three/fiber": "8.18.0",
     "framer-motion": "^11.18.2",

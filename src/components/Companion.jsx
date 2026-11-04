@@ -4,11 +4,18 @@ import { useLearningStore } from '../stores/useLearningStore';
 import Button from './Button';
 import Companion2D from './Companion2D';
 import './companion3d.css';
+import { usePetActions } from '../features/interaction/usePetActions';
+import { useHardwareStore } from '../features/hardware/useHardwareStore';
 
 const DeskPet3DStage = lazy(() => import('../features/deskpet3d/DeskPet3DStage'));
 
 export default function Companion({ celebrations, feedback, hidden }) {
   const runtime = useLearningStore((state) => state.runtime);
+  const interaction = usePetActions();
+  const light = useHardwareStore((state) => state.hardwareData?.light ?? null);
+  useEffect(() => {
+    usePetActions.getState().setLight(light);
+  }, [light]);
   const [curious, setCurious] = useState(false);
   const [small, setSmall] = useState(false);
   const [unsupported, setUnsupported] = useState(false);
@@ -66,6 +73,7 @@ export default function Companion({ celebrations, feedback, hidden }) {
           >
             <DeskPet3DStage
               runtime={runtime}
+              interaction={interaction}
               compact
               still={small}
               paused={hidden || suspended}

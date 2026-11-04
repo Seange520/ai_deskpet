@@ -1,0 +1,48 @@
+.pet-interaction {
+  margin: 24px 0;
+  padding: 22px;
+}
+.pet-interaction-header,
+.pet-action-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+.pet-interaction h2 {
+  margin: 8px 0;
+  font-size: 21px;
+}
+.pet-action-buttons {
+  justify-content: flex-start;
+  margin: 16px 0;
+}
+.pet-interaction-message {
+  font-size: 13px;
+  color: #b8d9c9;
+}
+.pet-interaction-hint {
+  color: #9bafbf;
+  font-size: 12px;
+  line-height: 1.8;
+}
+.gesture-preview {
+  display: block;
+  width: min(320px, 100%);
+  aspect-ratio: 4/3;
+  border-radius: 14px;
+  background: #101b27;
+  transform: scaleX(-1);
+}
+.gesture-preview[hidden] {
+  display: none;
+}
+@media (max-width: 480px) {
+  .pet-interaction {
+    padding: 18px;
+  }
+  .pet-action-buttons .btn {
+    flex: 1 1 40%;
+  }
+}

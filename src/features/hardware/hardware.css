@@ -24,7 +24,8 @@
   font-size: 11px;
   color: #9bafbf;
 }
-.hardware-connection-actions select {
+.hardware-connection-actions select,
+.hardware-connection-actions input {
   min-height: 40px;
   border: 1px solid #6ee7b733;
   border-radius: 8px;
@@ -81,4 +82,8 @@
   .hardware-connection-actions .btn {
     width: 100%;
   }
+}
+
+.hardware-connection-actions input {
+  width: 92px;
 }
