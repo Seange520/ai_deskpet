@@ -1,0 +1,59 @@
+.shine-border {
+  position: relative;
+  min-width: 0;
+  height: 100%;
+  border-radius: var(--radius, 24px);
+  transform-style: preserve-3d;
+}
+
+/* Only the decorative ring is masked, preserving the card's existing 3D depth. */
+.shine-border > .shine-border-light {
+  position: absolute;
+  inset: -1px;
+  padding: 1px;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 3;
+  background-image: radial-gradient(
+    transparent 35%,
+    #a7d8be 48%,
+    #e6bd7c 52%,
+    transparent 65%
+  );
+  background-size: 300% 300%;
+  background-position: 0% 0%;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  opacity: 0.3;
+  animation: shine-border-travel 16s ease-in-out infinite;
+}
+
+@keyframes shine-border-travel {
+  0%,
+  100% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+}
+
+body:has(.modal-backdrop) .shine-border > .shine-border-light {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shine-border > .shine-border-light {
+    animation: none;
+    background-image: radial-gradient(ellipse at 50% 0%, #a7d8be, transparent 70%);
+    background-size: 100% 100%;
+    background-position: 50% 0%;
+    opacity: 0.035;
+  }
+}

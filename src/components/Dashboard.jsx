@@ -1,5 +1,6 @@
 import Button from './Button';
 import SpotlightCard from './ui/SpotlightCard';
+import ShineBorder from './ui/ShineBorder';
 import { motion } from 'framer-motion';
 import { TiltSurface, Depth, HeroGlass, useFineMotion } from './MicroEffects';
 import { TACTILE } from '../motion';
@@ -20,10 +21,11 @@ import {
 import { Board, Pet } from './Visuals';
 
 // 外层负责倾斜，article 保留原有语义与布局，内部图文按深度分别视差。
-function TiltCard({ children, className = '' }) {
+function TiltCard({ children, className = '', current = false }) {
+  const card = <SpotlightCard className={`level-card ${className}`}>{children}</SpotlightCard>;
   return (
     <TiltSurface lightEffect={false}>
-      <SpotlightCard className={`level-card ${className}`}>{children}</SpotlightCard>
+      {current ? <ShineBorder>{card}</ShineBorder> : card}
     </TiltSurface>
   );
 }
@@ -71,6 +73,8 @@ export default function Dashboard({
       action: () => onNavigate('code'),
     },
   ];
+  // Follow the learning order even when earlier steps were completed out of order.
+  const currentStep = steps.findIndex((step) => !step.done);
   return (
     <div className="page dashboard min-w-0">
       <div className="page-heading">
@@ -172,7 +176,7 @@ export default function Dashboard({
       </div>
       <div className="level-grid !gap-4 lg:!gap-6">
         {steps.map((s, i) => (
-          <TiltCard key={s.number} className={`level-${i}`}>
+          <TiltCard key={s.number} className={`level-${i}`} current={i === currentStep}>
             <div className="level-top">
               <span className="level-number">LEVEL {s.number}</span>
               <span className={`level-status ${s.done ? 'complete' : ''}`}>
