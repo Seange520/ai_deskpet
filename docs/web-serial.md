@@ -41,3 +41,13 @@ USB 路径仍仅完成串口选择、打开与接收，不执行烧录、设备�
 - `npm run build:local` 验证本机 Windows 构建。
 
 真实 USB ESP32 与实体固件尚未验证。参考：[Chrome 官方 Web Serial 指南](https://developer.chrome.com/docs/capabilities/serial)。
+
+## 浏览器光感演示（第一阶段）
+
+代码工坊的“浏览器光感演示”无需 USB、Node 或网络请求，用户点击后创建内存字节流，经原串口读取器与 JSON 解码器进入硬件遥测。界面持续标注“浏览器模拟数据”；初始光照 300，每秒一包，温度未提供时显示“—”。遮住光感立即发送 `{"light":50}`，恢复光照发送 `{"light":300}`，由 Companion 原光照逻辑驱动暗光休眠/恢复，不直接写桌宠动作或学习 runtime。
+
+演示使用独立 `source: 'demo'`，与真实串口、原 Node 虚拟光感互斥。初始化可取消，断开、离页和 pagehide 统一释放字节流、计时器及可见性监听；后台暂停采样，回到前台发送最新读数，不补发积压样本。慢读取时最多保留一块待消费数据。接收灯仅在新合法读数到达时短闪，弱动画下保持静态。
+
+不持久化，不申请 USB/摄像头权限，不写串口、不新增后端；本阶段不含波形、日志或异常场景控制。
+
+补验：`node --test tests/browser-demo-serial.unit.mjs tests/serial.unit.mjs tests/interaction.unit.mjs`；正常开发服务（不设置 regression 参数）下，用 `SPARKMATE_DEMO_URL` 指定独立服务地址后执行 `node scripts/check-browser-demo.mjs`。脚本验证 1440/320px 的明暗闭环、原 Node 桥接、互斥、学习/存档不变及多轮取消/连接/离页后的演示资源清理；截图与报告位于 `test-results`。这属于有限轮次清理验证，不代表所有设备长期堆内存验收。

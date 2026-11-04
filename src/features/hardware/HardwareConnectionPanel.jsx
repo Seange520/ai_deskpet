@@ -3,6 +3,7 @@ import Button from '../../components/Button';
 import { getBrowserSerial } from './serialConnection';
 import { hardwareConnection, useHardwareStore } from './useHardwareStore';
 import './hardware.css';
+import BrowserDemoPanel from './BrowserDemoPanel';
 
 export default function HardwareConnectionPanel() {
   const supported = Boolean(getBrowserSerial());
@@ -94,7 +95,7 @@ export default function HardwareConnectionPanel() {
         aria-live="polite"
         data-testid="hardware-connection-status"
       >
-        {supported || source === 'virtual'
+        {supported || source === 'virtual' || source === 'demo'
           ? message
           : '当前设备不支持 USB 连接，请在电脑端体验。当前环境不支持硬件连接（USB 串口）；本地虚拟光感仍可使用。'}
       </p>
@@ -117,6 +118,7 @@ export default function HardwareConnectionPanel() {
           <dd data-testid="hardware-received">{receivedCount} 条</dd>
         </div>
       </dl>
+      <BrowserDemoPanel />
     </section>
   );
 }
