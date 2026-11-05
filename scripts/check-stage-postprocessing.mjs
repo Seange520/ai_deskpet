@@ -34,12 +34,12 @@ async function read(page, operation = 'read') {
       toneMapping: s.gl.toneMapping,
       count:
         s.scene.getObjectByName('stage-gpu-particles')?.geometry.attributes.position.count || 0,
-      aurora: Boolean(s.scene.getObjectByName('stage-aurora')),
+      fog: Boolean(s.scene.fog?.isFogExp2),
       dpr: s.gl.getPixelRatio(),
       bloom: bloom?.intensity,
       geometries: s.gl.info.memory.geometries,
       textures: s.gl.info.memory.textures,
-      time: s.scene.getObjectByName('stage-aurora')?.material.uniforms.time.value,
+      time: s.scene.getObjectByName('stage-gpu-particles')?.material.uniforms.time.value,
     };
   }, operation);
 }
@@ -96,7 +96,7 @@ try {
             : [],
         );
         expect(s.count).toBe(tier >= 2 ? 12 : 0);
-        expect(s.aurora).toBe(tier >= 2);
+        expect(s.fog).toBe(true);
         if (tier >= 2) {
           expect(s.toneMapping).toBe(0);
           expect(s.bloom).toBe(0.9);
@@ -110,15 +110,16 @@ try {
         await page.getByRole('button', { name: '学习仪表盘', exact: true }).click();
         await page.waitForTimeout(600);
         await page.screenshot({ path: out + '/tier' + tier + '.png' });
-      if (tier === 0) await page.locator('.hero-art').screenshot({ path: out + '/tier0-stage.png' });
+        if (tier === 0)
+          await page.locator('.hero-art').screenshot({ path: out + '/tier0-stage.png' });
         if (tier >= 2)
           await page
-            .locator('.scene-window')
+            .locator('.scene-stage')
             .screenshot({ path: out + '/tier' + tier + '-stage.png' });
         if (tier === 2) {
           await read(page, 'no-bloom');
           await page.waitForTimeout(120);
-          await page.locator('.scene-window').screenshot({ path: out + '/tier2-no-bloom.png' });
+          await page.locator('.scene-stage').screenshot({ path: out + '/tier2-no-bloom.png' });
           await read(page, 'bloom');
         }
       }
@@ -154,13 +155,15 @@ try {
     },
   );
   await check(
-    'HUD pointer parallax, particles and Aurora animate; modal pauses Stage',
+    'HUD pointer parallax and particles animate; modal pauses Stage',
     async (page) => {
       await page.goto(url + '/?quality=2');
       await expect.poll(() => read(page).then((s) => s?.effects.length)).toBe(4);
       const before = await read(page);
-      await page.mouse.move(1360, 430);
-      await expect.poll(() => read(page).then((s) => s?.camera[0])).toBeGreaterThan(4.02);
+      await page.mouse.move(120, 430);
+      await expect
+        .poll(async () => Math.abs((await read(page)).camera[0] - before.camera[0]))
+        .toBeGreaterThan(0.035);
       expect((await read(page)).time).toBeGreaterThan(before.time);
       await page.getByRole('article').first().getByRole('button').click();
       await expect(page.locator('.scene-stage')).toHaveAttribute('data-paused', 'true');

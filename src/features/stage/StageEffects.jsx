@@ -1,5 +1,5 @@
 import { useContext, useEffect, useLayoutEffect, useRef } from 'react';
-import { useThree } from '@react-three/fiber';
+import { useFrame, useThree } from '@react-three/fiber';
 import {
   EffectComposer,
   EffectComposerContext,
@@ -11,8 +11,10 @@ import {
 } from '@react-three/postprocessing';
 import { ToneMappingMode } from 'postprocessing';
 
-export default function StageEffects({ tier, paused }) {
+export default function StageEffects({ tier, paused, focusTarget }) {
   const ref = useRef(null);
+  const depth = useRef(null);
+  useFrame(() => depth.current?.target.copy(focusTarget));
   const invalidate = useThree((s) => s.invalidate);
   const gl = useThree((s) => s.gl);
   const dpr = useThree((s) => s.viewport.dpr);
@@ -41,7 +43,8 @@ export default function StageEffects({ tier, paused }) {
           focalLength={0.055}
           bokehScale={2.2}
           resolutionScale={0.5}
-          target={[0, 0.75, 0.61]}
+          ref={depth}
+          target={focusTarget}
         />
       )}
     </EffectComposer>

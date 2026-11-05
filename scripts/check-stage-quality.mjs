@@ -83,7 +83,7 @@ try {
     },
   );
   await run(
-    'Modal, offscreen and hidden Stage pause, focus retains companion renderer',
+    'Modal and hidden Stage pause, scrolling keeps full-screen Stage active, focus reuses Canvas',
     async (page) => {
       await page.goto(url + '/?quality=2');
       await expect(page.locator('.render-shell')).toHaveAttribute('data-stage-ready', 'true');
@@ -105,7 +105,7 @@ try {
       await page.keyboard.press('Escape');
       await expect(page.getByRole('dialog')).toHaveCount(0);
       await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-      await expect(page.locator('.scene-stage')).toHaveAttribute('data-paused', 'true');
+      await expect(page.locator('.scene-stage')).toHaveAttribute('data-paused', 'false');
       await page.evaluate(() => window.scrollTo(0, 0));
       await expect(page.locator('.scene-stage')).toHaveAttribute('data-paused', 'false');
       await page.evaluate(() => {
@@ -174,7 +174,7 @@ try {
     await expect(page.locator('canvas')).toHaveCount(0);
   });
   await run(
-    'Normal motion native camera navigation preserves Stage identity',
+    'Normal motion space navigation preserves Stage identity',
     async (page) => {
       await page.goto(url + '/?quality=2');
       await expect(page.locator('.render-shell')).toHaveAttribute('data-stage-ready', 'true');

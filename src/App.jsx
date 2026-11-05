@@ -5,8 +5,8 @@ import { playSound } from './lib/sounds';
 import Button from './components/Button';
 import { MOTION } from './motion';
 import { TiltSurface, Depth } from './components/MicroEffects';
-import { useEffect, useRef, useState } from 'react';
-import { AnimatePresence, MotionConfig, motion } from 'framer-motion';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { AnimatePresence, MotionConfig, motion, useReducedMotion } from 'framer-motion';
 import {
   Zap,
   LayoutDashboard,
@@ -22,6 +22,10 @@ import {
   Volume2,
   VolumeX,
 } from 'lucide-react';
+import { useQualityTier } from './lib/qualityTier';
+import { useStageLayer } from './features/stage/StageLayer';
+import { useSpaceStore } from './features/space/spaceStore';
+import HudChoreographer from './features/space/HudChoreographer';
 import Dashboard from './components/Dashboard';
 import NumberTicker from './components/ui/NumberTicker';
 import HardwareSimulator from './components/HardwareSimulator';
@@ -41,13 +45,18 @@ const nav = [
 ];
 
 export default function App() {
-  const pageRef = useRef(null);
+  const focusOnArrival = useRef(false);
   const modalTrigger = useRef(null);
   function openModal(type) {
     modalTrigger.current = document.activeElement;
     setModal(type);
   }
-  const [page, setPage] = useState('dashboard');
+  const page = useSpaceStore((state) => state.focus);
+  const phase = useSpaceStore((state) => state.phase);
+  const { tier } = useQualityTier();
+  const { ready } = useStageLayer();
+  const reduced = useReducedMotion();
+  const cinematic = tier >= 2 && ready && !reduced;
   const {
     routeId,
     feedback,
@@ -70,7 +79,7 @@ export default function App() {
   }
   function chooseRoute(id, destination) {
     if (!switchRoute(id)) return;
-    navigate('hardware');
+    navigate('hardware', undefined, destination === 'materials');
     if (destination === 'materials') openModal('materials');
   }
   const [modal, setModal] = useState(null),
@@ -119,23 +128,55 @@ export default function App() {
     if (markComplete(key)) setCelebrations((n) => n + 1);
   }
   useEffect(() => () => cancelCamera(), []);
-  function navigate(id, event) {
-    if (id === page) {
+  useLayoutEffect(() => {
+    const space = useSpaceStore.getState();
+    if (!cinematic && space.phase !== 'idle') {
+      space.jumpTo(space.destination);
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+  }, [cinematic]);
+  useLayoutEffect(() => {
+    if (phase !== 'arriving') return;
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    if (focusOnArrival.current) {
+      const heading = document.querySelector('.space-hud-panel h1');
+      if (heading) {
+        heading.tabIndex = -1;
+        heading.focus({ preventScroll: true });
+      }
+    }
+    focusOnArrival.current = false;
+  }, [page, phase]);
+  function navigate(id, event, immediate = false) {
+    const space = useSpaceStore.getState();
+    if (id === page && space.phase === 'idle') {
       cancelCamera();
       window.scrollTo({ top: 0, behavior: 'instant' });
       return;
     }
-    const order = ['dashboard', 'hardware', 'code', 'ranking'];
-    navigateWithCamera(() => setPage(id), {
-      event,
-      direction: order.indexOf(id) < order.indexOf(page) ? 'backward' : 'forward',
-    });
+    if (tier <= 1) {
+      const order = nav.map(({ id }) => id);
+      navigateWithCamera(() => space.jumpTo(id), {
+        event,
+        direction: order.indexOf(id) < order.indexOf(page) ? 'backward' : 'forward',
+      });
+      return;
+    }
+    cancelCamera();
+    if (cinematic && !modal && !immediate) {
+      focusOnArrival.current =
+        event?.detail === 0 && Boolean(event.currentTarget?.closest('.space-hud-panel'));
+      space.travelTo(id);
+    } else {
+      space.jumpTo(id);
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
   }
   function reset() {
     resetProgress();
     setChecked([]);
     setModal(null);
-    setPage('dashboard');
+    useSpaceStore.getState().jumpTo('dashboard');
     setCelebrations(0);
     setKitAdded({});
     setToast('');
@@ -143,7 +184,12 @@ export default function App() {
 
   return (
     <MotionConfig reducedMotion="user" transition={MOTION}>
-      <div className="app-shell" data-low-power={isLowPowerDevice()}>
+      <div
+        className="app-shell"
+        data-low-power={isLowPowerDevice()}
+        data-space-phase={phase}
+        data-space-focus={page}
+      >
         <aside className="sidebar" inert={modal ? '' : undefined}>
           <Button
             className="brand"
@@ -270,7 +316,7 @@ export default function App() {
               浏览器存储不可用，本次学习进度将只保留到关闭页面。
             </div>
           )}
-          <div key={page} ref={pageRef} className="page-transition">
+          <HudChoreographer key={page} focus={page} phase={phase} cinematic={cinematic}>
             {page === 'dashboard' ? (
               <Dashboard
                 progress={progress}
@@ -311,7 +357,7 @@ export default function App() {
                 onHardware={(event) => navigate('hardware', event)}
               />
             )}
-          </div>
+          </HudChoreographer>
           <footer className="app-footer">
             <span>
               SPARKMATE <i>®</i> LEARN. BUILD. BEFRIEND.

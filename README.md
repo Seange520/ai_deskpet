@@ -9,7 +9,7 @@
 [![Vite](https://img.shields.io/badge/Vite-6-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vite.dev)
 [![React](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev)
 [![Zustand](https://img.shields.io/badge/Zustand-5-2D3748?style=flat-square)](https://zustand.docs.pmnd.rs)
-[![Release](https://img.shields.io/badge/release-v0.9.4--beta-FFC98B?style=flat-square)](https://github.com/Seange520/ai_deskpet/tree/v0.9.4-beta)
+[![Release](https://img.shields.io/badge/release-v0.9.4a1--beta-FFC98B?style=flat-square)](https://github.com/Seange520/ai_deskpet/tree/v0.9.4a1-beta)
 ![Status](https://img.shields.io/badge/status-Testing-orange?style=flat-square)
 [![Vercel](https://img.shields.io/badge/Vercel-Deployed-000000?style=flat-square&logo=vercel&logoColor=white)](https://www.seange.cn)
 
@@ -21,7 +21,11 @@
 
 ---
 
-## 当前版本 · v0.9.4-beta 流光幻境 (Luminous Realm)
+## 当前版本 · v0.9.4a1-beta Space Kernel P0
+
+全屏 Stage 以四个占位岛围绕中心信标组织世界。Tier 2/3 使用约 2.3 秒的弧线飞行，抵达后显示原教学 HUD。减少动画和 Tier 0/1 使用跳切。实现与实测记录见 [Space Kernel P0 报告](docs/SPACE_KERNEL_P0_REVIEW.md)。
+
+### v0.9.4-beta 流光幻境 (Luminous Realm)
 
 Hero 已接入常驻 Stage + DOM HUD 与 0–3 档画质。Tier 2 使用 Bloom、ACES Filmic、Vignette、FXAA，Tier 3 追加景深；同一场景包含极光平面、12 颗 GPU Points 和鼠标微视差，减少动画时静止。Tier 0 使用原 CSS/SVG 与 2D 常驻伙伴，Tier 1 不挂载后期链。通过 `?quality=dom`、`?quality=1`、`?quality=2`、`?quality=3` 可检查各档。
 

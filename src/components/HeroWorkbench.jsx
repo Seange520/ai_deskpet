@@ -2,17 +2,12 @@ import { useEffect, useRef, useState } from 'react';
 import { HeroGlass } from './MicroEffects';
 import { DESKTOP_VISUAL_QUERY, isLowPowerDevice } from '../lib/visualCapabilities';
 import './hero-workbench.css';
-import { useQualityTier } from '../lib/qualityTier';
-import { useStageLayer } from '../features/stage/StageLayer';
 
 // Presentation state stays local: no learning state, persistence or device access.
 export default function HeroWorkbench({ children }) {
   const ref = useRef(null);
-  const { tier } = useQualityTier();
-  const { setHero } = useStageLayer();
   const [enabled, setEnabled] = useState(false);
   const [active, setActive] = useState(false);
-  const [field, setField] = useState({ eligible: false, active: false, reduced: false });
   useEffect(() => {
     const node = ref.current;
     const query = matchMedia(DESKTOP_VISUAL_QUERY);
@@ -24,7 +19,6 @@ export default function HeroWorkbench({ children }) {
       const visible = inView && !document.hidden && !modal;
       setEnabled(eligible && !reduced.matches);
       setActive(eligible && !reduced.matches && visible);
-      setField({ eligible, active: visible, reduced: reduced.matches });
     };
     const intersection = new IntersectionObserver(([entry]) => {
       inView = entry.isIntersecting;
@@ -55,11 +49,6 @@ export default function HeroWorkbench({ children }) {
       document.removeEventListener('visibilitychange', sync);
     };
   }, []);
-  useEffect(() => {
-    if (tier > 0) setHero({ node: ref.current.querySelector('.hero-art'), active: field.active });
-    else setHero(null);
-    return () => setHero(null);
-  }, [tier, field.active, setHero]);
   return (
     <section
       ref={ref}

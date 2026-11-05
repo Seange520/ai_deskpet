@@ -1,7 +1,6 @@
 import { useMemo, useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
-import { AdditiveBlending, Vector2 } from 'three';
-import { sceneAuroraVertex, sceneAuroraFragment } from '../../components/auroraShader';
+import { AdditiveBlending } from 'three';
 const particlesVertex = `
 uniform float time; uniform float pixelRatio;
 varying float brightness;
@@ -25,9 +24,7 @@ void main() {
 export default function StageAtmosphere({ paused, reduced }) {
   const elapsed = useRef(0);
   const invalidate = useThree((s) => s.invalidate);
-  const size = useThree((s) => s.size);
   const gl = useThree((s) => s.gl);
-  const field = useMemo(() => ({ time: { value: 0 }, resolution: { value: new Vector2() } }), []);
   const points = useMemo(() => ({ time: { value: 0 }, pixelRatio: { value: 1 } }), []);
   const positions = useMemo(
     () =>
@@ -40,41 +37,26 @@ export default function StageAtmosphere({ paused, reduced }) {
     [],
   );
   useFrame((_, delta) => {
-    field.resolution.value.set(size.width, size.height);
     points.pixelRatio.value = gl.getPixelRatio();
     if (paused || reduced) return;
     elapsed.current += Math.min(delta, 0.05);
-    field.time.value = elapsed.current;
     points.time.value = elapsed.current;
     invalidate();
   });
   return (
-    <>
-      <mesh name="stage-aurora" frustumCulled={false} renderOrder={-100}>
-        <planeGeometry args={[2, 2]} />
-        <shaderMaterial
-          uniforms={field}
-          vertexShader={sceneAuroraVertex}
-          fragmentShader={sceneAuroraFragment}
-          depthTest={false}
-          depthWrite={false}
-          toneMapped={false}
-        />
-      </mesh>
-      <points name="stage-gpu-particles" frustumCulled={false}>
-        <bufferGeometry>
-          <bufferAttribute attach="attributes-position" args={[positions, 3]} />
-        </bufferGeometry>
-        <shaderMaterial
-          uniforms={points}
-          vertexShader={particlesVertex}
-          fragmentShader={particlesFragment}
-          transparent
-          depthWrite={false}
-          blending={AdditiveBlending}
-          toneMapped={false}
-        />
-      </points>
-    </>
+    <points name="stage-gpu-particles" frustumCulled={false}>
+      <bufferGeometry>
+        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
+      </bufferGeometry>
+      <shaderMaterial
+        uniforms={points}
+        vertexShader={particlesVertex}
+        fragmentShader={particlesFragment}
+        transparent
+        depthWrite={false}
+        blending={AdditiveBlending}
+        toneMapped={false}
+      />
+    </points>
   );
 }
