@@ -1,0 +1,70 @@
+.dashboard .level-card {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+.dashboard .level-card::before,
+.dashboard .level-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.dashboard .level-card::before {
+  z-index: -1;
+  backdrop-filter: blur(18px) saturate(1.2);
+  -webkit-backdrop-filter: blur(18px) saturate(1.2);
+}
+.dashboard .level-card::after {
+  z-index: 2;
+  opacity: 0;
+  background: linear-gradient(
+    110deg,
+    transparent 38%,
+    #ffd9a033 48%,
+    #e8b4c826 52%,
+    transparent 62%
+  );
+  background-size: 260% 100%;
+  background-position: 150% 0;
+}
+@media (min-width: 768px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .app-shell[data-low-power='false'] .level-card:hover::after {
+    animation: card-refraction 900ms ease-out;
+  }
+}
+@keyframes card-refraction {
+  0% {
+    opacity: 0;
+    background-position: 150% 0;
+  }
+  30% {
+    opacity: 0.65;
+  }
+  70% {
+    opacity: 0.45;
+  }
+  100% {
+    opacity: 0;
+    background-position: -50% 0;
+  }
+}
+body:has(.modal-backdrop) .level-card::after {
+  animation-play-state: paused !important;
+}
+@media (max-width: 767px), (pointer: coarse), (hover: none), (prefers-reduced-motion: reduce) {
+  .dashboard .level-card::after {
+    animation: none !important;
+    opacity: 0;
+  }
+}
+.app-shell[data-low-power='true'] .level-card::before {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+@media (max-width: 767px), (pointer: coarse) {
+  .dashboard .level-card::before {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}

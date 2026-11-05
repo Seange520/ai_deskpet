@@ -58,7 +58,7 @@ export default function CodeLab({
   }
   const lines = getLessonCode(route.id, { speed, color, expression, angle, direction, tilt });
   return (
-    <div className="page min-w-0">
+    <div className="page min-w-0 page-hero">
       <div className="page-heading compact">
         <div>
           <div className="eyebrow">LEVEL 03 / CREATIVE CODE LAB</div>
@@ -279,7 +279,7 @@ export default function CodeLab({
             <span className="eyebrow">YOUR LITTLE COMPANION</span>
             <span className="live-dot">实时渲染</span>
           </div>
-          <div className="preview-world">
+          <div className="preview-world hero-art camera-art-frame">
             {routeId === 'classic' ? (
               <>
                 <div className="preview-orbit" />

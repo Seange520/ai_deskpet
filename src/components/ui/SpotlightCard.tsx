@@ -4,12 +4,18 @@ import './SpotlightCard.css';
 
 type SpotlightCardProps = {
   children: ReactNode;
+  current?: boolean;
   className?: string;
   borderRadius?: CSSProperties['borderRadius'];
 };
 
 // The article replaces the existing card itself, preserving its flex layout and 3D children.
-export default function SpotlightCard({ children, className = '', borderRadius }: SpotlightCardProps) {
+export default function SpotlightCard({
+  children,
+  className = '',
+  borderRadius,
+  current,
+}: SpotlightCardProps) {
   const ref = useRef<HTMLElement>(null);
   const frame = useRef(0);
   const enabled = useRef(false);
@@ -71,6 +77,7 @@ export default function SpotlightCard({ children, className = '', borderRadius }
       ref={ref}
       className={`spotlight-card ${className}`}
       style={borderRadius === undefined ? undefined : { borderRadius }}
+      data-current={current}
       data-spotlight-active="false"
       onPointerMove={onPointerMove}
       onPointerLeave={reset}

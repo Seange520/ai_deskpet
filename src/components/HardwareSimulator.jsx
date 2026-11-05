@@ -135,7 +135,7 @@ export default function HardwareSimulator({
   }
 
   return (
-    <div className="page workbench-page">
+    <div className="page workbench-page page-hero">
       {burned && <BurnoutOverlay onReset={reset} />}
       <div className="page-heading compact">
         <div>
@@ -194,7 +194,9 @@ export default function HardwareSimulator({
                 {exploded ? '合拢' : '拆解'}
               </Button>
             </div>
-            <ExplodedView routeId={routeId} exploded={exploded} />
+            <div className="hero-art camera-art-frame">
+              <ExplodedView routeId={routeId} exploded={exploded} />
+            </div>
             <div className="gallery-note">
               <Info size={16} />
               <span>点击「拆解」探索结构。示意布局不代表真实排针位置。</span>

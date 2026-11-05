@@ -1,0 +1,111 @@
+/* Name only the page content; navigation, modals and the companion stay live. */
+:root {
+  view-transition-name: none;
+}
+.page-transition {
+  view-transition-name: page-camera;
+  animation: page-camera-fade 300ms ease-out;
+}
+.page-transition[data-camera-native='true'] {
+  animation: none;
+}
+.level-card[data-current='true'] .card-art[data-camera-selected='true'],
+.level-card .card-art[data-camera-selected='true'],
+.page-hero .hero-art[data-camera-selected='true'] {
+  view-transition-name: camera-art;
+}
+.page-hero .hero-art.camera-art-frame {
+  background: none;
+}
+.camera-art-frame > .exploded-scene {
+  width: 100%;
+}
+::view-transition {
+  pointer-events: none;
+}
+::view-transition-group(*) {
+  animation-duration: 480ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+::view-transition-old(page-camera) {
+  transform-origin: var(--vt-x) var(--vt-y);
+  animation: camera-out 480ms both;
+}
+::view-transition-new(page-camera) {
+  transform-origin: var(--vt-x) var(--vt-y);
+  animation: camera-in 480ms both;
+}
+:root[data-vt-direction='backward']::view-transition-old(page-camera) {
+  animation-name: camera-back-out;
+}
+:root[data-vt-direction='backward']::view-transition-new(page-camera) {
+  animation-name: camera-back-in;
+}
+@keyframes camera-out {
+  to {
+    opacity: 0;
+    transform: scale(1.06);
+    filter: blur(8px);
+  }
+}
+@keyframes camera-in {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+    clip-path: circle(0 at var(--vt-x) var(--vt-y));
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+    clip-path: circle(var(--vt-radius) at var(--vt-x) var(--vt-y));
+  }
+}
+@keyframes camera-back-out {
+  to {
+    opacity: 0;
+    transform: scale(0.92);
+    filter: blur(8px);
+  }
+}
+@keyframes camera-back-in {
+  from {
+    opacity: 0;
+    transform: scale(1.06);
+    clip-path: circle(0 at var(--vt-x) var(--vt-y));
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+    clip-path: circle(var(--vt-radius) at var(--vt-x) var(--vt-y));
+  }
+}
+@keyframes page-camera-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes page-camera-out {
+  to {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .page-transition {
+    animation: page-camera-fade 150ms ease-out !important;
+  }
+  .page-transition[data-camera-native='true'] {
+    animation: none !important;
+  }
+  ::view-transition-group(*) {
+    animation: none !important;
+  }
+  ::view-transition-old(page-camera) {
+    animation: page-camera-out 150ms linear both !important;
+  }
+  ::view-transition-new(page-camera) {
+    animation: page-camera-fade 150ms linear both !important;
+  }
+}

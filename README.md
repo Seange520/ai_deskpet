@@ -9,7 +9,7 @@
 [![Vite](https://img.shields.io/badge/Vite-6-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vite.dev)
 [![React](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev)
 [![Zustand](https://img.shields.io/badge/Zustand-5-2D3748?style=flat-square)](https://zustand.docs.pmnd.rs)
-[![Release](https://img.shields.io/badge/release-v0.9.2--beta-FFC98B?style=flat-square)](https://github.com/Seange520/ai_deskpet/releases/tag/v0.9.2-beta)
+[![Release](https://img.shields.io/badge/release-v0.9.3--beta-FFC98B?style=flat-square)](https://github.com/Seange520/ai_deskpet/releases/tag/v0.9.3-beta)
 ![Status](https://img.shields.io/badge/status-Testing-orange?style=flat-square)
 [![Vercel](https://img.shields.io/badge/Vercel-Deployed-000000?style=flat-square&logo=vercel&logoColor=white)](https://www.seange.cn)
 
@@ -21,11 +21,11 @@
 
 ---
 
-## 当前版本 · v0.9.2-beta 暮色工坊
+## 当前版本 · v0.9.3-beta 幻影星穹
 
-本轮带来暮紫与暖杏配色、CSS 3D Hero 微缩工作台、Canvas2D 微光粒子，以及 Dashboard 卡片景深与矩阵悬停反馈。小屏、粗指针和减少动画偏好下保持平面展示，不改变学习进度与存档规则。
+本轮带来零新增依赖的 WebGL2 极光星云、View Transitions 镜头推进／拉远，以及 900ms CSS 玻璃扫光。移动端与低端设备使用 CSS 背景；桌面减少动画时极光仅绘制静态帧，导航使用 150ms 纯透明度切换。学习进度与存档规则保持不变。
 
-完整变更与验收边界见 [v0.9.2-beta 发布说明](docs/RELEASE_NOTES_v0.9.2.md)。
+完整变更与验收边界见 [v0.9.3-beta 发布说明](docs/RELEASE_NOTES_v0.9.3.md)。
 
 ## 项目简介
 

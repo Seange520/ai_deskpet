@@ -1,10 +1,12 @@
+import { navigateWithCamera, cancelCamera } from './lib/viewTransition';
+import { isLowPowerDevice } from './lib/visualCapabilities';
 import { totalXP, levelFor, globalBadges, MAX_XP } from './stores/useLearningStore';
 import { playSound } from './lib/sounds';
 import Button from './components/Button';
 import { MOTION } from './motion';
 import { TiltSurface, Depth } from './components/MicroEffects';
 import { useEffect, useRef, useState } from 'react';
-import { AnimatePresence, MotionConfig, motion, useReducedMotion } from 'framer-motion';
+import { AnimatePresence, MotionConfig, motion } from 'framer-motion';
 import {
   Zap,
   LayoutDashboard,
@@ -39,7 +41,6 @@ const nav = [
 ];
 
 export default function App() {
-  const reduced = useReducedMotion();
   const pageRef = useRef(null);
   const modalTrigger = useRef(null);
   function openModal(type) {
@@ -117,9 +118,18 @@ export default function App() {
   function complete(key) {
     if (markComplete(key)) setCelebrations((n) => n + 1);
   }
-  function navigate(id) {
-    setPage(id);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  useEffect(() => () => cancelCamera(), []);
+  function navigate(id, event) {
+    if (id === page) {
+      cancelCamera();
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      return;
+    }
+    const order = ['dashboard', 'hardware', 'code', 'ranking'];
+    navigateWithCamera(() => setPage(id), {
+      event,
+      direction: order.indexOf(id) < order.indexOf(page) ? 'backward' : 'forward',
+    });
   }
   function reset() {
     resetProgress();
@@ -133,11 +143,11 @@ export default function App() {
 
   return (
     <MotionConfig reducedMotion="user" transition={MOTION}>
-      <div className="app-shell">
+      <div className="app-shell" data-low-power={isLowPowerDevice()}>
         <aside className="sidebar" inert={modal ? '' : undefined}>
           <Button
             className="brand"
-            onClick={() => navigate('dashboard')}
+            onClick={(event) => navigate('dashboard', event)}
             aria-label="SparkMate 首页"
           >
             <span className="brand-mark">
@@ -157,7 +167,7 @@ export default function App() {
                   className={`nav-item ${page === n.id ? 'selected' : ''}`}
                   key={n.id}
                   aria-label={n.name}
-                  onClick={() => navigate(n.id)}
+                  onClick={(event) => navigate(n.id, event)}
                   aria-current={page === n.id ? 'page' : undefined}
                 >
                   <Depth depth={1}>
@@ -260,71 +270,48 @@ export default function App() {
               浏览器存储不可用，本次学习进度将只保留到关闭页面。
             </div>
           )}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={page}
-              ref={pageRef}
-              className="page-transition"
-              onAnimationStart={() => {
-                if (pageRef.current)
-                  pageRef.current.style.willChange = reduced ? 'auto' : 'clip-path, opacity';
-              }}
-              onAnimationComplete={() => {
-                if (pageRef.current) pageRef.current.style.willChange = 'auto';
-              }}
-              initial={
-                reduced ? { opacity: 0 } : { opacity: 0, clipPath: 'inset(0 0 6% 0 round 20px)' }
-              }
-              animate={
-                reduced ? { opacity: 1 } : { opacity: 1, clipPath: 'inset(0 0 0% 0 round 0px)' }
-              }
-              exit={
-                reduced ? { opacity: 0 } : { opacity: 0, clipPath: 'inset(0 0 3% 0 round 16px)' }
-              }
-              transition={MOTION}
-            >
-              {page === 'dashboard' ? (
-                <Dashboard
-                  progress={progress}
-                  badges={badges}
-                  routeId={routeId}
-                  onChooseRoute={chooseRoute}
-                  onNavigate={navigate}
-                  onMaterials={() => {
-                    setChecked(progress.materials ? route.components.map((_, i) => i) : []);
-                    openModal('materials');
-                  }}
-                />
-              ) : page === 'hardware' ? (
-                <HardwareSimulator
-                  key={routeId}
-                  routeId={routeId}
-                  onRouteChange={switchRoute}
-                  onMaterials={() => {
-                    setChecked(progress.materials ? route.components.map((_, i) => i) : []);
-                    openModal('materials');
-                  }}
-                  completed={progress.wiring}
-                  onComplete={() => complete('wiring')}
-                  onNext={() => navigate('code')}
-                />
-              ) : page === 'ranking' ? (
-                <MakerRanking xp={xp} />
-              ) : (
-                <CodeLab
-                  key={routeId}
-                  routeId={routeId}
-                  unlocked={progress.wiring}
-                  completed={progress.code}
-                  onComplete={() => {
-                    complete('code');
-                    openModal('success');
-                  }}
-                  onHardware={() => navigate('hardware')}
-                />
-              )}
-            </motion.div>
-          </AnimatePresence>
+          <div key={page} ref={pageRef} className="page-transition">
+            {page === 'dashboard' ? (
+              <Dashboard
+                progress={progress}
+                badges={badges}
+                routeId={routeId}
+                onChooseRoute={chooseRoute}
+                onNavigate={navigate}
+                onMaterials={() => {
+                  setChecked(progress.materials ? route.components.map((_, i) => i) : []);
+                  openModal('materials');
+                }}
+              />
+            ) : page === 'hardware' ? (
+              <HardwareSimulator
+                key={routeId}
+                routeId={routeId}
+                onRouteChange={switchRoute}
+                onMaterials={() => {
+                  setChecked(progress.materials ? route.components.map((_, i) => i) : []);
+                  openModal('materials');
+                }}
+                completed={progress.wiring}
+                onComplete={() => complete('wiring')}
+                onNext={(event) => navigate('code', event)}
+              />
+            ) : page === 'ranking' ? (
+              <MakerRanking xp={xp} />
+            ) : (
+              <CodeLab
+                key={routeId}
+                routeId={routeId}
+                unlocked={progress.wiring}
+                completed={progress.code}
+                onComplete={() => {
+                  complete('code');
+                  openModal('success');
+                }}
+                onHardware={(event) => navigate('hardware', event)}
+              />
+            )}
+          </div>
           <footer className="app-footer">
             <span>
               SPARKMATE <i>®</i> LEARN. BUILD. BEFRIEND.

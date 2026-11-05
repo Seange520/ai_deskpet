@@ -1,3 +1,4 @@
+import './card-glass.css';
 import { useRef } from 'react';
 import useDashboardDepth from './useDashboardDepth';
 import Button from './Button';
@@ -26,7 +27,11 @@ import { Board, Pet } from './Visuals';
 
 // 外层负责倾斜，article 保留原有语义与布局，内部图文按深度分别视差。
 function TiltCard({ children, className = '', current = false }) {
-  const card = <SpotlightCard className={`level-card ${className}`}>{children}</SpotlightCard>;
+  const card = (
+    <SpotlightCard current={current} className={`level-card ${className}`}>
+      {children}
+    </SpotlightCard>
+  );
   return (
     <TiltSurface lightEffect={false}>
       {current ? <ShineBorder>{card}</ShineBorder> : card}
@@ -65,7 +70,7 @@ export default function Dashboard({
       time: '约 10 分钟',
       text: '从第一根杜邦线开始，让电路连接想象。',
       done: progress.wiring,
-      action: () => onNavigate('hardware'),
+      action: (event) => onNavigate('hardware', event),
     },
     {
       title: 'AI 觉醒',
@@ -75,7 +80,7 @@ export default function Dashboard({
       time: '约 8 分钟',
       text: '修改第一行参数，赋予桌宠独特的性格。',
       done: progress.code,
-      action: () => onNavigate('code'),
+      action: (event) => onNavigate('code', event),
     },
   ];
   // Follow the learning order even when earlier steps were completed out of order.
@@ -123,7 +128,7 @@ export default function Dashboard({
           </p>
           <Button
             className="btn primary"
-            onClick={() => onNavigate(progress.wiring ? 'code' : 'hardware')}
+            onClick={(event) => onNavigate(progress.wiring ? 'code' : 'hardware', event)}
           >
             {progress.wiring ? '进入代码工坊' : '进入硬件实验室'}
             <ArrowRight size={17} />
@@ -131,10 +136,13 @@ export default function Dashboard({
           <div className="guest-entry">
             <span>不注册，不用准备硬件。先玩一下。</span>
             <div>
-              <Button className="btn guest-button" onClick={() => onNavigate('hardware')}>
+              <Button
+                className="btn guest-button"
+                onClick={(event) => onNavigate('hardware', event)}
+              >
                 零门槛体验 · 虚拟连线
               </Button>
-              <Button className="text-button" onClick={() => onNavigate('code')}>
+              <Button className="text-button" onClick={(event) => onNavigate('code', event)}>
                 直接体验代码调参 <ArrowUpRight size={15} />
               </Button>
             </div>
@@ -222,7 +230,7 @@ export default function Dashboard({
                 )}
               </span>
             </div>
-            <Depth as="div" depth={1.2} className={`level-illustration illustration-${i}`}>
+            <Depth as="div" depth={1.2} className={`level-illustration card-art illustration-${i}`}>
               {i === 0 ? (
                 <Board />
               ) : i === 1 ? (
