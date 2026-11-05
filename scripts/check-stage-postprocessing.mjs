@@ -28,13 +28,34 @@ async function read(page, operation = 'read') {
       bloom.intensity = 0.9;
       s.invalidate();
     }
+    const reflector = s.scene.getObjectByName('space-reflective-floor')?.material;
+    const debris = s.scene.getObjectByName('space-floating-debris');
     return {
+      aurora: Boolean(s.scene.getObjectByName('space-aurora')),
+      gradient: Boolean(s.scene.getObjectByName('space-gradient-floor')),
+      horizon: s.scene.getObjectByName('space-horizon-structures')?.children.length || 0,
+      debris:
+        debris?.children.reduce(
+          (count, mesh) => count + (mesh.isInstancedMesh ? mesh.count : 0),
+          0,
+        ) || 0,
+      beams: s.scene.children
+        .flatMap((node) => node.children)
+        .filter((node) => node.name.startsWith('space-beams-'))
+        .map((node) => node.children.length),
+      reflection: reflector && {
+        mirror: reflector.mirror,
+        mixBlur: reflector.mixBlur,
+        resolution: [reflector.tDiffuse.image.width, reflector.tDiffuseBlur.image.height],
+      },
       effects: effects.map((e) => e.name),
       camera: s.camera.position.toArray(),
       toneMapping: s.gl.toneMapping,
       count:
         s.scene.getObjectByName('stage-gpu-particles')?.geometry.attributes.position.count || 0,
       fog: Boolean(s.scene.fog?.isFogExp2),
+      fogDensity: s.scene.fog?.density,
+      fogColor: s.scene.fog?.color.getHexString(),
       dpr: s.gl.getPixelRatio(),
       bloom: bloom?.intensity,
       geometries: s.gl.info.memory.geometries,
@@ -95,9 +116,19 @@ try {
               ]
             : [],
         );
-        expect(s.count).toBe(tier >= 2 ? 12 : 0);
+        expect(s.count).toBe([0, 0, 12, 600][tier]);
+        expect(s.aurora).toBe(tier >= 2);
+        expect(s.gradient).toBe(tier === 2);
+        expect(s.debris).toBe(tier >= 2 ? 120 : 0);
+        expect(s.horizon).toBe(tier >= 2 ? 14 : 0);
+        expect(s.beams).toEqual(tier >= 2 ? [5, 5, 5, 5] : []);
+        expect(s.reflection).toEqual(
+          tier === 3 ? { mirror: 0.55, mixBlur: 1, resolution: [256, 256] } : undefined,
+        );
         expect(s.fog).toBe(true);
         if (tier >= 2) {
+          expect(s.fogColor).toBe('1b1626');
+          expect(s.fogDensity).toBe(0.022);
           expect(s.toneMapping).toBe(0);
           expect(s.bloom).toBe(0.9);
         }
@@ -155,15 +186,29 @@ try {
     },
   );
   await check(
-    'HUD pointer parallax and particles animate; modal pauses Stage',
+    'Only empty Stage responds to pointer parallax; particles animate and modal pauses Stage',
     async (page) => {
       await page.goto(url + '/?quality=2');
       await expect.poll(() => read(page).then((s) => s?.effects.length)).toBe(4);
-      const before = await read(page);
       await page.mouse.move(120, 430);
+      const before = await read(page);
+      await page.mouse.move(190, 460);
+      await page.mouse.move(630, 240);
+      await page.waitForTimeout(150);
+      expect(Math.abs((await read(page)).camera[0] - before.camera[0])).toBeLessThan(0.018);
+      expect(
+        await page.evaluate(
+          () => document.elementFromPoint(1415, 425)?.closest('[data-space-hud]') === null,
+        ),
+      ).toBe(true);
+      await page.mouse.move(1415, 425);
       await expect
         .poll(async () => Math.abs((await read(page)).camera[0] - before.camera[0]))
         .toBeGreaterThan(0.035);
+      await page.mouse.move(620, 260);
+      await expect
+        .poll(async () => Math.abs((await read(page)).camera[0] - before.camera[0]))
+        .toBeLessThan(0.018);
       expect((await read(page)).time).toBeGreaterThan(before.time);
       await page.getByRole('article').first().getByRole('button').click();
       await expect(page.locator('.scene-stage')).toHaveAttribute('data-paused', 'true');
@@ -174,13 +219,21 @@ try {
     await page.goto(url + '/?quality=2');
     await expect.poll(() => read(page).then((s) => s?.effects.length)).toBe(4);
     const canvas = await page.locator('.scene-stage canvas').elementHandle();
-    const before = await read(page);
-    for (const tier of [3, 2, 3, 2, 3, 2, 3, 2]) {
+    const setTier = async (tier) => {
       await page.evaluate((tier) => {
         history.pushState({}, '', '?quality=' + tier);
         dispatchEvent(new PopStateEvent('popstate'));
       }, tier);
       await expect.poll(() => read(page).then((s) => s?.effects.length)).toBe(tier === 3 ? 5 : 4);
+    };
+    const initial = await read(page);
+    // The mirror sees behind the main camera and uploads some shared geometries on first use.
+    await setTier(3);
+    await setTier(2);
+    const before = await read(page);
+    expect(before.textures).toBeLessThanOrEqual(initial.textures + 2);
+    for (const tier of [3, 2, 3, 2, 3, 2, 3, 2]) {
+      await setTier(tier);
     }
     const after = await read(page);
     expect(after.textures).toBeLessThanOrEqual(before.textures + 2);

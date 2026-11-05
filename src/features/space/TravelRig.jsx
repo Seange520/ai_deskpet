@@ -2,6 +2,7 @@ import { useLayoutEffect, useMemo, useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { Matrix4, Quaternion, Vector3 } from 'three';
 import { buildTravelCurve, ISLANDS, TRAVEL_SECONDS } from './world';
+import { HUD_EXIT_MS } from './spaceLayout';
 import { useSpaceStore } from './spaceStore';
 
 const easeInOut = (t) => t * t * (3 - 2 * t);
@@ -71,6 +72,14 @@ export default function TravelRig({ reduced, paused, focusTarget }) {
       return;
     }
     const move = (event) => {
+      if (
+        event.pointerType !== 'mouse' ||
+        useSpaceStore.getState().phase !== 'idle' ||
+        event.target.closest?.('[data-space-hud], .companion')
+      ) {
+        reset();
+        return;
+      }
       motion.current = {
         x: (event.clientX / innerWidth) * 2 - 1,
         y: (event.clientY / innerHeight) * 2 - 1,
@@ -81,10 +90,10 @@ export default function TravelRig({ reduced, paused, focusTarget }) {
       motion.current = { x: 0, y: 0 };
       invalidate();
     };
-    window.addEventListener('pointermove', move, { passive: true });
+    window.addEventListener('pointermove', move, { passive: true, capture: true });
     window.addEventListener('blur', reset);
     return () => {
-      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointermove', move, true);
       window.removeEventListener('blur', reset);
     };
   }, [paused, reduced, invalidate]);
@@ -105,20 +114,29 @@ export default function TravelRig({ reduced, paused, focusTarget }) {
       rig.pose = getPose(store.focus, camera);
       if (!rig.flight) applyPose(camera, focusTarget, rig.pose);
     }
-    if (store.phase === 'departing') {
+    if (store.phase === 'departing' && rig.flight?.request !== store.request) {
       const pose = getPose(store.destination, camera);
+      motion.current = { x: 0, y: 0 };
       rig.flight = {
         request: store.request,
-        startedAt: now,
+        // Keep the original exit deadline on retarget; an airborne redirect starts immediately.
+        startedAt: rig.flight ? Math.max(now, rig.flight.startedAt) : now + HUD_EXIT_MS,
         pose,
         curve: buildTravelCurve(camera.getWorldPosition(new Vector3()), pose.position),
         fromQuaternion: camera.getWorldQuaternion(new Quaternion()),
         fromFocus: focusTarget.clone(),
         fromFov: camera.fov,
       };
-      store.depart(store.request);
     }
     const flight = rig.flight;
+    if (store.phase === 'departing') {
+      if (now < flight.startedAt) {
+        invalidate();
+        return;
+      }
+      flight.startedAt = now;
+      store.depart(store.request);
+    }
     if (
       flight?.request === store.request &&
       (store.phase === 'departing' || store.phase === 'traveling')

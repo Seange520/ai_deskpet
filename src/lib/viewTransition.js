@@ -50,7 +50,7 @@ export function navigateWithCamera(update, { event, direction = 'forward' } = {}
     }
   };
   if (
-    // Reduced motion uses a CSS-only fade: no snapshot freeze or delayed hit testing.
+    // Reduced motion applies the page update synchronously.
     reduced ||
     typeof document.startViewTransition !== 'function' ||
     !matchMedia(DESKTOP_VISUAL_QUERY).matches ||

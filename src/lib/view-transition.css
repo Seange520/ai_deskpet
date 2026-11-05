@@ -87,25 +87,11 @@
     opacity: 1;
   }
 }
-@keyframes page-camera-out {
-  to {
-    opacity: 0;
-  }
-}
 @media (prefers-reduced-motion: reduce) {
-  .page-transition {
-    animation: page-camera-fade 150ms ease-out !important;
-  }
-  .page-transition[data-camera-native='true'] {
+  .page-transition,
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
     animation: none !important;
-  }
-  ::view-transition-group(*) {
-    animation: none !important;
-  }
-  ::view-transition-old(page-camera) {
-    animation: page-camera-out 150ms linear both !important;
-  }
-  ::view-transition-new(page-camera) {
-    animation: page-camera-fade 150ms linear both !important;
   }
 }

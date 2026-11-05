@@ -7,6 +7,7 @@ import EnvironmentLighting from '../deskpet3d/EnvironmentLighting';
 import PetModel from '../deskpet3d/PetModel';
 import StageAtmosphere from '../stage/StageAtmosphere';
 import StageEffects from '../stage/StageEffects';
+import SpaceEnvironment from './SpaceEnvironment';
 import TravelRig from './TravelRig';
 import { HUB, ISLANDS, RING_RADIUS } from './world';
 
@@ -113,7 +114,7 @@ export default function WorldScene({ paused, reduced, tier }) {
   return (
     <>
       <color attach="background" args={[DUSK]} />
-      <fogExp2 attach="fog" args={[DUSK, 0.027]} />
+      <fogExp2 attach="fog" args={tier >= 2 ? ['#1b1626', 0.022] : [DUSK, 0.027]} />
       <EnvironmentLighting
         night={environment.night}
         paused={paused}
@@ -121,11 +122,17 @@ export default function WorldScene({ paused, reduced, tier }) {
         tier={tier}
       />
       <Skyline />
-      <mesh position={[0, -1.16, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-        <circleGeometry args={[85, 96]} />
-        <meshStandardMaterial color="#211b34" roughness={0.95} />
-      </mesh>
-      <gridHelper args={[110, 44, '#634d7c', '#403451']} position={[0, -1.13, 0]} />
+      {tier >= 2 ? (
+        <SpaceEnvironment tier={tier} paused={paused} reduced={reduced} />
+      ) : (
+        <>
+          <mesh position={[0, -1.16, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+            <circleGeometry args={[85, 96]} />
+            <meshStandardMaterial color="#211b34" roughness={0.95} />
+          </mesh>
+          <gridHelper args={[110, 44, '#634d7c', '#403451']} position={[0, -1.13, 0]} />
+        </>
+      )}
       <Orbit radius={RING_RADIUS} color="#ae86cf" opacity={0.62} />
       <Orbit radius={RING_RADIUS + 1.1} color="#a181ca" opacity={0.24} />
       <Orbit radius={7.3} color="#d4a4a1" opacity={0.47} />
@@ -158,13 +165,13 @@ export default function WorldScene({ paused, reduced, tier }) {
                 tier={tier}
                 cinematic={tier >= 2}
               />
-              {tier >= 2 && <StageAtmosphere paused={paused} reduced={reduced} />}
             </group>
           ) : (
             <Marker id={island.id} color={island.accent} />
           )}
         </Island>
       ))}
+      {tier >= 2 && <StageAtmosphere tier={tier} paused={paused} reduced={reduced} />}
       <TravelRig reduced={reduced} paused={paused} focusTarget={focusTarget} />
       {tier >= 2 && <StageEffects tier={tier} paused={paused} focusTarget={focusTarget} />}
     </>

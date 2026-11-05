@@ -9,7 +9,7 @@
 [![Vite](https://img.shields.io/badge/Vite-6-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vite.dev)
 [![React](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev)
 [![Zustand](https://img.shields.io/badge/Zustand-5-2D3748?style=flat-square)](https://zustand.docs.pmnd.rs)
-[![Release](https://img.shields.io/badge/release-v0.9.4a1--beta-FFC98B?style=flat-square)](https://github.com/Seange520/ai_deskpet/tree/v0.9.4a1-beta)
+[![Release](https://img.shields.io/badge/release-v0.9.4a2--a3--beta-FFC98B?style=flat-square)](https://github.com/Seange520/ai_deskpet/tree/v0.9.4a2-a3-beta)
 ![Status](https://img.shields.io/badge/status-Testing-orange?style=flat-square)
 [![Vercel](https://img.shields.io/badge/Vercel-Deployed-000000?style=flat-square&logo=vercel&logoColor=white)](https://www.seange.cn)
 
@@ -21,9 +21,11 @@
 
 ---
 
-## 当前版本 · v0.9.4a1-beta Space Kernel P0
+## 当前版本 · v0.9.4a2-a3-beta 空间环境与 HUD 编排
 
-全屏 Stage 以四个占位岛围绕中心信标组织世界。Tier 2/3 使用约 2.3 秒的弧线飞行，抵达后显示原教学 HUD。减少动画和 Tier 0/1 使用跳切。实现与实测记录见 [Space Kernel P0 报告](docs/SPACE_KERNEL_P0_REVIEW.md)。
+四岛 Stage 加入程序化极光、暮色雾、漂浮数据模块和岛屿光束。Tier 3 使用 256 × 256 实时模糊反射和 600 个空间尘埃点，Tier 2 使用程序化光池。
+
+Tier 2/3 正常动画下，DOM 教学面板随飞行淡出，并在抵达时从侧边分层滑入。常驻导航坞支持键盘操作，飞行中可改向。Tier 0/1 沿用页面转场，减少动态效果时直接跳切。四岛拓扑与基础航线见 [Space Kernel P0 报告](docs/SPACE_KERNEL_P0_REVIEW.md)。
 
 ### v0.9.4-beta 流光幻境 (Luminous Realm)
 

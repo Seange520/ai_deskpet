@@ -1,4 +1,5 @@
 import { navigateWithCamera, cancelCamera } from './lib/viewTransition';
+import useReducedMotionPreference from './lib/useReducedMotionPreference';
 import { isLowPowerDevice } from './lib/visualCapabilities';
 import { totalXP, levelFor, globalBadges, MAX_XP } from './stores/useLearningStore';
 import { playSound } from './lib/sounds';
@@ -6,7 +7,7 @@ import Button from './components/Button';
 import { MOTION } from './motion';
 import { TiltSurface, Depth } from './components/MicroEffects';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { AnimatePresence, MotionConfig, motion, useReducedMotion } from 'framer-motion';
+import { AnimatePresence, MotionConfig, motion } from 'framer-motion';
 import {
   Zap,
   LayoutDashboard,
@@ -44,8 +45,37 @@ const nav = [
   { id: 'ranking', name: '创客排位', en: '一起慢慢发光', icon: Trophy },
 ];
 
+function moveDockFocus(event) {
+  const buttons = Array.from(event.currentTarget.querySelectorAll('button'));
+  const index = buttons.indexOf(event.target);
+  if (index < 0 || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+
+  let next;
+  switch (event.key) {
+    case 'ArrowLeft':
+    case 'ArrowUp':
+      next = (index + buttons.length - 1) % buttons.length;
+      break;
+    case 'ArrowRight':
+    case 'ArrowDown':
+      next = (index + 1) % buttons.length;
+      break;
+    case 'Home':
+      next = 0;
+      break;
+    case 'End':
+      next = buttons.length - 1;
+      break;
+    default:
+      return;
+  }
+  event.preventDefault();
+  buttons[next].focus();
+}
+
 export default function App() {
-  const focusOnArrival = useRef(false);
+  const dock = useRef(null);
+  const focusOnArrival = useRef(null);
   const modalTrigger = useRef(null);
   function openModal(type) {
     modalTrigger.current = document.activeElement;
@@ -53,9 +83,11 @@ export default function App() {
   }
   const page = useSpaceStore((state) => state.focus);
   const phase = useSpaceStore((state) => state.phase);
+  const destination = useSpaceStore((state) => state.destination);
   const { tier } = useQualityTier();
   const { ready } = useStageLayer();
-  const reduced = useReducedMotion();
+  const reduced = useReducedMotionPreference();
+  const inFlight = phase === 'departing' || phase === 'traveling';
   const cinematic = tier >= 2 && ready && !reduced;
   const {
     routeId,
@@ -131,6 +163,7 @@ export default function App() {
   useLayoutEffect(() => {
     const space = useSpaceStore.getState();
     if (!cinematic && space.phase !== 'idle') {
+      focusOnArrival.current = null;
       space.jumpTo(space.destination);
       window.scrollTo({ top: 0, behavior: 'instant' });
     }
@@ -138,14 +171,14 @@ export default function App() {
   useLayoutEffect(() => {
     if (phase !== 'arriving') return;
     window.scrollTo({ top: 0, behavior: 'instant' });
-    if (focusOnArrival.current) {
+    if (focusOnArrival.current && document.activeElement === focusOnArrival.current) {
       const heading = document.querySelector('.space-hud-panel h1');
       if (heading) {
         heading.tabIndex = -1;
         heading.focus({ preventScroll: true });
       }
     }
-    focusOnArrival.current = false;
+    focusOnArrival.current = null;
   }, [page, phase]);
   function navigate(id, event, immediate = false) {
     const space = useSpaceStore.getState();
@@ -154,7 +187,7 @@ export default function App() {
       window.scrollTo({ top: 0, behavior: 'instant' });
       return;
     }
-    if (tier <= 1) {
+    if (tier <= 1 || reduced) {
       const order = nav.map(({ id }) => id);
       navigateWithCamera(() => space.jumpTo(id), {
         event,
@@ -164,8 +197,13 @@ export default function App() {
     }
     cancelCamera();
     if (cinematic && !modal && !immediate) {
-      focusOnArrival.current =
-        event?.detail === 0 && Boolean(event.currentTarget?.closest('.space-hud-panel'));
+      if (id === space.destination) return;
+      focusOnArrival.current = null;
+      if (event?.currentTarget?.closest('.space-hud-panel')) {
+        const button = dock.current.querySelector(`[data-island="${id}"]`);
+        button?.focus({ preventScroll: true });
+        if (event.detail === 0) focusOnArrival.current = button;
+      }
       space.travelTo(id);
     } else {
       space.jumpTo(id);
@@ -183,14 +221,14 @@ export default function App() {
   }
 
   return (
-    <MotionConfig reducedMotion="user" transition={MOTION}>
+    <MotionConfig reducedMotion={reduced ? 'always' : 'never'} transition={MOTION}>
       <div
         className="app-shell"
         data-low-power={isLowPowerDevice()}
         data-space-phase={phase}
         data-space-focus={page}
       >
-        <aside className="sidebar" inert={modal ? '' : undefined}>
+        <aside className="sidebar" data-space-hud inert={modal ? '' : undefined}>
           <Button
             className="brand"
             onClick={(event) => navigate('dashboard', event)}
@@ -206,13 +244,20 @@ export default function App() {
           <div className="workspace-label">
             WORKSPACE <span>个人学习空间</span>
           </div>
-          <nav aria-label="主导航">
+          <nav ref={dock} className="space-dock" aria-label="主导航" onKeyDown={moveDockFocus}>
+            <span className="sr-only" aria-live="polite" aria-atomic="true">
+              {inFlight
+                ? `正在飞往${nav.find((n) => n.id === destination).name}`
+                : `当前岛屿：${nav.find((n) => n.id === page).name}`}
+            </span>
             {nav.map((n) => (
               <TiltSurface key={n.id} navigation>
                 <Button
                   className={`nav-item ${page === n.id ? 'selected' : ''}`}
                   key={n.id}
                   aria-label={n.name}
+                  data-island={n.id}
+                  data-pending={inFlight && destination === n.id ? '' : undefined}
                   onClick={(event) => navigate(n.id, event)}
                   aria-current={page === n.id ? 'page' : undefined}
                 >
@@ -277,7 +322,7 @@ export default function App() {
           </div>
         </aside>
         <main className="main-content" inert={modal ? '' : undefined}>
-          <header className="topbar">
+          <header className="topbar" data-space-hud>
             <div className="breadcrumb">
               工作空间 <ChevronRight size={13} />
               <b>{nav.find((n) => n.id === page).name}</b>
@@ -312,7 +357,7 @@ export default function App() {
             <span className="top-avatar">S</span>
           </header>
           {storageError && (
-            <div className="storage-note" role="status">
+            <div className="storage-note" role="status" data-space-hud>
               浏览器存储不可用，本次学习进度将只保留到关闭页面。
             </div>
           )}
@@ -358,7 +403,7 @@ export default function App() {
               />
             )}
           </HudChoreographer>
-          <footer className="app-footer">
+          <footer className="app-footer" data-space-hud>
             <span>
               SPARKMATE <i>®</i> LEARN. BUILD. BEFRIEND.
             </span>
@@ -367,7 +412,7 @@ export default function App() {
         </main>
         <Companion celebrations={celebrations} feedback={feedback} hidden={Boolean(modal)} />
         {toast && (
-          <div className="kit-toast" role="status">
+          <div className="kit-toast" role="status" data-space-hud>
             {toast}
           </div>
         )}

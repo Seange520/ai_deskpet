@@ -2,7 +2,7 @@ import { Component, Suspense, useEffect, useRef, useState } from 'react';
 import { ACESFilmicToneMapping, NoToneMapping } from 'three';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { AdaptiveDpr, PerformanceMonitor } from '@react-three/drei';
-import { useReducedMotion } from 'framer-motion';
+import useReducedMotionPreference from '../../lib/useReducedMotionPreference';
 import { QUALITY_BUDGETS } from '../../lib/visualCapabilities';
 import GpuProbe from '../../lib/GpuProbe';
 import WorldScene from '../space/WorldScene';
@@ -53,7 +53,7 @@ function Lifecycle({ quality, onReady }) {
   return null;
 }
 export default function SceneCanvas({ quality, onReady }) {
-  const reduced = useReducedMotion();
+  const reduced = useReducedMotionPreference();
   const [hidden, setHidden] = useState(document.hidden);
   useEffect(() => {
     const sync = () =>
