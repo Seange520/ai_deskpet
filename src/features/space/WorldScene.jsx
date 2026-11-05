@@ -1,13 +1,12 @@
-import { useMemo } from 'react';
+import { Suspense, useMemo } from 'react';
 import { Vector3 } from 'three';
-import { useLearningStore } from '../../stores/useLearningStore';
 import { useEnvironmentStore } from '../environment/useEnvironmentStore';
-import { usePetActions } from '../interaction/usePetActions';
 import EnvironmentLighting from '../deskpet3d/EnvironmentLighting';
-import PetModel from '../deskpet3d/PetModel';
 import StageAtmosphere from '../stage/StageAtmosphere';
 import StageEffects from '../stage/StageEffects';
-import SpaceEnvironment from './SpaceEnvironment';
+import SpaceEnvironment, { IslandLights } from './SpaceEnvironment';
+import IslandCuller from './IslandCuller';
+import { useIslandContent } from './islandAssets';
 import TravelRig from './TravelRig';
 import { HUB, ISLANDS, RING_RADIUS } from './world';
 
@@ -23,9 +22,9 @@ function Orbit({ radius, color, opacity, y = -1.08 }) {
   );
 }
 
-function Island({ island, children }) {
+function IslandDetail({ island, children }) {
   return (
-    <group name={`space-island-${island.id}`} position={island.position}>
+    <group name="space-island-detail">
       <mesh position={[0, -0.55, 0]}>
         <cylinderGeometry args={[3.35, 3.03, 1.1, 48]} />
         <meshStandardMaterial
@@ -59,21 +58,21 @@ function Island({ island, children }) {
   );
 }
 
-function Marker({ id, color }) {
+function IslandPlaceholder({ color }) {
   return (
-    <mesh position={[0, 1.18, 0]} rotation={[0.3, 0.45, 0.2]}>
-      {id === 'hardware' && <icosahedronGeometry args={[1.15, 0]} />}
-      {id === 'code' && <octahedronGeometry args={[1.25, 0]} />}
-      {id === 'ranking' && <dodecahedronGeometry args={[1.16, 0]} />}
-      <meshPhysicalMaterial
-        color={color}
-        emissive={color}
-        emissiveIntensity={0.3}
-        metalness={0.58}
-        roughness={0.23}
-        clearcoat={1}
-      />
+    <mesh name="space-island-placeholder" position={[0, 0.84, 0]}>
+      <octahedronGeometry args={[0.72, 0]} />
+      <meshBasicMaterial color={color} wireframe />
     </mesh>
+  );
+}
+
+function LoadedIsland({ island, tier, paused, reduced, fallback }) {
+  const Content = useIslandContent(island.id);
+  return Content ? (
+    <Content island={island} tier={tier} paused={paused} reduced={reduced} />
+  ) : (
+    fallback
   );
 }
 
@@ -106,24 +105,21 @@ function Skyline() {
   );
 }
 
-export default function WorldScene({ paused, reduced, tier }) {
-  const runtime = useLearningStore((state) => state.runtime);
-  const interaction = usePetActions();
-  const environment = useEnvironmentStore();
+export default function WorldScene({ paused, reduced, tier, performanceStep }) {
+  const night = useEnvironmentStore((state) => state.night);
   const focusTarget = useMemo(() => new Vector3(...ISLANDS.dashboard.camera.focus), []);
   return (
     <>
       <color attach="background" args={[DUSK]} />
       <fogExp2 attach="fog" args={tier >= 2 ? ['#1b1626', 0.022] : [DUSK, 0.027]} />
-      <EnvironmentLighting
-        night={environment.night}
-        paused={paused}
-        reducedMotion={reduced}
-        tier={tier}
-      />
+      <EnvironmentLighting night={night} paused={paused} reducedMotion={reduced} tier={tier} />
       <Skyline />
       {tier >= 2 ? (
-        <SpaceEnvironment tier={tier} paused={paused} reduced={reduced} />
+        <SpaceEnvironment
+          reflection={tier === 3 && performanceStep < 2}
+          paused={paused}
+          reduced={reduced}
+        />
       ) : (
         <>
           <mesh position={[0, -1.16, 0]} rotation={[-Math.PI / 2, 0, 0]}>
@@ -152,28 +148,37 @@ export default function WorldScene({ paused, reduced, tier }) {
           />
         </mesh>
       </group>
-      {islands.map((island) => (
-        <Island key={island.id} island={island}>
-          {island.id === 'dashboard' ? (
-            <group position={[0, 1.4, 0]}>
-              <PetModel
-                runtime={runtime}
-                interaction={interaction}
-                environment={environment}
-                reducedMotion={reduced}
-                paused={paused}
-                tier={tier}
-                cinematic={tier >= 2}
-              />
-            </group>
-          ) : (
-            <Marker id={island.id} color={island.accent} />
-          )}
-        </Island>
-      ))}
+      {islands.map((island) => {
+        const fallback = <IslandPlaceholder color={island.accent} />;
+        return (
+          <IslandCuller key={island.id} island={island} tier={tier}>
+            <IslandDetail island={island}>
+              {tier >= 2 && (
+                <IslandLights island={island} tier={tier} volume={performanceStep < 1} />
+              )}
+              <Suspense fallback={fallback}>
+                <LoadedIsland
+                  island={island}
+                  tier={tier}
+                  paused={paused}
+                  reduced={reduced}
+                  fallback={fallback}
+                />
+              </Suspense>
+            </IslandDetail>
+          </IslandCuller>
+        );
+      })}
       {tier >= 2 && <StageAtmosphere tier={tier} paused={paused} reduced={reduced} />}
       <TravelRig reduced={reduced} paused={paused} focusTarget={focusTarget} />
-      {tier >= 2 && <StageEffects tier={tier} paused={paused} focusTarget={focusTarget} />}
+      {tier >= 2 && (
+        <StageEffects
+          tier={tier}
+          paused={paused}
+          focusTarget={focusTarget}
+          cinematic={performanceStep < 3}
+        />
+      )}
     </>
   );
 }

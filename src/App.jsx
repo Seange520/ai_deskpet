@@ -27,6 +27,7 @@ import { useQualityTier } from './lib/qualityTier';
 import { useStageLayer } from './features/stage/StageLayer';
 import { useSpaceStore } from './features/space/spaceStore';
 import HudChoreographer from './features/space/HudChoreographer';
+import { preloadIsland, useIslandAssetFailures } from './features/space/islandAssets';
 import Dashboard from './components/Dashboard';
 import NumberTicker from './components/ui/NumberTicker';
 import HardwareSimulator from './components/HardwareSimulator';
@@ -82,6 +83,7 @@ export default function App() {
     setModal(type);
   }
   const page = useSpaceStore((state) => state.focus);
+  const islandUnavailable = useIslandAssetFailures((state) => state[page]);
   const phase = useSpaceStore((state) => state.phase);
   const destination = useSpaceStore((state) => state.destination);
   const { tier } = useQualityTier();
@@ -257,6 +259,8 @@ export default function App() {
                   key={n.id}
                   aria-label={n.name}
                   data-island={n.id}
+                  onPointerEnter={tier > 0 ? () => preloadIsland(n.id) : undefined}
+                  onFocus={tier > 0 ? () => preloadIsland(n.id) : undefined}
                   data-pending={inFlight && destination === n.id ? '' : undefined}
                   onClick={(event) => navigate(n.id, event)}
                   aria-current={page === n.id ? 'page' : undefined}
@@ -362,6 +366,11 @@ export default function App() {
             </div>
           )}
           <HudChoreographer key={page} focus={page} phase={phase} cinematic={cinematic}>
+            {tier > 0 && islandUnavailable && (
+              <div className="storage-note" role="alert">
+                暂时无法载入此岛的 3D 内容。请检查网络连接，教学功能仍可使用。
+              </div>
+            )}
             {page === 'dashboard' ? (
               <Dashboard
                 progress={progress}

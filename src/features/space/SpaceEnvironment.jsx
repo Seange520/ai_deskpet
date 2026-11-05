@@ -4,9 +4,7 @@ import { AdditiveBlending, BackSide, Color, DoubleSide } from 'three';
 import { sceneAuroraFragment } from '../../components/auroraShader';
 import FloatingDebris from './FloatingDebris';
 import ReflectiveFloor from './ReflectiveFloor';
-import { ISLANDS, RING_RADIUS } from './world';
-
-const islands = Object.values(ISLANDS);
+import { RING_RADIUS } from './world';
 
 const atmosphereVertex = `
 varying vec2 effectUv;
@@ -131,7 +129,7 @@ function HorizonStructures() {
   );
 }
 
-function IslandLights({ island, tier }) {
+export function IslandLights({ island, tier, volume }) {
   const [x, , z] = island.position;
   const heading = Math.atan2(x, z);
   const tint = useMemo(() => ({ value: new Color(island.accent) }), [island.accent]);
@@ -144,7 +142,7 @@ function IslandLights({ island, tier }) {
   );
   const beams = useMemo(() => ({ tint, strength: { value: 0.26 } }), [tint]);
   return (
-    <group position={island.position} rotation={[0, heading, 0]}>
+    <group rotation={[0, heading, 0]}>
       <mesh position={[0, -1.145, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         <planeGeometry args={[15.5, 15.5]} />
         <shaderMaterial
@@ -157,41 +155,43 @@ function IslandLights({ island, tier }) {
           toneMapped={false}
         />
       </mesh>
-      <group name={`space-beams-${island.id}`} position={[0, 0, -3.35]}>
-        {Array.from({ length: 5 }, (_, i) => {
-          const x = i - 2;
-          const height = 4.7 + ((i * 3) % 5) * 0.48;
-          return (
-            <mesh
-              key={i}
-              position={[x * 0.98, height / 2 - 0.62, -Math.abs(x) * 0.24]}
-              rotation={[-0.2, x * 0.26, -x * 0.13]}
-            >
-              <planeGeometry args={[2.8, height]} />
-              <shaderMaterial
-                vertexShader={atmosphereVertex}
-                fragmentShader={beamFragment}
-                uniforms={beams}
-                side={DoubleSide}
-                transparent
-                depthWrite={false}
-                blending={AdditiveBlending}
-                toneMapped={false}
-              />
-            </mesh>
-          );
-        })}
-      </group>
+      {volume && (
+        <group name={`space-beams-${island.id}`} position={[0, 0, -3.35]}>
+          {Array.from({ length: 5 }, (_, i) => {
+            const x = i - 2;
+            const height = 4.7 + ((i * 3) % 5) * 0.48;
+            return (
+              <mesh
+                key={i}
+                position={[x * 0.98, height / 2 - 0.62, -Math.abs(x) * 0.24]}
+                rotation={[-0.2, x * 0.26, -x * 0.13]}
+              >
+                <planeGeometry args={[2.8, height]} />
+                <shaderMaterial
+                  vertexShader={atmosphereVertex}
+                  fragmentShader={beamFragment}
+                  uniforms={beams}
+                  side={DoubleSide}
+                  transparent
+                  depthWrite={false}
+                  blending={AdditiveBlending}
+                  toneMapped={false}
+                />
+              </mesh>
+            );
+          })}
+        </group>
+      )}
     </group>
   );
 }
 
-export default function SpaceEnvironment({ tier, paused, reduced }) {
+export default function SpaceEnvironment({ reflection, paused, reduced }) {
   return (
     <>
       <AuroraSky paused={paused} reduced={reduced} />
       <HorizonStructures />
-      {tier === 3 ? (
+      {reflection ? (
         <ReflectiveFloor />
       ) : (
         <mesh name="space-gradient-floor" position={[0, -1.16, 0]} rotation={[-Math.PI / 2, 0, 0]}>
@@ -199,9 +199,6 @@ export default function SpaceEnvironment({ tier, paused, reduced }) {
           <meshBasicMaterial color="#251d31" />
         </mesh>
       )}
-      {islands.map((island) => (
-        <IslandLights key={island.id} island={island} tier={tier} />
-      ))}
       <mesh position={[0, -1.145, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         <ringGeometry args={[RING_RADIUS - 4.4, RING_RADIUS + 4.4, 96]} />
         <meshBasicMaterial color="#9d7abc" transparent opacity={0.045} depthWrite={false} />

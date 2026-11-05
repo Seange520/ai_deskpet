@@ -60,6 +60,20 @@ async function readWorld(page) {
       islands: root.scene.children
         .filter((item) => item.name.startsWith('space-island-'))
         .map((item) => item.name),
+      lod: Object.fromEntries(
+        ['dashboard', 'hardware', 'code', 'ranking'].map((id) => {
+          const group = root.scene.getObjectByName('space-island-' + id);
+          return [
+            id,
+            {
+              level: group?.userData.lod,
+              visible: group?.visible,
+              detail: Boolean(group?.getObjectByName('space-island-detail')),
+              placeholder: Boolean(group?.getObjectByName('space-island-placeholder')),
+            },
+          ];
+        }),
+      ),
       triangles: root.gl.info.render.triangles,
       size: [root.size.width, root.size.height],
     };
@@ -76,6 +90,9 @@ try {
   await expect(page.locator('.render-shell')).toHaveAttribute('data-quality-tier', '3');
   const initial = await readWorld(page);
   expect(initial.islands).toHaveLength(4);
+  expect(initial.lod.dashboard).toMatchObject({ level: 'detail', visible: true, detail: true });
+  expect(initial.lod.ranking).toMatchObject({ level: 'silhouette', visible: true, detail: false });
+  expect(initial.lod.code).toMatchObject({ level: 'hidden', visible: false, detail: false });
   expect(initial.fog).toBe(true);
   expect(initial.size).toEqual([1728, 1080]);
   const canvas = await page.locator('.scene-stage canvas').elementHandle();
@@ -129,11 +146,21 @@ try {
   await expect(codeButton).toBeFocused();
   await page.waitForTimeout(930);
   const airborne = await readWorld(page);
+  expect(airborne.lod.hardware).toMatchObject({
+    level: 'detail',
+    visible: true,
+    detail: true,
+    placeholder: false,
+  });
+  expect(airborne.lod.dashboard).toMatchObject({ level: 'detail', visible: true, detail: true });
+  expect([airborne.lod.code, airborne.lod.ranking].some(({ detail }) => !detail)).toBe(true);
   expect(airborne.position[1]).toBeGreaterThan(ISLANDS.hardware.camera.position[1] + 1.5);
   expect(distance(initial.position, airborne.position)).toBeGreaterThan(2);
   expect(distance(initial.quaternion, airborne.quaternion)).toBeGreaterThan(0.03);
   await page.screenshot({ path: join(output, 'traveling.png') });
   await expect(shell(page)).toHaveAttribute('data-space-phase', 'traveling');
+  await page.waitForFunction(() => performance.now() - window.spacePhases[1].at > 1750);
+  await page.screenshot({ path: join(output, 'approaching-hardware.png') });
   await expect(shell(page)).toHaveAttribute('data-space-focus', 'hardware');
   await expect(page.getByRole('heading', { name: /认识它/ })).toBeVisible();
   await expect(shell(page)).toHaveAttribute('data-space-phase', 'idle');
@@ -141,6 +168,13 @@ try {
   await expect(codeButton).toBeFocused();
   await page.waitForTimeout(300);
   const landed = await readWorld(page);
+  expect(landed.lod.hardware).toMatchObject({
+    level: 'detail',
+    visible: true,
+    detail: true,
+    placeholder: false,
+  });
+  expect(landed.lod.ranking).toMatchObject({ level: 'hidden', visible: false, detail: false });
   expect(distance(landed.position, ISLANDS.hardware.camera.position)).toBeLessThan(0.2);
   expect(landed.dof).toEqual(ISLANDS.hardware.camera.focus);
   expect(landed.fov).toBe(ISLANDS.hardware.camera.fov);
@@ -259,6 +293,12 @@ try {
       await expect(shell(fallback)).toHaveAttribute('data-space-phase', 'idle');
       await expect(shell(fallback)).toHaveAttribute('data-space-focus', 'code');
       await expect(fallback.locator('.page-transition')).toHaveCSS('animation-name', 'none');
+    }
+    if (tier === 1) {
+      await expect(fallback.locator('.page-transition')).toBeVisible();
+      await expect(fallback.locator('.scene-stage')).toHaveAttribute('data-effects', 'none');
+      await expect(fallback.locator('html')).not.toHaveAttribute('data-vt-direction', /.+/);
+      await fallback.screenshot({ path: join(output, 'tier1-dom-navigation.png') });
     }
     results.push({ name: 'Jump navigation', tier, reduced });
     await fallback.close();

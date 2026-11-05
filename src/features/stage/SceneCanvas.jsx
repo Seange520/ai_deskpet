@@ -1,4 +1,4 @@
-import { Component, Suspense, useEffect, useRef, useState } from 'react';
+import { Component, Suspense, useEffect, useState } from 'react';
 import { ACESFilmicToneMapping, NoToneMapping } from 'three';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { AdaptiveDpr, PerformanceMonitor } from '@react-three/drei';
@@ -77,18 +77,22 @@ export default function SceneCanvas({ quality, onReady }) {
     };
   }, []);
   const paused = hidden;
+  const { tier, adaptive, performanceStep } = quality;
+  const effects =
+    tier < 2
+      ? 'none'
+      : performanceStep >= 3
+        ? 'aces-vignette-fxaa'
+        : tier === 3
+          ? 'bloom-aces-vignette-fxaa-dof'
+          : 'bloom-aces-vignette-fxaa';
   return (
     <div
       className="scene-stage"
       data-testid="scene-stage"
       data-paused={paused}
-      data-effects={
-        quality.tier >= 2
-          ? quality.tier === 3
-            ? 'bloom-aces-vignette-fxaa-dof'
-            : 'bloom-aces-vignette-fxaa'
-          : 'none'
-      }
+      data-effects={effects}
+      data-performance-step={performanceStep}
       aria-hidden="true"
     >
       <Boundary onFail={quality.fail}>
@@ -107,25 +111,18 @@ export default function SceneCanvas({ quality, onReady }) {
             </Suspense>
           )}
           <AdaptiveDpr />
-          {quality.override === null && !paused && !reduced && (
-            <DemandPerformance onDecline={quality.degrade} />
+          {adaptive && tier >= 2 && !paused && !reduced && (
+            // Each step starts a fresh window. With motion enabled, TravelRig requests every frame.
+            <PerformanceMonitor key={performanceStep} iterations={4} onDecline={quality.degrade} />
           )}
-          <WorldScene reduced={reduced || quality.tier === 1} paused={paused} tier={quality.tier} />
+          <WorldScene
+            reduced={reduced || tier === 1}
+            paused={paused}
+            tier={tier}
+            performanceStep={performanceStep}
+          />
         </Canvas>
       </Boundary>
     </div>
-  );
-}
-// Demand gaps are idle time, not poor FPS. Only lower quality after continuous frames.
-function DemandPerformance({ onDecline }) {
-  const continuous = useRef(0);
-  useFrame((_, delta) => {
-    continuous.current = delta > 0.15 ? 0 : continuous.current + 1;
-  }, -2);
-  const decline = () => {
-    if (continuous.current >= 30) onDecline();
-  };
-  return (
-    <PerformanceMonitor iterations={4} flipflops={2} onDecline={decline} onFallback={decline} />
   );
 }

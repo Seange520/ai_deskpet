@@ -11,7 +11,7 @@ import {
 } from '@react-three/postprocessing';
 import { ToneMappingMode } from 'postprocessing';
 
-export default function StageEffects({ tier, paused, focusTarget }) {
+export default function StageEffects({ tier, paused, focusTarget, cinematic }) {
   const ref = useRef(null);
   const depth = useRef(null);
   useFrame(() => depth.current?.target.copy(focusTarget));
@@ -26,18 +26,20 @@ export default function StageEffects({ tier, paused, focusTarget }) {
   return (
     <EffectComposer ref={ref} multisampling={0} enableNormalPass={false} enabled={!paused}>
       <ComposerResources />
-      <Bloom
-        mipmapBlur
-        intensity={0.9}
-        luminanceThreshold={0.82}
-        luminanceSmoothing={0.2}
-        radius={0.7}
-      />
+      {cinematic && (
+        <Bloom
+          mipmapBlur
+          intensity={0.9}
+          luminanceThreshold={0.82}
+          luminanceSmoothing={0.2}
+          radius={0.7}
+        />
+      )}
       <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
       <Vignette offset={0.3} darkness={0.5} />
       <FXAA />
       {/* 6.39.6 uses world distances; target keeps the requested DoF focused on the eyes. */}
-      {tier === 3 && (
+      {cinematic && tier === 3 && (
         <DepthOfField
           focusDistance={0.02}
           focalLength={0.055}

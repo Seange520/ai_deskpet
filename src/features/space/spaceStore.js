@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { preloadIsland } from './islandAssets';
 import { ISLAND_HUD } from './spaceLayout.js';
 
 export const INITIAL_ISLAND = 'dashboard';
@@ -8,11 +9,15 @@ export const useSpaceStore = create((set) => ({
   destination: INITIAL_ISLAND,
   phase: 'idle',
   request: 0,
-  travelTo: (id) =>
-    set((state) => {
-      if (!Object.hasOwn(ISLAND_HUD, id) || id === state.destination) return state;
-      return { destination: id, phase: 'departing', request: state.request + 1 };
-    }),
+  travelTo: (id) => {
+    if (!Object.hasOwn(ISLAND_HUD, id)) return;
+    preloadIsland(id);
+    set((state) =>
+      id === state.destination
+        ? state
+        : { destination: id, phase: 'departing', request: state.request + 1 },
+    );
+  },
   jumpTo: (id) =>
     set((state) => {
       if (!Object.hasOwn(ISLAND_HUD, id) || (id === state.focus && state.phase === 'idle'))

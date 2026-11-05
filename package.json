@@ -1,7 +1,7 @@
 {
   "name": "sparkmate",
   "private": true,
-  "version": "0.9.4a2-a3-beta",
+  "version": "0.9.4a4-beta",
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1",

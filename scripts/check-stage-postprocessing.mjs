@@ -16,7 +16,9 @@ async function read(page, operation = 'read') {
     const s = _roots.get(document.querySelector('.scene-stage canvas'))?.store.getState();
     if (!s) return null;
     const effects = [];
+    const beams = [];
     s.scene.traverse((o) => {
+      if (o.name.startsWith('space-beams-')) beams.push(o.children.length);
       for (const e of o.__r3f?.objects || []) if (e.getBlendMode) effects.push(e);
     });
     const bloom = effects.find((e) => e.name === 'BloomEffect');
@@ -39,10 +41,7 @@ async function read(page, operation = 'read') {
           (count, mesh) => count + (mesh.isInstancedMesh ? mesh.count : 0),
           0,
         ) || 0,
-      beams: s.scene.children
-        .flatMap((node) => node.children)
-        .filter((node) => node.name.startsWith('space-beams-'))
-        .map((node) => node.children.length),
+      beams,
       reflection: reflector && {
         mirror: reflector.mirror,
         mixBlur: reflector.mixBlur,
@@ -121,7 +120,7 @@ try {
         expect(s.gradient).toBe(tier === 2);
         expect(s.debris).toBe(tier >= 2 ? 120 : 0);
         expect(s.horizon).toBe(tier >= 2 ? 14 : 0);
-        expect(s.beams).toEqual(tier >= 2 ? [5, 5, 5, 5] : []);
+        expect(s.beams).toEqual([[], [], [5], [5, 5]][tier]);
         expect(s.reflection).toEqual(
           tier === 3 ? { mirror: 0.55, mixBlur: 1, resolution: [256, 256] } : undefined,
         );

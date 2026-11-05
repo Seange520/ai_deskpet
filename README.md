@@ -9,7 +9,7 @@
 [![Vite](https://img.shields.io/badge/Vite-6-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vite.dev)
 [![React](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev)
 [![Zustand](https://img.shields.io/badge/Zustand-5-2D3748?style=flat-square)](https://zustand.docs.pmnd.rs)
-[![Release](https://img.shields.io/badge/release-v0.9.4a2--a3--beta-FFC98B?style=flat-square)](https://github.com/Seange520/ai_deskpet/tree/v0.9.4a2-a3-beta)
+[![Release](https://img.shields.io/badge/release-v0.9.4a4--beta-FFC98B?style=flat-square)](https://github.com/Seange520/ai_deskpet/tree/v0.9.4a4-beta)
 ![Status](https://img.shields.io/badge/status-Testing-orange?style=flat-square)
 [![Vercel](https://img.shields.io/badge/Vercel-Deployed-000000?style=flat-square&logo=vercel&logoColor=white)](https://www.seange.cn)
 
@@ -21,7 +21,13 @@
 
 ---
 
-## 当前版本 · v0.9.4a2-a3-beta 空间环境与 HUD 编排
+## 当前版本 · v0.9.4a4-beta Space Kernel P3
+
+空间内核通过距离剔除和 LOD 卸载远岛细节，保留焦点与目标岛。导航悬停、键盘聚焦和起飞都会预取岛屿模块。模块加载失败时保留占位几何和可操作的 DOM 教学界面。
+
+持续低帧率时依次关闭岛屿体积光、反射、Bloom 与景深，必要时回退到 Tier 1 的 DOM 导航。固定 `?quality=3` 用于完整画质演示，`?quality=3&adaptive=1` 用于验收完整降档链路。
+
+### v0.9.4a2-a3-beta 空间环境与 HUD 编排
 
 四岛 Stage 加入程序化极光、暮色雾、漂浮数据模块和岛屿光束。Tier 3 使用 256 × 256 实时模糊反射和 600 个空间尘埃点，Tier 2 使用程序化光池。
 
