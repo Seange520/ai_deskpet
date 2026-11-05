@@ -23,6 +23,7 @@ export default function StageEffects({ tier, paused, focusTarget, cinematic }) {
     ref.current?.setSize(size.width, size.height);
     invalidate();
   }, [dpr, size, gl, invalidate, tier, paused]);
+  if (gl.getContext().isContextLost()) return null;
   return (
     <EffectComposer ref={ref} multisampling={0} enableNormalPass={false} enabled={!paused}>
       <ComposerResources />

@@ -1,4 +1,4 @@
-import { Suspense, useMemo } from 'react';
+import { Suspense, useMemo, useRef } from 'react';
 import { Vector3 } from 'three';
 import { useEnvironmentStore } from '../environment/useEnvironmentStore';
 import EnvironmentLighting from '../deskpet3d/EnvironmentLighting';
@@ -7,11 +7,22 @@ import StageEffects from '../stage/StageEffects';
 import SpaceEnvironment, { IslandLights } from './SpaceEnvironment';
 import IslandCuller from './IslandCuller';
 import { useIslandContent } from './islandAssets';
+import HubSandbox from './HubSandbox';
+import EnergyRail from './EnergyRail';
+import TravelMist from './TravelMist';
+import TravelPet from './TravelPet';
+import WorldLabel from './WorldLabel';
 import TravelRig from './TravelRig';
-import { HUB, ISLANDS, RING_RADIUS } from './world';
+import { ISLANDS, RING_RADIUS } from './world';
 
 const DUSK = '#21192f';
 const islands = Object.values(ISLANDS);
+const plaques = {
+  dashboard: ['学习仪表盘', '01 / OBSERVATORY'],
+  hardware: ['硬件实验室', '02 / HARDWARE LAB'],
+  code: ['代码魔改工坊', '03 / CODE WORKSHOP'],
+  ranking: ['创客排位', '04 / MAKER RANKING'],
+};
 
 function Orbit({ radius, color, opacity, y = -1.08 }) {
   return (
@@ -108,6 +119,7 @@ function Skyline() {
 export default function WorldScene({ paused, reduced, tier, performanceStep }) {
   const night = useEnvironmentStore((state) => state.night);
   const focusTarget = useMemo(() => new Vector3(...ISLANDS.dashboard.camera.focus), []);
+  const travelProgress = useRef(0);
   return (
     <>
       <color attach="background" args={[DUSK]} />
@@ -129,25 +141,9 @@ export default function WorldScene({ paused, reduced, tier, performanceStep }) {
           <gridHelper args={[110, 44, '#634d7c', '#403451']} position={[0, -1.13, 0]} />
         </>
       )}
-      <Orbit radius={RING_RADIUS} color="#ae86cf" opacity={0.62} />
-      <Orbit radius={RING_RADIUS + 1.1} color="#a181ca" opacity={0.24} />
-      <Orbit radius={7.3} color="#d4a4a1" opacity={0.47} />
-      <group name="space-hub" position={HUB}>
-        <mesh position={[0, -0.52, 0]}>
-          <cylinderGeometry args={[2.9, 2.5, 1.08, 40]} />
-          <meshStandardMaterial color="#40314e" metalness={0.6} roughness={0.36} />
-        </mesh>
-        <Orbit radius={2.5} color="#ffbe92" opacity={0.88} y={0.04} />
-        <mesh position={[0, 1.9, 0]}>
-          <octahedronGeometry args={[0.84, 0]} />
-          <meshStandardMaterial
-            color="#ffbe92"
-            emissive="#ff9e70"
-            emissiveIntensity={1.15}
-            metalness={0.48}
-          />
-        </mesh>
-      </group>
+      <Orbit radius={RING_RADIUS} color="#ae86cf" opacity={0.24} />
+      <HubSandbox tier={tier} paused={paused} reduced={reduced} />
+      <EnergyRail tier={tier} paused={paused} reduced={reduced} />
       {islands.map((island) => {
         const fallback = <IslandPlaceholder color={island.accent} />;
         return (
@@ -156,21 +152,38 @@ export default function WorldScene({ paused, reduced, tier, performanceStep }) {
               {tier >= 2 && (
                 <IslandLights island={island} tier={tier} volume={performanceStep < 1} />
               )}
-              <Suspense fallback={fallback}>
-                <LoadedIsland
-                  island={island}
-                  tier={tier}
-                  paused={paused}
-                  reduced={reduced}
-                  fallback={fallback}
-                />
-              </Suspense>
+              <WorldLabel
+                title={plaques[island.id][0]}
+                code={plaques[island.id][1]}
+                color={island.accent}
+                position={[0, 3.6, 0]}
+              />
+              {island.id !== 'dashboard' && (
+                <Suspense fallback={fallback}>
+                  <LoadedIsland
+                    island={island}
+                    tier={tier}
+                    paused={paused}
+                    reduced={reduced}
+                    fallback={fallback}
+                  />
+                </Suspense>
+              )}
             </IslandDetail>
           </IslandCuller>
         );
       })}
       {tier >= 2 && <StageAtmosphere tier={tier} paused={paused} reduced={reduced} />}
-      <TravelRig reduced={reduced} paused={paused} focusTarget={focusTarget} />
+      <TravelRig
+        reduced={reduced}
+        paused={paused}
+        focusTarget={focusTarget}
+        travelProgress={travelProgress}
+      />
+      <TravelPet tier={tier} paused={paused} reduced={reduced} progress={travelProgress} />
+      {tier >= 2 && performanceStep < 1 && !reduced && (
+        <TravelMist key={tier} tier={tier} progress={travelProgress} />
+      )}
       {tier >= 2 && (
         <StageEffects
           tier={tier}

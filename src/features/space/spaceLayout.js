@@ -5,4 +5,5 @@ export const ISLAND_HUD = {
   hardware: { side: 'left' },
   code: { side: 'right' },
   ranking: { side: 'right' },
+  hub: { side: 'left' },
 };

@@ -9,16 +9,15 @@ export default function DashboardIsland({ tier, paused, reduced }) {
   const environment = useEnvironmentStore();
 
   return (
-    <group position={[0, 1.4, 0]}>
-      <PetModel
-        runtime={runtime}
-        interaction={interaction}
-        environment={environment}
-        reducedMotion={reduced}
-        paused={paused}
-        tier={tier}
-        cinematic={tier >= 2}
-      />
-    </group>
+    <PetModel
+      runtime={runtime}
+      interaction={interaction}
+      environment={environment}
+      reducedMotion={reduced}
+      paused={paused}
+      tier={tier}
+      cinematic={tier >= 2}
+      platform={false}
+    />
   );
 }

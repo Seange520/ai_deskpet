@@ -1,7 +1,7 @@
 import { useLayoutEffect, useMemo, useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { Matrix4, Quaternion, Vector3 } from 'three';
-import { buildTravelCurve, ISLANDS, TRAVEL_SECONDS } from './world';
+import { buildTravelCurve, LANDMARKS, TRAVEL_SECONDS } from './world';
 import { HUD_EXIT_MS } from './spaceLayout';
 import { useSpaceStore } from './spaceStore';
 
@@ -9,7 +9,7 @@ const easeInOut = (t) => t * t * (3 - 2 * t);
 const widescreen = () => window.innerWidth >= 1440;
 
 function getPose(id, camera) {
-  const spec = ISLANDS[id].camera;
+  const spec = LANDMARKS[id].camera;
   const position = new Vector3(...spec.position);
   const focus = new Vector3(...spec.focus);
   const target = widescreen() ? new Vector3(...spec.target) : focus;
@@ -27,7 +27,7 @@ function applyPose(camera, focusTarget, pose) {
   focusTarget.copy(pose.focus);
 }
 
-export default function TravelRig({ reduced, paused, focusTarget }) {
+export default function TravelRig({ reduced, paused, focusTarget, travelProgress }) {
   const camera = useThree((state) => state.camera);
   const invalidate = useThree((state) => state.invalidate);
   const regress = useThree((state) => state.performance.regress);
@@ -104,6 +104,7 @@ export default function TravelRig({ reduced, paused, focusTarget }) {
     const rig = state.current;
     const now = performance.now();
     if (reduced && store.phase !== 'idle') {
+      travelProgress.current = 0;
       store.jumpTo(store.destination);
       applyPose(camera, focusTarget, getPose(store.destination, camera));
       rig.pose = null;
@@ -117,6 +118,7 @@ export default function TravelRig({ reduced, paused, focusTarget }) {
     if (store.phase === 'departing' && rig.flight?.request !== store.request) {
       const pose = getPose(store.destination, camera);
       motion.current = { x: 0, y: 0 };
+      travelProgress.current = 0;
       rig.flight = {
         request: store.request,
         // Keep the original exit deadline on retarget; an airborne redirect starts immediately.
@@ -142,6 +144,7 @@ export default function TravelRig({ reduced, paused, focusTarget }) {
       (store.phase === 'departing' || store.phase === 'traveling')
     ) {
       const progress = Math.min(1, (now - flight.startedAt) / (TRAVEL_SECONDS * 1000));
+      travelProgress.current = progress;
       const t = easeInOut(progress);
       flight.curve.getPointAt(t, camera.position);
       camera.quaternion.slerpQuaternions(flight.fromQuaternion, flight.pose.quaternion, t);
@@ -160,6 +163,7 @@ export default function TravelRig({ reduced, paused, focusTarget }) {
       invalidate();
       return;
     }
+    travelProgress.current = 0;
     if (rig.request !== store.request || reduced) {
       rig.pose = getPose(store.focus, camera);
       rig.request = store.request;

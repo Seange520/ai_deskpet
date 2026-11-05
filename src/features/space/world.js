@@ -35,6 +35,20 @@ export const ISLANDS = {
   ranking: island('ranking', [-1, 0], '#e5a2c7', 44),
 };
 
+export const LANDMARKS = {
+  ...ISLANDS,
+  hub: {
+    position: HUB,
+    camera: {
+      position: [8.8, 7.3, 12.6],
+      focus: [0, 0.9, 0],
+      target: [-4.5, 0.62, 3.2],
+      fov: 43,
+    },
+    hud: ISLAND_HUD.hub,
+  },
+};
+
 export function buildTravelCurve(start, end, arcLift = 5) {
   const middle = new Vector3().lerpVectors(start, end, 0.5);
   // A small outward bow keeps the horizon moving laterally as the camera climbs.

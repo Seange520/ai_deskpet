@@ -97,7 +97,7 @@ export default function PetModel(props) {
           </mesh>
         ))}
       </group>
-      {props.cinematic && (
+      {props.platform !== false && props.cinematic && (
         <mesh name="stage-emissive-ring" position={[0, -1.23, 0]} rotation={[Math.PI / 2, 0, 0]}>
           <torusGeometry args={[1.92, 0.025, 8, 64]} />
           <meshPhysicalMaterial
@@ -110,10 +110,12 @@ export default function PetModel(props) {
           />
         </mesh>
       )}
-      <mesh position={[0, -1.33, 0]}>
-        <cylinderGeometry args={[2.05, 2.15, 0.16, 64]} />
-        <meshPhysicalMaterial color="#2A2233" roughness={0.35} metalness={0.35} />
-      </mesh>
+      {props.platform !== false && (
+        <mesh position={[0, -1.33, 0]}>
+          <cylinderGeometry args={[2.05, 2.15, 0.16, 64]} />
+          <meshPhysicalMaterial color="#2A2233" roughness={0.35} metalness={0.35} />
+        </mesh>
+      )}
     </group>
   );
 }

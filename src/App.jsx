@@ -20,6 +20,7 @@ import {
   Package,
   RotateCcw,
   Trophy,
+  Orbit,
   Volume2,
   VolumeX,
 } from 'lucide-react';
@@ -44,7 +45,50 @@ const nav = [
   { id: 'hardware', name: '硬件实验室', en: 'Hardware lab', icon: Cpu },
   { id: 'code', name: '代码魔改工坊', en: 'Code playground', icon: Code2 },
   { id: 'ranking', name: '创客排位', en: '一起慢慢发光', icon: Trophy },
+  { id: 'hub', name: '中央枢纽', en: 'SparkMate Hub', icon: Orbit },
 ];
+
+function HubOverview({ showMap }) {
+  return (
+    <div className="page hub-overview">
+      <div className="page-heading compact">
+        <div>
+          <div className="eyebrow">00 / SPARKMATE HUB</div>
+          <h1>
+            中央<span className="text-neon">枢纽</span>
+          </h1>
+          <p>群岛的航线在这里交汇。从导航坞选一座岛，继续你的创作旅程。</p>
+        </div>
+      </div>
+      {showMap && (
+        <svg className="hub-map" viewBox="0 0 420 260" aria-hidden="true">
+          <path
+            d="M210 179 C277 216 365 166 342 107 S263 39 210 45 S100 62 78 107 S130 214 210 179Z"
+            fill="none"
+            stroke="#72cfde"
+            strokeWidth="2"
+          />
+          <g fill="#242b45" stroke="#8bddeb" strokeWidth="2">
+            <ellipse cx="210" cy="179" rx="63" ry="40" />
+            <ellipse cx="210" cy="45" rx="35" ry="19" />
+            <ellipse cx="342" cy="107" rx="35" ry="19" />
+            <ellipse cx="78" cy="107" rx="35" ry="19" />
+          </g>
+          <ellipse
+            cx="210"
+            cy="179"
+            rx="51"
+            ry="30"
+            fill="none"
+            stroke="#62aabf"
+            strokeDasharray="2 7"
+          />
+          <path d="M210 148 230 177 210 204 190 177Z" fill="#f8bf8b" />
+        </svg>
+      )}
+    </div>
+  );
+}
 
 function moveDockFocus(event) {
   const buttons = Array.from(event.currentTarget.querySelectorAll('button'));
@@ -398,6 +442,8 @@ export default function App() {
               />
             ) : page === 'ranking' ? (
               <MakerRanking xp={xp} />
+            ) : page === 'hub' ? (
+              <HubOverview showMap={tier === 0 || !ready} />
             ) : (
               <CodeLab
                 key={routeId}

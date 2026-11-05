@@ -26,6 +26,18 @@
   overflow-x: clip;
 }
 
+.hub-map {
+  display: block;
+  width: min(100%, 540px);
+  margin: 12px auto 32px;
+}
+
+@media (min-width: 701px) and (max-width: 960px) {
+  .space-dock [data-island='hub'] > span:nth-child(2) {
+    display: none;
+  }
+}
+
 .space-dock .nav-item[data-pending] {
   border-color: #bba4ef70;
   background: #bba4ef17;
