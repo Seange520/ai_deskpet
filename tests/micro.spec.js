@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './quality-fixture';
 
 test('字体、原有主色与液态玻璃实际覆盖面积', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'no-preference' });
@@ -68,7 +68,10 @@ test('分层视差、低亮度聚光灯与实际帧间隔采样', async ({ page 
       }),
     )
     .toBeGreaterThan(1);
-  await expect(page.locator('.card-tilt [data-spotlight-border]').first()).toHaveCSS('opacity', '0.12');
+  await expect(page.locator('.card-tilt [data-spotlight-border]').first()).toHaveCSS(
+    'opacity',
+    '0.12',
+  );
   const samples = await card.evaluate(
     (el) =>
       new Promise((resolve) => {

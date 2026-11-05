@@ -67,7 +67,7 @@ try {
         .find((e) => e.name.includes('/@react-three_fiber.js'));
       if (!resource) return null;
       const { _roots } = await import(resource.name);
-      const canvas = document.querySelector('canvas');
+      const canvas = document.querySelector('.pet-canvas-host canvas');
       const state = _roots.get(canvas)?.store.getState();
       const head = state?.scene.getObjectByName('command-head');
       if (!head) return null;
@@ -99,7 +99,7 @@ try {
     }));
   await expect.poll(visual).not.toBeNull();
   await page.evaluate(() => {
-    window.focusCanvas = document.querySelector('canvas');
+    window.focusCanvas = document.querySelector('.pet-canvas-host canvas');
   });
   const before = await business();
   const camera = (await visual()).camera;
@@ -238,7 +238,7 @@ try {
       .find((e) => e.name.includes('/@react-three_fiber.js'));
     const { _roots } = await import(resource.name);
     _roots
-      .get(document.querySelector('canvas'))
+      .get(document.querySelector('.pet-canvas-host canvas'))
       .store.getState()
       .gl.getContext()
       .getExtension('WEBGL_lose_context')

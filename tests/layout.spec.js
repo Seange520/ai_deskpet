@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './quality-fixture';
 
 // 覆盖原布局容易挤压的宽度，并验证弹窗在真实绘制顺序中高于导航。
 for (const width of [320, 390, 768, 1024, 1440, 1920]) {

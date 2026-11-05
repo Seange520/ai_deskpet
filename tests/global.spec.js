@@ -1,5 +1,5 @@
 import { unlockThrough } from './level-helpers';
-import { test, expect } from '@playwright/test';
+import { test, expect } from './quality-fixture';
 
 async function wire(page, source, target, module = '麦克风', board = '主板') {
   await page.getByRole('button', { name: `${module} ${source} 引脚`, exact: true }).press('Enter');

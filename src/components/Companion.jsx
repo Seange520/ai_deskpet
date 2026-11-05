@@ -8,6 +8,7 @@ import PetFocusView from '../features/deskpet3d/PetFocusView';
 import { playSound } from '../lib/sounds';
 import Companion2D from './Companion2D';
 import './companion3d.css';
+import { useQualityTier } from '../lib/qualityTier';
 import { usePetActions } from '../features/interaction/usePetActions';
 import { useHardwareStore } from '../features/hardware/useHardwareStore';
 
@@ -26,6 +27,7 @@ export default function Companion({ celebrations, feedback, hidden }) {
   useEffect(() => {
     usePetActions.getState().setLight(light);
   }, [light]);
+  const quality = useQualityTier();
   const stage = useRef(null);
   const [focused, setFocused] = useState(false);
   const [curious, setCurious] = useState(false);
@@ -58,7 +60,7 @@ export default function Companion({ celebrations, feedback, hidden }) {
       });
   }, [celebrations, controls, reduced]);
   const fallback = <Companion2D celebrations={celebrations} feedback={feedback} hidden={hidden} />;
-  if (unsupported) return fallback;
+  if (unsupported || quality.tier === 0) return fallback;
   return (
     <Suspense fallback={fallback}>
       <div
@@ -111,6 +113,7 @@ export default function Companion({ celebrations, feedback, hidden }) {
             >
               <DeskPet3DStage
                 ref={stage}
+                tier={quality.tier}
                 runtime={runtime}
                 interaction={interaction}
                 environment={environment}

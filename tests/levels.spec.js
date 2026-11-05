@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './quality-fixture';
 import { unlockThrough, levelPrograms } from './level-helpers';
 const card = (page, name) => page.getByRole('region', { name: name + '路线卡片', exact: true });
 const saved = (page) =>

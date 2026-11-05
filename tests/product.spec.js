@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './quality-fixture';
 
 test('访客免登录入口与常驻伙伴的好奇反馈', async ({ page }) => {
   await page.goto('/');

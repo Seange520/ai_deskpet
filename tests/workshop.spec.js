@@ -1,5 +1,5 @@
 import { unlockThrough } from './level-helpers';
-import { test, expect } from '@playwright/test';
+import { test, expect } from './quality-fixture';
 
 const routes = [
   { id: 'classic', code: 'pet.setExpression("happy")', hardware: /ESP32-S3 开发板/ },

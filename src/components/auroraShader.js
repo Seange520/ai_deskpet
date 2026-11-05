@@ -41,3 +41,17 @@ void main() {
   vec3 base = mix(vec3(0.106, 0.086, 0.149), dusk * 0.42, cloud);
   color = vec4(base + light * (glow * 0.43 + cloud * 0.08), 0.9);
 }`;
+
+// Same field in scene-linear HDR space; captured by the Stage post-processing chain.
+export const sceneAuroraVertex = `
+varying vec2 fieldUv;
+void main() { fieldUv = uv; gl_Position = vec4(position.xy, 0.9999, 1.0); }
+`;
+export const sceneAuroraFragment = fragmentShader
+  .replace('#version 300 es', '')
+  .replace('in vec2 uv;', 'varying vec2 fieldUv;\n#define uv fieldUv')
+  .replace('out vec4 color;', '')
+  .replace(
+    'color = vec4(base + light * (glow * 0.43 + cloud * 0.08), 0.9);',
+    'gl_FragColor = vec4(base * 0.24 + light * (glow * 0.22 + pow(glow, 6.0) * 1.4 + cloud * 0.025), 1.0);',
+  );

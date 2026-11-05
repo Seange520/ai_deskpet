@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './quality-fixture';
 
 test('完整学习流程：错线警告、拖拽连线、实时参数与进度持久化', async ({ page }) => {
   const errors = [];

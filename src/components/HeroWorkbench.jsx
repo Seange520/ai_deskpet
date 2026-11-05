@@ -1,13 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 import { HeroGlass } from './MicroEffects';
-import HeroParticles from './HeroParticles';
-import AuroraField from './AuroraField';
 import { DESKTOP_VISUAL_QUERY, isLowPowerDevice } from '../lib/visualCapabilities';
 import './hero-workbench.css';
+import { useQualityTier } from '../lib/qualityTier';
+import { useStageLayer } from '../features/stage/StageLayer';
 
 // Presentation state stays local: no learning state, persistence or device access.
 export default function HeroWorkbench({ children }) {
   const ref = useRef(null);
+  const { tier } = useQualityTier();
+  const { setHero } = useStageLayer();
   const [enabled, setEnabled] = useState(false);
   const [active, setActive] = useState(false);
   const [field, setField] = useState({ eligible: false, active: false, reduced: false });
@@ -53,6 +55,11 @@ export default function HeroWorkbench({ children }) {
       document.removeEventListener('visibilitychange', sync);
     };
   }, []);
+  useEffect(() => {
+    if (tier > 0) setHero({ node: ref.current.querySelector('.hero-art'), active: field.active });
+    else setHero(null);
+    return () => setHero(null);
+  }, [tier, field.active, setHero]);
   return (
     <section
       ref={ref}
@@ -60,9 +67,9 @@ export default function HeroWorkbench({ children }) {
       data-depth={enabled}
       data-active={active}
     >
-      {field.eligible && <AuroraField active={field.active} reducedMotion={field.reduced} />}
+      {/* Aurora is retained as an asset; Tier 0 creates no WebGL context. */}
       <HeroGlass enabled={active} />
-      {enabled && <HeroParticles active={active} />}
+
       {children}
     </section>
   );

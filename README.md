@@ -9,7 +9,7 @@
 [![Vite](https://img.shields.io/badge/Vite-6-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vite.dev)
 [![React](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev)
 [![Zustand](https://img.shields.io/badge/Zustand-5-2D3748?style=flat-square)](https://zustand.docs.pmnd.rs)
-[![Release](https://img.shields.io/badge/release-v0.9.3--beta-FFC98B?style=flat-square)](https://github.com/Seange520/ai_deskpet/releases/tag/v0.9.3-beta)
+[![Release](https://img.shields.io/badge/release-v0.9.4--beta-FFC98B?style=flat-square)](https://github.com/Seange520/ai_deskpet/tree/v0.9.4-beta)
 ![Status](https://img.shields.io/badge/status-Testing-orange?style=flat-square)
 [![Vercel](https://img.shields.io/badge/Vercel-Deployed-000000?style=flat-square&logo=vercel&logoColor=white)](https://www.seange.cn)
 
@@ -21,11 +21,13 @@
 
 ---
 
-## 当前版本 · v0.9.3-beta 幻影星穹
+## 当前版本 · v0.9.4-beta 流光幻境 (Luminous Realm)
 
-本轮带来零新增依赖的 WebGL2 极光星云、View Transitions 镜头推进／拉远，以及 900ms CSS 玻璃扫光。移动端与低端设备使用 CSS 背景；桌面减少动画时极光仅绘制静态帧，导航使用 150ms 纯透明度切换。学习进度与存档规则保持不变。
+Hero 已接入常驻 Stage + DOM HUD 与 0–3 档画质。Tier 2 使用 Bloom、ACES Filmic、Vignette、FXAA，Tier 3 追加景深；同一场景包含极光平面、12 颗 GPU Points 和鼠标微视差，减少动画时静止。Tier 0 使用原 CSS/SVG 与 2D 常驻伙伴，Tier 1 不挂载后期链。通过 `?quality=dom`、`?quality=1`、`?quality=2`、`?quality=3` 可检查各档。
 
-完整变更与验收边界见 [v0.9.3-beta 发布说明](docs/RELEASE_NOTES_v0.9.3.md)。
+继续使用 React 18 / Fiber 8；后期依赖固定为 `@react-three/postprocessing@2.19.1` 与 `postprocessing@6.39.6`。学习状态与存档隔离，验证仍为原 65 项加 1 项 Stage 冒烟测试。实现与验收见 [P0 报告](docs/P0_STAGE_HUD_REVIEW.md)、[P1 报告](docs/P1_POSTPROCESSING_REVIEW.md)。
+
+上一版本见 [v0.9.3-beta 发布说明](docs/RELEASE_NOTES_v0.9.3.md)。
 
 ## 项目简介
 

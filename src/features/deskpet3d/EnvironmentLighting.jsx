@@ -1,8 +1,9 @@
 import { useEffect, useRef } from 'react';
+import { Environment, Lightformer } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
 
 // Independent light refs: never restart the pet's command or gesture animations.
-export default function EnvironmentLighting({ night, paused, reducedMotion }) {
+export default function EnvironmentLighting({ night, paused, reducedMotion, tier = 2 }) {
   const ambient = useRef(),
     key = useRef(),
     fill = useRef();
@@ -31,6 +32,39 @@ export default function EnvironmentLighting({ night, paused, reducedMotion }) {
   });
   return (
     <>
+      {tier >= 2 && (
+        <Environment
+          key={night ? 'night' : 'day'}
+          resolution={256}
+          frames={1}
+          environmentIntensity={night ? 0.35 : 0.7}
+        >
+          <Lightformer
+            form="rect"
+            color="#ffcf9e"
+            intensity={3}
+            position={[0, 4, 4]}
+            scale={[5, 3, 1]}
+            target={[0, 0, 0]}
+          />
+          <Lightformer
+            form="rect"
+            color="#8ea0d8"
+            intensity={2}
+            position={[-4, 2, -3]}
+            scale={[3, 5, 1]}
+            target={[0, 0, 0]}
+          />
+          <Lightformer
+            form="rect"
+            color="#ffb0a8"
+            intensity={1.5}
+            position={[4, 1, 1]}
+            scale={[2, 4, 1]}
+            target={[0, 0, 0]}
+          />
+        </Environment>
+      )}
       <ambientLight ref={ambient} name="environment-ambient" intensity={1.3} color="#FFC79A" />
       <directionalLight ref={key} position={[4, 6, 5]} intensity={1.6} color="#FFC79A" />
       <directionalLight

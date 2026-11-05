@@ -1,6 +1,6 @@
 import { Component, forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 import { Canvas, useThree } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
+import { AdaptiveDpr, OrbitControls } from '@react-three/drei';
 import { useReducedMotion } from 'framer-motion';
 import './scene.css';
 import PetModel from './PetModel';
@@ -46,6 +46,7 @@ function ContextGuard({ onUnsupported }) {
 const DeskPet3DStage = forwardRef(function DeskPet3DStage(
   {
     runtime,
+    tier = 2,
     compact = false,
     paused = false,
     still = false,
@@ -118,12 +119,15 @@ const DeskPet3DStage = forwardRef(function DeskPet3DStage(
           gl={{ antialias: !compact && !constrained, alpha: true, powerPreference: 'low-power' }}
           fallback={<UnsupportedWebGL />}
         >
+          <AdaptiveDpr />
           <EnvironmentLighting
+            tier={tier}
             night={environment.night}
             paused={paused}
             reducedMotion={reducedMotion || still}
           />
           <PetModel
+            tier={tier}
             runtime={runtime}
             reducedMotion={reducedMotion || still}
             paused={paused}

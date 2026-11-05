@@ -1,6 +1,8 @@
 import { defineConfig } from '@playwright/test';
 
 // 默认仍为 5173；本机存在其他项目副本时可指定独立端口，避免验收错版本。
+// quality-fixture injects this URL override before application initialization.
+process.env.SPARKMATE_TEST_QUALITY ||= 'dom';
 const port = process.env.SPARKMATE_TEST_PORT || '5173';
 const baseURL = `http://127.0.0.1:${port}`;
 

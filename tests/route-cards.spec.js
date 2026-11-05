@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './quality-fixture';
 for (const width of [320, 768, 1440]) {
   test('路线卡片标题、真实任务进度与状态独立排版 ' + width, async ({ page }) => {
     await page.setViewportSize({ width, height: 1000 });

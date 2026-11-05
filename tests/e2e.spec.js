@@ -16,7 +16,7 @@
 // 与主导航 aria-current 状态，而不是 URL 变化。
 // =============================================================================
 
-import { test, expect } from '@playwright/test';
+import { test, expect } from './quality-fixture';
 
 // 首页“你的创造路线”三张核心卡片（学习路径顺序）
 const CORE_CARDS = ['准备物料', '动手实操', 'AI 觉醒'];
@@ -255,9 +255,10 @@ test('控制台监听：完整走查首页 → 物料弹窗 → 拆解 → 代�
 
   // 代码魔改工坊
   await page.getByRole('button', { name: '代码魔改工坊', exact: true }).click();
-  await expect(
-    page.getByRole('button', { name: '代码魔改工坊', exact: true }),
-  ).toHaveAttribute('aria-current', 'page');
+  await expect(page.getByRole('button', { name: '代码魔改工坊', exact: true })).toHaveAttribute(
+    'aria-current',
+    'page',
+  );
 
   // 回到首页
   await page.getByRole('button', { name: '学习仪表盘', exact: true }).click();

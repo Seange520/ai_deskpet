@@ -1,0 +1,49 @@
+.render-shell {
+  position: relative;
+  isolation: isolate;
+  min-height: 100dvh;
+}
+.visual-fallback {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 75% 5%, #6b639814, transparent 50%), var(--surface-base);
+}
+.scene-stage {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  view-transition-name: none;
+}
+.hud-layer {
+  position: relative;
+  z-index: 2;
+}
+/* Only the Hero artwork is transparent to the Stage. All controls remain DOM. */
+.render-shell[data-stage-ready='true'] .hero-panel.hero-workbench {
+  background: linear-gradient(90deg, #221b2e 0%, #221b2ef5 38%, #221b2e00 66%);
+  perspective: none;
+}
+.render-shell[data-stage-ready='true'] .hero-workbench > .hero-art {
+  transform: none;
+  background: none;
+}
+.render-shell[data-stage-ready='true'] .hero-workbench > .hero-liquid {
+  display: none;
+}
+.render-shell[data-stage-ready='true']
+  .hero-art
+  :is(.hero-pet, .hero-workbench-surface, .hero-workbench-glow) {
+  visibility: hidden;
+}
+.render-shell[data-stage-ready='true'] .app-shell {
+  background: none;
+}
+
+.scene-window {
+  position: absolute;
+  overflow: hidden;
+  border-radius: 24px;
+}

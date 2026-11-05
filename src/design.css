@@ -16,6 +16,10 @@
   --lamp-core: #ffb868;
   --blush: #f2a6a0;
   --rose: #e8b4c8;
+  /* Stage studio palette: same warm apricot / twilight violet / rose family. */
+  --stage-key: #ffcf9e;
+  --stage-rim: #8ea0d8;
+  --stage-fill: #ffb0a8;
   --life: #a9d3b4;
   --text: #f3ede6;
   --text-secondary: #c3b8b0;

@@ -1,5 +1,5 @@
 import { unlockThrough } from './level-helpers';
-import { test, expect } from '@playwright/test';
+import { test, expect } from './quality-fixture';
 
 const cases = [
   {

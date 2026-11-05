@@ -1,5 +1,7 @@
 # Phase 3：主线 3D 伙伴与独立实验
 
+> 以下保留早期 Phase 3 记录。v0.9.4-beta 的当前 Stage/HUD、画质门控与后期处理架构见 [P0 审核报告](P0_STAGE_HUD_REVIEW.md) 和 [P1 审核报告](P1_POSTPROCESSING_REVIEW.md)。
+
 ## 主界面
 
 原 App 中的常驻 `Companion` 挂载点保持不变，组件内部默认渲染 `DeskPet3DStage`。它通过现有 `useLearningStore(state => state.runtime)` 读取真实沙盒结果，再以 props 传给纯展示的 3D 组件。没有替换业务运行器，原 `CodeRunner` 的解析、通关、音效、复位和保存行为保持原样；代码工坊内原有教学预览也保留。
