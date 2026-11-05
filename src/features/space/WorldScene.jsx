@@ -14,6 +14,7 @@ import TravelPet from './TravelPet';
 import WorldLabel from './WorldLabel';
 import TravelRig from './TravelRig';
 import { ISLANDS, RING_RADIUS } from './world';
+import { useIslandAtmosphere } from './useIslandAtmosphere';
 
 const DUSK = '#21192f';
 const islands = Object.values(ISLANDS);
@@ -34,6 +35,7 @@ function Orbit({ radius, color, opacity, y = -1.08 }) {
 }
 
 function IslandDetail({ island, children }) {
+  if (island.id === 'hardware') return <group name="space-island-detail">{children}</group>;
   return (
     <group name="space-island-detail">
       <mesh position={[0, -0.55, 0]}>
@@ -120,11 +122,25 @@ export default function WorldScene({ paused, reduced, tier, performanceStep }) {
   const night = useEnvironmentStore((state) => state.night);
   const focusTarget = useMemo(() => new Vector3(...ISLANDS.dashboard.camera.focus), []);
   const travelProgress = useRef(0);
+  const fogColor = tier >= 2 ? '#1b1626' : DUSK;
+  const atmosphere = useIslandAtmosphere({
+    fogColor,
+    night,
+    paused,
+    reduced,
+    progress: travelProgress,
+  });
   return (
     <>
       <color attach="background" args={[DUSK]} />
-      <fogExp2 attach="fog" args={tier >= 2 ? ['#1b1626', 0.022] : [DUSK, 0.027]} />
-      <EnvironmentLighting night={night} paused={paused} reducedMotion={reduced} tier={tier} />
+      <fogExp2 attach="fog" args={[fogColor, tier >= 2 ? 0.022 : 0.027]} />
+      <EnvironmentLighting
+        night={night}
+        paused={paused}
+        reducedMotion={reduced}
+        tier={tier}
+        atmosphere={atmosphere}
+      />
       <Skyline />
       {tier >= 2 ? (
         <SpaceEnvironment

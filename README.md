@@ -9,7 +9,7 @@
 [![Vite](https://img.shields.io/badge/Vite-6-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vite.dev)
 [![React](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev)
 [![Zustand](https://img.shields.io/badge/Zustand-5-2D3748?style=flat-square)](https://zustand.docs.pmnd.rs)
-[![Release](https://img.shields.io/badge/release-v0.9.4a5--beta-FFC98B?style=flat-square)](https://github.com/Seange520/ai_deskpet/tree/v0.9.4a5-beta)
+[![Release](https://img.shields.io/badge/release-v0.9.4a6--beta-FFC98B?style=flat-square)](https://github.com/Seange520/ai_deskpet/tree/v0.9.4a6-beta)
 ![Status](https://img.shields.io/badge/status-Testing-orange?style=flat-square)
 [![Vercel](https://img.shields.io/badge/Vercel-Deployed-000000?style=flat-square&logo=vercel&logoColor=white)](https://www.seange.cn)
 
@@ -21,7 +21,11 @@
 
 ---
 
-## 当前版本 · v0.9.4a5-beta 中央枢纽与光轨
+## 当前版本 · v0.9.4a6-beta 四岛地貌与叙事氛围
+
+硬件岛以起伏电路板承载铜色走线与流动电流，代码岛以程序化字符图集呈现数据瀑布，排位岛用玻璃金字塔包围悬浮全息榜台。Stage 雾色与灯光随航段切换。Tier 1 保留三岛轮廓与发光细节，Tier 0 提供 DOM 教学与 SVG 沙盘。
+
+### v0.9.4a5-beta 中央枢纽与光轨
 
 中央枢纽新增独立机位、程序化全息沙盘、旋转刻度和岛屿名牌。闭环光轨串起枢纽与三个功能岛。Tier 2/3 使用实例化光珠和深度雾卡，桌宠随镜头飞行并在目标岛停靠。Tier 1 保留沙盘与光轨轮廓，Tier 0 提供 SVG 沙盘地图。
 

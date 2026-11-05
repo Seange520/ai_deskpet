@@ -3,7 +3,13 @@ import { Environment, Lightformer } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
 
 // Independent light refs: never restart the pet's command or gesture animations.
-export default function EnvironmentLighting({ night, paused, reducedMotion, tier = 2 }) {
+export default function EnvironmentLighting({
+  night,
+  paused,
+  reducedMotion,
+  tier = 2,
+  atmosphere,
+}) {
   const ambient = useRef(),
     key = useRef(),
     fill = useRef();
@@ -13,6 +19,10 @@ export default function EnvironmentLighting({ night, paused, reducedMotion, tier
   }, [night, paused, reducedMotion, invalidate]);
   useFrame((_, delta) => {
     if (paused) return;
+    if (atmosphere) {
+      key.current.color.copy(atmosphere.key);
+      fill.current.color.copy(atmosphere.fill);
+    }
     const alpha = reducedMotion ? 1 : 1 - Math.exp(-7 * Math.min(delta, 0.05));
     let settling = false;
     for (const [ref, target] of [

@@ -51,12 +51,39 @@ export default function IslandCuller({ island, tier, children }) {
       visible={lod !== 'hidden'}
       userData={{ lod }}
     >
-      {lod === 'detail' ? (
-        children
-      ) : (
-        <mesh name="space-island-silhouette" position={[0, -0.55, 0]}>
+      {lod === 'detail' && children}
+      {lod === 'silhouette' && <IslandSilhouette island={island} />}
+    </group>
+  );
+}
+
+function IslandSilhouette({ island }) {
+  return (
+    <group name="space-island-silhouette">
+      <mesh position={[0, -0.55, 0]}>
+        {island.id === 'hardware' ? (
+          <boxGeometry args={[5.5, 1.1, 5.5]} />
+        ) : (
           <cylinderGeometry args={[3.35, 3.03, 1.1, 12]} />
-          <meshBasicMaterial color="#33283f" />
+        )}
+        <meshBasicMaterial color="#33283f" />
+      </mesh>
+      {island.id === 'hardware' && (
+        <mesh position={[0, 0.2, 0]}>
+          <boxGeometry args={[5.52, 0.4, 5.52]} />
+          <meshBasicMaterial color="#825037" />
+        </mesh>
+      )}
+      {island.id === 'code' && (
+        <mesh position={[0, 1.1, 0.55]}>
+          <boxGeometry args={[4.8, 2.2, 0.42]} />
+          <meshBasicMaterial color="#497f77" wireframe />
+        </mesh>
+      )}
+      {island.id === 'ranking' && (
+        <mesh position={[0, 1.65, 0]} rotation={[0, Math.PI / 4, 0]}>
+          <coneGeometry args={[2.26, 2.78, 4]} />
+          <meshBasicMaterial color="#9973bb" wireframe />
         </mesh>
       )}
     </group>
