@@ -1,5 +1,9 @@
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
-import { QUALITY_PRESETS, useQualityStore } from '../stores/useQualityStore';
+import {
+  advancedQualityEffects,
+  QUALITY_PRESETS,
+  useQualityStore,
+} from '../stores/useQualityStore';
 import {
   isLowPowerDevice,
   readQualityOverride,
@@ -81,6 +85,7 @@ export function QualityProvider({ children }) {
         autoMode,
         adaptive,
         performanceStep,
+        advanced: advancedQualityEffects(tier, performanceStep),
         maxDpr,
         startupFps,
         detect,

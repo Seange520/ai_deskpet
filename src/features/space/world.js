@@ -2,6 +2,7 @@ import { CatmullRomCurve3, Vector3 } from 'three';
 import { ISLAND_HUD } from './spaceLayout.js';
 
 export const HUB = [0, 0, 0];
+export const MOON_DIRECTION = [-0.23, 0.082, -1.0];
 export const RING_RADIUS = 16;
 export { TRAVEL_SECONDS } from './travelTimeline.js';
 

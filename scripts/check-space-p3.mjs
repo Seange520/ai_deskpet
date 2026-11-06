@@ -21,20 +21,22 @@ async function read(page, rememberReflection = false) {
       .find((r) => r.name.includes('/@react-three_fiber.js'));
     const { _roots } = await import(entry.name);
     const state = _roots.get(document.querySelector('.scene-stage canvas')).store.getState();
-    const reflector = state.scene.getObjectByName('space-reflective-floor');
-    if (rememberReflection) {
-      window.reflectionAttachments = [
-        reflector?.material.tDiffuse,
-        reflector?.material.tDiffuseBlur,
-      ];
-    }
+    let reflector;
     const effects = [];
     const beams = [];
     state.scene.traverse((node) => {
       if (node.name.startsWith('space-beams-')) beams.push(node.name);
-      for (const effect of node.__r3f?.objects || [])
+      for (const effect of node.__r3f?.objects || []) {
         if (effect.getBlendMode) effects.push(effect.name);
+        if (effect.name === 'ScreenLightingEffect') reflector = effect.reflections;
+      }
     });
+    if (rememberReflection) {
+      window.reflectionAttachments = [
+        reflector?.ssrRenderTarget.texture,
+        reflector?.blurRenderTarget2.texture,
+      ];
+    }
     const islands = {};
     for (const id of ['dashboard', 'hardware', 'code', 'ranking']) {
       const island = state.scene.getObjectByName('space-island-' + id);
@@ -235,8 +237,13 @@ try {
       });
       await page.emulateMedia({ reducedMotion: 'no-preference' });
       await expect(stage(page)).toHaveAttribute('data-performance-step', '1');
-      const first = await read(page, true);
-      expect(first.reflectionAttachments).toBe(2);
+      // The graph swap publishes the quality step before the new SSR targets are drawn.
+      await expect
+        .poll(async () => (await read(page, true)).reflectionAttachments, {
+          intervals: [20, 40, 80, 100],
+        })
+        .toBe(2);
+      const first = await read(page);
       expect(first.beams).toEqual([]);
       expect(first.reflection).toBe(true);
       await expect(stage(page)).toHaveAttribute('data-performance-step', '2');

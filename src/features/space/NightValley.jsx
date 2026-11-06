@@ -4,6 +4,7 @@ import { Stars } from '@react-three/drei';
 import { AdditiveBlending, Color, DoubleSide, Object3D } from 'three';
 import { Sky } from 'three/addons/objects/Sky.js';
 import { SimplexNoise } from 'three/addons/math/SimplexNoise.js';
+import { MOON_DIRECTION } from './world';
 
 const towerCount = 14;
 
@@ -29,7 +30,7 @@ function MoonSky() {
       `
       float horizon = exp(-abs(direction.y) * 8.0);
       vec3 night = mix(vec3(0.005, 0.012, 0.028), vec3(0.034, 0.063, 0.105), horizon);
-      vec3 moonDir = normalize(vec3(-0.23, 0.082, -1.0));
+      vec3 moonDir = normalize(vec3(${MOON_DIRECTION.map((value) => value.toFixed(3)).join(', ')}));
       float lunarAngle = length(direction - moonDir);
       float disc = 1.0 - smoothstep(0.013, 0.014, lunarAngle);
       float halo = exp(-lunarAngle * 25.0);

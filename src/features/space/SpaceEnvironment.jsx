@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 import { AdditiveBlending, Color, DoubleSide } from 'three';
 import FloatingDebris from './FloatingDebris';
-import ReflectiveFloor from './ReflectiveFloor';
 import { RING_RADIUS } from './world';
 
 const atmosphereVertex = `
@@ -102,17 +101,13 @@ export function IslandLights({ island, tier, volume }) {
   );
 }
 
-export default function SpaceEnvironment({ reflection, paused, reduced }) {
+export default function SpaceEnvironment({ paused, reduced }) {
   return (
     <>
-      {reflection ? (
-        <ReflectiveFloor />
-      ) : (
-        <mesh name="space-gradient-floor" position={[0, -1.16, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-          <circleGeometry args={[85, 96]} />
-          <meshBasicMaterial color="#26333a" />
-        </mesh>
-      )}
+      <mesh name="space-gradient-floor" position={[0, -1.16, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+        <circleGeometry args={[85, 96]} />
+        <meshBasicMaterial color="#26333a" />
+      </mesh>
       <mesh position={[0, -1.145, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         <ringGeometry args={[RING_RADIUS - 4.4, RING_RADIUS + 4.4, 96]} />
         <meshBasicMaterial color="#9d7abc" transparent opacity={0.045} depthWrite={false} />

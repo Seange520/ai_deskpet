@@ -91,7 +91,7 @@ function LoadedIsland({ island, tier, paused, reduced, fallback }) {
   );
 }
 
-export default function WorldScene({ paused, reduced, tier, performanceStep }) {
+export default function WorldScene({ paused, reduced, tier, performanceStep, advanced }) {
   const night = useEnvironmentStore((state) => state.night);
   const focusTarget = useMemo(() => new Vector3(...ISLANDS.dashboard.camera.focus), []);
   const travelProgress = useRef(0);
@@ -116,11 +116,7 @@ export default function WorldScene({ paused, reduced, tier, performanceStep }) {
       />
       <NightValley tier={tier} paused={paused} reduced={reduced} />
       {tier >= 2 ? (
-        <SpaceEnvironment
-          reflection={tier === 3 && performanceStep < 2}
-          paused={paused}
-          reduced={reduced}
-        />
+        <SpaceEnvironment paused={paused} reduced={reduced} />
       ) : (
         <>
           <mesh position={[0, -1.16, 0]} rotation={[-Math.PI / 2, 0, 0]}>
@@ -169,7 +165,13 @@ export default function WorldScene({ paused, reduced, tier, performanceStep }) {
         travelProgress={travelProgress}
       />
       {tier === 3 && performanceStep < 1 && !reduced && <TravelSpeedLines />}
-      <TravelPet tier={tier} paused={paused} reduced={reduced} progress={travelProgress} />
+      <TravelPet
+        tier={tier}
+        paused={paused}
+        reduced={reduced}
+        progress={travelProgress}
+        dissolve={advanced.dissolve && !reduced}
+      />
       {tier >= 2 && performanceStep < 1 && !reduced && (
         <TravelMist key={tier} tier={tier} progress={travelProgress} />
       )}
@@ -179,6 +181,8 @@ export default function WorldScene({ paused, reduced, tier, performanceStep }) {
           paused={paused}
           focusTarget={focusTarget}
           cinematic={performanceStep < 3}
+          advanced={advanced}
+          reduced={reduced}
         />
       )}
     </>

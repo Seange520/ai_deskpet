@@ -10,8 +10,9 @@ import {
   DepthOfField,
 } from '@react-three/postprocessing';
 import { ToneMappingMode } from 'postprocessing';
+import AdvancedStageEffects from './AdvancedStageEffects';
 
-export default function StageEffects({ tier, paused, focusTarget, cinematic }) {
+export default function StageEffects({ tier, paused, focusTarget, cinematic, advanced, reduced }) {
   const ref = useRef(null);
   const depth = useRef(null);
   useFrame(() => depth.current?.target.copy(focusTarget));
@@ -23,11 +24,26 @@ export default function StageEffects({ tier, paused, focusTarget, cinematic }) {
     ref.current?.setSize(size.width, size.height);
     invalidate();
   }, [dpr, size, gl, invalidate, tier, paused]);
+  // Rebuild the ordered graph when its passes change; the Stage renderer and Canvas stay mounted.
+  const graphKey = [tier, cinematic, advanced.ssr, advanced.motionBlur && !reduced].join(':');
   if (gl.getContext().isContextLost()) return null;
   return (
-    <EffectComposer ref={ref} multisampling={0} enableNormalPass={false} enabled={!paused}>
+    <EffectComposer
+      key={graphKey}
+      ref={ref}
+      multisampling={0}
+      enableNormalPass={false}
+      enabled={!paused}
+    >
       <ComposerResources />
-      {cinematic && (
+      {advanced.selectiveBloom && (
+        <AdvancedStageEffects
+          reflection={advanced.ssr}
+          ao={advanced.gtao}
+          motion={advanced.motionBlur && !reduced}
+        />
+      )}
+      {cinematic && !advanced.selectiveBloom && (
         <Bloom
           mipmapBlur
           intensity={0.9}

@@ -210,6 +210,7 @@ export default function HardwareIsland({ tier, paused, reduced }) {
             />
           </RoundedBox>
           <RoundedBox
+            name="p5-chip-emitter"
             position={[0, 0.19, 0]}
             args={[size, 0.11, size]}
             radius={0.04}

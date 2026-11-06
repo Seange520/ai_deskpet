@@ -105,7 +105,9 @@ export default function SceneCanvas({ quality, onReady }) {
       : performanceStep >= 3
         ? 'aces-vignette-fxaa'
         : tier === 3
-          ? 'bloom-aces-vignette-fxaa-dof'
+          ? quality.advanced.ssr
+            ? 'ssr-gtao-selective-bloom-aces-vignette-fxaa-dof'
+            : 'gtao-selective-bloom-aces-vignette-fxaa-dof'
           : 'bloom-aces-vignette-fxaa';
   return (
     <div
@@ -146,6 +148,7 @@ export default function SceneCanvas({ quality, onReady }) {
             paused={paused}
             tier={tier}
             performanceStep={performanceStep}
+            advanced={quality.advanced}
           />
         </Canvas>
       </Boundary>

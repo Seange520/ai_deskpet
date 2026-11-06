@@ -4,6 +4,7 @@ import { MathUtils, Vector3 } from 'three';
 import { useIslandContent } from './islandAssets';
 import { useSpaceStore } from './spaceStore';
 import { LANDMARKS } from './world';
+import PetDissolve from './PetDissolve';
 
 function dockAt(id) {
   const { position, camera, hud } = LANDMARKS[id];
@@ -37,7 +38,7 @@ function PetBody({ tier, paused, reduced }) {
   return Content ? <Content tier={tier} paused={paused} reduced={reduced} /> : <PetPlaceholder />;
 }
 
-export default function TravelPet({ tier, paused, reduced, progress }) {
+export default function TravelPet({ tier, paused, reduced, progress, dissolve }) {
   const pet = useRef(null);
   const state = useRef({ request: -1, airborne: false, landing: null });
   const initial = useRef(docks[useSpaceStore.getState().focus]);
@@ -120,6 +121,7 @@ export default function TravelPet({ tier, paused, reduced, progress }) {
       <Suspense fallback={<PetPlaceholder />}>
         <PetBody tier={tier} paused={paused} reduced={reduced} />
       </Suspense>
+      {dissolve && <PetDissolve pet={pet} paused={paused} />}
     </group>
   );
 }

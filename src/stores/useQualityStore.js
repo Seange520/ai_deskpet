@@ -7,6 +7,17 @@ export const QUALITY_PRESETS = Object.freeze({
   smooth: 1,
   custom: null,
 });
+export function advancedQualityEffects(tier, step) {
+  const cinematic = tier === QUALITY_PRESETS.cinematic;
+  return {
+    ssr: cinematic && step < 2,
+    gtao: cinematic && step < 3,
+    selectiveBloom: cinematic && step < 3,
+    motionBlur: cinematic && step < 1,
+    dissolve: cinematic && step < 1,
+  };
+}
+
 const defaults = { manual: false, preset: 'balanced', customTier: 2, customDpr: 1.25 };
 const tiers = [1, 2, 3];
 const dprs = [1, 1.25, 1.5];

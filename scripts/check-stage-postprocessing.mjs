@@ -21,7 +21,7 @@ async function read(page, operation = 'read') {
       if (o.name.startsWith('space-beams-')) beams.push(o.children.length);
       for (const e of o.__r3f?.objects || []) if (e.getBlendMode) effects.push(e);
     });
-    const bloom = effects.find((e) => e.name === 'BloomEffect');
+    const bloom = effects.find((e) => ['BloomEffect', 'SelectiveBloomEffect'].includes(e.name));
     if (operation === 'no-bloom') {
       bloom.intensity = 0;
       s.invalidate();
@@ -30,7 +30,7 @@ async function read(page, operation = 'read') {
       bloom.intensity = 0.9;
       s.invalidate();
     }
-    const reflector = s.scene.getObjectByName('space-reflective-floor')?.material;
+    const lighting = effects.find((e) => e.name === 'ScreenLightingEffect');
     const debris = s.scene.getObjectByName('space-floating-debris');
     return {
       aurora: Boolean(s.scene.getObjectByName('space-aurora')),
@@ -42,11 +42,11 @@ async function read(page, operation = 'read') {
           0,
         ) || 0,
       beams,
-      reflection: reflector && {
-        mirror: reflector.mirror,
-        mixBlur: reflector.mixBlur,
-        resolution: [reflector.tDiffuse.image.width, reflector.tDiffuseBlur.image.height],
+      reflection: lighting?.reflections && {
+        pass: lighting.reflections.constructor.name.replace(/^_/, ''),
+        resolution: [lighting.buffer.width, lighting.buffer.height],
       },
+      ao: lighting?.ambientOcclusion?.constructor.name.replace(/^_/, ''),
       effects: effects.map((e) => e.name),
       camera: s.camera.position.toArray(),
       toneMapping: s.gl.toneMapping,
@@ -102,12 +102,14 @@ try {
         await expect(page.locator('.render-shell')).toHaveAttribute('data-stage-ready', 'true');
         await expect
           .poll(() => read(page).then((s) => s?.effects.length))
-          .toBe(tier >= 2 ? (tier === 3 ? 5 : 4) : 0);
+          .toBe(tier >= 2 ? (tier === 3 ? 6 : 4) : 0);
         const s = await read(page);
         expect(s.effects).toEqual(
           tier >= 2
             ? [
-                'BloomEffect',
+                ...(tier === 3
+                  ? ['ScreenLightingEffect', 'SelectiveBloomEffect']
+                  : ['BloomEffect']),
                 'ToneMappingEffect',
                 'VignetteEffect',
                 'FXAAEffect',
@@ -117,13 +119,14 @@ try {
         );
         expect(s.count).toBe([0, 0, 12, 600][tier]);
         expect(s.aurora).toBe(tier >= 2);
-        expect(s.gradient).toBe(tier === 2);
+        expect(s.gradient).toBe(tier >= 2);
         expect(s.debris).toBe(tier >= 2 ? 120 : 0);
         expect(s.horizon).toBe(14);
         expect(s.beams).toEqual([[], [], [5], [5, 5]][tier]);
         expect(s.reflection).toEqual(
-          tier === 3 ? { mirror: 0.55, mixBlur: 1, resolution: [256, 256] } : undefined,
+          tier === 3 ? { pass: 'SSRPass', resolution: [512, 384] } : undefined,
         );
+        expect(s.ao).toBe(tier === 3 ? 'GTAOPass' : undefined);
         expect(s.fog).toBe(true);
         if (tier >= 2) {
           expect(s.fogColor).toBe('1b1626');
@@ -223,10 +226,10 @@ try {
         history.pushState({}, '', '?quality=' + tier);
         dispatchEvent(new PopStateEvent('popstate'));
       }, tier);
-      await expect.poll(() => read(page).then((s) => s?.effects.length)).toBe(tier === 3 ? 5 : 4);
+      await expect.poll(() => read(page).then((s) => s?.effects.length)).toBe(tier === 3 ? 6 : 4);
     };
     const initial = await read(page);
-    // The mirror sees behind the main camera and uploads some shared geometries on first use.
+    // Warm lazy geometry and the new off-screen passes before comparing retained resources.
     await setTier(3);
     await setTier(2);
     const before = await read(page);
