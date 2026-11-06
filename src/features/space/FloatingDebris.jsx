@@ -3,7 +3,7 @@ import { useFrame } from '@react-three/fiber';
 import { Color, Object3D } from 'three';
 
 const count = 60;
-const accent = new Color('#a98bff');
+const accent = new Color('#8bb4c8');
 
 export default function FloatingDebris({ paused, reduced }) {
   const boxes = useRef(null);
@@ -16,11 +16,11 @@ export default function FloatingDebris({ paused, reduced }) {
       for (let index = 0; index < count; index += 1) {
         const i = 2 * index + batch;
         const angle = i * 2.39996;
-        const radius = 5 + 34 * Math.sqrt(((i * 53) % 121) / 121);
-        const size = 0.15 + ((i * 29) % 19) * 0.019;
+        const radius = 18 + 24 * Math.sqrt(((i * 53) % 121) / 121);
+        const size = 0.06 + ((i * 29) % 19) * 0.009;
         dummy.position.set(
           Math.cos(angle) * radius,
-          0.65 + ((i * 37) % 113) * 0.067,
+          0.25 + ((i * 37) % 113) * 0.021,
           Math.sin(angle) * radius,
         );
         dummy.rotation.set(i * 0.61, i * 1.11, i * 0.83);
@@ -68,7 +68,7 @@ export default function FloatingDebris({ paused, reduced }) {
         vec3 p = abs(debrisLocal);
         float distanceToEdge = ${edgeDistance};
         float edge = 1.0 - smoothstep(0.012, 0.092, distanceToEdge);
-        totalEmissiveRadiance += edgeColor * edge * 1.9;
+        totalEmissiveRadiance += edgeColor * edge * 0.65;
       `,
           );
         },

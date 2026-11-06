@@ -1,16 +1,17 @@
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import { QUALITY_PRESETS, useQualityStore } from '../stores/useQualityStore';
 import {
   isLowPowerDevice,
   readQualityOverride,
   deviceQualityTier,
   detectedQualityTier,
+  QUALITY_BUDGETS,
 } from './visualCapabilities';
 
 function qualitySelection() {
-  const override = readQualityOverride(location.search);
   return {
-    override,
-    adaptive: override === null || new URLSearchParams(location.search).get('adaptive') === '1',
+    override: readQualityOverride(location.search),
+    overrideAdaptive: new URLSearchParams(location.search).get('adaptive') === '1',
   };
 }
 function initialQuality() {
@@ -23,15 +24,20 @@ function initialQuality() {
 }
 const QualityContext = createContext({ tier: 0 });
 export function QualityProvider({ children }) {
-  const [{ override, adaptive }, setSelection] = useState(qualitySelection);
-  const [automatic, setAutomatic] = useState(initialQuality);
+  const [{ override, overrideAdaptive }, setSelection] = useState(qualitySelection);
+  const { manual, preset, customTier, customDpr } = useQualityStore();
+  const [baseTier, setBaseTier] = useState(initialQuality);
+  const [detected, setDetected] = useState(null);
+  const [startupFps, setStartupFps] = useState(null);
   const [declines, setDeclines] = useState(0);
   const [failed, setFailed] = useState(false);
+  const autoMode = override === null && !manual;
+  const adaptive = override === null ? !manual : overrideAdaptive;
   useEffect(() => {
     const query = matchMedia('(max-width: 767px), (pointer: coarse), (hover: none)');
     const sync = () => {
       setSelection(qualitySelection());
-      setAutomatic(initialQuality());
+      setBaseTier(initialQuality());
     };
     if (query.addEventListener) query.addEventListener('change', sync);
     else query.addListener(sync);
@@ -42,11 +48,21 @@ export function QualityProvider({ children }) {
       window.removeEventListener('popstate', sync);
     };
   }, []);
-  const detect = useCallback((gpu) => {
-    setAutomatic(detectedQualityTier(initialQuality(), gpu));
-    // Unknown GPUs keep the conservative device default; never auto-promote to Tier 3.
-  }, []);
-  const requestedTier = override ?? automatic;
+  useEffect(() => {
+    if (!autoMode) {
+      setDetected(null);
+      setStartupFps(null);
+    }
+    if (!adaptive) setDeclines(0);
+  }, [autoMode, adaptive]);
+
+  const detect = useCallback((gpu) => setDetected(detectedQualityTier(initialQuality(), gpu)), []);
+  const detectRenderer = useCallback((suggested) => setDetected(suggested), []);
+  const autoTier = Math.min(baseTier, detected ?? baseTier);
+  const measuredTier =
+    autoTier > 1 && startupFps !== null && startupFps < 40 ? autoTier - 1 : autoTier;
+  const requestedTier =
+    override ?? (manual ? (QUALITY_PRESETS[preset] ?? customTier) : measuredTier);
   const performanceStep = adaptive ? declines : 0;
   const degrade = useCallback(() => {
     // Tier 2 has no reflector to retire, so its next useful step is postprocessing.
@@ -54,9 +70,25 @@ export function QualityProvider({ children }) {
   }, [requestedTier]);
   const fail = useCallback(() => setFailed(true), []);
   const tier = failed ? 0 : Math.min(requestedTier, performanceStep >= 4 ? 1 : 3);
+  const budget = QUALITY_BUDGETS[tier].maxDpr;
+  const maxDpr =
+    override === null && manual && preset === 'custom' ? Math.min(budget, customDpr) : budget;
   return (
     <QualityContext.Provider
-      value={{ tier, override, adaptive, performanceStep, detect, degrade, fail }}
+      value={{
+        tier,
+        override,
+        autoMode,
+        adaptive,
+        performanceStep,
+        maxDpr,
+        startupFps,
+        detect,
+        detectRenderer,
+        onStartupFps: setStartupFps,
+        degrade,
+        fail,
+      }}
     >
       {children}
     </QualityContext.Provider>

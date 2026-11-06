@@ -14,7 +14,7 @@ function distanceLevel(camera, [x, y, z], tier, previous) {
   const [detail, cull] = ranges[tier];
   const { position } = camera;
   const distance = Math.hypot(position.x - x, position.y - y, position.z - z);
-  if (distance > cull - (previous === 'hidden' ? hysteresis : 0)) return 'hidden';
+  if (tier === 3 && distance > cull - (previous === 'hidden' ? hysteresis : 0)) return 'hidden';
   return distance <= detail + (previous === 'detail' ? hysteresis : 0) ? 'detail' : 'silhouette';
 }
 

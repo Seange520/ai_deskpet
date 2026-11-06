@@ -13,6 +13,8 @@ import TravelMist from './TravelMist';
 import TravelPet from './TravelPet';
 import WorldLabel from './WorldLabel';
 import TravelRig from './TravelRig';
+import TravelSpeedLines from './TravelSpeedLines';
+import NightValley from './NightValley';
 import { ISLANDS, RING_RADIUS } from './world';
 import { useIslandAtmosphere } from './useIslandAtmosphere';
 
@@ -89,35 +91,6 @@ function LoadedIsland({ island, tier, paused, reduced, fallback }) {
   );
 }
 
-function Skyline() {
-  const stars = useMemo(
-    () =>
-      new Float32Array(
-        Array.from({ length: 216 }, (_, i) => {
-          const angle = i * 2.39996;
-          const radius = 35 + (i % 11) * 3.1;
-          return [Math.cos(angle) * radius, 3 + (i % 23) * 1.26, Math.sin(angle) * radius];
-        }).flat(),
-      ),
-    [],
-  );
-  return (
-    <points name="space-skyline">
-      <bufferGeometry>
-        <bufferAttribute attach="attributes-position" args={[stars, 3]} />
-      </bufferGeometry>
-      <pointsMaterial
-        color="#cebddd"
-        size={0.11}
-        fog={false}
-        transparent
-        opacity={0.55}
-        depthWrite={false}
-      />
-    </points>
-  );
-}
-
 export default function WorldScene({ paused, reduced, tier, performanceStep }) {
   const night = useEnvironmentStore((state) => state.night);
   const focusTarget = useMemo(() => new Vector3(...ISLANDS.dashboard.camera.focus), []);
@@ -141,7 +114,7 @@ export default function WorldScene({ paused, reduced, tier, performanceStep }) {
         tier={tier}
         atmosphere={atmosphere}
       />
-      <Skyline />
+      <NightValley tier={tier} paused={paused} reduced={reduced} />
       {tier >= 2 ? (
         <SpaceEnvironment
           reflection={tier === 3 && performanceStep < 2}
@@ -152,9 +125,8 @@ export default function WorldScene({ paused, reduced, tier, performanceStep }) {
         <>
           <mesh position={[0, -1.16, 0]} rotation={[-Math.PI / 2, 0, 0]}>
             <circleGeometry args={[85, 96]} />
-            <meshStandardMaterial color="#211b34" roughness={0.95} />
+            <meshStandardMaterial color="#27363d" roughness={0.95} />
           </mesh>
-          <gridHelper args={[110, 44, '#634d7c', '#403451']} position={[0, -1.13, 0]} />
         </>
       )}
       <Orbit radius={RING_RADIUS} color="#ae86cf" opacity={0.24} />
@@ -196,6 +168,7 @@ export default function WorldScene({ paused, reduced, tier, performanceStep }) {
         focusTarget={focusTarget}
         travelProgress={travelProgress}
       />
+      {tier === 3 && performanceStep < 1 && !reduced && <TravelSpeedLines />}
       <TravelPet tier={tier} paused={paused} reduced={reduced} progress={travelProgress} />
       {tier >= 2 && performanceStep < 1 && !reduced && (
         <TravelMist key={tier} tier={tier} progress={travelProgress} />

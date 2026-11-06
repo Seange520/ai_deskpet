@@ -1,9 +1,9 @@
 import { Component, Suspense, useEffect, useState } from 'react';
 import { ACESFilmicToneMapping, NoToneMapping } from 'three';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { AdaptiveDpr, PerformanceMonitor } from '@react-three/drei';
+import { PerformanceMonitor } from '@react-three/drei';
 import useReducedMotionPreference from '../../lib/useReducedMotionPreference';
-import { QUALITY_BUDGETS } from '../../lib/visualCapabilities';
+import { useDeviceDetect } from '../../lib/useDeviceDetect';
 import GpuProbe from '../../lib/GpuProbe';
 import WorldScene from '../space/WorldScene';
 import { ISLANDS } from '../space/world';
@@ -52,6 +52,27 @@ function Lifecycle({ quality, onReady }) {
   }, [gl, quality.fail, onReady]);
   return null;
 }
+function StagePixelRatio({ adaptive, maxDpr }) {
+  const current = useThree((state) => state.performance.current);
+  const setDpr = useThree((state) => state.setDpr);
+  useEffect(() => {
+    const cap = Math.max(1, Math.min(maxDpr, window.devicePixelRatio || 1));
+    setDpr(cap * (adaptive ? current : 1));
+  }, [adaptive, current, maxDpr, setDpr]);
+  return null;
+}
+function DeviceProbe({ paused, quality }) {
+  const fallback = useDeviceDetect({
+    paused,
+    onRenderer: quality.detectRenderer,
+    onSample: quality.onStartupFps,
+  });
+  return fallback ? (
+    <Suspense fallback={null}>
+      <GpuProbe onDetect={quality.detect} />
+    </Suspense>
+  ) : null;
+}
 export default function SceneCanvas({ quality, onReady }) {
   const reduced = useReducedMotionPreference();
   const [hidden, setHidden] = useState(document.hidden);
@@ -93,6 +114,7 @@ export default function SceneCanvas({ quality, onReady }) {
       data-paused={paused}
       data-effects={effects}
       data-performance-step={performanceStep}
+      data-startup-fps={quality.startupFps === null ? undefined : quality.startupFps.toFixed(1)}
       aria-hidden="true"
     >
       <Boundary onFail={quality.fail}>
@@ -100,21 +122,25 @@ export default function SceneCanvas({ quality, onReady }) {
           camera={camera}
           flat={quality.tier >= 2}
           frameloop={paused ? 'never' : 'demand'}
-          dpr={[1, QUALITY_BUDGETS[quality.tier].maxDpr]}
+          dpr={[1, quality.maxDpr]}
           gl={{ alpha: true, antialias: quality.tier >= 2, powerPreference: 'low-power' }}
           fallback={<span>3D 暂不可用</span>}
         >
           <Lifecycle quality={quality} onReady={onReady} />
-          {quality.override === null && (
-            <Suspense fallback={null}>
-              <GpuProbe onDetect={quality.detect} />
-            </Suspense>
-          )}
-          <AdaptiveDpr />
-          {adaptive && tier >= 2 && !paused && !reduced && (
-            // Each step starts a fresh window. With motion enabled, TravelRig requests every frame.
-            <PerformanceMonitor key={performanceStep} iterations={4} onDecline={quality.degrade} />
-          )}
+          {quality.autoMode && <DeviceProbe paused={paused} quality={quality} />}
+          <StagePixelRatio adaptive={adaptive} maxDpr={quality.maxDpr} />
+          {adaptive &&
+            (quality.override !== null || quality.startupFps !== null) &&
+            tier >= 2 &&
+            !paused &&
+            !reduced && (
+              // Each step starts a fresh window. With motion enabled, TravelRig requests every frame.
+              <PerformanceMonitor
+                key={performanceStep}
+                iterations={4}
+                onDecline={quality.degrade}
+              />
+            )}
           <WorldScene
             reduced={reduced || tier === 1}
             paused={paused}

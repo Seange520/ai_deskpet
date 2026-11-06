@@ -1,7 +1,5 @@
 import { useMemo } from 'react';
-import { useFrame } from '@react-three/fiber';
-import { AdditiveBlending, BackSide, Color, DoubleSide } from 'three';
-import { sceneAuroraFragment } from '../../components/auroraShader';
+import { AdditiveBlending, Color, DoubleSide } from 'three';
 import FloatingDebris from './FloatingDebris';
 import ReflectiveFloor from './ReflectiveFloor';
 import { RING_RADIUS } from './world';
@@ -46,88 +44,6 @@ void main() {
   gl_FragColor = vec4(tint * 3.4, softEdge * softEdge * fade * haze * strength);
 }
 `;
-
-const skyVertex = `
-varying vec3 skyDirection;
-void main() {
-  skyDirection = position;
-  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-}
-`;
-
-const skyFragment = sceneAuroraFragment
-  .replace('varying vec2 fieldUv;', 'varying vec3 skyDirection; uniform vec3 horizon;')
-  .replace(
-    'vec2 p = vec2(uv.x * resolution.x / max(resolution.y, 1.0), uv.y) * 1.8;',
-    `
-    vec3 direction = normalize(skyDirection);
-    vec2 fieldUv = vec2(direction.x * 0.5 + 0.5, max(direction.y, 0.0));
-    vec2 p = direction.xz * 2.2 + vec2(0.2, direction.y * 3.1);
-  `,
-  )
-  .replace('gl_FragColor = vec4(', 'vec4 aurora = vec4(')
-  .replace(
-    '1.0);\n}',
-    `
-    1.0);
-    float altitude = smoothstep(-0.035, 0.28, direction.y);
-    gl_FragColor = vec4(mix(horizon, aurora.rgb, altitude), 1.0);
-  }`,
-  );
-function AuroraSky({ paused, reduced }) {
-  const uniforms = useMemo(
-    () => ({
-      time: { value: 0 },
-      horizon: { value: new Color('#1b1626') },
-    }),
-    [],
-  );
-  useFrame((_, delta) => {
-    if (!paused && !reduced) uniforms.time.value += Math.min(delta, 0.05);
-  });
-  return (
-    <mesh name="space-aurora" frustumCulled={false} renderOrder={-10}>
-      <sphereGeometry args={[85, 40, 24]} />
-      <shaderMaterial
-        vertexShader={skyVertex}
-        fragmentShader={skyFragment}
-        side={BackSide}
-        uniforms={uniforms}
-        depthTest={false}
-        depthWrite={false}
-        toneMapped={false}
-      />
-    </mesh>
-  );
-}
-
-function HorizonStructures() {
-  return (
-    <group name="space-horizon-structures">
-      {Array.from({ length: 14 }, (_, i) => {
-        const angle = i * 2.39996;
-        const distance = 27 + ((i * 17) % 29);
-        const radius = 3.8 + (i % 5) * 1.08;
-        return (
-          <group
-            key={i}
-            position={[Math.cos(angle) * distance, -1.1, Math.sin(angle) * distance]}
-            rotation={[0, -angle + 0.34, 0]}
-          >
-            <mesh position={[0, 1.4, 0]} rotation={[0, 0, 0.12 - (i % 3) * 0.12]}>
-              <torusGeometry args={[radius, 0.34 + (i % 4) * 0.09, 5, 24, Math.PI * 1.12]} />
-              <meshBasicMaterial color={i % 2 === 0 ? '#342840' : '#3c304b'} />
-            </mesh>
-            <mesh position={[-radius * 0.82, 0.5, -0.12]}>
-              <boxGeometry args={[radius * 0.65, 2.6, 1.25]} />
-              <meshBasicMaterial color="#302539" />
-            </mesh>
-          </group>
-        );
-      })}
-    </group>
-  );
-}
 
 export function IslandLights({ island, tier, volume }) {
   const [x, , z] = island.position;
@@ -189,14 +105,12 @@ export function IslandLights({ island, tier, volume }) {
 export default function SpaceEnvironment({ reflection, paused, reduced }) {
   return (
     <>
-      <AuroraSky paused={paused} reduced={reduced} />
-      <HorizonStructures />
       {reflection ? (
         <ReflectiveFloor />
       ) : (
         <mesh name="space-gradient-floor" position={[0, -1.16, 0]} rotation={[-Math.PI / 2, 0, 0]}>
           <circleGeometry args={[85, 96]} />
-          <meshBasicMaterial color="#251d31" />
+          <meshBasicMaterial color="#26333a" />
         </mesh>
       )}
       <mesh position={[0, -1.145, 0]} rotation={[-Math.PI / 2, 0, 0]}>

@@ -1,5 +1,6 @@
 import { Component, createContext, lazy, Suspense, useContext, useState } from 'react';
 import { useQualityTier } from '../../lib/qualityTier';
+import ValleyFallback from '../space/ValleyFallback';
 import './stage.css';
 const SceneCanvas = lazy(() => import('./SceneCanvas'));
 const StageContext = createContext({ ready: false });
@@ -14,7 +15,9 @@ export default function StageLayer({ children }) {
         data-quality-tier={quality.tier}
         data-stage-ready={ready && quality.tier > 0}
       >
-        <div className="visual-fallback" aria-hidden="true" />
+        <div className="visual-fallback" aria-hidden="true">
+          {quality.tier === 0 && <ValleyFallback />}
+        </div>
         {quality.tier > 0 && (
           <StageLoadBoundary onFail={quality.fail}>
             <Suspense fallback={null}>

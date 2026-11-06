@@ -3,12 +3,12 @@ import { ISLAND_HUD } from './spaceLayout.js';
 
 export const HUB = [0, 0, 0];
 export const RING_RADIUS = 16;
-export const TRAVEL_SECONDS = 2.3;
+export { TRAVEL_SECONDS } from './travelTimeline.js';
 
 function island(id, radial, accent, fov) {
   const [x, z] = radial;
   const position = [x * RING_RADIUS, 0, z * RING_RADIUS];
-  const cameraPosition = [position[0] + x * 11 + z * 3, 6.7, position[2] + z * 11 - x * 3];
+  const cameraPosition = [position[0] + x * 11 + z * 3, 5.9, position[2] + z * 11 - x * 3];
   const focus = [position[0], 1.15, position[2]];
   const right = new Vector3(...focus)
     .sub(new Vector3(...cameraPosition))
@@ -18,7 +18,7 @@ function island(id, radial, accent, fov) {
     right,
     ISLAND_HUD[id].side === 'left' ? -4.2 : 4.2,
   );
-  target.y = 0.58;
+  target.y = 2.88;
   return {
     id,
     position,
@@ -40,9 +40,9 @@ export const LANDMARKS = {
   hub: {
     position: HUB,
     camera: {
-      position: [8.8, 7.3, 12.6],
+      position: [8.8, 6.6, 12.6],
       focus: [0, 0.9, 0],
-      target: [-4.5, 0.62, 3.2],
+      target: [-4.5, 3.85, 3.2],
       fov: 43,
     },
     hud: ISLAND_HUD.hub,

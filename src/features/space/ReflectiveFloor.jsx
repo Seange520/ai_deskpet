@@ -26,7 +26,7 @@ export default function ReflectiveFloor() {
     });
     const blurPass = new BlurPass({ resolution, width: blur[0], height: blur[1] });
     const material = new MeshReflectorMaterial();
-    material.color.set('#645570');
+    material.color.set('#59676d');
     material.roughness = 0.76;
     material.metalness = 0.16;
     material.defines.USE_BLUR = '';

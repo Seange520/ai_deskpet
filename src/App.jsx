@@ -4,6 +4,7 @@ import { isLowPowerDevice } from './lib/visualCapabilities';
 import { totalXP, levelFor, globalBadges, MAX_XP } from './stores/useLearningStore';
 import { playSound } from './lib/sounds';
 import Button from './components/Button';
+import QualitySettings from './components/QualitySettings';
 import { MOTION } from './motion';
 import { TiltSurface, Depth } from './components/MicroEffects';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
@@ -402,7 +403,7 @@ export default function App() {
             >
               {muted ? <VolumeX size={18} /> : <Volume2 size={18} />}
             </Button>
-            <span className="top-avatar">S</span>
+            <QualitySettings />
           </header>
           {storageError && (
             <div className="storage-note" role="status" data-space-hud>

@@ -35,7 +35,7 @@ async function read(page, operation = 'read') {
     return {
       aurora: Boolean(s.scene.getObjectByName('space-aurora')),
       gradient: Boolean(s.scene.getObjectByName('space-gradient-floor')),
-      horizon: s.scene.getObjectByName('space-horizon-structures')?.children.length || 0,
+      horizon: s.scene.getObjectByName('valley-towers')?.count || 0,
       debris:
         debris?.children.reduce(
           (count, mesh) => count + (mesh.isInstancedMesh ? mesh.count : 0),
@@ -119,7 +119,7 @@ try {
         expect(s.aurora).toBe(tier >= 2);
         expect(s.gradient).toBe(tier === 2);
         expect(s.debris).toBe(tier >= 2 ? 120 : 0);
-        expect(s.horizon).toBe(tier >= 2 ? 14 : 0);
+        expect(s.horizon).toBe(14);
         expect(s.beams).toEqual([[], [], [5], [5, 5]][tier]);
         expect(s.reflection).toEqual(
           tier === 3 ? { mirror: 0.55, mixBlur: 1, resolution: [256, 256] } : undefined,
