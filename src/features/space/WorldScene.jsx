@@ -1,22 +1,27 @@
-import { Suspense, useMemo, useRef } from 'react';
+import { lazy, Suspense, useMemo, useRef } from 'react';
 import { Vector3 } from 'three';
 import { useEnvironmentStore } from '../environment/useEnvironmentStore';
 import EnvironmentLighting from '../deskpet3d/EnvironmentLighting';
-import StageAtmosphere from '../stage/StageAtmosphere';
-import StageEffects from '../stage/StageEffects';
-import SpaceEnvironment, { IslandLights } from './SpaceEnvironment';
 import IslandCuller from './IslandCuller';
 import { useIslandContent } from './islandAssets';
 import HubSandbox from './HubSandbox';
 import EnergyRail from './EnergyRail';
-import TravelMist from './TravelMist';
 import TravelPet from './TravelPet';
 import WorldLabel from './WorldLabel';
 import TravelRig from './TravelRig';
-import TravelSpeedLines from './TravelSpeedLines';
 import NightValley from './NightValley';
 import { ISLANDS, RING_RADIUS } from './world';
 import { useIslandAtmosphere } from './useIslandAtmosphere';
+
+const StageAtmosphere = lazy(() => import('../stage/StageAtmosphere'));
+const StageEffects = lazy(() => import('../stage/StageEffects'));
+const CinematicStageEffects = lazy(() => import('../stage/CinematicStageEffects'));
+const SpaceEnvironment = lazy(() => import('./SpaceEnvironment'));
+const IslandLights = lazy(() =>
+  import('./SpaceEnvironment').then(({ IslandLights }) => ({ default: IslandLights })),
+);
+const TravelMist = lazy(() => import('./TravelMist'));
+const TravelSpeedLines = lazy(() => import('./TravelSpeedLines'));
 
 const DUSK = '#21192f';
 const islands = Object.values(ISLANDS);
@@ -96,6 +101,7 @@ export default function WorldScene({ paused, reduced, tier, performanceStep, adv
   const focusTarget = useMemo(() => new Vector3(...ISLANDS.dashboard.camera.focus), []);
   const travelProgress = useRef(0);
   const fogColor = tier >= 2 ? '#1b1626' : DUSK;
+  const Effects = advanced.selectiveBloom ? CinematicStageEffects : StageEffects;
   const atmosphere = useIslandAtmosphere({
     fogColor,
     night,
@@ -116,7 +122,9 @@ export default function WorldScene({ paused, reduced, tier, performanceStep, adv
       />
       <NightValley tier={tier} paused={paused} reduced={reduced} />
       {tier >= 2 ? (
-        <SpaceEnvironment paused={paused} reduced={reduced} />
+        <Suspense fallback={null}>
+          <SpaceEnvironment paused={paused} reduced={reduced} />
+        </Suspense>
       ) : (
         <>
           <mesh position={[0, -1.16, 0]} rotation={[-Math.PI / 2, 0, 0]}>
@@ -134,7 +142,9 @@ export default function WorldScene({ paused, reduced, tier, performanceStep, adv
           <IslandCuller key={island.id} island={island} tier={tier}>
             <IslandDetail island={island}>
               {tier >= 2 && (
-                <IslandLights island={island} tier={tier} volume={performanceStep < 1} />
+                <Suspense fallback={null}>
+                  <IslandLights island={island} tier={tier} volume={performanceStep < 1} />
+                </Suspense>
               )}
               <WorldLabel
                 title={plaques[island.id][0]}
@@ -157,14 +167,22 @@ export default function WorldScene({ paused, reduced, tier, performanceStep, adv
           </IslandCuller>
         );
       })}
-      {tier >= 2 && <StageAtmosphere tier={tier} paused={paused} reduced={reduced} />}
+      {tier >= 2 && (
+        <Suspense fallback={null}>
+          <StageAtmosphere tier={tier} paused={paused} reduced={reduced} />
+        </Suspense>
+      )}
       <TravelRig
         reduced={reduced}
         paused={paused}
         focusTarget={focusTarget}
         travelProgress={travelProgress}
       />
-      {tier === 3 && performanceStep < 1 && !reduced && <TravelSpeedLines />}
+      {tier === 3 && performanceStep < 1 && !reduced && (
+        <Suspense fallback={null}>
+          <TravelSpeedLines />
+        </Suspense>
+      )}
       <TravelPet
         tier={tier}
         paused={paused}
@@ -173,17 +191,21 @@ export default function WorldScene({ paused, reduced, tier, performanceStep, adv
         dissolve={advanced.dissolve && !reduced}
       />
       {tier >= 2 && performanceStep < 1 && !reduced && (
-        <TravelMist key={tier} tier={tier} progress={travelProgress} />
+        <Suspense fallback={null}>
+          <TravelMist key={tier} tier={tier} progress={travelProgress} />
+        </Suspense>
       )}
       {tier >= 2 && (
-        <StageEffects
-          tier={tier}
-          paused={paused}
-          focusTarget={focusTarget}
-          cinematic={performanceStep < 3}
-          advanced={advanced}
-          reduced={reduced}
-        />
+        <Suspense fallback={null}>
+          <Effects
+            tier={tier}
+            paused={paused}
+            focusTarget={focusTarget}
+            cinematic={performanceStep < 3}
+            advanced={advanced}
+            reduced={reduced}
+          />
+        </Suspense>
       )}
     </>
   );

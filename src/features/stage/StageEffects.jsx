@@ -7,12 +7,19 @@ import {
   ToneMapping,
   Vignette,
   FXAA,
-  DepthOfField,
 } from '@react-three/postprocessing';
 import { ToneMappingMode } from 'postprocessing';
-import AdvancedStageEffects from './AdvancedStageEffects';
 
-export default function StageEffects({ tier, paused, focusTarget, cinematic, advanced, reduced }) {
+export default function StageEffects({
+  tier,
+  paused,
+  focusTarget,
+  cinematic,
+  advanced,
+  reduced,
+  AdvancedEffects,
+  DepthOfField,
+}) {
   const ref = useRef(null);
   const depth = useRef(null);
   useFrame(() => depth.current?.target.copy(focusTarget));
@@ -36,14 +43,14 @@ export default function StageEffects({ tier, paused, focusTarget, cinematic, adv
       enabled={!paused}
     >
       <ComposerResources />
-      {advanced.selectiveBloom && (
-        <AdvancedStageEffects
+      {AdvancedEffects && (
+        <AdvancedEffects
           reflection={advanced.ssr}
           ao={advanced.gtao}
           motion={advanced.motionBlur && !reduced}
         />
       )}
-      {cinematic && !advanced.selectiveBloom && (
+      {cinematic && !AdvancedEffects && (
         <Bloom
           mipmapBlur
           intensity={0.9}
@@ -56,7 +63,7 @@ export default function StageEffects({ tier, paused, focusTarget, cinematic, adv
       <Vignette offset={0.3} darkness={0.5} />
       <FXAA />
       {/* 6.39.6 uses world distances; target keeps the requested DoF focused on the eyes. */}
-      {cinematic && tier === 3 && (
+      {DepthOfField && (
         <DepthOfField
           focusDistance={0.02}
           focalLength={0.055}

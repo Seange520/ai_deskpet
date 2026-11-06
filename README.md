@@ -9,7 +9,7 @@
 [![Vite](https://img.shields.io/badge/Vite-6-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vite.dev)
 [![React](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev)
 [![Zustand](https://img.shields.io/badge/Zustand-5-2D3748?style=flat-square)](https://zustand.docs.pmnd.rs)
-[![Release](https://img.shields.io/badge/release-v0.9.4a9--beta-FFC98B?style=flat-square)](https://github.com/Seange520/ai_deskpet/tree/v0.9.4a9-beta)
+[![Release](https://img.shields.io/badge/release-v0.9.4a10--beta-FFC98B?style=flat-square)](https://github.com/Seange520/ai_deskpet/tree/v0.9.4a10-beta)
 ![Status](https://img.shields.io/badge/status-Testing-orange?style=flat-square)
 [![Vercel](https://img.shields.io/badge/Vercel-Deployed-000000?style=flat-square&logo=vercel&logoColor=white)](https://www.seange.cn)
 
@@ -21,7 +21,7 @@
 
 ---
 
-## 当前版本 · v0.9.4a9-beta 夜谷世界观与电影级运镜
+## 当前版本 · v0.9.4a10-beta 夜谷世界观与电影级运镜
 
 夜谷工坊加入月夜天穹、双层山脊和远处塔群，空间航线采用五段运镜。右上角的全局画质提供极致、均衡、流畅和自定义。手动选择可跨刷新保留，恢复自动后重新采样。Tier 1 保留四岛、枢纽、光轨与地平线，Tier 0 使用 SVG 夜谷和 DOM 教学。
 

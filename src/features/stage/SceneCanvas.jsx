@@ -1,12 +1,13 @@
-import { Component, Suspense, useEffect, useState } from 'react';
-import { ACESFilmicToneMapping, NoToneMapping } from 'three';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { PerformanceMonitor } from '@react-three/drei';
 import useReducedMotionPreference from '../../lib/useReducedMotionPreference';
 import { useDeviceDetect } from '../../lib/useDeviceDetect';
-import GpuProbe from '../../lib/GpuProbe';
+import RenderBoundary from './RenderBoundary';
 import WorldScene from '../space/WorldScene';
 import { ISLANDS } from '../space/world';
+
+const GpuProbe = lazy(() => import('../../lib/GpuProbe'));
 
 const camera = {
   position: ISLANDS.dashboard.camera.position,
@@ -15,25 +16,8 @@ const camera = {
   far: 115,
 };
 
-class Boundary extends Component {
-  state = { failed: false };
-  static getDerivedStateFromError() {
-    return { failed: true };
-  }
-  componentDidCatch() {
-    this.props.onFail();
-  }
-  render() {
-    return this.state.failed ? null : this.props.children;
-  }
-}
 function Lifecycle({ quality, onReady }) {
   const gl = useThree((s) => s.gl);
-  const invalidate = useThree((s) => s.invalidate);
-  useEffect(() => {
-    gl.toneMapping = quality.tier >= 2 ? NoToneMapping : ACESFilmicToneMapping;
-    invalidate();
-  }, [gl, quality.tier, invalidate]);
   useFrame(() => {
     gl.setRenderTarget(null);
     gl.clear(true, true, true);
@@ -119,10 +103,9 @@ export default function SceneCanvas({ quality, onReady }) {
       data-startup-fps={quality.startupFps === null ? undefined : quality.startupFps.toFixed(1)}
       aria-hidden="true"
     >
-      <Boundary onFail={quality.fail}>
+      <RenderBoundary onFail={quality.fail}>
         <Canvas
           camera={camera}
-          flat={quality.tier >= 2}
           frameloop={paused ? 'never' : 'demand'}
           dpr={[1, quality.maxDpr]}
           gl={{ alpha: true, antialias: quality.tier >= 2, powerPreference: 'low-power' }}
@@ -151,7 +134,7 @@ export default function SceneCanvas({ quality, onReady }) {
             advanced={quality.advanced}
           />
         </Canvas>
-      </Boundary>
+      </RenderBoundary>
     </div>
   );
 }

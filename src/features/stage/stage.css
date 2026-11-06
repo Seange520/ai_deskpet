@@ -15,6 +15,19 @@
   width: 100%;
   height: 100%;
 }
+.valley-map {
+  position: absolute;
+  top: 58%;
+  left: 58%;
+  width: min(max(42.4vw, 67.8vh), 80vw);
+  height: auto;
+  transform: translate(-50%, -50%);
+}
+@media (max-aspect-ratio: 1/1) {
+  .valley-map {
+    left: 50%;
+  }
+}
 .quality-settings {
   flex: none;
 }

@@ -1,6 +1,7 @@
-import { Component, createContext, lazy, Suspense, useContext, useState } from 'react';
+import { createContext, lazy, Suspense, useContext, useState } from 'react';
 import { useQualityTier } from '../../lib/qualityTier';
 import ValleyFallback from '../space/ValleyFallback';
+import RenderBoundary from './RenderBoundary';
 import './stage.css';
 const SceneCanvas = lazy(() => import('./SceneCanvas'));
 const StageContext = createContext({ ready: false });
@@ -16,30 +17,17 @@ export default function StageLayer({ children }) {
         data-stage-ready={ready && quality.tier > 0}
       >
         <div className="visual-fallback" aria-hidden="true">
-          {quality.tier === 0 && <ValleyFallback />}
+          {(!ready || quality.tier === 0) && <ValleyFallback />}
         </div>
         {quality.tier > 0 && (
-          <StageLoadBoundary onFail={quality.fail}>
+          <RenderBoundary onFail={quality.fail}>
             <Suspense fallback={null}>
               <SceneCanvas quality={quality} onReady={setReady} />
             </Suspense>
-          </StageLoadBoundary>
+          </RenderBoundary>
         )}
         <div className="hud-layer">{children}</div>
       </div>
     </StageContext.Provider>
   );
-}
-
-class StageLoadBoundary extends Component {
-  state = { failed: false };
-  static getDerivedStateFromError() {
-    return { failed: true };
-  }
-  componentDidCatch() {
-    this.props.onFail();
-  }
-  render() {
-    return this.state.failed ? null : this.props.children;
-  }
 }

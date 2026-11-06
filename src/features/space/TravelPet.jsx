@@ -1,10 +1,10 @@
-import { Suspense, useMemo, useRef } from 'react';
+import { lazy, Suspense, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { MathUtils, Vector3 } from 'three';
 import { useIslandContent } from './islandAssets';
 import { useSpaceStore } from './spaceStore';
 import { LANDMARKS } from './world';
-import PetDissolve from './PetDissolve';
+const PetDissolve = lazy(() => import('./PetDissolve'));
 
 function dockAt(id) {
   const { position, camera, hud } = LANDMARKS[id];
@@ -121,7 +121,11 @@ export default function TravelPet({ tier, paused, reduced, progress, dissolve })
       <Suspense fallback={<PetPlaceholder />}>
         <PetBody tier={tier} paused={paused} reduced={reduced} />
       </Suspense>
-      {dissolve && <PetDissolve pet={pet} paused={paused} />}
+      {dissolve && (
+        <Suspense fallback={null}>
+          <PetDissolve pet={pet} paused={paused} />
+        </Suspense>
+      )}
     </group>
   );
 }

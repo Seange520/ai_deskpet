@@ -59,6 +59,9 @@ async function read(page, operation = 'read') {
       bloom: bloom?.intensity,
       geometries: s.gl.info.memory.geometries,
       textures: s.gl.info.memory.textures,
+      environmentAllocated: Boolean(
+        s.scene.environment && s.gl.properties.has(s.scene.environment),
+      ),
       time: s.scene.getObjectByName('stage-gpu-particles')?.material.uniforms.time.value,
     };
   }, operation);
@@ -226,7 +229,9 @@ try {
         history.pushState({}, '', '?quality=' + tier);
         dispatchEvent(new PopStateEvent('popstate'));
       }, tier);
-      await expect.poll(() => read(page).then((s) => s?.effects.length)).toBe(tier === 3 ? 6 : 4);
+      await expect
+        .poll(() => read(page).then((s) => s?.effects.length))
+        .toBe({ 1: 0, 2: 4, 3: 6 }[tier]);
     };
     const initial = await read(page);
     // Warm lazy geometry and the new off-screen passes before comparing retained resources.
@@ -243,12 +248,15 @@ try {
     expect(
       await page.locator('.scene-stage canvas').evaluate((node, old) => node === old, canvas),
     ).toBe(true);
-    await page.evaluate(() => {
-      history.pushState({}, '', '?quality=1');
-      dispatchEvent(new PopStateEvent('popstate'));
-    });
-    await expect.poll(() => read(page).then((s) => s?.effects.length)).toBe(0);
+    await setTier(1);
     await expect.poll(() => read(page).then((s) => s?.toneMapping)).toBe(4);
+    const tier1Textures = (await read(page)).textures;
+    for (let cycle = 0; cycle < 5; cycle += 1) {
+      await setTier(3);
+      await expect.poll(() => read(page).then((s) => s?.environmentAllocated)).toBe(true);
+      await setTier(1);
+      await expect.poll(() => read(page).then((s) => s?.textures)).toBe(tier1Textures);
+    }
   });
   await writeFile(out + '/report.json', JSON.stringify(results, null, 2));
 } finally {

@@ -5,6 +5,7 @@ import Button from './Button';
 import { useEnvironment } from '../features/environment/useEnvironment';
 import { Maximize2 } from 'lucide-react';
 import PetFocusView from '../features/deskpet3d/PetFocusView';
+import RenderBoundary from '../features/stage/RenderBoundary';
 import { playSound } from '../lib/sounds';
 import Companion2D from './Companion2D';
 import './companion3d.css';
@@ -107,18 +108,20 @@ export default function Companion({ celebrations, feedback, hidden }) {
               onReset={() => stage.current?.resetView()}
               onPet={() => stage.current?.petHead()}
             >
-              <DeskPet3DStage
-                ref={stage}
-                tier={quality.tier}
-                runtime={runtime}
-                interaction={interaction}
-                environment={environment}
-                compact={!focused}
-                still={small && !focused}
-                onPet={(kind) => playSound(kind, useLearningStore.getState().muted)}
-                paused={hidden || suspended}
-                onUnsupported={fail}
-              />
+              <RenderBoundary onFail={fail}>
+                <DeskPet3DStage
+                  ref={stage}
+                  tier={quality.tier}
+                  runtime={runtime}
+                  interaction={interaction}
+                  environment={environment}
+                  compact={!focused}
+                  still={small && !focused}
+                  onPet={(kind) => playSound(kind, useLearningStore.getState().muted)}
+                  paused={hidden || suspended}
+                  onUnsupported={fail}
+                />
+              </RenderBoundary>
             </PetFocusView>
           </Button>
         </motion.div>
