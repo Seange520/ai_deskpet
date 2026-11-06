@@ -10,7 +10,6 @@ import Companion2D from './Companion2D';
 import './companion3d.css';
 import { useQualityTier } from '../lib/qualityTier';
 import { usePetActions } from '../features/interaction/usePetActions';
-import { useHardwareStore } from '../features/hardware/useHardwareStore';
 
 const DeskPet3DStage = lazy(() => import('../features/deskpet3d/DeskPet3DStage'));
 
@@ -23,10 +22,7 @@ export default function Companion({ celebrations, feedback, hidden }) {
   const environment = useEnvironment(environmentSound);
   const runtime = useLearningStore((state) => state.runtime);
   const interaction = usePetActions();
-  const light = useHardwareStore((state) => state.hardwareData?.light ?? null);
-  useEffect(() => {
-    usePetActions.getState().setLight(light);
-  }, [light]);
+
   const quality = useQualityTier();
   const stage = useRef(null);
   const [focused, setFocused] = useState(false);

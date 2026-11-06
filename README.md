@@ -9,7 +9,7 @@
 [![Vite](https://img.shields.io/badge/Vite-6-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vite.dev)
 [![React](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev)
 [![Zustand](https://img.shields.io/badge/Zustand-5-2D3748?style=flat-square)](https://zustand.docs.pmnd.rs)
-[![Release](https://img.shields.io/badge/release-v0.9.4a6--beta-FFC98B?style=flat-square)](https://github.com/Seange520/ai_deskpet/tree/v0.9.4a6-beta)
+[![Release](https://img.shields.io/badge/release-v0.9.4a7--beta-FFC98B?style=flat-square)](https://github.com/Seange520/ai_deskpet/tree/v0.9.4a7-beta)
 ![Status](https://img.shields.io/badge/status-Testing-orange?style=flat-square)
 [![Vercel](https://img.shields.io/badge/Vercel-Deployed-000000?style=flat-square&logo=vercel&logoColor=white)](https://www.seange.cn)
 
@@ -21,7 +21,11 @@
 
 ---
 
-## 当前版本 · v0.9.4a6-beta 四岛地貌与叙事氛围
+## 当前版本 · v0.9.4a7-beta 硬件遥测与桌宠状态机
+
+浏览器模拟、虚拟光感和 Web Serial 共用遥测数据流。桌宠与 Stage 灯光订阅独立的状态机，按光照休眠并响应声音突变。代码工坊的开发者面板可在聚焦硬件标题后按 Ctrl+Shift+D，或连续点击标题五次打开，使用光照与声音滑杆验证联动。
+
+### v0.9.4a6-beta 四岛地貌与叙事氛围
 
 硬件岛以起伏电路板承载铜色走线与流动电流，代码岛以程序化字符图集呈现数据瀑布，排位岛用玻璃金字塔包围悬浮全息榜台。Stage 雾色与灯光随航段切换。Tier 1 保留三岛轮廓与发光细节，Tier 0 提供 DOM 教学与 SVG 沙盘。
 

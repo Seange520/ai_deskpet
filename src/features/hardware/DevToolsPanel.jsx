@@ -1,7 +1,40 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useHardwareTelemetry } from '../../store/useHardwareTelemetry';
 import Button from '../../components/Button';
 import { hardwareConnection, useHardwareStore } from './useHardwareStore';
 import './dev-tools.css';
+
+function TelemetrySlider({ label, field, setter }) {
+  const input = useRef(null);
+  const output = useRef(null);
+  useEffect(() => {
+    const update = (state, previous) => {
+      const level = state[field];
+      if (level === previous?.[field]) return;
+      input.current.value = level;
+      output.current.value = Math.round(level);
+    };
+    const unsubscribe = useHardwareTelemetry.subscribe(update);
+    update(useHardwareTelemetry.getState());
+    return unsubscribe;
+  }, [field]);
+
+  return (
+    <label>
+      {label} <output ref={output} aria-hidden="true" />
+      <input
+        ref={input}
+        aria-label={label}
+        type="range"
+        min="0"
+        max="100"
+        onChange={(event) =>
+          useHardwareTelemetry.getState()[setter](event.currentTarget.valueAsNumber)
+        }
+      />
+    </label>
+  );
+}
 
 // 未来所有与底层调试、Mock 测试相关的功能（如自定义数据注入、跳过任务、真实固件烧录等）统一接入此面板。
 // This is a session-only discovery gate, not authorization for privileged operations.
@@ -21,6 +54,10 @@ export default function DevToolsPanel({ onClose }) {
         <Button className="btn" onClick={onClose}>
           关闭开发者调试
         </Button>
+      </div>
+      <div className="hardware-connection-actions">
+        <TelemetrySlider label="模拟光照" field="lightLevel" setter="setLightLevel" />
+        <TelemetrySlider label="模拟声音" field="soundLevel" setter="setSoundLevel" />
       </div>
       <p className="hardware-connection-help">
         Node 桥接仅供本机调试。先手动运行 <code>node scripts/virtual-esp32.mjs</code>，

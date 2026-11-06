@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { Environment, Lightformer } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
+import { usePetState } from '../../store/usePetState';
 
 // Independent light refs: never restart the pet's command or gesture animations.
 export default function EnvironmentLighting({
@@ -17,6 +18,13 @@ export default function EnvironmentLighting({
   useEffect(() => {
     invalidate();
   }, [night, paused, reducedMotion, invalidate]);
+  useEffect(
+    () =>
+      usePetState.subscribe((next, previous) => {
+        if ((next.status === 'sleeping') !== (previous.status === 'sleeping')) invalidate();
+      }),
+    [invalidate],
+  );
   useFrame((_, delta) => {
     if (paused) return;
     if (atmosphere) {
@@ -24,13 +32,15 @@ export default function EnvironmentLighting({
       fill.current.color.copy(atmosphere.fill);
     }
     const alpha = reducedMotion ? 1 : 1 - Math.exp(-7 * Math.min(delta, 0.05));
+    const intensityScale = usePetState.getState().status === 'sleeping' ? 0.3 : 1;
     let settling = false;
-    for (const [ref, target] of [
+    for (const [ref, base] of [
       [ambient, night ? 0.55 : 1.3],
       [key, night ? 0.9 : 1.6],
       [fill, night ? 0.35 : 0.8],
     ]) {
       if (!ref.current) continue;
+      const target = base * intensityScale;
       const difference = target - ref.current.intensity;
       if (Math.abs(difference) < 0.001) ref.current.intensity = target;
       else {

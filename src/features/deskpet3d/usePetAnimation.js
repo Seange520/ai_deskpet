@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
+import { usePetState } from '../../store/usePetState';
 
 // Canvas-local refs and visual transitions. No store writes, persistence or sound.
 export function usePetAnimation({
@@ -17,7 +18,8 @@ export function usePetAnimation({
   const head = useRef(null);
   const invalidate = useThree((state) => state.invalidate);
   const animation = useRef({ type: 'idle', elapsed: 0, start: 0 });
-  const asleep = interaction.dark || interaction.sleeping || environment.idleSleeping;
+  const reactionTime = useRef(0);
+  useEffect(() => usePetState.subscribe(() => invalidate()), [invalidate]);
   const dizzyMotion = useRef(0);
   useEffect(() => {
     dizzyMotion.current = 0;
@@ -44,16 +46,20 @@ export function usePetAnimation({
   const phase = useRef(0);
   const active = runtime.status === 'success';
   const direction = active ? { forward: 1, backward: -1 }[runtime.action] || 0 : 0;
-  const brightness = asleep ? 0.02 : active && runtime.led ? 2.2 : 0.15;
 
   useEffect(() => {
     phase.current = 0;
     invalidate();
-  }, [runtime, reducedMotion, paused, asleep, invalidate]);
+  }, [runtime, reducedMotion, paused, interaction.sleeping, environment.idleSleeping, invalidate]);
 
   useFrame((_, delta) => {
     if (!body.current || paused) return;
     const dt = Math.min(delta, 0.05);
+    const { status } = usePetState.getState();
+    const asleep = status === 'sleeping' || interaction.sleeping || environment.idleSleeping;
+    const reacting = status === 'reacting' && !asleep && !reducedMotion;
+    reactionTime.current = reacting ? reactionTime.current + dt : 0;
+    const brightness = asleep ? 0.02 : active && runtime.led ? 2.2 : 0.15;
     phase.current += dt;
     const motion = animation.current;
     dizzyMotion.current += dt;
@@ -79,7 +85,9 @@ export function usePetAnimation({
             : 0;
     const alpha = reducedMotion ? 1 : 1 - Math.exp(-10 * dt);
     let settling = false;
+    const targetX = reacting ? Math.sin(reactionTime.current * 62) * 0.046 : 0;
     for (const [axis, target] of [
+      ['x', targetX],
       ['y', targetY],
       ['z', targetZ],
     ]) {
@@ -135,6 +143,7 @@ export function usePetAnimation({
       jump ||
       happy ||
       dazed ||
+      reacting ||
       (asleep && !reducedMotion) ||
       (spin && t < 1) ||
       settling

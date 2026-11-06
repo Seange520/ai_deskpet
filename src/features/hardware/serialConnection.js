@@ -13,12 +13,20 @@ export function createTelemetryDecoder(onData, onInvalid) {
         !data ||
         Array.isArray(data) ||
         (Object.hasOwn(data, 'temp') && !Number.isFinite(data.temp)) ||
-        !Number.isFinite(data.light)
+        (Object.hasOwn(data, 'light') && !Number.isFinite(data.light)) ||
+        (Object.hasOwn(data, 'sound') && !Number.isFinite(data.sound)) ||
+        (!Number.isFinite(data.light) && !Number.isFinite(data.sound))
       )
         throw new Error('schema');
-      onData({ temp: data.temp ?? null, light: data.light, receivedAt: Date.now() });
+      const frame = { receivedAt: Date.now() };
+      if (Number.isFinite(data.light)) {
+        frame.light = data.light;
+        frame.temp = data.temp ?? null;
+      }
+      if (Number.isFinite(data.sound)) frame.sound = data.sound;
+      onData(frame);
     } catch {
-      onInvalid('已忽略无效数据，请确认设备发送包含 light 数值、可选 temp 数值的 JSON 行。');
+      onInvalid('已忽略无效数据，请确认设备发送含 light 或 sound 数值、可选 temp 数值的 JSON 行。');
     }
   }
   function consume(text) {

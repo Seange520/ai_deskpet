@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { useHardwareTelemetry } from '../../store/useHardwareTelemetry';
 import { createSerialConnection } from './serialConnection';
 import { createVirtualSerialProvider } from './virtualSerial';
 import { createBrowserDemoSerialProvider } from './browserDemoSerial';
@@ -15,14 +16,21 @@ export const useHardwareStore = create(() => ({
 }));
 
 const callbacks = {
-  onState: (patch) => useHardwareStore.setState(patch),
-  onData: (hardwareData) =>
+  onState(patch) {
+    useHardwareTelemetry.getState().setConnection(patch.status === 'connected');
+    useHardwareStore.setState(patch);
+  },
+  onData({ sound, ...hardwareData }) {
+    useHardwareTelemetry.getState().ingest({ light: hardwareData.light, sound });
+    // The existing readings and demo history only display light/temperature packets.
+    if (!Number.isFinite(hardwareData.light)) return;
     useHardwareStore.setState((state) => ({
       hardwareData,
       receivedCount: state.receivedCount + 1,
       notice: '',
       message: state.source === 'demo' ? '正在接收浏览器模拟数据。' : '正在接收设备数据。',
-    })),
+    }));
+  },
   onInvalid: (notice) =>
     useHardwareStore.setState((state) => ({
       notice,
