@@ -2,7 +2,7 @@ import { useLayoutEffect, useMemo, useRef } from 'react';
 import { useDepthBuffer } from '@react-three/drei';
 import { useFrame, useThree } from '@react-three/fiber';
 import { MathUtils, Vector2, Vector3 } from 'three';
-import { useSpaceStore } from './spaceStore';
+import { isSpaceTransition, useSpaceStore } from './spaceStore';
 
 const mistLayer = 2;
 const depths = [4.6, 8.8, 14.2];
@@ -65,9 +65,7 @@ void main() {
 `;
 
 export default function TravelMist({ tier, progress }) {
-  const inFlight = useSpaceStore(
-    (state) => state.phase === 'departing' || state.phase === 'traveling',
-  );
+  const inFlight = useSpaceStore((state) => isSpaceTransition(state.phase));
   return inFlight ? <MistCards tier={tier} progress={progress} /> : null;
 }
 

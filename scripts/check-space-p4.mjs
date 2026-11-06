@@ -11,10 +11,8 @@ const browser = await chromium.launch({ channel: 'chrome', headless: true });
 const results = [];
 const shell = (page) => page.locator('.app-shell');
 const stage = (page) => page.locator('.scene-stage');
-const hub = (page) =>
-  page
-    .getByRole('navigation', { name: '主导航' })
-    .getByRole('button', { name: '中央枢纽', exact: true });
+const hub = (page) => page.getByRole('button', { name: '返回大世界', exact: true });
+const dashboard = (page) => page.getByRole('button', { name: '学习仪表盘', exact: true });
 
 async function read(page, trackDepth = false) {
   return page.evaluate(async (trackDepth) => {
@@ -99,6 +97,9 @@ try {
     'Tier 3 hologram, moving beads, depth fog, and continuous pet escort to HUB',
     async (page) => {
       await open(page, 3);
+      await dashboard(page).click();
+      await expect(shell(page)).toHaveAttribute('data-space-phase', 'detail');
+      await expect.poll(async () => (await read(page)).pet.motion).toBe('docked');
       const initial = await read(page);
       expect(initial).toMatchObject({
         ring: 'ShaderMaterial',
@@ -114,7 +115,7 @@ try {
       const canvas = await stage(page).locator('canvas').elementHandle();
       const saved = await page.evaluate(() => JSON.stringify(localStorage));
       await hub(page).click();
-      await expect(shell(page)).toHaveAttribute('data-space-phase', 'traveling');
+      await expect(shell(page)).toHaveAttribute('data-space-phase', 'leaving');
       await expect.poll(async () => (await read(page)).fogAlpha).toBeGreaterThan(0.8);
       await page.waitForTimeout(420);
       const airborne = await read(page, true);
@@ -130,7 +131,7 @@ try {
       expect(airborne.rotation).not.toBe(initial.rotation);
       await page.screenshot({ path: join(out, 'tier3-fog-flight.png') });
       await expect(shell(page)).toHaveAttribute('data-space-focus', 'hub');
-      await expect(page.getByRole('heading', { name: '中央枢纽' })).toBeVisible();
+      await expect(page.locator('.space-dock')).toHaveAttribute('data-projected', 'true');
       await expect.poll(async () => (await read(page)).pet.motion).toBe('landing');
       const touchdown = await read(page);
       expect(touchdown.pet.position[1]).toBeGreaterThan(1.4);
@@ -161,9 +162,11 @@ try {
       fog: 0,
     });
     await page.emulateMedia({ reducedMotion: 'no-preference' });
-    await expect(page.locator('.space-hud-panel')).toBeAttached();
+    await expect(shell(page)).toHaveAttribute('data-space-phase', 'idle');
+    await dashboard(page).click();
+    await expect(shell(page)).toHaveAttribute('data-space-phase', 'detail');
     await hub(page).click();
-    await expect(shell(page)).toHaveAttribute('data-space-phase', 'traveling');
+    await expect(shell(page)).toHaveAttribute('data-space-phase', 'leaving');
     await expect.poll(async () => (await read(page)).fog).toBe(2);
     await expect(shell(page)).toHaveAttribute('data-space-focus', 'hub');
     await expect.poll(async () => (await read(page)).fog).toBe(0);

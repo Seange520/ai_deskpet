@@ -1,10 +1,11 @@
-import { lazy, Suspense, useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useLayoutEffect, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { PerformanceMonitor } from '@react-three/drei';
 import useReducedMotionPreference from '../../lib/useReducedMotionPreference';
 import { useDeviceDetect } from '../../lib/useDeviceDetect';
 import RenderBoundary from './RenderBoundary';
 import WorldScene from '../space/WorldScene';
+import IslandHotspotProjection from '../space/IslandHotspotProjection';
 import { ISLANDS } from '../space/world';
 
 const GpuProbe = lazy(() => import('../../lib/GpuProbe'));
@@ -18,6 +19,14 @@ const camera = {
 
 function Lifecycle({ quality, onReady }) {
   const gl = useThree((s) => s.gl);
+  const camera = useThree((s) => s.camera);
+  const invalidate = useThree((s) => s.invalidate);
+  const far = quality.tier >= 2 ? 165 : 115;
+  useLayoutEffect(() => {
+    camera.far = far;
+    camera.updateProjectionMatrix();
+    invalidate();
+  }, [camera, far, invalidate]);
   useFrame(() => {
     gl.setRenderTarget(null);
     gl.clear(true, true, true);
@@ -57,7 +66,7 @@ function DeviceProbe({ paused, quality }) {
     </Suspense>
   ) : null;
 }
-export default function SceneCanvas({ quality, onReady }) {
+export default function SceneCanvas({ quality, onReady, dock }) {
   const reduced = useReducedMotionPreference();
   const [hidden, setHidden] = useState(document.hidden);
   useEffect(() => {
@@ -106,12 +115,14 @@ export default function SceneCanvas({ quality, onReady }) {
       <RenderBoundary onFail={quality.fail}>
         <Canvas
           camera={camera}
+          style={{ pointerEvents: 'none' }}
           frameloop={paused ? 'never' : 'demand'}
           dpr={[1, quality.maxDpr]}
           gl={{ alpha: true, antialias: quality.tier >= 2, powerPreference: 'low-power' }}
           fallback={<span>3D 暂不可用</span>}
         >
           <Lifecycle quality={quality} onReady={onReady} />
+          <IslandHotspotProjection dock={dock} />
           {quality.autoMode && <DeviceProbe paused={paused} quality={quality} />}
           <StagePixelRatio adaptive={adaptive} maxDpr={quality.maxDpr} />
           {adaptive &&

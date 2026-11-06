@@ -1,7 +1,7 @@
 import { useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Color, MathUtils } from 'three';
-import { useSpaceStore } from './spaceStore';
+import { isSpaceTransition, useSpaceStore } from './spaceStore';
 
 const warmth = new Color('#ffc79a');
 const dayFill = new Color('#7c7ab8');
@@ -31,7 +31,7 @@ export function useIslandAtmosphere({ fogColor, night, paused, reduced, progress
   useFrame(({ scene }) => {
     if (paused || !scene.fog) return;
     const { focus, destination, phase, request } = useSpaceStore.getState();
-    const onFlight = !reduced && (phase === 'departing' || phase === 'traveling');
+    const onFlight = !reduced && isSpaceTransition(phase);
     const palette = palettes[onFlight ? destination : focus];
     const baselineFill = night ? nightFill : dayFill;
     colors.baseFog.set(fogColor);

@@ -1,34 +1,21 @@
 import { motion } from 'framer-motion';
-import { HUD_EXIT_MS, ISLAND_HUD } from './spaceLayout';
+import { HUD_EXIT_MS } from './spaceLayout';
 
-const spring = { type: 'spring', stiffness: 150, damping: 22 };
-const enter = { x: 0, scale: 1, opacity: 1 };
+const hidden = { opacity: 0, y: 10, scale: 0.98 };
+const visible = { opacity: 1, y: 0, scale: 1 };
 
-export default function HudChoreographer({ focus, phase, cinematic, children }) {
-  const side = ISLAND_HUD[focus].side;
-  const x = side === 'left' ? -46 : 46;
-  const busy = cinematic && (phase === 'departing' || phase === 'traveling');
-
+export default function HudChoreographer({ phase, cinematic, children }) {
+  const busy = phase !== 'detail';
   return (
     <motion.div
-      className={cinematic ? 'space-hud-panel' : 'page-transition'}
+      className="page-transition space-hud-panel"
       data-space-hud
-      data-hud-side={side}
       data-hud-phase={phase}
       inert={busy ? '' : undefined}
       aria-busy={busy || undefined}
-      initial={cinematic && phase === 'arriving' ? { x, scale: 0.97, opacity: 0 } : false}
-      animate={cinematic ? (busy ? 'exit' : 'enter') : enter}
-      transition={cinematic ? undefined : { duration: 0 }}
-      variants={{
-        exit: {
-          x,
-          scale: 0.94,
-          opacity: 0,
-          transition: { duration: HUD_EXIT_MS / 1000, ease: 'easeOut' },
-        },
-        enter: { ...enter, transition: { x: spring, scale: spring, opacity: { duration: 0.18 } } },
-      }}
+      initial={cinematic ? hidden : false}
+      animate={busy ? hidden : visible}
+      transition={{ duration: cinematic ? HUD_EXIT_MS / 1000 : 0, ease: 'easeInOut' }}
     >
       {children}
     </motion.div>

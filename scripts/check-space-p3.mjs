@@ -136,7 +136,7 @@ try {
       const canvas = await stage(page).locator('canvas').elementHandle();
       expect(hits).toBe(0);
       await page.emulateMedia({ reducedMotion: 'no-preference' });
-      await expect(page.locator('.space-hud-panel')).toBeAttached();
+      await expect(shell(page)).toHaveAttribute('data-space-phase', 'idle');
       await page.evaluate(async () => {
         const { useSpaceStore } = await import('/src/features/space/spaceStore.js');
         useSpaceStore.getState().travelTo('code');
@@ -180,7 +180,7 @@ try {
             .poll(() => read(page).then((s) => s.islands[id]))
             .toEqual({ level: 'detail', placeholder: false });
         }
-        await expect.poll(() => read(page).then((s) => s.islands.code.level)).toBe('hidden');
+        await expect.poll(() => read(page).then((s) => s.islands.code.level)).not.toBe('detail');
         await page.waitForTimeout(180);
         const { geometries, textures } = await read(page);
         return { geometries, textures };
@@ -260,9 +260,9 @@ try {
       const third = await read(page);
       expect(third.effects).toEqual(['ToneMappingEffect', 'VignetteEffect', 'FXAAEffect']);
       await nav(page, '硬件实验室').click();
-      await expect(shell(page)).toHaveAttribute('data-space-phase', 'traveling');
+      await expect(shell(page)).toHaveAttribute('data-space-phase', 'entering');
       await expect(page.locator('.render-shell')).toHaveAttribute('data-quality-tier', '1');
-      await expect(shell(page)).toHaveAttribute('data-space-phase', 'idle');
+      await expect(shell(page)).toHaveAttribute('data-space-phase', 'detail');
       await expect(shell(page)).toHaveAttribute('data-space-focus', 'hardware');
       await expect(page.locator('.page-transition')).toBeVisible();
       await expect(stage(page)).toHaveAttribute('data-effects', 'none');

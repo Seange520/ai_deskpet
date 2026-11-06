@@ -36,6 +36,7 @@ async function read(page, operation = 'read') {
       aurora: Boolean(s.scene.getObjectByName('space-aurora')),
       gradient: Boolean(s.scene.getObjectByName('space-gradient-floor')),
       horizon: s.scene.getObjectByName('valley-towers')?.count || 0,
+      skyline: s.scene.getObjectByName('valley-megastructures')?.count || 0,
       debris:
         debris?.children.reduce(
           (count, mesh) => count + (mesh.isInstancedMesh ? mesh.count : 0),
@@ -123,9 +124,14 @@ try {
         expect(s.count).toBe([0, 0, 12, 600][tier]);
         expect(s.aurora).toBe(tier >= 2);
         expect(s.gradient).toBe(tier >= 2);
-        expect(s.debris).toBe(tier >= 2 ? 120 : 0);
+        await expect
+          .poll(() => read(page).then((sample) => sample?.debris))
+          .toBe([0, 0, 120, 320][tier]);
+        await expect
+          .poll(() => read(page).then((sample) => sample?.skyline))
+          .toBe([0, 0, 120, 160][tier]);
         expect(s.horizon).toBe(14);
-        expect(s.beams).toEqual([[], [], [5], [5, 5]][tier]);
+        expect(s.beams).toEqual([[], [], [5], [5]][tier]);
         expect(s.reflection).toEqual(
           tier === 3 ? { pass: 'SSRPass', resolution: [512, 384] } : undefined,
         );
@@ -195,10 +201,11 @@ try {
     async (page) => {
       await page.goto(url + '/?quality=2');
       await expect.poll(() => read(page).then((s) => s?.effects.length)).toBe(4);
-      await page.mouse.move(120, 430);
+      const reset = page.getByRole('button', { name: '重置学习进度' });
+      await reset.hover();
       const before = await read(page);
-      await page.mouse.move(190, 460);
-      await page.mouse.move(630, 240);
+      await page.getByRole('button', { name: 'SparkMate 首页' }).hover();
+      await reset.hover();
       await page.waitForTimeout(150);
       expect(Math.abs((await read(page)).camera[0] - before.camera[0])).toBeLessThan(0.018);
       expect(
@@ -210,12 +217,12 @@ try {
       await expect
         .poll(async () => Math.abs((await read(page)).camera[0] - before.camera[0]))
         .toBeGreaterThan(0.035);
-      await page.mouse.move(620, 260);
+      await reset.hover();
       await expect
         .poll(async () => Math.abs((await read(page)).camera[0] - before.camera[0]))
         .toBeLessThan(0.018);
       expect((await read(page)).time).toBeGreaterThan(before.time);
-      await page.getByRole('article').first().getByRole('button').click();
+      await reset.click();
       await expect(page.locator('.scene-stage')).toHaveAttribute('data-paused', 'true');
     },
     { reducedMotion: 'no-preference' },

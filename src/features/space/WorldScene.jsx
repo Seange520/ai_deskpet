@@ -3,6 +3,7 @@ import { Vector3 } from 'three';
 import { useEnvironmentStore } from '../environment/useEnvironmentStore';
 import EnvironmentLighting from '../deskpet3d/EnvironmentLighting';
 import IslandCuller from './IslandCuller';
+import IslandDeck from './IslandDeck';
 import { useIslandContent } from './islandAssets';
 import HubSandbox from './HubSandbox';
 import EnergyRail from './EnergyRail';
@@ -41,28 +42,11 @@ function Orbit({ radius, color, opacity, y = -1.08 }) {
   );
 }
 
-function IslandDetail({ island, children }) {
+function IslandDetail({ island, tier, children }) {
   if (island.id === 'hardware') return <group name="space-island-detail">{children}</group>;
   return (
     <group name="space-island-detail">
-      <mesh position={[0, -0.55, 0]}>
-        <cylinderGeometry args={[3.35, 3.03, 1.1, 48]} />
-        <meshStandardMaterial
-          color="#302741"
-          emissive="#453656"
-          emissiveIntensity={0.16}
-          metalness={0.55}
-          roughness={0.45}
-        />
-      </mesh>
-      <mesh position={[0, 0.018, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-        <ringGeometry args={[2.97, 3.11, 64]} />
-        <meshStandardMaterial
-          color={island.accent}
-          emissive={island.accent}
-          emissiveIntensity={2.1}
-        />
-      </mesh>
+      <IslandDeck island={island} tier={tier} detailed />
       {[-2.55, 2.55].map((x) => (
         <mesh key={x} position={[x, 0.18, 0]}>
           <cylinderGeometry args={[0.12, 0.2, 0.36, 12]} />
@@ -123,7 +107,7 @@ export default function WorldScene({ paused, reduced, tier, performanceStep, adv
       <NightValley tier={tier} paused={paused} reduced={reduced} />
       {tier >= 2 ? (
         <Suspense fallback={null}>
-          <SpaceEnvironment paused={paused} reduced={reduced} />
+          <SpaceEnvironment tier={tier} paused={paused} reduced={reduced} />
         </Suspense>
       ) : (
         <>
@@ -140,7 +124,7 @@ export default function WorldScene({ paused, reduced, tier, performanceStep, adv
         const fallback = <IslandPlaceholder color={island.accent} />;
         return (
           <IslandCuller key={island.id} island={island} tier={tier}>
-            <IslandDetail island={island}>
+            <IslandDetail island={island} tier={tier}>
               {tier >= 2 && (
                 <Suspense fallback={null}>
                   <IslandLights island={island} tier={tier} volume={performanceStep < 1} />

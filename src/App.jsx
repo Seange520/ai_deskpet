@@ -1,4 +1,3 @@
-import { navigateWithCamera, cancelCamera } from './lib/viewTransition';
 import useReducedMotionPreference from './lib/useReducedMotionPreference';
 import { isLowPowerDevice } from './lib/visualCapabilities';
 import { totalXP, levelFor, globalBadges, MAX_XP } from './stores/useLearningStore';
@@ -6,30 +5,15 @@ import { playSound } from './lib/sounds';
 import Button from './components/Button';
 import QualitySettings from './components/QualitySettings';
 import { MOTION } from './motion';
-import { TiltSurface, Depth } from './components/MicroEffects';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { AnimatePresence, MotionConfig, motion } from 'framer-motion';
-import {
-  Zap,
-  LayoutDashboard,
-  Cpu,
-  Code2,
-  ArrowUpRight,
-  ChevronRight,
-  X,
-  Check,
-  Package,
-  RotateCcw,
-  Trophy,
-  Orbit,
-  Volume2,
-  VolumeX,
-} from 'lucide-react';
+import { Zap, X, Check, Package, RotateCcw, Orbit, Volume2, VolumeX } from 'lucide-react';
 import { useQualityTier } from './lib/qualityTier';
 import { useStageLayer } from './features/stage/StageLayer';
-import { useSpaceStore } from './features/space/spaceStore';
+import { isSpaceTransition, useSpaceStore } from './features/space/spaceStore';
 import HudChoreographer from './features/space/HudChoreographer';
-import { preloadIsland, useIslandAssetFailures } from './features/space/islandAssets';
+import { useIslandAssetFailures } from './features/space/islandAssets';
+import IslandHotspots, { islandName } from './features/space/IslandHotspots';
 import Dashboard from './components/Dashboard';
 import NumberTicker from './components/ui/NumberTicker';
 import HardwareSimulator from './components/HardwareSimulator';
@@ -40,14 +24,6 @@ import MakerRanking from './components/MakerRanking';
 import Graduation from './components/Graduation';
 import useHardwareProgress from './hooks/useHardwareProgress';
 import { getHardwareRoute } from './data/hardwareRoutes';
-
-const nav = [
-  { id: 'dashboard', name: '学习仪表盘', en: 'Overview', icon: LayoutDashboard },
-  { id: 'hardware', name: '硬件实验室', en: 'Hardware lab', icon: Cpu },
-  { id: 'code', name: '代码魔改工坊', en: 'Code playground', icon: Code2 },
-  { id: 'ranking', name: '创客排位', en: '一起慢慢发光', icon: Trophy },
-  { id: 'hub', name: '中央枢纽', en: 'SparkMate Hub', icon: Orbit },
-];
 
 function HubOverview({ showMap }) {
   return (
@@ -91,36 +67,9 @@ function HubOverview({ showMap }) {
   );
 }
 
-function moveDockFocus(event) {
-  const buttons = Array.from(event.currentTarget.querySelectorAll('button'));
-  const index = buttons.indexOf(event.target);
-  if (index < 0 || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
-
-  let next;
-  switch (event.key) {
-    case 'ArrowLeft':
-    case 'ArrowUp':
-      next = (index + buttons.length - 1) % buttons.length;
-      break;
-    case 'ArrowRight':
-    case 'ArrowDown':
-      next = (index + 1) % buttons.length;
-      break;
-    case 'Home':
-      next = 0;
-      break;
-    case 'End':
-      next = buttons.length - 1;
-      break;
-    default:
-      return;
-  }
-  event.preventDefault();
-  buttons[next].focus();
-}
-
 export default function App() {
-  const dock = useRef(null);
+  const panel = useRef(null);
+  const hasNavigated = useRef(false);
   const focusOnArrival = useRef(null);
   const modalTrigger = useRef(null);
   function openModal(type) {
@@ -132,10 +81,12 @@ export default function App() {
   const phase = useSpaceStore((state) => state.phase);
   const destination = useSpaceStore((state) => state.destination);
   const { tier } = useQualityTier();
-  const { ready } = useStageLayer();
+  const { ready, dock } = useStageLayer();
   const reduced = useReducedMotionPreference();
-  const inFlight = phase === 'departing' || phase === 'traveling';
+  const inFlight = isSpaceTransition(phase);
   const cinematic = tier >= 2 && ready && !reduced;
+  const overview = phase === 'idle';
+  const projected = overview && ready && tier > 0;
   const {
     routeId,
     feedback,
@@ -206,56 +157,51 @@ export default function App() {
   function complete(key) {
     if (markComplete(key)) setCelebrations((n) => n + 1);
   }
-  useEffect(() => () => cancelCamera(), []);
   useLayoutEffect(() => {
     const space = useSpaceStore.getState();
-    if (!cinematic && space.phase !== 'idle') {
-      focusOnArrival.current = null;
+    if (!cinematic && isSpaceTransition(space.phase)) {
       space.jumpTo(space.destination);
-      window.scrollTo({ top: 0, behavior: 'instant' });
+    } else if (cinematic && space.request === 0 && !hasNavigated.current) {
+      space.jumpTo('hub');
     }
   }, [cinematic]);
+
   useLayoutEffect(() => {
-    if (phase !== 'arriving') return;
+    if (isSpaceTransition(phase)) return;
     window.scrollTo({ top: 0, behavior: 'instant' });
-    if (focusOnArrival.current && document.activeElement === focusOnArrival.current) {
-      const heading = document.querySelector('.space-hud-panel h1');
+    const target = focusOnArrival.current;
+    focusOnArrival.current = null;
+    const active = document.activeElement;
+    if (!target || (active !== target.source && active !== document.body)) return;
+    if (phase === 'idle') {
+      dock.current
+        ?.querySelector(`[data-island="${target.island}"]`)
+        ?.focus({ preventScroll: true });
+    } else {
+      const heading = panel.current?.querySelector('h1, h2');
       if (heading) {
         heading.tabIndex = -1;
         heading.focus({ preventScroll: true });
       }
     }
-    focusOnArrival.current = null;
-  }, [page, phase]);
+  }, [page, phase, dock]);
+
   function navigate(id, event, immediate = false) {
     const space = useSpaceStore.getState();
-    if (id === page && space.phase === 'idle') {
-      cancelCamera();
+    hasNavigated.current = true;
+    if (id === space.destination && !isSpaceTransition(space.phase)) {
       window.scrollTo({ top: 0, behavior: 'instant' });
       return;
     }
-    if (tier <= 1 || reduced) {
-      const order = nav.map(({ id }) => id);
-      navigateWithCamera(() => space.jumpTo(id), {
-        event,
-        direction: order.indexOf(id) < order.indexOf(page) ? 'backward' : 'forward',
-      });
-      return;
-    }
-    cancelCamera();
-    if (cinematic && !modal && !immediate) {
-      if (id === space.destination) return;
-      focusOnArrival.current = null;
-      if (event?.currentTarget?.closest('.space-hud-panel')) {
-        const button = dock.current.querySelector(`[data-island="${id}"]`);
-        button?.focus({ preventScroll: true });
-        if (event.detail === 0) focusOnArrival.current = button;
-      }
-      space.travelTo(id);
-    } else {
-      space.jumpTo(id);
-      window.scrollTo({ top: 0, behavior: 'instant' });
-    }
+    focusOnArrival.current =
+      !modal && event?.detail === 0
+        ? {
+            source: event.currentTarget,
+            island: space.focus === 'hub' ? space.destination : space.focus,
+          }
+        : null;
+    if (cinematic && !modal && !immediate) space.travelTo(id);
+    else space.jumpTo(id);
   }
   function reset() {
     resetProgress();
@@ -275,106 +221,26 @@ export default function App() {
         data-space-phase={phase}
         data-space-focus={page}
       >
-        <aside className="sidebar" data-space-hud inert={modal ? '' : undefined}>
-          <Button
-            className="brand"
-            onClick={(event) => navigate('dashboard', event)}
-            aria-label="SparkMate 首页"
-          >
-            <span className="brand-mark">
-              <Zap size={24} fill="currentColor" />
-            </span>
-            <span>
-              SparkMate<small>IDEAS INTO LITTLE FRIENDS</small>
-            </span>
-          </Button>
-          <div className="workspace-label">
-            WORKSPACE <span>个人学习空间</span>
-          </div>
-          <nav ref={dock} className="space-dock" aria-label="主导航" onKeyDown={moveDockFocus}>
-            <span className="sr-only" aria-live="polite" aria-atomic="true">
-              {inFlight
-                ? `正在飞往${nav.find((n) => n.id === destination).name}`
-                : `当前岛屿：${nav.find((n) => n.id === page).name}`}
-            </span>
-            {nav.map((n) => (
-              <TiltSurface key={n.id} navigation>
-                <Button
-                  className={`nav-item ${page === n.id ? 'selected' : ''}`}
-                  key={n.id}
-                  aria-label={n.name}
-                  data-island={n.id}
-                  onPointerEnter={tier > 0 ? () => preloadIsland(n.id) : undefined}
-                  onFocus={tier > 0 ? () => preloadIsland(n.id) : undefined}
-                  data-pending={inFlight && destination === n.id ? '' : undefined}
-                  onClick={(event) => navigate(n.id, event)}
-                  aria-current={page === n.id ? 'page' : undefined}
-                >
-                  <Depth depth={1}>
-                    <n.icon size={19} />
-                  </Depth>
-                  <Depth depth={0.35}>
-                    {n.name}
-                    <small>{n.en}</small>
-                  </Depth>
-                  {page === n.id && <ChevronRight size={14} />}
-                </Button>
-              </TiltSurface>
-            ))}
-          </nav>
-          <div className="sidebar-project">
-            <span className="eyebrow">CURRENT PROJECT</span>
-            <div className="project-chip">
-              <Cpu size={20} />
-              <div>
-                {route.name}
-                <small>ESP32-S3 · {route.difficulty}</small>
-              </div>
-              <span className="status-dot" />
-            </div>
-            <div
-              className="tiny-progress"
-              role="progressbar"
-              aria-label="全局学习进度"
-              aria-valuemin={0}
-              aria-valuemax={MAX_XP}
-              aria-valuenow={xp}
-            >
-              <span style={{ width: `${(xp / MAX_XP) * 100}%` }} />
-            </div>
-            <span>
-              全局 {xp} / {MAX_XP} XP · 本路线 {Object.values(progress).filter(Boolean).length} / 3
-              关卡完成
-            </span>
-          </div>
-          <div className="sidebar-bottom">
-            <div className="maker-note">
-              <Zap size={18} />
-              <p>
-                保持好奇。
-                <br />
-                <span>下一个火花，就在你手中。</span>
-              </p>
-            </div>
-            <Button className="reset-link" onClick={() => openModal('reset')}>
-              <RotateCcw size={13} /> 重置学习进度
-            </Button>
-            <div className="profile">
-              <div className="avatar">
-                S<span />
-              </div>
-              <div>
-                未来创造者<small>INDEPENDENT MAKER</small>
-              </div>
-              <span className="online-indicator" />
-            </div>
-          </div>
-        </aside>
         <main className="main-content" inert={modal ? '' : undefined}>
           <header className="topbar" data-space-hud>
-            <div className="breadcrumb">
-              工作空间 <ChevronRight size={13} />
-              <b>{nav.find((n) => n.id === page).name}</b>
+            <div className="space-brand-group">
+              <Button
+                className="space-brand"
+                onClick={(event) => navigate('hub', event)}
+                aria-label="SparkMate 首页"
+              >
+                <Zap size={20} fill="currentColor" aria-hidden="true" />
+                <span className="space-brand-text">
+                  SparkMate
+                  <small className="project-chip">{route.name}</small>
+                </span>
+              </Button>
+              {!overview && (
+                <Button className="space-return" onClick={(event) => navigate('hub', event)}>
+                  <Orbit size={17} aria-hidden="true" />
+                  <span>返回大世界</span>
+                </Button>
+              )}
             </div>
             <div className="experience">
               <div className="experience-text">
@@ -385,7 +251,14 @@ export default function App() {
                   <NumberTicker value={xp} /> <small>/ {MAX_XP} XP</small>
                 </span>
               </div>
-              <div className="xp-track">
+              <div
+                className="xp-track"
+                role="progressbar"
+                aria-label="全局学习进度"
+                aria-valuemin={0}
+                aria-valuemax={MAX_XP}
+                aria-valuenow={xp}
+              >
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: `${(xp / MAX_XP) * 100}%` }}
@@ -404,67 +277,98 @@ export default function App() {
               {muted ? <VolumeX size={18} /> : <Volume2 size={18} />}
             </Button>
             <QualitySettings />
+            <Button
+              className="icon-btn"
+              aria-label="重置学习进度"
+              title="重置学习进度"
+              onClick={() => openModal('reset')}
+            >
+              <RotateCcw size={17} />
+            </Button>
           </header>
+          <IslandHotspots
+            dock={dock}
+            projected={projected}
+            page={page}
+            destination={destination}
+            busy={inFlight}
+            tier={tier}
+            onNavigate={navigate}
+          />
           {storageError && (
             <div className="storage-note" role="status" data-space-hud>
               浏览器存储不可用，本次学习进度将只保留到关闭页面。
             </div>
           )}
-          <HudChoreographer key={page} focus={page} phase={phase} cinematic={cinematic}>
-            {tier > 0 && islandUnavailable && (
-              <div className="storage-note" role="alert">
-                暂时无法载入此岛的 3D 内容。请检查网络连接，教学功能仍可使用。
+          {page === 'hub' ? (
+            overview &&
+            (projected ? (
+              <div className="space-overview-caption" aria-hidden="true">
+                <span className="eyebrow">SPARKMATE / NIGHT VALLEY</span>
+                <p>选择一座岛，开始探索。</p>
               </div>
-            )}
-            {page === 'dashboard' ? (
-              <Dashboard
-                progress={progress}
-                badges={badges}
-                routeId={routeId}
-                onChooseRoute={chooseRoute}
-                onNavigate={navigate}
-                onMaterials={() => {
-                  setChecked(progress.materials ? route.components.map((_, i) => i) : []);
-                  openModal('materials');
-                }}
-              />
-            ) : page === 'hardware' ? (
-              <HardwareSimulator
-                key={routeId}
-                routeId={routeId}
-                onRouteChange={switchRoute}
-                onMaterials={() => {
-                  setChecked(progress.materials ? route.components.map((_, i) => i) : []);
-                  openModal('materials');
-                }}
-                completed={progress.wiring}
-                onComplete={() => complete('wiring')}
-                onNext={(event) => navigate('code', event)}
-              />
-            ) : page === 'ranking' ? (
-              <MakerRanking xp={xp} />
-            ) : page === 'hub' ? (
-              <HubOverview showMap={tier === 0 || !ready} />
             ) : (
-              <CodeLab
-                key={routeId}
-                routeId={routeId}
-                unlocked={progress.wiring}
-                completed={progress.code}
-                onComplete={() => {
-                  complete('code');
-                  openModal('success');
-                }}
-                onHardware={(event) => navigate('hardware', event)}
-              />
-            )}
-          </HudChoreographer>
-          <footer className="app-footer" data-space-hud>
-            <span>
-              SPARKMATE <i>®</i> LEARN. BUILD. BEFRIEND.
-            </span>
-            <span>从 0 到 1，让好奇发生。</span>
-          </footer>
+              <HubOverview showMap />
+            ))
+          ) : (
+            <div ref={panel}>
+              <HudChoreographer key={page} phase={phase} cinematic={cinematic}>
+                {tier > 0 && islandUnavailable && (
+                  <div className="storage-note" role="alert">
+                    暂时无法载入此岛的 3D 内容。请检查网络连接，教学功能仍可使用。
+                  </div>
+                )}
+                {page === 'dashboard' ? (
+                  <Dashboard
+                    progress={progress}
+                    badges={badges}
+                    routeId={routeId}
+                    onChooseRoute={chooseRoute}
+                    onNavigate={navigate}
+                    onMaterials={() => {
+                      setChecked(progress.materials ? route.components.map((_, i) => i) : []);
+                      openModal('materials');
+                    }}
+                  />
+                ) : page === 'hardware' ? (
+                  <HardwareSimulator
+                    key={routeId}
+                    routeId={routeId}
+                    onRouteChange={switchRoute}
+                    onMaterials={() => {
+                      setChecked(progress.materials ? route.components.map((_, i) => i) : []);
+                      openModal('materials');
+                    }}
+                    completed={progress.wiring}
+                    onComplete={() => complete('wiring')}
+                    onNext={(event) => navigate('code', event)}
+                  />
+                ) : page === 'ranking' ? (
+                  <MakerRanking xp={xp} />
+                ) : (
+                  <CodeLab
+                    key={routeId}
+                    routeId={routeId}
+                    unlocked={progress.wiring}
+                    completed={progress.code}
+                    onComplete={() => {
+                      complete('code');
+                      openModal('success');
+                    }}
+                    onHardware={(event) => navigate('hardware', event)}
+                  />
+                )}
+              </HudChoreographer>
+            </div>
+          )}
+          {phase === 'detail' && (
+            <footer className="app-footer" data-space-hud>
+              <span>
+                SPARKMATE <i>®</i> LEARN. BUILD. BEFRIEND.
+              </span>
+              <span>从 0 到 1，让好奇发生。</span>
+            </footer>
+          )}
         </main>
         <Companion celebrations={celebrations} feedback={feedback} hidden={Boolean(modal)} />
         {toast && (

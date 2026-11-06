@@ -3,7 +3,7 @@ import { useEnvironmentStore } from '../../environment/useEnvironmentStore';
 import { usePetActions } from '../../interaction/usePetActions';
 import PetModel from '../../deskpet3d/PetModel';
 
-export default function DashboardIsland({ tier, paused, reduced }) {
+export default function DashboardIsland({ tier, paused, reduced, travelRoot }) {
   const runtime = useLearningStore((state) => state.runtime);
   const interaction = usePetActions();
   const environment = useEnvironmentStore();
@@ -18,6 +18,7 @@ export default function DashboardIsland({ tier, paused, reduced }) {
       tier={tier}
       cinematic={tier >= 2}
       platform={false}
+      travelRoot={travelRoot}
     />
   );
 }

@@ -5,7 +5,7 @@ for (const width of [320, 390, 768, 1024, 1440, 1920]) {
   test(`布局与弹窗层级：${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 1000 });
     await page.goto('/');
-    await expect(page.locator('main > div').last()).toHaveCSS('opacity', '1');
+    await expect(page.locator('.page-transition')).toHaveCSS('opacity', '1');
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
       width,
     );
@@ -16,17 +16,19 @@ for (const width of [320, 390, 768, 1024, 1440, 1920]) {
         b = rects[i];
       expect(b.x >= a.x + a.width - 1 || b.y >= a.y + a.height - 1).toBe(true);
     }
-    const main = await page.locator('main').boundingBox();
-    const nav = await page.locator('aside').boundingBox();
-    expect(width > 960 ? nav.x + nav.width <= main.x : nav.y + nav.height <= main.y).toBe(true);
+    const navigation = page.getByRole('navigation', { name: '主导航' });
+    await expect(page.locator('.sidebar')).toHaveCount(0);
+    const dock = await navigation.boundingBox();
+    const panel = await page.locator('.page-transition').boundingBox();
+    expect(dock.y + dock.height).toBeLessThanOrEqual(panel.y);
     await page.getByRole('button', { name: '查看物料清单' }).click();
     await expect(page.getByRole('dialog')).toBeVisible();
     expect(
-      await page.locator('aside').evaluate((el) => {
+      await page.locator('.space-dock [data-island="dashboard"]').evaluate((el) => {
         const r = el.getBoundingClientRect();
         const hit = document.elementFromPoint(
           Math.max(1, r.x + r.width / 2),
-          Math.max(1, r.y + 20),
+          Math.max(1, r.y + r.height / 2),
         );
         return Boolean(hit?.closest('.modal-backdrop'));
       }),

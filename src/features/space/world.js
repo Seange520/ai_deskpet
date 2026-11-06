@@ -20,11 +20,15 @@ function island(id, radial, accent, fov) {
     ISLAND_HUD[id].side === 'left' ? -4.2 : 4.2,
   );
   target.y = 2.88;
+  const detailPosition = [position[0] + x * 8.6 + z * 2.1, 4.7, position[2] + z * 8.6 - x * 2.1];
+  const detailTarget = [position[0], 1.55, position[2]];
   return {
     id,
     position,
     accent,
     camera: { position: cameraPosition, target: target.toArray(), focus, fov },
+    hotspot: [position[0], 2.7, position[2]],
+    detailPose: { position: detailPosition, target: detailTarget, focus, fov: 38 },
     hud: ISLAND_HUD[id],
   };
 }
@@ -41,10 +45,10 @@ export const LANDMARKS = {
   hub: {
     position: HUB,
     camera: {
-      position: [8.8, 6.6, 12.6],
+      position: [23, 21, 29],
       focus: [0, 0.9, 0],
-      target: [-4.5, 3.85, 3.2],
-      fov: 43,
+      target: [0, 5.1, 0],
+      fov: 56,
     },
     hud: ISLAND_HUD.hub,
   },

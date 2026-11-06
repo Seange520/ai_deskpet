@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
+import { lazy, Suspense, useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Stars } from '@react-three/drei';
 import { AdditiveBlending, Color, DoubleSide, Object3D } from 'three';
@@ -7,6 +7,7 @@ import { SimplexNoise } from 'three/addons/math/SimplexNoise.js';
 import { MOON_DIRECTION } from './world';
 
 const towerCount = 14;
+const DistantSkyline = lazy(() => import('./DistantSkyline'));
 
 function MoonSky() {
   const sky = useMemo(() => {
@@ -248,6 +249,11 @@ export default function NightValley({ tier, paused, reduced }) {
       <Ridge radius={79} amplitude={16} segments={tier === 1 ? 54 : 104} tint="#314659" />
       <Ridge radius={61} amplitude={12} segments={tier === 1 ? 54 : 104} tint="#192b38" />
       <WorkshopTowers tier={tier} />
+      {tier >= 2 && (
+        <Suspense fallback={null}>
+          <DistantSkyline tier={tier} />
+        </Suspense>
+      )}
     </>
   );
 }

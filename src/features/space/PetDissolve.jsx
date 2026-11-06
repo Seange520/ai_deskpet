@@ -2,7 +2,7 @@ import { useLayoutEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { AdditiveBlending, Matrix4, Vector3 } from 'three';
 import { MeshSurfaceSampler } from 'three/addons/math/MeshSurfaceSampler.js';
-import { useSpaceStore } from './spaceStore';
+import { isSpaceTransition, useSpaceStore } from './spaceStore';
 
 const particleCount = 960;
 const noise = `
@@ -162,7 +162,7 @@ export default function PetDissolve({ pet, paused }) {
     }
     const { phase } = useSpaceStore.getState();
     const dt = Math.min(delta, 0.085);
-    const leaving = phase === 'departing' || phase === 'traveling';
+    const leaving = isSpaceTransition(phase);
     const previous = uniforms.dissolve.value;
     const amount = Math.max(0, Math.min(1, previous + (leaving ? dt / 0.31 : -dt / 0.32)));
     uniforms.dissolve.value = amount;

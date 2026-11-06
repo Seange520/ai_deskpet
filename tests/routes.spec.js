@@ -93,6 +93,7 @@ for (const route of cases) {
     await expect(page.getByRole('button', { name: /前往代码魔改工坊/ })).toBeDisabled();
     for (const [source, target] of route.pairs) {
       if (route.id === 'spherical') {
+        await page.locator('.wiring-stage').scrollIntoViewIfNeeded();
         const a = await page
           .getByRole('button', { name: `${route.source} ${source} 引脚`, exact: true })
           .boundingBox();

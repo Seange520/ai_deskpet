@@ -34,8 +34,8 @@ void main() {
   vec4 copper = texture2D(traces, boardUv);
   float wave = fract(dot(boardUv, vec2(2.1, 0.65)) - time * 0.64);
   float pulse = smoothstep(0.30, 0.47, wave) * (1.0 - smoothstep(0.49, 0.64, wave));
-  vec3 substrate = vec3(0.042, 0.078, 0.074) * surfaceLight;
-  vec3 metal = copper.rgb * surfaceLight + vec3(2.6, 0.55, 0.13) * pulse * pulseStrength;
+  vec3 substrate = vec3(0.025, 0.055, 0.078) * surfaceLight;
+  vec3 metal = copper.rgb * surfaceLight + vec3(0.48, 1.24, 1.55) * pulse * pulseStrength;
   gl_FragColor = vec4(mix(substrate, metal, copper.a), 1.0);
   #include <tonemapping_fragment>
   #include <colorspace_fragment>
@@ -87,7 +87,7 @@ function drawTraces(size) {
   ctx.scale(size / 1024, size / 1024);
   ctx.lineJoin = 'round';
 
-  ctx.strokeStyle = '#a76339';
+  ctx.strokeStyle = '#41838e';
   ctx.lineWidth = 4;
   ctx.strokeRect(18, 18, 988, 988);
   ctx.strokeRect(31, 31, 962, 962);
@@ -108,7 +108,7 @@ function drawTraces(size) {
         const start = (pin - 3) * chipSize * 18;
         const bend = start + (pin - 3) * 13;
         const reach = 130 + ((pin * 19 + side * 11) % 75);
-        ctx.strokeStyle = pin % 3 === 0 ? '#f4bc6b' : '#be713e';
+        ctx.strokeStyle = pin % 3 === 0 ? '#e7b979' : '#4e9ba8';
         ctx.lineWidth = pin % 3 === 0 ? 4 : 2.6;
         ctx.beginPath();
         ctx.moveTo(start, chipSize * 68);
@@ -116,14 +116,14 @@ function drawTraces(size) {
         ctx.lineTo(bend, 128);
         ctx.lineTo(bend, reach);
         ctx.stroke();
-        ctx.fillStyle = '#d69455';
+        ctx.fillStyle = '#6f9c9c';
         ctx.fillRect(start - 4, chipSize * 79, 8, 14);
         pad(bend, reach, 6);
       }
       ctx.restore();
     }
   }
-  ctx.strokeStyle = '#b87847';
+  ctx.strokeStyle = '#4c8994';
   ctx.lineWidth = 2.4;
   for (let i = 0; i < 36; i++) {
     const d = 60 + i * 26;
@@ -176,22 +176,22 @@ function CircuitBoard({ tier, paused, reduced }) {
 export default function HardwareIsland({ tier, paused, reduced }) {
   return (
     <group name="p5-hardware-board">
-      <mesh position={[0, -0.43, 0]}>
-        <boxGeometry args={[5.5, 0.88, 5.5]} />
+      <RoundedBox position={[0, -0.43, 0]} args={[5.55, 0.88, 5.55]} radius={0.12} smoothness={1}>
+        <meshStandardMaterial color="#263748" metalness={0.58} roughness={0.4} />
+      </RoundedBox>
+      <mesh position={[0, -0.1, 0]}>
+        <boxGeometry args={[5.57, 0.055, 5.57]} />
         <meshStandardMaterial
-          color="#203632"
-          emissive="#173a34"
-          emissiveIntensity={0.38}
-          roughness={0.68}
+          color="#276771"
+          emissive="#3d939b"
+          emissiveIntensity={0.52}
+          roughness={0.38}
+          metalness={0.32}
         />
-      </mesh>
-      <mesh position={[0, -0.08, 0]}>
-        <boxGeometry args={[5.53, 0.12, 5.53]} />
-        <meshBasicMaterial color="#a76439" />
       </mesh>
       <mesh position={[0, 0.07, 0]}>
         <boxGeometry args={[5.5, 0.19, 5.5]} />
-        <meshBasicMaterial color="#233f3d" />
+        <meshStandardMaterial color="#1d3441" metalness={0.42} roughness={0.47} />
       </mesh>
       <CircuitBoard tier={tier} paused={paused} reduced={reduced} />
       {chipSites.map(({ x, z, size }, index) => (

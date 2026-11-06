@@ -20,6 +20,7 @@ test('完整学习流程：错线警告、拖拽连线、实时参数与进度�
   await expect(page.locator('.exploded-scene')).toHaveClass(/is-exploded/);
   // 先接错 VCC→GND，再验证两条正确连线。
   async function wire(from, to) {
+    await page.locator('.wiring-stage').scrollIntoViewIfNeeded();
     const a = await page
       .getByRole('button', { name: `麦克风 ${from} 引脚`, exact: true })
       .boundingBox();

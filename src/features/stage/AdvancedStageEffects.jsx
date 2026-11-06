@@ -86,12 +86,20 @@ function configureReflections(gl, scene, camera, buffer) {
       vec3 worldPosition = (m2CameraWorld * vec4(viewPosition, 1.0)).xyz;
       vec3 worldNormal = mat3(m2CameraWorld) * viewNormal;
       float hub = length(worldPosition.xz);
+      float dashboard = length(worldPosition.xz - vec2(${ISLANDS.dashboard.position[0].toFixed(1)}, ${ISLANDS.dashboard.position[2].toFixed(1)}));
+      float code = length(worldPosition.xz - vec2(${ISLANDS.code.position[0].toFixed(1)}, ${ISLANDS.code.position[2].toFixed(1)}));
       float rank = length(worldPosition.xz - vec2(${ISLANDS.ranking.position[0].toFixed(1)}, ${ISLANDS.ranking.position[2].toFixed(1)}));
-      float apron = max(1.0 - smoothstep(6.0, 17.0, hub), 1.0 - smoothstep(4.3, 12.0, rank));
+      vec2 hardwareOffset = abs(worldPosition.xz - vec2(${ISLANDS.hardware.position[0].toFixed(1)}, ${ISLANDS.hardware.position[2].toFixed(1)}));
+      float hardware = max(hardwareOffset.x, hardwareOffset.y);
+      float roundIsland = min(dashboard, min(code, rank));
+      float apron = max(1.0 - smoothstep(6.0, 17.0, hub), 1.0 - smoothstep(4.2, 11.0, min(roundIsland, hardware)));
       float valleyFloor = 1.0 - smoothstep(0.025, 0.12, abs(worldPosition.y + 1.16));
-      float deck = (1.0 - smoothstep(0.022, 0.07, abs(worldPosition.y))) *
-        max(1.0 - smoothstep(3.65, 4.22, hub), 1.0 - smoothstep(2.9, 3.34, rank));
-      float receiver = max(valleyFloor * apron, deck * 0.74) * smoothstep(0.93, 0.999, worldNormal.y);
+      float deck = (1.0 - smoothstep(0.022, 0.07, abs(worldPosition.y - 0.008))) *
+        max(1.0 - smoothstep(3.65, 4.22, hub), 1.0 - smoothstep(2.88, 3.21, roundIsland));
+      float board = (1.0 - smoothstep(2.38, 2.74, hardware)) *
+        smoothstep(0.13, 0.18, worldPosition.y) * (1.0 - smoothstep(0.58, 0.72, worldPosition.y));
+      float receiver = max(valleyFloor * apron, max(deck * 0.64, board * 0.28)) *
+        smoothstep(0.87, 0.998, worldNormal.y);
       if (receiver <= 0.002) return;
     `,
     )
@@ -224,6 +232,7 @@ class ScreenLightingEffect extends Effect {
       if (ssr) {
         const { uniforms } = ssr.ssrMaterial;
         uniforms.tDiffuse.value = inputBuffer.texture;
+        uniforms.cameraFar.value = this.camera.far;
         uniforms.cameraProjectionMatrix.value.copy(this.camera.projectionMatrix);
         uniforms.cameraInverseProjectionMatrix.value.copy(this.camera.projectionMatrixInverse);
         uniforms.m2CameraWorld.value.copy(this.camera.matrixWorld);

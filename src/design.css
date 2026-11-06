@@ -94,10 +94,7 @@ select {
 .app-shell {
   isolation: isolate;
   min-height: 100dvh;
-  display: grid;
-  grid-template-columns: 248px minmax(0, 1fr);
-  gap: 48px;
-  padding: 24px 40px 0 24px;
+  padding: 18px 40px 0;
   background: radial-gradient(ellipse at 70% 0%, #4c4a7a24, transparent 45%);
 }
 .sidebar {
@@ -1373,9 +1370,7 @@ select {
 /* 断点以内容可读宽度为准，不把文字挤进狭窄双栏。 */
 @media (max-width: 1280px) {
   .app-shell {
-    grid-template-columns: 216px minmax(0, 1fr);
-    gap: 32px;
-    padding-right: 28px;
+    padding-inline: 28px;
   }
   .brand {
     font-size: 21px;

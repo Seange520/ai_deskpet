@@ -1,4 +1,4 @@
-export const HUD_EXIT_MS = 180;
+export const HUD_EXIT_MS = 260;
 
 export const ISLAND_HUD = {
   dashboard: { side: 'left' },

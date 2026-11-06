@@ -1,7 +1,6 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { chromium, expect } from '@playwright/test';
-import { HUD_EXIT_MS } from '../src/features/space/spaceLayout.js';
 import { ISLANDS, TRAVEL_SECONDS } from '../src/features/space/world.js';
 
 const baseURL = process.env.SPARKMATE_SPACE_URL;
@@ -88,11 +87,11 @@ const distance = (a, b) => Math.hypot(...a.map((value, index) => value - b[index
 try {
   const page = await open(3);
   await expect(page.locator('.render-shell')).toHaveAttribute('data-quality-tier', '3');
+  await expect(shell(page)).toHaveAttribute('data-space-phase', 'idle');
+  await expect(page.locator('.space-dock')).toHaveAttribute('data-positioned', 'true');
   const initial = await readWorld(page);
   expect(initial.islands).toHaveLength(4);
-  expect(initial.lod.dashboard).toMatchObject({ level: 'detail', visible: true, detail: true });
-  expect(initial.lod.ranking).toMatchObject({ level: 'silhouette', visible: true, detail: false });
-  expect(initial.lod.code).toMatchObject({ level: 'hidden', visible: false, detail: false });
+  expect(Object.values(initial.lod).every(({ visible }) => visible)).toBe(true);
   expect(initial.fog).toBe(true);
   expect(initial.size).toEqual([1728, 1080]);
   const canvas = await page.locator('.scene-stage canvas').elementHandle();
@@ -104,13 +103,12 @@ try {
     const sample = () => {
       const panel = document.querySelector('.space-hud-panel');
       const phase = panel?.dataset.hudPhase;
-      if (phase === 'departing' || phase === 'arriving') {
+      if (phase === 'leaving' || phase === 'detail') {
         const { opacity, transform } = getComputedStyle(panel);
         window.hudFrames.push({
           phase,
           opacity: Number(opacity),
-          x: transform === 'none' ? 0 : new DOMMatrixReadOnly(transform).m41,
-          scale: transform === 'none' ? 1 : new DOMMatrixReadOnly(transform).m11,
+          y: transform === 'none' ? 0 : new DOMMatrixReadOnly(transform).m42,
           overflow: document.documentElement.scrollWidth - innerWidth,
         });
       }
@@ -126,8 +124,7 @@ try {
   const dashboardButton = nav(page, '学习仪表盘');
   const hardwareButton = nav(page, '硬件实验室');
   const codeButton = nav(page, '代码魔改工坊');
-  await page.getByRole('button', { name: 'SparkMate 首页' }).focus();
-  await page.keyboard.press('Tab');
+  await dashboardButton.focus();
   await expect(dashboardButton).toBeFocused();
   await page.keyboard.press('Tab');
   await expect(hardwareButton).toBeFocused();
@@ -136,12 +133,10 @@ try {
   await page.keyboard.press('Shift+Tab');
   await expect(hardwareButton).toBeFocused();
   await page.keyboard.press('Enter');
-  await expect(shell(page)).toHaveAttribute('data-space-phase', 'traveling');
-  await expect(page.locator('.space-hud-panel')).toHaveAttribute('inert', '');
-  await expect(page.locator('.space-hud-panel')).toHaveAttribute('aria-busy', 'true');
-  await expect(page.locator('.space-hud-panel')).toHaveCSS('pointer-events', 'none');
+  await expect(shell(page)).toHaveAttribute('data-space-phase', 'entering');
+  await expect(page.locator('.space-hud-panel')).toHaveCount(0);
   await expect(hardwareButton).toHaveAttribute('data-pending', '');
-  await expect(dashboardButton).toHaveAttribute('aria-current', 'page');
+  await expect(dashboardButton).not.toHaveAttribute('aria-current', 'page');
   await page.keyboard.press('Tab');
   await expect(codeButton).toBeFocused();
   await page.waitForTimeout(930);
@@ -152,18 +147,18 @@ try {
     detail: true,
     placeholder: false,
   });
-  expect(airborne.lod.dashboard).toMatchObject({ level: 'detail', visible: true, detail: true });
+  expect(airborne.lod.dashboard.visible).toBe(true);
   expect([airborne.lod.code, airborne.lod.ranking].some(({ detail }) => !detail)).toBe(true);
-  expect(airborne.position[1]).toBeGreaterThan(ISLANDS.hardware.camera.position[1] + 1.5);
+  expect(airborne.position[1]).toBeGreaterThan(ISLANDS.hardware.detailPose.position[1] + 1.5);
   expect(distance(initial.position, airborne.position)).toBeGreaterThan(2);
   expect(distance(initial.quaternion, airborne.quaternion)).toBeGreaterThan(0.03);
   await page.screenshot({ path: join(output, 'traveling.png') });
-  await expect(shell(page)).toHaveAttribute('data-space-phase', 'traveling');
-  await page.waitForFunction(() => performance.now() - window.spacePhases[1].at > 1750);
+  await expect(shell(page)).toHaveAttribute('data-space-phase', 'entering');
+  await page.waitForFunction(() => performance.now() - window.spacePhases[0].at > 1750);
   await page.screenshot({ path: join(output, 'approaching-hardware.png') });
   await expect(shell(page)).toHaveAttribute('data-space-focus', 'hardware');
   await expect(page.getByRole('heading', { name: /认识它/ })).toBeVisible();
-  await expect(shell(page)).toHaveAttribute('data-space-phase', 'idle');
+  await expect(shell(page)).toHaveAttribute('data-space-phase', 'detail');
   await expect(hardwareButton).toHaveAttribute('aria-current', 'page');
   await expect(codeButton).toBeFocused();
   await page.waitForTimeout(300);
@@ -174,56 +169,50 @@ try {
     detail: true,
     placeholder: false,
   });
-  expect(landed.lod.ranking).toMatchObject({ level: 'hidden', visible: false, detail: false });
-  expect(distance(landed.position, ISLANDS.hardware.camera.position)).toBeLessThan(0.2);
-  expect(landed.dof).toEqual(ISLANDS.hardware.camera.focus);
-  expect(landed.fov).toBe(ISLANDS.hardware.camera.fov);
+  expect(landed.lod.ranking.detail).toBe(false);
+  expect(distance(landed.position, ISLANDS.hardware.detailPose.position)).toBeLessThan(0.2);
+  expect(landed.dof).toEqual(ISLANDS.hardware.detailPose.focus);
+  expect(landed.fov).toBe(ISLANDS.hardware.detailPose.fov);
   const phases = await page.evaluate(() => window.spacePhases);
-  expect(phases.map(({ phase }) => phase)).toEqual(['departing', 'traveling', 'arriving', 'idle']);
-  const departure = phases[1].at - phases[0].at;
-  expect(departure).toBeGreaterThanOrEqual(HUD_EXIT_MS - 20);
-  expect(departure).toBeLessThan(HUD_EXIT_MS + 160);
+  expect(phases.map(({ phase }) => phase)).toEqual(['entering', 'detail']);
   const hudFrames = await page.evaluate(() => window.hudFrames);
   expect(
     hudFrames.some(
-      (frame) =>
-        frame.phase === 'departing' &&
-        frame.opacity > 0 &&
-        frame.opacity < 0.8 &&
-        frame.scale < 0.99,
+      (frame) => frame.phase === 'detail' && frame.opacity > 0 && frame.opacity < 1 && frame.y > 0,
     ),
   ).toBe(true);
-  expect(
-    hudFrames.some(
-      (frame) =>
-        frame.phase === 'arriving' && frame.opacity > 0 && frame.opacity < 1 && frame.x < -3,
-    ),
-  ).toBe(true);
-  const duration = phases[2].at - phases[1].at;
+  const duration = phases[1].at - phases[0].at;
   expect(duration).toBeGreaterThanOrEqual(TRAVEL_SECONDS * 1000 - 40);
   expect(duration).toBeLessThan(TRAVEL_SECONDS * 1000 + 500);
   await page.screenshot({ path: join(output, 'arrived-hardware.png') });
   results.push({
     name: 'Tier 3 flight, HUD, focus and full viewport',
     duration,
-    departure,
     initial,
     airborne,
     landed,
   });
 
   await nav(page, '代码魔改工坊').click();
-  await expect(shell(page)).toHaveAttribute('data-space-phase', 'traveling');
+  await expect(shell(page)).toHaveAttribute('data-space-phase', 'entering');
   await page.waitForTimeout(530);
   const beforeTurn = await readWorld(page);
   await nav(page, '创客排位').click();
   const afterTurn = await readWorld(page);
   expect(distance(beforeTurn.position, afterTurn.position)).toBeLessThan(5);
   await expect(shell(page)).toHaveAttribute('data-space-focus', 'ranking');
+  await expect(shell(page)).toHaveAttribute('data-space-phase', 'detail');
+  expect((await readWorld(page)).dof).toEqual(ISLANDS.ranking.detailPose.focus);
+  await page.getByRole('button', { name: '返回大世界' }).click();
+  await expect(shell(page)).toHaveAttribute('data-space-phase', 'leaving');
+  await expect(page.locator('.space-hud-panel')).toHaveAttribute('inert', '');
+  await expect(page.locator('.space-hud-panel')).toHaveAttribute('aria-busy', 'true');
+  await expect(page.locator('.space-hud-panel')).toHaveCSS('pointer-events', 'none');
   await expect(shell(page)).toHaveAttribute('data-space-phase', 'idle');
-  expect((await readWorld(page)).dof).toEqual(ISLANDS.ranking.camera.focus);
   const returnFrames = (await page.evaluate(() => window.hudFrames)).slice(hudFrames.length);
-  expect(returnFrames.some((frame) => frame.phase === 'arriving' && frame.x > 3)).toBe(true);
+  expect(
+    returnFrames.some((frame) => frame.phase === 'leaving' && frame.y > 0 && frame.opacity < 1),
+  ).toBe(true);
   expect(returnFrames.every((frame) => frame.overflow <= 0)).toBe(true);
   expect(
     await page
@@ -231,19 +220,15 @@ try {
       .evaluate((node, original) => node === original, canvas),
   ).toBe(true);
   expect(await page.evaluate(() => JSON.stringify(localStorage))).toBe(saved);
-  await expect(page.getByRole('button', { name: '创客排位', exact: true })).toHaveAttribute(
-    'aria-current',
-    'page',
-  );
   results.push({ name: 'Mid-flight retarget, Canvas identity, and storage isolation' });
   await nav(page, '学习仪表盘').click();
-  await expect(shell(page)).toHaveAttribute('data-space-phase', 'traveling');
+  await expect(shell(page)).toHaveAttribute('data-space-phase', 'entering');
   await page
     .locator('.scene-stage canvas')
     .evaluate((node) => node.getContext('webgl2').getExtension('WEBGL_lose_context').loseContext());
   await expect(page.locator('.render-shell')).toHaveAttribute('data-quality-tier', '0');
   await expect(shell(page)).toHaveAttribute('data-space-focus', 'dashboard');
-  await expect(shell(page)).toHaveAttribute('data-space-phase', 'idle');
+  await expect(shell(page)).toHaveAttribute('data-space-phase', 'detail');
   await expect(page.locator('canvas')).toHaveCount(0);
   results.push({ name: 'Mid-flight context loss resolves to the destination HUD' });
   await page.close();
@@ -264,14 +249,14 @@ try {
         return original(update);
       };
       useSpaceStore.subscribe((state) => {
-        if (state.phase !== 'idle') window.flightStarted = true;
+        if (state.phase === 'entering' || state.phase === 'leaving') window.flightStarted = true;
       });
     });
     await nav(fallback, '硬件实验室').click();
     await expect(fallback.getByRole('heading', { name: /认识它/ })).toBeVisible();
-    await expect(shell(fallback)).toHaveAttribute('data-space-phase', 'idle');
+    await expect(shell(fallback)).toHaveAttribute('data-space-phase', 'detail');
     expect(await fallback.evaluate(() => window.flightStarted)).toBe(false);
-    expect(await fallback.evaluate(() => window.usedNativeTransition)).toBe(tier === 1);
+    expect(await fallback.evaluate(() => window.usedNativeTransition)).toBe(false);
     if (reduced === 'reduce') {
       await expect(fallback.locator('.page-transition')).toHaveCSS('animation-name', 'none');
     }
@@ -280,7 +265,7 @@ try {
       await expect
         .poll(() =>
           readWorld(fallback).then((world) =>
-            distance(world.position, ISLANDS.hardware.camera.position),
+            distance(world.position, ISLANDS.hardware.detailPose.position),
           ),
         )
         .toBeLessThan(0.001);
@@ -288,9 +273,9 @@ try {
       await fallback.emulateMedia({ reducedMotion: 'no-preference' });
       await expect(fallback.locator('.space-hud-panel')).toBeAttached();
       await nav(fallback, '代码魔改工坊').click();
-      await expect(shell(fallback)).toHaveAttribute('data-space-phase', 'traveling');
+      await expect(shell(fallback)).toHaveAttribute('data-space-phase', 'entering');
       await fallback.emulateMedia({ reducedMotion: 'reduce' });
-      await expect(shell(fallback)).toHaveAttribute('data-space-phase', 'idle');
+      await expect(shell(fallback)).toHaveAttribute('data-space-phase', 'detail');
       await expect(shell(fallback)).toHaveAttribute('data-space-focus', 'code');
       await expect(fallback.locator('.page-transition')).toHaveCSS('animation-name', 'none');
     }

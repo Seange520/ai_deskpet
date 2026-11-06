@@ -2,7 +2,7 @@ import { lazy, Suspense, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { MathUtils, Vector3 } from 'three';
 import { useIslandContent } from './islandAssets';
-import { useSpaceStore } from './spaceStore';
+import { isSpaceTransition, useSpaceStore } from './spaceStore';
 import { LANDMARKS } from './world';
 const PetDissolve = lazy(() => import('./PetDissolve'));
 
@@ -33,9 +33,13 @@ function PetPlaceholder() {
   );
 }
 
-function PetBody({ tier, paused, reduced }) {
+function PetBody({ tier, paused, reduced, travelRoot }) {
   const Content = useIslandContent('dashboard');
-  return Content ? <Content tier={tier} paused={paused} reduced={reduced} /> : <PetPlaceholder />;
+  return Content ? (
+    <Content tier={tier} paused={paused} reduced={reduced} travelRoot={travelRoot} />
+  ) : (
+    <PetPlaceholder />
+  );
 }
 
 export default function TravelPet({ tier, paused, reduced, progress, dissolve }) {
@@ -57,7 +61,9 @@ export default function TravelPet({ tier, paused, reduced, progress, dissolve })
     const flight = state.current;
     const dt = Math.min(delta, 0.06);
     const dock = docks[focus];
-    const flying = !reduced && phase === 'traveling';
+    group.userData.dock = focus;
+    const moving = isSpaceTransition(phase);
+    const flying = !reduced && moving && progress.current > 0;
 
     if (flying) {
       flight.airborne = true;
@@ -75,13 +81,13 @@ export default function TravelPet({ tier, paused, reduced, progress, dissolve })
         MathUtils.damp(group.scale.x, MathUtils.lerp(0.54, 1, approach), 11, dt),
       );
       group.userData.motion = 'escort';
-    } else if (reduced || (!flight.airborne && flight.request !== request && phase === 'idle')) {
+    } else if (reduced || (!flight.airborne && flight.request !== request && !moving)) {
       flight.airborne = false;
       flight.landing = null;
       group.position.copy(dock);
       group.scale.setScalar(1);
       group.userData.motion = 'docked';
-    } else if (flight.airborne && phase !== 'departing') {
+    } else if (flight.airborne && !moving) {
       flight.airborne = false;
       flight.landing = { from: group.position.clone(), elapsed: 0 };
     }
@@ -119,7 +125,7 @@ export default function TravelPet({ tier, paused, reduced, progress, dissolve })
   return (
     <group name="space-travel-pet" ref={pet} position={initial.current}>
       <Suspense fallback={<PetPlaceholder />}>
-        <PetBody tier={tier} paused={paused} reduced={reduced} />
+        <PetBody tier={tier} paused={paused} reduced={reduced} travelRoot={pet} />
       </Suspense>
       {dissolve && (
         <Suspense fallback={null}>
