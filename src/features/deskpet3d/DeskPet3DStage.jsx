@@ -9,6 +9,8 @@ import PetModel from './PetModel';
 import EnvironmentLighting from './EnvironmentLighting';
 import { usePetAffection } from './usePetAffection';
 import { useSceneQuality } from './useSceneQuality';
+import PetDissolve from '../space/PetDissolve';
+import { evolutionClock } from '../space/useLorePresentation';
 
 const INITIAL_CAMERA = [4, 2.8, 5.2];
 export const CAMERA_LIMITS = { min: 4.8, max: 11 };
@@ -49,6 +51,8 @@ const DeskPet3DStage = forwardRef(function DeskPet3DStage(
   {
     runtime,
     tier = 2,
+    form = 'Spark',
+    evolving = false,
     compact = false,
     paused = false,
     still = false,
@@ -62,6 +66,7 @@ const DeskPet3DStage = forwardRef(function DeskPet3DStage(
   const reducedMotion = useReducedMotion();
   const constrained = useSceneQuality();
   const controls = useRef(null);
+  const petRoot = useRef(null);
   const lastRun = useRef(0);
   const asleep = interaction.dark || interaction.sleeping || environment.idleSleeping;
   const { petting, dizzy, petHead } = usePetAffection({ compact, paused, blocked: asleep, onPet });
@@ -104,6 +109,7 @@ const DeskPet3DStage = forwardRef(function DeskPet3DStage(
       className="deskpet3d-scene"
       data-testid="deskpet3d-scene"
       data-action={action}
+      data-form={form}
       data-led={led ? 'on' : 'off'}
       data-sleeping={asleep ? 'true' : 'false'}
       data-environment={environment.night ? 'night' : 'day'}
@@ -130,17 +136,30 @@ const DeskPet3DStage = forwardRef(function DeskPet3DStage(
             reducedMotion={reducedMotion || still}
           />
           <ToonPalette tier={tier}>
-            <PetModel
-              tier={tier}
-              runtime={runtime}
-              reducedMotion={reducedMotion || still}
-              paused={paused}
-              interaction={interaction}
-              petting={petting}
-              dizzy={dizzy}
-              environment={environment}
-              onPetHead={compact ? undefined : petHead}
-            />
+            <group ref={petRoot}>
+              <PetModel
+                key={form}
+                form={form}
+                evolving={evolving}
+                platform={!evolving}
+                tier={tier}
+                runtime={runtime}
+                reducedMotion={reducedMotion || still}
+                paused={paused}
+                interaction={interaction}
+                petting={petting}
+                dizzy={dizzy}
+                environment={environment}
+                onPetHead={compact ? undefined : petHead}
+              />
+              {evolving && !reducedMotion && (
+                <PetDissolve
+                  pet={petRoot}
+                  paused={paused}
+                  amount={() => Math.sin(Math.PI * evolutionClock.progress) ** 1.6}
+                />
+              )}
+            </group>
           </ToonPalette>
           <PetToonEffects tier={tier} paused={paused} />
           <ContextGuard onUnsupported={onUnsupported} />

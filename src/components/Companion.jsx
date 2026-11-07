@@ -11,6 +11,11 @@ import Companion2D from './Companion2D';
 import './companion3d.css';
 import { useQualityTier } from '../lib/qualityTier';
 import { usePetActions } from '../features/interaction/usePetActions';
+import {
+  usePetForm,
+  useLorePresentation,
+  usePresentationBlocked,
+} from '../features/space/useLorePresentation';
 
 const DeskPet3DStage = lazy(() => import('../features/deskpet3d/DeskPet3DStage'));
 
@@ -22,6 +27,10 @@ export default function Companion({ celebrations, feedback, hidden }) {
   );
   const environment = useEnvironment(environmentSound);
   const runtime = useLearningStore((state) => state.runtime);
+  const form = usePetForm();
+  const lore = useLorePresentation((s) => s.message);
+  const blocked = usePresentationBlocked();
+  const evolving = useLorePresentation((s) => s.evolving) && !blocked;
   const interaction = usePetActions();
 
   const quality = useQualityTier();
@@ -61,16 +70,18 @@ export default function Companion({ celebrations, feedback, hidden }) {
   return (
     <Suspense fallback={fallback}>
       <div
-        className={`companion companion-3d ${small ? 'is-small' : ''} emotion-${feedback.type}`}
+        className={`companion companion-3d ${small ? 'is-small' : ''} emotion-${feedback.type} ${evolving ? 'is-evolving' : ''}`}
         hidden={hidden}
       >
         {!small && (
           <span className="companion-bubble" aria-live="polite">
-            {feedback.id > 0
-              ? feedback.message
-              : curious
-                ? '在看什么？带上我呀。'
-                : feedback.message}
+            {lore
+              ? lore.text
+              : feedback.id > 0
+                ? feedback.message
+                : curious
+                  ? '在看什么？带上我呀。'
+                  : feedback.message}
           </span>
         )}
         <Button
@@ -103,6 +114,7 @@ export default function Companion({ celebrations, feedback, hidden }) {
             }}
           >
             <PetFocusView
+              evolving={evolving}
               focused={focused && !unsupported && !hidden}
               onClose={() => setFocused(false)}
               onReset={() => stage.current?.resetView()}
@@ -112,6 +124,8 @@ export default function Companion({ celebrations, feedback, hidden }) {
                 <DeskPet3DStage
                   ref={stage}
                   tier={quality.tier}
+                  form={form}
+                  evolving={evolving}
                   runtime={runtime}
                   interaction={interaction}
                   environment={environment}

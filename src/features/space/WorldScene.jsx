@@ -18,6 +18,9 @@ import ToonClouds from '../npr/ToonClouds';
 import { RelicStone } from './MaintainerRelic';
 import ToonDrones from '../npr/ToonDrones';
 import AbyssRibbons from '../npr/AbyssRibbons';
+import LumenFish from '../npr/LumenFish';
+import MemoryMeteor from './MemoryMeteor';
+import LoreObjects from './LoreObjects';
 import { useIslandAtmosphere } from './useIslandAtmosphere';
 
 const StageAtmosphere = lazy(() => import('../stage/StageAtmosphere'));
@@ -87,7 +90,7 @@ function LoadedIsland({ island, tier, paused, reduced, fallback }) {
   );
 }
 
-export default function WorldScene({ paused, reduced, tier, performanceStep, advanced }) {
+export default function WorldScene({ paused, reduced, tier, performanceStep, advanced, meteor }) {
   const night = useEnvironmentStore((state) => state.night);
   const focusTarget = useMemo(() => new Vector3(...ISLANDS.dashboard.camera.focus), []);
   const travelProgress = useRef(0);
@@ -127,6 +130,9 @@ export default function WorldScene({ paused, reduced, tier, performanceStep, adv
         </>
       )}
       {tier >= 2 && <AbyssRibbons paused={paused} reduced={reduced} />}
+      {tier >= 2 && <LumenFish tier={tier} paused={paused} reduced={reduced} />}
+      {tier === 3 && <MemoryMeteor overlay={meteor} paused={paused} reduced={reduced} />}
+      <LoreObjects />
       <Orbit radius={RING_RADIUS} color="#ae86cf" opacity={0.24} />
       <HubSandbox tier={tier} paused={paused} reduced={reduced} />
       <EnergyRail tier={tier} paused={paused} reduced={reduced} />

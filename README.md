@@ -9,7 +9,7 @@
 [![Vite](https://img.shields.io/badge/Vite-6-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vite.dev)
 [![React](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev)
 [![Zustand](https://img.shields.io/badge/Zustand-5-2D3748?style=flat-square)](https://zustand.docs.pmnd.rs)
-[![Release](https://img.shields.io/badge/release-v0.9.5--beta-FFC98B?style=flat-square)](https://github.com/Seange520/ai_deskpet/tree/v0.9.5-beta)
+[![Release](https://img.shields.io/badge/release-v0.9.6--beta-FFC98B?style=flat-square)](https://github.com/Seange520/ai_deskpet/tree/v0.9.6-beta)
 ![Status](https://img.shields.io/badge/status-Testing-orange?style=flat-square)
 [![Vercel](https://img.shields.io/badge/Vercel-Deployed-000000?style=flat-square&logo=vercel&logoColor=white)](https://www.seange.cn)
 
@@ -21,9 +21,11 @@
 
 ---
 
-## 当前版本 · v0.9.5-beta《第七校验》四岛 NPR 与生态
+## 当前版本 · v0.9.6-beta《第七校验》世界观与桌宠进化
 
-P8-M2 在已封板的 M0/M1 管线上完成四岛、远景塔群与陨石的 Toon 化，加入原创水晶花、垂丝藤蔓、维护者石碑与中央三层半透明深渊光带。Tier 1 剔除特殊植被、远景塔群、无人机、陨石与深渊光带；Tier 0 保持零 Canvas。当前封板版本为 `v0.9.5-beta`，详见 [M2 审核记录](docs/P8_M2_ENVIRONMENT_REVIEW.md)。
+P8-M3 已通过总指挥视觉与交互验收，封板为 `v0.9.6-beta`：建立世界观数据表，接入 500 XP 的 Spark → Kernel 粒子重组进化、Tier 2+ 深渊记忆鱼群与 Tier 3 可读取的流星记忆。原学习奖励、存档规则与教学交互保留。验收：E2E **67/67**、M3 专项 **11/11**、NPR 专项 **9/9**、画质/飞行单测 **7/7**，生产构建通过。详情见 [M3 审核记录](docs/P8_M3_LORE_REVIEW.md)。
+
+P8-M2 在已封板的 M0/M1 管线上完成四岛、远景塔群与陨石的 Toon 化，加入原创水晶花、垂丝藤蔓、维护者石碑与中央三层半透明深渊光带。Tier 1 剔除特殊植被、远景塔群、无人机、陨石与深渊光带；Tier 0 保持零 Canvas。该阶段封板版本为 `v0.9.5-beta`，详见 [M2 审核记录](docs/P8_M2_ENVIRONMENT_REVIEW.md)。
 
 历史 M0/M1 已通过总指挥视觉审核并封板：方块桌宠与 Observatory 岛采用 MeshToonMaterial、冷暖 RGB 色阶、视空间深度描边、Rim Light 与克制的陶瓷高光。底盘加入渐变、光纹与分层侧壁，原发光杆改为半透明浮动水晶，远景山脊和星空恢复纵深层次。
 

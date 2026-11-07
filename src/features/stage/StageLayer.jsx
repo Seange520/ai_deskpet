@@ -4,6 +4,9 @@ import ValleyFallback from '../space/ValleyFallback';
 import RenderBoundary from './RenderBoundary';
 import './stage.css';
 import { RelicOverlay } from '../space/RelicOverlay';
+import EvolutionOverlay from '../space/EvolutionOverlay';
+import LoreOverlay from '../space/LoreOverlay';
+import './lore.css';
 const SceneCanvas = lazy(() => import('./SceneCanvas'));
 const StageContext = createContext({ ready: false });
 export const useStageLayer = () => useContext(StageContext);
@@ -12,6 +15,7 @@ export default function StageLayer({ children }) {
   const [ready, setReady] = useState(false);
   const dock = useRef(null);
   const relic = useRef(null);
+  const meteor = useRef(null);
   return (
     <StageContext.Provider value={{ ready: ready && quality.tier > 0, dock }}>
       <div
@@ -25,12 +29,20 @@ export default function StageLayer({ children }) {
         {quality.tier > 0 && (
           <RenderBoundary onFail={quality.fail}>
             <Suspense fallback={null}>
-              <SceneCanvas quality={quality} onReady={setReady} dock={dock} relic={relic} />
+              <SceneCanvas
+                quality={quality}
+                onReady={setReady}
+                dock={dock}
+                relic={relic}
+                meteor={meteor}
+              />
             </Suspense>
           </RenderBoundary>
         )}
         <div className="hud-layer">{children}</div>
         <RelicOverlay overlay={relic} tier={quality.tier} ready={ready} />
+        <LoreOverlay meteor={meteor} tier={quality.tier} />
+        <EvolutionOverlay tier={quality.tier} />
       </div>
     </StageContext.Provider>
   );

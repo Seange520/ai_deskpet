@@ -36,14 +36,16 @@ export default function PetModel(props) {
   return (
     <group>
       <group ref={ground} rotation={[0, -0.16, 0]}>
-        <PetContactShadow
-          body={body}
-          ground={ground}
-          travelRoot={props.travelRoot}
-          paused={props.paused}
-          reduced={props.reducedMotion}
-        />
-        <group ref={body} name="command-pet">
+        {!props.evolving && (
+          <PetContactShadow
+            body={body}
+            ground={ground}
+            travelRoot={props.travelRoot}
+            paused={props.paused}
+            reduced={props.reducedMotion}
+          />
+        )}
+        <group ref={body} name="command-pet" userData={{ form: props.form || 'Spark' }}>
           <group
             ref={head}
             name="command-head"
@@ -66,13 +68,13 @@ export default function PetModel(props) {
               )}
             <RoundedBox
               position={[0, 0.65, 0]}
-              args={[1.85, 1.3, 1.05]}
-              radius={0.1}
+              args={props.form === 'Kernel' ? [1.85, 1.3, 1.15] : [1.85, 1.3, 1.05]}
+              radius={props.form === 'Kernel' ? 0.23 : 0.1}
               smoothness={3}
             >
               <ToonMaterial finish="ceramic" name="pet-shell" color="#fff3d1" />
             </RoundedBox>
-            <mesh position={[0, 0.65, 0.54]}>
+            <mesh position={[0, 0.65, props.form === 'Kernel' ? 0.6 : 0.54]}>
               <boxGeometry args={[1.48, 0.92, 0.07]} />
               <ToonMaterial name="pet-screen" map={screen} color="#ffffff" />
             </mesh>
@@ -82,7 +84,7 @@ export default function PetModel(props) {
                 ref={(mesh) => {
                   eyeMeshes.current[x < 0 ? 0 : 1] = mesh;
                 }}
-                position={[x, 0.75, 0.61]}
+                position={[x, 0.75, props.form === 'Kernel' ? 0.67 : 0.61]}
                 scale={[0.75, 1.6, 0.55]}
               >
                 <sphereGeometry args={[0.13, 24, 16]} />
@@ -98,7 +100,10 @@ export default function PetModel(props) {
                 />
               </mesh>
             ))}
-            <mesh position={[0, 0.4, 0.61]} rotation={[0, 0, Math.PI]}>
+            <mesh
+              position={[0, 0.4, props.form === 'Kernel' ? 0.67 : 0.61]}
+              rotation={[0, 0, Math.PI]}
+            >
               <torusGeometry args={[0.13, 0.025, 8, 24, Math.PI]} />
               <ToonMaterial color="#baffdd" />
             </mesh>
@@ -111,7 +116,40 @@ export default function PetModel(props) {
               <ToonMaterial color="#ffb36b" emissive="#ffb36b" emissiveIntensity={0.25} />
             </mesh>
           </group>
-          <mesh position={[0, -0.55, 0]}>
+          {props.form === 'Kernel' && (
+            <group name="kernel-robot-tools">
+              <mesh position={[0, -0.28, 0.51]}>
+                <torusGeometry args={[0.22, 0.035, 8, 32]} />
+                <ToonMaterial color="#c9fff2" emissive="#56dec9" emissiveIntensity={1.2} />
+              </mesh>
+              {[-1, 1].map((side) => (
+                <group key={side} position={[side * 1.1, -0.37, 0]} rotation={[0, 0, side * -0.15]}>
+                  <mesh>
+                    <sphereGeometry args={[0.16, 12, 8]} />
+                    <ToonMaterial color="#647eb8" />
+                  </mesh>
+                  <RoundedBox
+                    position={[0, -0.3, 0.12]}
+                    args={[0.32, 0.46, 0.4]}
+                    radius={0.1}
+                    smoothness={2}
+                  >
+                    <ToonMaterial finish="ceramic" color="#fff3d1" />
+                  </RoundedBox>
+                </group>
+              ))}
+              {[-0.52, 0.52].map((x) => (
+                <mesh key={x} position={[x, -0.83, 0]}>
+                  <cylinderGeometry args={[0.12, 0.12, 0.45, 12]} />
+                  <ToonMaterial color="#7bd8d0" />
+                </mesh>
+              ))}
+            </group>
+          )}
+          <mesh
+            position={[0, -0.55, 0]}
+            scale={props.form === 'Kernel' ? [0.78, 0.85, 1] : [1, 1, 1]}
+          >
             <boxGeometry args={[1.45, 0.9, 0.9]} />
             <ToonMaterial finish="ceramic" color="#7193e0" />
           </mesh>

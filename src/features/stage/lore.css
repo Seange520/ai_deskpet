@@ -1,0 +1,221 @@
+.lore-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+}
+.lore-layer[hidden],
+.memory-meteor-hotspot[hidden] {
+  display: none;
+}
+.lore-archive {
+  position: absolute;
+  left: 24px;
+  bottom: 92px;
+  display: flex;
+  gap: 8px;
+}
+.lore-archive button,
+.memory-meteor-hotspot {
+  pointer-events: auto;
+  cursor: pointer;
+  border: 1px solid #9bded45c;
+  color: #bdece4;
+  background: #142b3de8;
+  border-radius: 20px;
+  padding: 9px 16px;
+  font-size: 12px;
+}
+.lore-memory {
+  pointer-events: auto;
+  position: absolute;
+  right: 28px;
+  top: 24%;
+  width: min(350px, calc(100vw - 40px));
+  padding: 27px;
+  border: 1px solid #b1e3e359;
+  border-radius: 16px;
+  background: linear-gradient(145deg, #18333cf5, #24243ff5);
+  box-shadow: 0 16px 80px #0006;
+  color: #e6f4ec;
+}
+.lore-memory small {
+  color: #8bc6c8;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+}
+.lore-memory h3 {
+  margin: 15px 0;
+  font-size: 20px;
+  color: #ffe0ae;
+}
+.lore-memory p {
+  line-height: 1.9;
+  font-size: 14px;
+}
+.lore-memory .lore-detail {
+  color: #9db9c7;
+  font-size: 12px;
+}
+.lore-dismiss {
+  position: absolute;
+  right: 12px;
+  top: 8px;
+  border: 0;
+  background: transparent;
+  color: #e8eee8;
+  cursor: pointer;
+  font-size: 22px;
+}
+.sos-archive {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  padding-top: 10px;
+}
+.sos-archive i {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #26484b;
+}
+.sos-archive i[data-lit='true'] {
+  background: #a0ffe5;
+  box-shadow: 0 0 25px #63ffce;
+}
+.sos-archive small {
+  display: block;
+  margin-top: 8px;
+}
+.memory-meteor-hotspot {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  background: #1a283655;
+  border-color: #c5e7f557;
+  font-size: 11px;
+  min-height: 36px;
+}
+.evolution-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, #43677a45 0%, #101a35c9 65%, #081322e8);
+  display: grid;
+  place-items: center;
+}
+.evolution-veil p {
+  position: absolute;
+  top: 72%;
+  text-align: center;
+  font-size: 22px;
+  letter-spacing: 0.2em;
+  color: #fff0c9;
+  text-shadow: 0 0 25px #c7e5ff;
+}
+.evolution-veil p span {
+  display: block;
+  font-size: 11px;
+  color: #8ed7e0;
+  letter-spacing: 0.5em;
+  margin-top: 17px;
+}
+.evolution-orbit {
+  width: min(520px, 80vw);
+  aspect-ratio: 1;
+  border: 1px solid #a7f2e163;
+  border-radius: 50%;
+  box-shadow:
+    0 0 65px #65cbd42b,
+    inset 0 0 55px #75c5ff20;
+  transform: rotateX(65deg) rotateZ(-20deg);
+}
+.evolution-orbit.second {
+  position: absolute;
+  width: min(410px, 65vw);
+  transform: rotateX(30deg) rotateY(60deg);
+  border-color: #e5c2ff63;
+}
+.companion.is-evolving {
+  z-index: 81 !important;
+  transform: none !important;
+}
+.evolution-canvas {
+  position: fixed;
+  left: 50vw;
+  top: 49vh;
+  transform: translate(-50%, -50%);
+  width: min(620px, 90vw);
+  height: min(520px, 62vh);
+  pointer-events: none;
+  z-index: 81;
+}
+.evolution-canvas .pet-canvas-host,
+.evolution-canvas .deskpet3d-scene {
+  width: 100%;
+  height: 100%;
+}
+.kernel-achievement {
+  position: fixed;
+  top: 18%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 82;
+  pointer-events: none;
+  text-align: center;
+  width: min(480px, 90vw);
+  color: #f9e9bc;
+}
+.kernel-achievement:has(strong) {
+  padding: 25px;
+  background: linear-gradient(135deg, #163d48f5, #272740f5);
+  border: 1px solid #96f3dc80;
+  border-radius: 16px;
+  box-shadow: 0 0 90px #84e6e229;
+}
+.kernel-achievement small,
+.kernel-achievement strong,
+.kernel-achievement span {
+  display: block;
+}
+.kernel-achievement small {
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  color: #91e9d6;
+}
+.kernel-achievement strong {
+  font-size: 26px;
+  margin: 12px 0;
+}
+.kernel-achievement span {
+  font-size: 12px;
+  color: #b5cbd4;
+}
+.form-Kernel .companion-body {
+  border-radius: 24px;
+  box-shadow: 0 0 20px #7cead344;
+}
+.form-Kernel .companion-body::after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 28px;
+  border-radius: 6px;
+  background: #deefde;
+  left: -12px;
+  top: 48px;
+  box-shadow: 98px 0 #deefde;
+}
+@media (max-width: 700px) {
+  .lore-archive {
+    left: 12px;
+    bottom: 82px;
+  }
+  .lore-memory {
+    right: 20px;
+    top: 18%;
+  }
+  .evolution-veil p {
+    font-size: 16px;
+  }
+}

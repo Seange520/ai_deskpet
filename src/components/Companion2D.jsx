@@ -2,10 +2,13 @@ import { useLearningStore } from '../stores/useLearningStore';
 import { useEffect, useState } from 'react';
 import { motion, useAnimationControls, useReducedMotion } from 'framer-motion';
 import Button from './Button';
+import { usePetForm, useLorePresentation } from '../features/space/useLorePresentation';
 
 // 常驻伙伴用 CSS 绘制，避免与实验室的 SVG 教学图产生语义定位冲突。
 export default function Companion({ celebrations, feedback, hidden }) {
   const runtime = useLearningStore((s) => s.runtime);
+  const form = usePetForm();
+  const lore = useLorePresentation((s) => s.message);
   const [curious, setCurious] = useState(false),
     [small, setSmall] = useState(false);
   const controls = useAnimationControls(),
@@ -19,12 +22,19 @@ export default function Companion({ celebrations, feedback, hidden }) {
   }, [celebrations, controls, reduced]);
   return (
     <div
-      className={`companion ${small ? 'is-small' : ''} emotion-${feedback.type}`}
+      className={`companion ${small ? 'is-small' : ''} emotion-${feedback.type} form-${form}`}
+      data-form={form}
       hidden={hidden}
     >
       {!small && (
         <span className="companion-bubble" aria-live="polite">
-          {feedback.id > 0 ? feedback.message : curious ? '在看什么？带上我呀。' : feedback.message}
+          {lore
+            ? lore.text
+            : feedback.id > 0
+              ? feedback.message
+              : curious
+                ? '在看什么？带上我呀。'
+                : feedback.message}
         </span>
       )}
       <motion.div

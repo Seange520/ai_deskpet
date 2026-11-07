@@ -68,7 +68,7 @@ function DeviceProbe({ paused, quality }) {
     </Suspense>
   ) : null;
 }
-export default function SceneCanvas({ quality, onReady, dock, relic }) {
+export default function SceneCanvas({ quality, onReady, dock, relic, meteor }) {
   const reduced = useReducedMotionPreference();
   const [hidden, setHidden] = useState(document.hidden);
   useEffect(() => {
@@ -143,6 +143,7 @@ export default function SceneCanvas({ quality, onReady, dock, relic }) {
             )}
           <ToonPalette tier={tier}>
             <WorldScene
+              meteor={meteor}
               reduced={reduced || tier === 1}
               paused={paused}
               tier={tier}

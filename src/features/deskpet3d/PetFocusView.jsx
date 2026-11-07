@@ -6,7 +6,14 @@ import EnvironmentControls from '../environment/EnvironmentControls';
 import './focus.css';
 
 // A stable portal target moves the existing Canvas; opening never creates a second renderer.
-export default function PetFocusView({ focused, onClose, onReset, onPet, children }) {
+export default function PetFocusView({
+  focused,
+  evolving = false,
+  onClose,
+  onReset,
+  onPet,
+  children,
+}) {
   const [host] = useState(() => {
     const node = document.createElement('div');
     node.className = 'pet-canvas-host';
@@ -14,11 +21,12 @@ export default function PetFocusView({ focused, onClose, onReset, onPet, childre
   });
   const dock = useRef(null);
   const expanded = useRef(null);
+  const evolution = useRef(null);
   const dialog = useRef(null);
   const close = useRef(null);
   useLayoutEffect(() => {
-    (focused ? expanded.current : dock.current)?.appendChild(host);
-  }, [focused, host]);
+    (focused ? expanded.current : evolving ? evolution.current : dock.current)?.appendChild(host);
+  }, [focused, evolving, host]);
   useLayoutEffect(() => {
     if (!focused) return;
     const shell = document.querySelector('.app-shell');
@@ -43,6 +51,12 @@ export default function PetFocusView({ focused, onClose, onReset, onPet, childre
     <>
       <div className="pet-canvas-dock" ref={dock} />
       {createPortal(children, host)}
+      {evolving &&
+        !focused &&
+        createPortal(
+          <div className="evolution-canvas" ref={evolution} aria-hidden="true" />,
+          document.body,
+        )}
       {focused &&
         createPortal(
           <section

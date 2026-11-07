@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useSpaceStore } from './spaceStore';
+import { LORE } from '../../data/lore';
 export function RelicOverlay({ overlay, tier, ready }) {
   const [visible, setVisible] = useState(false);
   const timer = useRef();
@@ -52,7 +53,8 @@ export function RelicOverlay({ overlay, tier, ready }) {
       <div className="relic-message" role="status" aria-live="polite" data-open={visible}>
         {visible && (
           <>
-            这是上一任维护者留下的……<small>七道刻痕，最后一道仍未闭合。</small>
+            {LORE.stone.text}
+            <small>{LORE.stone.detail}</small>
           </>
         )}
       </div>

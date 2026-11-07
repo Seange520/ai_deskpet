@@ -123,7 +123,7 @@ void main() {
 }
 `;
 
-export default function PetDissolve({ pet, paused }) {
+export default function PetDissolve({ pet, paused, amount: externalAmount }) {
   const points = useRef(null);
   const sources = useRef({ body: null, points: [], patches: new Map() });
   const uniforms = useMemo(
@@ -146,46 +146,52 @@ export default function PetDissolve({ pet, paused }) {
     },
     [],
   );
-  useFrame(({ gl }, delta) => {
-    if (paused) return;
-    const group = pet.current;
-    const particles = points.current;
-    if (!group || !particles) return;
-    const body = group.getObjectByName('command-pet');
-    const source = sources.current;
-    if (body && source.body !== body) {
-      for (const restore of source.patches.values()) restore();
-      source.patches.clear();
-      source.body = body;
-      source.points = surfaceParticles(body);
-      body.traverse((mesh) => {
-        const { material } = mesh;
-        if (
-          (material?.isMeshStandardMaterial || material?.isMeshToonMaterial) &&
-          !source.patches.has(material)
-        )
-          source.patches.set(material, patchMaterial(material, uniforms.dissolve));
-      });
-    }
-    const { phase } = useSpaceStore.getState();
-    const dt = Math.min(delta, 0.085);
-    const leaving = isSpaceTransition(phase);
-    const previous = uniforms.dissolve.value;
-    const amount = Math.max(0, Math.min(1, previous + (leaving ? dt / 0.31 : -dt / 0.32)));
-    uniforms.dissolve.value = amount;
-    group.userData.dissolve = amount;
-    particles.visible = amount > 0.001 && source.points.length === particleCount;
-    if (!particles.visible) return;
-    uniforms.pixelRatio.value = gl.getPixelRatio();
-    uniforms.flightTime.value += dt;
-    group.updateWorldMatrix(true, true);
-    inverse.copy(group.matrixWorld).invert();
-    for (const [index, sample] of source.points.entries()) {
-      point.copy(sample.point).applyMatrix4(sample.mesh.matrixWorld).applyMatrix4(inverse);
-      point.toArray(positions, index * 3);
-    }
-    particles.geometry.attributes.position.needsUpdate = true;
-  }, 0.25);
+  useFrame(
+    ({ gl, invalidate }, delta) => {
+      if (paused) return;
+      const group = pet.current;
+      const particles = points.current;
+      if (!group || !particles) return;
+      const body = group.getObjectByName('command-pet');
+      const source = sources.current;
+      if (body && source.body !== body) {
+        for (const restore of source.patches.values()) restore();
+        source.patches.clear();
+        source.body = body;
+        source.points = surfaceParticles(body);
+        body.traverse((mesh) => {
+          const { material } = mesh;
+          if (
+            (material?.isMeshStandardMaterial || material?.isMeshToonMaterial) &&
+            !source.patches.has(material)
+          )
+            source.patches.set(material, patchMaterial(material, uniforms.dissolve));
+        });
+      }
+      const { phase } = useSpaceStore.getState();
+      const dt = Math.min(delta, 0.085);
+      const leaving = isSpaceTransition(phase);
+      const previous = uniforms.dissolve.value;
+      const amount = externalAmount
+        ? externalAmount()
+        : Math.max(0, Math.min(1, previous + (leaving ? dt / 0.31 : -dt / 0.32)));
+      uniforms.dissolve.value = amount;
+      if (externalAmount) invalidate();
+      group.userData.dissolve = amount;
+      particles.visible = amount > 0.001 && source.points.length === particleCount;
+      if (!particles.visible) return;
+      uniforms.pixelRatio.value = gl.getPixelRatio();
+      uniforms.flightTime.value += dt;
+      group.updateWorldMatrix(true, true);
+      inverse.copy(group.matrixWorld).invert();
+      for (const [index, sample] of source.points.entries()) {
+        point.copy(sample.point).applyMatrix4(sample.mesh.matrixWorld).applyMatrix4(inverse);
+        point.toArray(positions, index * 3);
+      }
+      particles.geometry.attributes.position.needsUpdate = true;
+    },
+    externalAmount ? -0.1 : 0.25,
+  );
 
   return (
     <points name="p7-jump-shell" ref={points} visible={false} frustumCulled={false}>
