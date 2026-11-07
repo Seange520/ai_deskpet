@@ -9,7 +9,7 @@
 [![Vite](https://img.shields.io/badge/Vite-6-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vite.dev)
 [![React](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev)
 [![Zustand](https://img.shields.io/badge/Zustand-5-2D3748?style=flat-square)](https://zustand.docs.pmnd.rs)
-[![Release](https://img.shields.io/badge/release-v0.9.5--alpha-FFC98B?style=flat-square)](https://github.com/Seange520/ai_deskpet/tree/v0.9.5-alpha)
+[![Release](https://img.shields.io/badge/release-v0.9.5--beta-FFC98B?style=flat-square)](https://github.com/Seange520/ai_deskpet/tree/v0.9.5-beta)
 ![Status](https://img.shields.io/badge/status-Testing-orange?style=flat-square)
 [![Vercel](https://img.shields.io/badge/Vercel-Deployed-000000?style=flat-square&logo=vercel&logoColor=white)](https://www.seange.cn)
 
@@ -21,9 +21,11 @@
 
 ---
 
-## 当前版本 · v0.9.5-alpha《第七校验》NPR 渲染管线
+## 当前版本 · v0.9.5-beta《第七校验》四岛 NPR 与生态
 
-P8-M0/M1 已通过总指挥视觉审核并封板：方块桌宠与 Observatory 岛采用 MeshToonMaterial、冷暖 RGB 色阶、视空间深度描边、Rim Light 与克制的陶瓷高光。底盘加入渐变、光纹与分层侧壁，原发光杆改为半透明浮动水晶，远景山脊和星空恢复纵深层次。
+P8-M2 在已封板的 M0/M1 管线上完成四岛、远景塔群与陨石的 Toon 化，加入原创水晶花、垂丝藤蔓、维护者石碑与中央三层半透明深渊光带。Tier 1 剔除特殊植被、远景塔群、无人机、陨石与深渊光带；Tier 0 保持零 Canvas。当前封板版本为 `v0.9.5-beta`，详见 [M2 审核记录](docs/P8_M2_ENVIRONMENT_REVIEW.md)。
+
+历史 M0/M1 已通过总指挥视觉审核并封板：方块桌宠与 Observatory 岛采用 MeshToonMaterial、冷暖 RGB 色阶、视空间深度描边、Rim Light 与克制的陶瓷高光。底盘加入渐变、光纹与分层侧壁，原发光杆改为半透明浮动水晶，远景山脊和星空恢复纵深层次。
 
 Tier 3 保留轻量体积云，Tier 0/1 沿用 DOM/纯色阶降级；原教学运行器、热点、镜头转场和存档业务链保留。验收：E2E **67/67**、NPR 专项 **9/9**、M1 补验 **4/4**、画质/飞行单测 **7/7**，生产构建通过。详见 [M0 管线记录](docs/P8_M0_TOON_POC_REVIEW.md) 与 [M1 光影封板记录](docs/P8_M1_LIGHTING_REVIEW.md)。
 
@@ -323,3 +325,10 @@ Built while learning, shared for discussion.
 仪表盘岛与方块桌宠已接入 Toon 色阶、深色描边、选择性泛光和 Tier 3 轻量体积云。Tier 0/1 保留降级；实施范围、复验命令及限制见 [POC 审核说明](docs/P8_M0_TOON_POC_REVIEW.md)。本轮发布标签为 v0.9.5-alpha。
 
 M1 已在同一 POC 上加入冷暖色阶、受光高光与 Rim、距离描边、底盘层次和悬浮水晶；已通过视觉审核并封板。全景对比与验证见 [M1 光影审核说明](docs/P8_M1_LIGHTING_REVIEW.md)。
+
+
+## P8-M2 四岛 Toon 与生态（v0.9.5-beta 封板）
+
+在 v0.9.5-alpha 封板基线上，三座剩余岛屿、远景塔群与陨石接入 Toon；四岛增加边缘勾勒、原创水晶花/垂丝藤蔓与顶点风摆，Observatory 增加可键盘触发的维护者石碑。Tier 1 剔除特殊植被、塔群、无人机与陨石，Tier 0 保留 DOM 交互。
+
+总指挥已确认硬件岛与石碑视觉达标，授权补足中央深渊三条半透明星轨光带后封板、打标签与推送。光带仅 Tier 2/3 挂载，后台/模态/减少动画冻结。完整 E2E 67/67、NPR 9/9、M2 12/12、画质/飞行单测 7/7，生产构建成功。实现、截图、性能采样条件和限制见 [M2 审核记录](docs/P8_M2_ENVIRONMENT_REVIEW.md)，程序化资产来源见 [资产记录](docs/ASSET_LICENSES.md)。

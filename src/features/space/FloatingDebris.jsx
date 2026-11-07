@@ -1,3 +1,4 @@
+import ToonMaterial from '../npr/ToonMaterial';
 import { useLayoutEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Color, DynamicDrawUsage, Object3D } from 'three';
@@ -68,12 +69,7 @@ export default function FloatingDebris({ tier, paused, reduced }) {
     <group name="space-floating-debris">
       <instancedMesh name="valley-asteroids" ref={mesh} args={[null, null, count]}>
         <icosahedronGeometry args={[1, 0]} />
-        <meshStandardMaterial
-          color="#bac7d6"
-          emissive="#495d77"
-          emissiveIntensity={0.25}
-          roughness={0.88}
-        />
+        <ToonMaterial flatShading color="#bac7d6" emissive="#495d77" emissiveIntensity={0.25} />
       </instancedMesh>
     </group>
   );

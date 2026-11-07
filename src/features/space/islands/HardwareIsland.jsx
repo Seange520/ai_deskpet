@@ -1,7 +1,8 @@
+import ToonMaterial from '../../npr/ToonMaterial';
 import { useEffect, useMemo, useRef } from 'react';
 import { RoundedBox } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
-import { CanvasTexture, SRGBColorSpace, UniformsLib, UniformsUtils } from 'three';
+import { CanvasTexture, SRGBColorSpace } from 'three';
 
 const boardSize = 5.5;
 const chipSites = [
@@ -9,39 +10,6 @@ const chipSites = [
   { x: 1.05, z: 1.12, size: 0.85 },
   { x: -1.72, z: -1.38, size: 0.76 },
 ];
-
-const vertexShader = `
-#include <fog_pars_vertex>
-varying vec2 boardUv;
-varying float surfaceLight;
-void main() {
-  boardUv = uv;
-  surfaceLight = 0.62 + 0.38 * dot(normal, normalize(vec3(-0.46, 0.8, -0.38)));
-  vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-  gl_Position = projectionMatrix * mvPosition;
-  #include <fog_vertex>
-}
-`;
-
-const fragmentShader = `
-#include <fog_pars_fragment>
-uniform sampler2D traces;
-uniform float time;
-uniform float pulseStrength;
-varying vec2 boardUv;
-varying float surfaceLight;
-void main() {
-  vec4 copper = texture2D(traces, boardUv);
-  float wave = fract(dot(boardUv, vec2(2.1, 0.65)) - time * 0.64);
-  float pulse = smoothstep(0.30, 0.47, wave) * (1.0 - smoothstep(0.49, 0.64, wave));
-  vec3 substrate = vec3(0.025, 0.055, 0.078) * surfaceLight;
-  vec3 metal = copper.rgb * surfaceLight + vec3(0.48, 1.24, 1.55) * pulse * pulseStrength;
-  gl_FragColor = vec4(mix(substrate, metal, copper.a), 1.0);
-  #include <tonemapping_fragment>
-  #include <colorspace_fragment>
-  #include <fog_fragment>
-}
-`;
 
 function noise(x, z) {
   const hash = (i, j) => {
@@ -85,6 +53,8 @@ function drawTraces(size) {
   canvas.width = canvas.height = size;
   const ctx = canvas.getContext('2d');
   ctx.scale(size / 1024, size / 1024);
+  ctx.fillStyle = '#183e50';
+  ctx.fillRect(0, 0, 1024, 1024);
   ctx.lineJoin = 'round';
 
   ctx.strokeStyle = '#41838e';
@@ -142,32 +112,42 @@ function CircuitBoard({ tier, paused, reduced }) {
   const segments = tier === 3 ? 64 : tier === 2 ? 32 : 12;
   const textureSize = tier === 3 ? 1024 : tier === 2 ? 512 : 256;
   const texture = useMemo(() => drawTraces(textureSize), [textureSize]);
-  const uniforms = useMemo(
-    () => ({
-      ...UniformsUtils.clone(UniformsLib.fog),
-      traces: { value: texture },
-      time: { value: 0 },
-      pulseStrength: { value: tier === 3 ? 1 : tier === 2 ? 0.55 : 0 },
-    }),
-    [texture, tier],
+  const clock = useMemo(() => ({ value: 0 }), []);
+  const compile = useMemo(
+    () => (shader) => {
+      shader.uniforms.circuitTime = clock;
+      shader.fragmentShader = 'uniform float circuitTime;\n' + shader.fragmentShader;
+      shader.fragmentShader = shader.fragmentShader.replace(
+        '#include <emissivemap_fragment>',
+        `
+      #include <emissivemap_fragment>
+      float wave=fract(dot(vMapUv,vec2(2.1,0.65))-circuitTime*0.64);
+      float pulse=smoothstep(0.30,0.47,wave)*(1.0-smoothstep(0.49,0.64,wave));
+      totalEmissiveRadiance+=texture2D(map,vMapUv).rgb*pulse*${tier >= 2 ? '0.6' : '0.0'};
+    `,
+      );
+    },
+    [clock, tier],
   );
 
   useEffect(() => () => texture.dispose(), [texture]);
   useFrame((_, delta) => {
     if (!paused && !reduced && tier >= 2) {
-      material.current.uniforms.time.value += Math.min(delta, 0.05);
+      clock.value += Math.min(delta, 0.05);
     }
   });
 
   return (
     <mesh name="p5-circuit-terrain">
       <planeGeometry args={[boardSize, boardSize, segments, segments]} onUpdate={shapeBoard} />
-      <shaderMaterial
+      <ToonMaterial
         ref={material}
-        vertexShader={vertexShader}
-        fragmentShader={fragmentShader}
-        uniforms={uniforms}
-        fog
+        map={texture}
+        color="#89b7c2"
+        emissive="#276b74"
+        emissiveIntensity={0.16}
+        onBeforeCompile={compile}
+        customProgramCacheKey={() => `sparkmate-m2-circuit-rgb-${tier}`}
       />
     </mesh>
   );
@@ -177,21 +157,15 @@ export default function HardwareIsland({ tier, paused, reduced }) {
   return (
     <group name="p5-hardware-board">
       <RoundedBox position={[0, -0.43, 0]} args={[5.55, 0.88, 5.55]} radius={0.12} smoothness={1}>
-        <meshStandardMaterial color="#263748" metalness={0.58} roughness={0.4} />
+        <ToonMaterial finish="cliff" color="#647e9f" />
       </RoundedBox>
       <mesh position={[0, -0.1, 0]}>
         <boxGeometry args={[5.57, 0.055, 5.57]} />
-        <meshStandardMaterial
-          color="#276771"
-          emissive="#3d939b"
-          emissiveIntensity={0.52}
-          roughness={0.38}
-          metalness={0.32}
-        />
+        <ToonMaterial color="#276771" emissive="#3d939b" emissiveIntensity={0.52} />
       </mesh>
       <mesh position={[0, 0.07, 0]}>
         <boxGeometry args={[5.5, 0.19, 5.5]} />
-        <meshStandardMaterial color="#1d3441" metalness={0.42} roughness={0.47} />
+        <ToonMaterial color="#1d3441" />
       </mesh>
       <CircuitBoard tier={tier} paused={paused} reduced={reduced} />
       {chipSites.map(({ x, z, size }, index) => (
@@ -201,13 +175,7 @@ export default function HardwareIsland({ tier, paused, reduced }) {
             radius={0.08}
             smoothness={tier === 1 ? 1 : 2}
           >
-            <meshStandardMaterial
-              color="#433644"
-              emissive="#382a40"
-              emissiveIntensity={0.44}
-              metalness={0.46}
-              roughness={0.38}
-            />
+            <ToonMaterial color="#433644" emissive="#382a40" emissiveIntensity={0.44} />
           </RoundedBox>
           <RoundedBox
             name="p5-chip-emitter"
@@ -216,7 +184,7 @@ export default function HardwareIsland({ tier, paused, reduced }) {
             radius={0.04}
             smoothness={1}
           >
-            <meshStandardMaterial
+            <ToonMaterial
               color="#b45f33"
               emissive={index === 0 ? '#ffc06b' : '#e98959'}
               emissiveIntensity={tier >= 2 ? 1.35 : 0.55}
@@ -224,13 +192,7 @@ export default function HardwareIsland({ tier, paused, reduced }) {
           </RoundedBox>
           <mesh position={[0, 0.255, 0]}>
             <boxGeometry args={[size * 0.74, 0.03, size * 0.74]} />
-            <meshStandardMaterial
-              color="#252d37"
-              emissive="#344850"
-              emissiveIntensity={0.55}
-              metalness={0.38}
-              roughness={0.46}
-            />
+            <ToonMaterial color="#252d37" emissive="#344850" emissiveIntensity={0.55} />
           </mesh>
         </group>
       ))}

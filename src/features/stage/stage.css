@@ -255,3 +255,100 @@
 .render-shell[data-stage-ready='true'] .app-shell {
   background: none;
 }
+
+/* Relic controls occupy only their own hit area, never the teaching panel. */
+.relic-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+.relic-hotspot,
+.relic-message {
+  position: absolute;
+  left: var(--relic-x, 78vw);
+  top: var(--relic-y, 64vh);
+  transform: translate(-50%, -100%);
+}
+.relic-overlay[data-visible='false'] {
+  visibility: hidden;
+}
+.relic-hotspot {
+  pointer-events: auto;
+  display: grid;
+  gap: 3px;
+  padding: 9px 15px;
+  border: 1px solid #96c9cc80;
+  border-radius: 5px;
+  background: #132c3de8;
+  color: #bcf5e9;
+  box-shadow: 0 0 22px #62cfc72b;
+  cursor: pointer;
+}
+.relic-hotspot span {
+  letter-spacing: 0.5em;
+  font-size: 18px;
+  color: #a6efdc;
+}
+.relic-hotspot small {
+  font-size: 11px;
+  letter-spacing: 0.13em;
+}
+.relic-hotspot:focus-visible {
+  outline: 3px solid #ffd08e;
+  outline-offset: 4px;
+}
+.relic-message {
+  max-width: min(300px, 80vw);
+  width: max-content;
+  padding: 13px 17px;
+  border: 1px solid #f2cc9c99;
+  border-radius: 16px 16px 16px 3px;
+  background: #162838f2;
+  color: #ffe3b8;
+  box-shadow: 0 8px 28px #0006;
+  font-size: 14px;
+}
+.relic-message[data-open='false'] {
+  visibility: hidden;
+}
+.relic-message small {
+  display: block;
+  color: #9bbfcb;
+  margin-top: 6px;
+  font-size: 11px;
+}
+.relic-overlay[data-dom='true'] .relic-hotspot {
+  left: auto;
+  right: 16px;
+  top: auto;
+  bottom: 100px;
+  transform: none;
+}
+.relic-overlay[data-dom='true'] .relic-message {
+  left: auto;
+  right: 16px;
+  top: auto;
+  bottom: 180px;
+  transform: none;
+}
+@media (max-width: 700px) {
+  .relic-overlay .relic-hotspot {
+    left: auto;
+    right: 12px;
+    top: auto;
+    bottom: 100px;
+    transform: none;
+  }
+  .relic-overlay .relic-message {
+    left: auto;
+    right: 12px;
+    top: auto;
+    bottom: 180px;
+    transform: none;
+  }
+}
+
+.relic-overlay[data-blocked='true'] {
+  visibility: hidden;
+}

@@ -1,7 +1,7 @@
+import ToonMaterial from '../npr/ToonMaterial';
 import { useMemo } from 'react';
 import { AdditiveBlending, Color, DoubleSide } from 'three';
 import FloatingDebris from './FloatingDebris';
-import { deckFinish } from './IslandDeck';
 import { RING_RADIUS } from './world';
 
 const atmosphereVertex = `
@@ -107,12 +107,7 @@ export default function SpaceEnvironment({ tier, paused, reduced }) {
     <>
       <mesh name="space-gradient-floor" position={[0, -1.16, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         <circleGeometry args={[85, 96]} />
-        <meshStandardMaterial
-          color="#293643"
-          roughness={0.67}
-          metalness={0.24}
-          onBeforeCompile={deckFinish}
-        />
+        <ToonMaterial color="#293643" />
       </mesh>
       <mesh position={[0, -1.145, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         <ringGeometry args={[RING_RADIUS - 4.4, RING_RADIUS + 4.4, 96]} />

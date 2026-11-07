@@ -1,3 +1,4 @@
+import ToonMaterial from '../npr/ToonMaterial';
 import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { AdditiveBlending, CanvasTexture, Object3D } from 'three';
@@ -126,13 +127,7 @@ function Diorama({ tier }) {
     <instancedMesh name="hub-diorama" ref={mesh} args={[undefined, undefined, 24]}>
       <boxGeometry />
       {tier >= 2 ? (
-        <meshStandardMaterial
-          color="#29586b"
-          emissive="#2e9fb7"
-          emissiveIntensity={0.46}
-          metalness={0.48}
-          roughness={0.32}
-        />
+        <ToonMaterial color="#29586b" emissive="#2e9fb7" emissiveIntensity={0.46} />
       ) : (
         <meshBasicMaterial color="#325d71" />
       )}

@@ -1,3 +1,4 @@
+import ToonMaterial from '../../npr/ToonMaterial';
 import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { AdditiveBlending, CanvasTexture, Matrix4, UniformsLib, UniformsUtils } from 'three';
@@ -42,7 +43,8 @@ void main() {
   #ifdef FOG_EXP2
     fog = exp(-fogDensity * fogDensity * vFogDepth * vFogDepth);
   #endif
-  vec3 color = mix(vec3(0.06, 1.35, 0.74), vec3(0.66, 3.1, 2.2), brightness * brightness);
+  float band = floor(brightness * 3.0) / 3.0;
+  vec3 color = mix(vec3(0.10, 0.52, 0.49), vec3(0.68, 1.4, 1.15), band);
   gl_FragColor = vec4(color * energy, ink * brightness * fog);
 }
 `;
@@ -147,17 +149,11 @@ export default function CodeIsland({ tier, paused, reduced }) {
     <group name="p5-code-array">
       <mesh position={[0, 0.16, 0.76]}>
         <boxGeometry args={[5.15, 0.31, 1.6]} />
-        <meshStandardMaterial
-          color="#15393e"
-          emissive="#15383d"
-          emissiveIntensity={0.53}
-          metalness={0.38}
-          roughness={0.54}
-        />
+        <ToonMaterial color="#15393e" emissive="#15383d" emissiveIntensity={0.53} />
       </mesh>
       <mesh position={[0, 0.324, 0.76]}>
         <boxGeometry args={[5.02, 0.045, 1.43]} />
-        <meshStandardMaterial
+        <ToonMaterial
           color="#38b3a8"
           emissive="#43e5c8"
           emissiveIntensity={tier >= 2 ? 1.15 : 0.42}
@@ -167,12 +163,7 @@ export default function CodeIsland({ tier, paused, reduced }) {
         <group key={side} position={[side * 2.52, 1.61, 0.55]} rotation={[0, 0, side * -0.1]}>
           <mesh>
             <boxGeometry args={[0.22, 2.59, 0.42]} />
-            <meshStandardMaterial
-              color="#27314a"
-              emissive="#244458"
-              emissiveIntensity={0.54}
-              metalness={0.38}
-            />
+            <ToonMaterial color="#27314a" emissive="#244458" emissiveIntensity={0.54} />
           </mesh>
           <mesh position={[-side * 0.115, 0.19, -0.08]}>
             <boxGeometry args={[0.045, 2.07, 0.09]} />

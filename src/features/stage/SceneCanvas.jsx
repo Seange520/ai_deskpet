@@ -6,6 +6,7 @@ import { useDeviceDetect } from '../../lib/useDeviceDetect';
 import RenderBoundary from './RenderBoundary';
 import { ToonPalette } from '../npr/ToonMaterial';
 import WorldScene from '../space/WorldScene';
+import { RelicProjection } from '../space/MaintainerRelic';
 import IslandHotspotProjection from '../space/IslandHotspotProjection';
 import { ISLANDS } from '../space/world';
 
@@ -67,7 +68,7 @@ function DeviceProbe({ paused, quality }) {
     </Suspense>
   ) : null;
 }
-export default function SceneCanvas({ quality, onReady, dock }) {
+export default function SceneCanvas({ quality, onReady, dock, relic }) {
   const reduced = useReducedMotionPreference();
   const [hidden, setHidden] = useState(document.hidden);
   useEffect(() => {
@@ -125,6 +126,7 @@ export default function SceneCanvas({ quality, onReady, dock }) {
         >
           <Lifecycle quality={quality} onReady={onReady} />
           <IslandHotspotProjection dock={dock} />
+          <RelicProjection overlay={relic} paused={paused} />
           {quality.autoMode && <DeviceProbe paused={paused} quality={quality} />}
           <StagePixelRatio adaptive={adaptive} maxDpr={quality.maxDpr} />
           {adaptive &&

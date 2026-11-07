@@ -35,58 +35,44 @@ export function deckFinish(shader) {
     );
 }
 
+export function IslandRim({ island, tier, square = false }) {
+  return [-0.23, -0.86].map((y, i) => (
+    <mesh
+      key={y}
+      name="npr-island-rim"
+      position={[0, y, 0]}
+      rotation={[Math.PI / 2, 0, square ? Math.PI / 4 : 0]}
+    >
+      <torusGeometry
+        args={[
+          square ? 3.91 : i ? 3.08 : 3.21,
+          i ? 0.018 : 0.032,
+          4,
+          square ? 4 : tier === 1 ? 24 : 64,
+        ]}
+      />
+      <ToonMaterial color={island.accent} emissive={island.accent} emissiveIntensity={0.65} />
+    </mesh>
+  ));
+}
 export default function IslandDeck({ island, detailed, tier }) {
-  const refined = detailed && tier >= 2;
-  const segments = refined ? 48 : 16;
+  const segments = detailed && tier >= 2 ? 48 : 16;
+  const colors = { dashboard: '#82b8bb', code: '#7f9fbd', ranking: '#aa8dbf' };
   return (
     <>
-      <mesh name={island.id === 'dashboard' ? 'npr-observatory-deck' : undefined}>
+      <mesh name="npr-observatory-deck">
         <latheGeometry args={[profile, segments]} />
-        {island.id === 'dashboard' ? (
-          <ToonMaterial finish="cliff" color="#698dc1" />
-        ) : (
-          <meshStandardMaterial color="#313b4c" metalness={0.48} roughness={0.42} />
-        )}
+        <ToonMaterial finish="cliff" color="#698dc1" />
       </mesh>
       <mesh name="island-deck-surface" position={[0, 0.008, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         <circleGeometry args={[3.19, segments]} />
-        {island.id === 'dashboard' ? (
-          <ToonMaterial finish="deck" color="#82b8bb" />
-        ) : (
-          <meshStandardMaterial
-            color="#273341"
-            metalness={0.33}
-            roughness={0.46}
-            key={refined ? 'machined' : 'plain'}
-            {...(refined ? { onBeforeCompile: deckFinish } : {})}
-          />
-        )}
+        <ToonMaterial finish="deck" color={colors[island.id] || '#82b8bb'} />
       </mesh>
       <mesh position={[0, 0.018, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         <ringGeometry args={[2.98, 3.04, segments]} />
-        {island.id === 'dashboard' ? (
-          <ToonMaterial color="#ffe1a3" emissive="#ffb96d" emissiveIntensity={0.3} />
-        ) : (
-          <meshStandardMaterial
-            color={island.accent}
-            emissive={island.accent}
-            emissiveIntensity={refined ? 0.83 : 0.32}
-            roughness={0.36}
-          />
-        )}
+        <ToonMaterial color={island.accent} emissive={island.accent} emissiveIntensity={0.32} />
       </mesh>
-      {island.id === 'dashboard' &&
-        [-0.23, -0.86].map((y, i) => (
-          <mesh
-            key={y}
-            name="npr-observatory-rim"
-            position={[0, y, 0]}
-            rotation={[Math.PI / 2, 0, 0]}
-          >
-            <torusGeometry args={[i ? 3.08 : 3.21, i ? 0.018 : 0.025, 6, segments]} />
-            <ToonMaterial color="#8bd9da" emissive="#4ab7c7" emissiveIntensity={0.38} />
-          </mesh>
-        ))}
+      <IslandRim island={island} tier={tier} />
     </>
   );
 }

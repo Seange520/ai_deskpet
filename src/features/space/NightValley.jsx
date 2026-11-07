@@ -282,7 +282,7 @@ function WorkshopTowers({ tier }) {
     <group name="space-horizon-structures">
       <instancedMesh name="valley-towers" ref={towers} args={[null, null, towerCount]}>
         <boxGeometry />
-        <meshBasicMaterial color="#182831" fog={false} />
+        <ToonMaterial color="#536f8c" flatShading />
       </instancedMesh>
       <instancedMesh
         name="valley-tower-windows"
@@ -290,7 +290,7 @@ function WorkshopTowers({ tier }) {
         args={[null, null, towerCount * rows]}
       >
         <boxGeometry />
-        <meshBasicMaterial color={[1.8, 1.8, 1.8]} fog={false} toneMapped={false} />
+        <ToonMaterial color="#a8c9d9" emissive="#6a9eaf" emissiveIntensity={0.4} />
       </instancedMesh>
     </group>
   );
@@ -304,7 +304,7 @@ export default function NightValley({ tier, paused, reduced }) {
       {tier >= 2 && <AuroraPlane paused={paused} reduced={reduced} />}
       <Ridge radius={79} amplitude={16} segments={tier === 1 ? 54 : 104} tint="#727fae" />
       <Ridge radius={61} amplitude={12} segments={tier === 1 ? 54 : 104} tint="#3c6584" />
-      <WorkshopTowers tier={tier} />
+      {tier >= 2 && <WorkshopTowers tier={tier} />}
       {tier >= 2 && (
         <Suspense fallback={null}>
           <DistantSkyline tier={tier} />

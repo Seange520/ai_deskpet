@@ -1,10 +1,11 @@
+import ToonMaterial from '../npr/ToonMaterial';
 import { useLayoutEffect, useRef } from 'react';
 import { Color, Object3D, ShaderChunk } from 'three';
 
 function skylineFog(shader) {
   shader.fragmentShader = shader.fragmentShader.replace(
     '#include <fog_fragment>',
-    ShaderChunk.fog_fragment.replace('fogDensity * fogDensity', '0.38 * fogDensity * fogDensity'),
+    ShaderChunk.fog_fragment.replace('fogDensity * fogDensity', '0.52 * fogDensity * fogDensity'),
   );
 }
 
@@ -35,7 +36,7 @@ export default function DistantSkyline({ tier }) {
       pose.scale.set(width, height, depth);
       pose.updateMatrix();
       towers.current.setMatrixAt(i, pose.matrix);
-      towers.current.setColorAt(i, tint.set(i % 4 === 0 ? '#243344' : '#182330'));
+      towers.current.setColorAt(i, tint.set(i % 4 === 0 ? '#8096bc' : '#526987'));
 
       const face = depth / 2 + 0.035;
       for (let row = 0; row < rows; row++) {
@@ -62,7 +63,7 @@ export default function DistantSkyline({ tier }) {
     <group name="valley-far-skyline">
       <instancedMesh name="valley-megastructures" ref={towers} args={[null, null, count]}>
         <boxGeometry />
-        <meshBasicMaterial onBeforeCompile={skylineFog} />
+        <ToonMaterial flatShading onBeforeCompile={skylineFog} />
       </instancedMesh>
       <instancedMesh
         name="valley-megastructure-windows"
@@ -70,9 +71,10 @@ export default function DistantSkyline({ tier }) {
         args={[null, null, count * rows]}
       >
         <boxGeometry />
-        <meshBasicMaterial
-          color={[2.15, 2.15, 2.15]}
-          toneMapped={false}
+        <ToonMaterial
+          color="#a3c6d2"
+          emissive="#6d94af"
+          emissiveIntensity={0.45}
           onBeforeCompile={skylineFog}
         />
       </instancedMesh>

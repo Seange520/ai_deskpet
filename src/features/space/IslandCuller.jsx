@@ -1,7 +1,8 @@
+import ToonMaterial from '../npr/ToonMaterial';
 import { useLayoutEffect, useRef, useState } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useSpaceStore } from './spaceStore';
-import IslandDeck from './IslandDeck';
+import IslandDeck, { IslandRim } from './IslandDeck';
 
 const ranges = {
   1: [18, 28],
@@ -76,19 +77,14 @@ function IslandSilhouette({ island, tier }) {
     <group name="space-island-silhouette">
       {island.id === 'hardware' ? (
         <>
+          <IslandRim island={island} tier={tier} square />
           <mesh position={[0, -0.49, 0]}>
             <boxGeometry args={[5.5, 1, 5.5]} />
-            <meshStandardMaterial color="#253644" roughness={0.48} metalness={0.52} />
+            <ToonMaterial color="#253644" />
           </mesh>
           <mesh position={[0, 0.045, 0]}>
             <boxGeometry args={[5.36, 0.08, 5.36]} />
-            <meshStandardMaterial
-              color="#173c43"
-              emissive="#286a73"
-              emissiveIntensity={0.22}
-              roughness={0.46}
-              metalness={0.34}
-            />
+            <ToonMaterial color="#173c43" emissive="#286a73" emissiveIntensity={0.22} />
           </mesh>
           <lineSegments position={[0, 0.09, 0]}>
             <bufferGeometry>
@@ -100,16 +96,33 @@ function IslandSilhouette({ island, tier }) {
       ) : (
         <IslandDeck island={island} tier={tier} />
       )}
+      {island.id === 'hardware' &&
+        [-1.25, 0, 1.25].map((x, i) => (
+          <mesh key={x} position={[x, 0.24, (i % 2) * 1.2 - 0.6]}>
+            <boxGeometry args={[0.85, 0.3, 0.85]} />
+            <ToonMaterial color="#70525b" emissive="#b27346" emissiveIntensity={0.4} />
+          </mesh>
+        ))}
       {island.id === 'code' && (
-        <mesh position={[0, 1.1, 0.55]}>
-          <boxGeometry args={[4.8, 2.2, 0.42]} />
-          <meshBasicMaterial color="#497f77" wireframe />
-        </mesh>
+        <group>
+          {[-2.3, 2.3].map((x) => (
+            <mesh key={x} position={[x, 1.4, 0.55]}>
+              <boxGeometry args={[0.22, 2.8, 0.3]} />
+              <ToonMaterial color="#7184ad" />
+            </mesh>
+          ))}
+          {[-1.8, -1.2, -0.6, 0, 0.6, 1.2, 1.8].map((x, i) => (
+            <mesh key={x} position={[x, 1.3, 0.55]}>
+              <boxGeometry args={[0.045, 1.2 + (i % 3) * 0.4, 0.05]} />
+              <ToonMaterial color="#7fd2c2" emissive="#5bafaf" emissiveIntensity={0.4} />
+            </mesh>
+          ))}
+        </group>
       )}
       {island.id === 'ranking' && (
         <mesh position={[0, 1.65, 0]} rotation={[0, Math.PI / 4, 0]}>
           <coneGeometry args={[2.26, 2.78, 4]} />
-          <meshBasicMaterial color="#9973bb" wireframe />
+          <ToonMaterial color="#9973bb" flatShading />
         </mesh>
       )}
     </group>

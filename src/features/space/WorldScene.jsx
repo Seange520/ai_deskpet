@@ -3,7 +3,7 @@ import { Vector3 } from 'three';
 import { useEnvironmentStore } from '../environment/useEnvironmentStore';
 import EnvironmentLighting from '../deskpet3d/EnvironmentLighting';
 import IslandCuller from './IslandCuller';
-import IslandDeck from './IslandDeck';
+import IslandDeck, { IslandRim } from './IslandDeck';
 import { useIslandContent } from './islandAssets';
 import HubSandbox from './HubSandbox';
 import EnergyRail from './EnergyRail';
@@ -15,6 +15,9 @@ import { ISLANDS, RING_RADIUS } from './world';
 import ToonMaterial from '../npr/ToonMaterial';
 import ObservatoryEcology from '../npr/ObservatoryEcology';
 import ToonClouds from '../npr/ToonClouds';
+import { RelicStone } from './MaintainerRelic';
+import ToonDrones from '../npr/ToonDrones';
+import AbyssRibbons from '../npr/AbyssRibbons';
 import { useIslandAtmosphere } from './useIslandAtmosphere';
 
 const StageAtmosphere = lazy(() => import('../stage/StageAtmosphere'));
@@ -45,7 +48,13 @@ function Orbit({ radius, color, opacity, y = -1.08 }) {
 }
 
 function IslandDetail({ island, tier, children }) {
-  if (island.id === 'hardware') return <group name="space-island-detail">{children}</group>;
+  if (island.id === 'hardware')
+    return (
+      <group name="space-island-detail">
+        <IslandRim island={island} tier={tier} square />
+        {children}
+      </group>
+    );
   return (
     <group name="space-island-detail">
       <IslandDeck island={island} tier={tier} detailed />
@@ -103,6 +112,7 @@ export default function WorldScene({ paused, reduced, tier, performanceStep, adv
         atmosphere={atmosphere}
       />
       {tier === 3 && performanceStep < 1 && <ToonClouds paused={paused} reduced={reduced} />}
+      {tier >= 2 && <ToonDrones paused={paused} reduced={reduced} />}
       <NightValley tier={tier} paused={paused} reduced={reduced} />
       {tier >= 2 ? (
         <Suspense fallback={null}>
@@ -116,6 +126,7 @@ export default function WorldScene({ paused, reduced, tier, performanceStep, adv
           </mesh>
         </>
       )}
+      {tier >= 2 && <AbyssRibbons paused={paused} reduced={reduced} />}
       <Orbit radius={RING_RADIUS} color="#ae86cf" opacity={0.24} />
       <HubSandbox tier={tier} paused={paused} reduced={reduced} />
       <EnergyRail tier={tier} paused={paused} reduced={reduced} />
@@ -129,8 +140,8 @@ export default function WorldScene({ paused, reduced, tier, performanceStep, adv
                   <IslandLights island={island} tier={tier} volume={performanceStep < 1} />
                 </Suspense>
               )}
-              {island.id === 'dashboard' && (
-                <ObservatoryEcology tier={tier} paused={paused} reduced={reduced} />
+              {tier >= 2 && (
+                <ObservatoryEcology island={island} tier={tier} paused={paused} reduced={reduced} />
               )}
               <WorldLabel
                 title={plaques[island.id][0]}
@@ -158,6 +169,7 @@ export default function WorldScene({ paused, reduced, tier, performanceStep, adv
           <StageAtmosphere tier={tier} paused={paused} reduced={reduced} />
         </Suspense>
       )}
+      <RelicStone />
       <TravelRig
         reduced={reduced}
         paused={paused}
