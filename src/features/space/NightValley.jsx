@@ -1,9 +1,9 @@
 import { lazy, Suspense, useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Stars } from '@react-three/drei';
 import { AdditiveBlending, Color, DoubleSide, Object3D } from 'three';
 import { Sky } from 'three/addons/objects/Sky.js';
 import { SimplexNoise } from 'three/addons/math/SimplexNoise.js';
+import ToonMaterial from '../npr/ToonMaterial';
 import { MOON_DIRECTION } from './world';
 
 const towerCount = 14;
@@ -17,6 +17,7 @@ function MoonSky() {
     dome.renderOrder = -100;
     dome.frustumCulled = false;
     dome.material.depthTest = false;
+    dome.material.depthWrite = false;
     dome.material.vertexShader = dome.material.vertexShader.replace(
       'gl_Position.z = gl_Position.w;',
       'gl_Position.z = gl_Position.w * 0.98;',
@@ -37,7 +38,7 @@ function MoonSky() {
       float halo = exp(-lunarAngle * 25.0);
       vec3 lunarGlow = vec3(0.44, 0.65, 0.85) * halo * 0.21;
       vec3 moon = vec3(1.4, 1.72, 2.0) * disc;
-      gl_FragColor = vec4(night + retColor * vec3(0.07, 0.12, 0.24) + lunarGlow + moon, 1.0);
+      gl_FragColor = vec4(night + retColor * vec3(0.035, 0.065, 0.13) + lunarGlow + moon, 1.0);
       `,
     );
     return dome;
@@ -54,21 +55,60 @@ function MoonSky() {
 
 function ValleyStars({ tier, reduced }) {
   const stars = useRef(null);
-  useEffect(() => {
-    // Drei attaches this ShaderMaterial as a primitive, so own its disposal here.
-    const material = stars.current.material;
-    return () => material.dispose();
-  }, []);
+  const count = tier === 3 ? 1400 : tier === 2 ? 620 : 105;
+  const positions = useMemo(() => {
+    let state = 47291;
+    const random = () => {
+      state = (Math.imul(state, 1664525) + 1013904223) >>> 0;
+      return state / 4294967296;
+    };
+    const array = new Float32Array(count * 3);
+    for (let i = 0; i < count; i++) {
+      const y = 0.1 + random() * 0.88;
+      const angle = random() * Math.PI * 2;
+      const radius = 96 + random() * 7;
+      const horizontal = Math.sqrt(1 - y * y) * radius;
+      array.set([Math.cos(angle) * horizontal, y * radius, Math.sin(angle) * horizontal], i * 3);
+    }
+    return array;
+  }, [count]);
+  const uniforms = useMemo(() => ({ time: { value: 0 } }), []);
+  useFrame((_, delta) => {
+    if (!reduced) uniforms.time.value += Math.min(delta, 0.05);
+  });
   return (
-    <Stars
-      ref={stars}
-      radius={89}
-      depth={9}
-      count={tier === 3 ? 950 : tier === 2 ? 460 : 105}
-      factor={0.63}
-      fade
-      speed={reduced ? 0 : 0.2}
-    />
+    <points name="valley-stars" ref={stars} renderOrder={-90} frustumCulled={false}>
+      <bufferGeometry>
+        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
+      </bufferGeometry>
+      <shaderMaterial
+        uniforms={uniforms}
+        transparent
+        depthWrite={false}
+        depthTest={false}
+        blending={AdditiveBlending}
+        vertexShader={`
+        uniform float time; varying float brightness;
+        void main() {
+          float seed=fract(sin(dot(position,vec3(12.9,78.2,39.4)))*43758.54);
+          brightness=(0.55+seed*0.45)*(0.88+0.12*sin(time*0.5+seed*24.0));
+          vec4 view=modelViewMatrix*vec4(position,1.0);
+          gl_PointSize=clamp((1.8+seed*1.8)*80.0/max(1.0,-view.z),1.0,3.0);
+          gl_Position=projectionMatrix*view;
+        }
+      `}
+        fragmentShader={`
+        varying float brightness;
+        void main() {
+          float radius=length(gl_PointCoord-0.5)*2.0;
+          float alpha=(1.0-smoothstep(0.0,1.0,radius))*brightness;
+          gl_FragColor=vec4(vec3(0.66,0.83,1.0),alpha);
+          #include <tonemapping_fragment>
+          #include <colorspace_fragment>
+        }
+      `}
+      />
+    </points>
   );
 }
 
@@ -165,6 +205,16 @@ function ridgeMesh(radius, amplitude, segments, tint) {
   };
 }
 
+function ridgeHaze(shader) {
+  shader.fragmentShader = shader.fragmentShader.replace(
+    '#include <opaque_fragment>',
+    `
+    float haze=1.0-exp(-max(length(vViewPosition)-26.0,0.0)*0.012);
+    outgoingLight=mix(outgoingLight,vec3(0.11,0.17,0.28),haze*0.72);
+    #include <opaque_fragment>
+  `,
+  );
+}
 function Ridge({ radius, amplitude, segments, tint }) {
   const { positions, colors, indices } = useMemo(
     () => ridgeMesh(radius, amplitude, segments, tint),
@@ -172,12 +222,18 @@ function Ridge({ radius, amplitude, segments, tint }) {
   );
   return (
     <mesh name="valley-ridge">
-      <bufferGeometry>
+      <bufferGeometry onUpdate={(geometry) => geometry.computeVertexNormals()}>
         <bufferAttribute attach="attributes-position" args={[positions, 3]} />
         <bufferAttribute attach="attributes-color" args={[colors, 3]} />
         <bufferAttribute attach="index" args={[indices, 1]} />
       </bufferGeometry>
-      <meshBasicMaterial vertexColors fog={false} side={DoubleSide} />
+      <ToonMaterial
+        vertexColors
+        flatShading
+        fog={false}
+        side={DoubleSide}
+        onBeforeCompile={ridgeHaze}
+      />
     </mesh>
   );
 }
@@ -246,8 +302,8 @@ export default function NightValley({ tier, paused, reduced }) {
       <MoonSky />
       <ValleyStars tier={tier} reduced={paused || reduced} />
       {tier >= 2 && <AuroraPlane paused={paused} reduced={reduced} />}
-      <Ridge radius={79} amplitude={16} segments={tier === 1 ? 54 : 104} tint="#314659" />
-      <Ridge radius={61} amplitude={12} segments={tier === 1 ? 54 : 104} tint="#192b38" />
+      <Ridge radius={79} amplitude={16} segments={tier === 1 ? 54 : 104} tint="#727fae" />
+      <Ridge radius={61} amplitude={12} segments={tier === 1 ? 54 : 104} tint="#3c6584" />
       <WorkshopTowers tier={tier} />
       {tier >= 2 && (
         <Suspense fallback={null}>

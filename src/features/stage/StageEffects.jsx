@@ -1,85 +1,44 @@
 import { useContext, useEffect, useLayoutEffect, useRef } from 'react';
-import { useFrame, useThree } from '@react-three/fiber';
+import { useThree } from '@react-three/fiber';
 import {
   EffectComposer,
   EffectComposerContext,
-  Bloom,
   ToneMapping,
   Vignette,
   FXAA,
 } from '@react-three/postprocessing';
 import { ToneMappingMode } from 'postprocessing';
+import ToonHighlights from '../npr/ToonHighlights';
 
-export default function StageEffects({
-  tier,
-  paused,
-  focusTarget,
-  cinematic,
-  advanced,
-  reduced,
-  AdvancedEffects,
-  DepthOfField,
-}) {
+// P8-M0: one existing composer. Omit SSR/GTAO/DoF so they cannot soften the Toon bands.
+export default function StageEffects({ tier, paused, cinematic }) {
   const ref = useRef(null);
-  const depth = useRef(null);
-  useFrame(() => depth.current?.target.copy(focusTarget));
-  const invalidate = useThree((s) => s.invalidate);
-  const gl = useThree((s) => s.gl);
-  const dpr = useThree((s) => s.viewport.dpr);
-  const size = useThree((s) => s.size);
+  const { gl, invalidate, size, viewport } = useThree();
   useEffect(() => {
     ref.current?.setSize(size.width, size.height);
     invalidate();
-  }, [dpr, size, gl, invalidate, tier, paused]);
-  // Rebuild the ordered graph when its passes change; the Stage renderer and Canvas stay mounted.
-  const graphKey = [tier, cinematic, advanced.ssr, advanced.motionBlur && !reduced].join(':');
+  }, [viewport.dpr, size, gl, invalidate, tier, paused]);
   if (gl.getContext().isContextLost()) return null;
   return (
     <EffectComposer
-      key={graphKey}
+      key={[tier, cinematic].join(':')}
       ref={ref}
       multisampling={0}
       enableNormalPass={false}
       enabled={!paused}
     >
       <ComposerResources />
-      {AdvancedEffects && (
-        <AdvancedEffects
-          reflection={advanced.ssr}
-          ao={advanced.gtao}
-          motion={advanced.motionBlur && !reduced}
-        />
-      )}
-      {cinematic && !AdvancedEffects && (
-        <Bloom
-          mipmapBlur
-          intensity={0.9}
-          luminanceThreshold={0.82}
-          luminanceSmoothing={0.2}
-          radius={0.7}
-        />
-      )}
+      <ToonHighlights bloom={cinematic} paused={paused} />
       <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
-      <Vignette offset={0.3} darkness={0.5} />
+      <Vignette offset={0.3} darkness={0.18} />
       <FXAA />
-      {/* 6.39.6 uses world distances; target keeps the requested DoF focused on the eyes. */}
-      {DepthOfField && (
-        <DepthOfField
-          focusDistance={0.02}
-          focalLength={0.055}
-          bokehScale={2.2}
-          resolutionScale={0.5}
-          ref={depth}
-          target={focusTarget}
-        />
-      )}
     </EffectComposer>
   );
 }
 
 // The pinned React wrapper removes replaced passes but doesn't dispose their materials
 // or the composer. Preserve shared effects while releasing retired pass GPU programs.
-function ComposerResources() {
+export function ComposerResources() {
   const { composer } = useContext(EffectComposerContext);
   const records = useRef(new Map());
   useLayoutEffect(() => {

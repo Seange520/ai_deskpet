@@ -66,7 +66,11 @@ function surfaceParticles(body) {
   const surfaces = [];
   let total = 0;
   body.traverse((mesh) => {
-    if (!mesh.isMesh || !mesh.material?.isMeshStandardMaterial) return;
+    if (
+      !mesh.isMesh ||
+      !(mesh.material?.isMeshStandardMaterial || mesh.material?.isMeshToonMaterial)
+    )
+      return;
     if (!mesh.geometry.boundingSphere) mesh.geometry.computeBoundingSphere();
     const radius = mesh.geometry.boundingSphere.radius;
     const weight = Math.max(0.02, radius * radius);
@@ -156,7 +160,10 @@ export default function PetDissolve({ pet, paused }) {
       source.points = surfaceParticles(body);
       body.traverse((mesh) => {
         const { material } = mesh;
-        if (material?.isMeshStandardMaterial && !source.patches.has(material))
+        if (
+          (material?.isMeshStandardMaterial || material?.isMeshToonMaterial) &&
+          !source.patches.has(material)
+        )
           source.patches.set(material, patchMaterial(material, uniforms.dissolve));
       });
     }

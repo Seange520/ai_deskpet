@@ -9,7 +9,7 @@
 [![Vite](https://img.shields.io/badge/Vite-6-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vite.dev)
 [![React](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev)
 [![Zustand](https://img.shields.io/badge/Zustand-5-2D3748?style=flat-square)](https://zustand.docs.pmnd.rs)
-[![Release](https://img.shields.io/badge/release-v0.9.4a11--beta-FFC98B?style=flat-square)](https://github.com/Seange520/ai_deskpet/tree/v0.9.4a11-beta)
+[![Release](https://img.shields.io/badge/release-v0.9.5--alpha-FFC98B?style=flat-square)](https://github.com/Seange520/ai_deskpet/tree/v0.9.5-alpha)
 ![Status](https://img.shields.io/badge/status-Testing-orange?style=flat-square)
 [![Vercel](https://img.shields.io/badge/Vercel-Deployed-000000?style=flat-square&logo=vercel&logoColor=white)](https://www.seange.cn)
 
@@ -21,7 +21,13 @@
 
 ---
 
-## 当前版本 · v0.9.4a11-beta 夜谷世界观与电影级运镜
+## 当前版本 · v0.9.5-alpha《第七校验》NPR 渲染管线
+
+P8-M0/M1 已通过总指挥视觉审核并封板：方块桌宠与 Observatory 岛采用 MeshToonMaterial、冷暖 RGB 色阶、视空间深度描边、Rim Light 与克制的陶瓷高光。底盘加入渐变、光纹与分层侧壁，原发光杆改为半透明浮动水晶，远景山脊和星空恢复纵深层次。
+
+Tier 3 保留轻量体积云，Tier 0/1 沿用 DOM/纯色阶降级；原教学运行器、热点、镜头转场和存档业务链保留。验收：E2E **67/67**、NPR 专项 **9/9**、M1 补验 **4/4**、画质/飞行单测 **7/7**，生产构建通过。详见 [M0 管线记录](docs/P8_M0_TOON_POC_REVIEW.md) 与 [M1 光影封板记录](docs/P8_M1_LIGHTING_REVIEW.md)。
+
+### v0.9.4a11-beta 夜谷世界观与电影级运镜
 
 夜谷工坊加入月夜天穹、双层山脊和远处塔群，空间航线采用五段运镜。右上角的全局画质提供极致、均衡、流畅和自定义。手动选择可跨刷新保留，恢复自动后重新采样。Tier 1 保留四岛、枢纽、光轨与地平线，Tier 0 使用 SVG 夜谷和 DOM 教学。
 
@@ -310,3 +316,10 @@ Monaco Editor 是代码编辑器；编辑器接入、代码执行沙盒和真实
 Built while learning, shared for discussion.
 
 </div>
+
+
+## P8-M0/M1 Toon POC（v0.9.5-alpha 已封板）
+
+仪表盘岛与方块桌宠已接入 Toon 色阶、深色描边、选择性泛光和 Tier 3 轻量体积云。Tier 0/1 保留降级；实施范围、复验命令及限制见 [POC 审核说明](docs/P8_M0_TOON_POC_REVIEW.md)。本轮发布标签为 v0.9.5-alpha。
+
+M1 已在同一 POC 上加入冷暖色阶、受光高光与 Rim、距离描边、底盘层次和悬浮水晶；已通过视觉审核并封板。全景对比与验证见 [M1 光影审核说明](docs/P8_M1_LIGHTING_REVIEW.md)。

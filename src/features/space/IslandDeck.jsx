@@ -1,3 +1,4 @@
+import ToonMaterial from '../npr/ToonMaterial';
 import { Vector2 } from 'three';
 
 const profile = [
@@ -39,29 +40,53 @@ export default function IslandDeck({ island, detailed, tier }) {
   const segments = refined ? 48 : 16;
   return (
     <>
-      <mesh>
+      <mesh name={island.id === 'dashboard' ? 'npr-observatory-deck' : undefined}>
         <latheGeometry args={[profile, segments]} />
-        <meshStandardMaterial color="#313b4c" metalness={0.48} roughness={0.42} />
+        {island.id === 'dashboard' ? (
+          <ToonMaterial finish="cliff" color="#698dc1" />
+        ) : (
+          <meshStandardMaterial color="#313b4c" metalness={0.48} roughness={0.42} />
+        )}
       </mesh>
       <mesh name="island-deck-surface" position={[0, 0.008, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         <circleGeometry args={[3.19, segments]} />
-        <meshStandardMaterial
-          color="#273341"
-          metalness={0.33}
-          roughness={0.46}
-          key={refined ? 'machined' : 'plain'}
-          {...(refined ? { onBeforeCompile: deckFinish } : {})}
-        />
+        {island.id === 'dashboard' ? (
+          <ToonMaterial finish="deck" color="#82b8bb" />
+        ) : (
+          <meshStandardMaterial
+            color="#273341"
+            metalness={0.33}
+            roughness={0.46}
+            key={refined ? 'machined' : 'plain'}
+            {...(refined ? { onBeforeCompile: deckFinish } : {})}
+          />
+        )}
       </mesh>
       <mesh position={[0, 0.018, 0]} rotation={[-Math.PI / 2, 0, 0]}>
         <ringGeometry args={[2.98, 3.04, segments]} />
-        <meshStandardMaterial
-          color={island.accent}
-          emissive={island.accent}
-          emissiveIntensity={refined ? 0.83 : 0.32}
-          roughness={0.36}
-        />
+        {island.id === 'dashboard' ? (
+          <ToonMaterial color="#ffe1a3" emissive="#ffb96d" emissiveIntensity={0.3} />
+        ) : (
+          <meshStandardMaterial
+            color={island.accent}
+            emissive={island.accent}
+            emissiveIntensity={refined ? 0.83 : 0.32}
+            roughness={0.36}
+          />
+        )}
       </mesh>
+      {island.id === 'dashboard' &&
+        [-0.23, -0.86].map((y, i) => (
+          <mesh
+            key={y}
+            name="npr-observatory-rim"
+            position={[0, y, 0]}
+            rotation={[Math.PI / 2, 0, 0]}
+          >
+            <torusGeometry args={[i ? 3.08 : 3.21, i ? 0.018 : 0.025, 6, segments]} />
+            <ToonMaterial color="#8bd9da" emissive="#4ab7c7" emissiveIntensity={0.38} />
+          </mesh>
+        ))}
     </>
   );
 }

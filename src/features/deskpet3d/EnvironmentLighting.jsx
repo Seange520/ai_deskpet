@@ -1,8 +1,6 @@
-import { lazy, Suspense, useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { usePetState } from '../../store/usePetState';
-
-const EnvironmentMap = lazy(() => import('./EnvironmentMap'));
 
 // Independent light refs: never restart the pet's command or gesture animations.
 export default function EnvironmentLighting({
@@ -36,9 +34,9 @@ export default function EnvironmentLighting({
     const intensityScale = usePetState.getState().status === 'sleeping' ? 0.3 : 1;
     let settling = false;
     for (const [ref, base] of [
-      [ambient, night ? 0.55 : 1.3],
-      [key, night ? 0.9 : 1.6],
-      [fill, night ? 0.35 : 0.8],
+      [ambient, night ? 0.4 : 0.72],
+      [key, night ? 1.7 : 2.55],
+      [fill, night ? 0.22 : 0.32],
     ]) {
       if (!ref.current) continue;
       const target = base * intensityScale;
@@ -53,17 +51,12 @@ export default function EnvironmentLighting({
   });
   return (
     <>
-      {tier >= 2 && (
-        <Suspense fallback={null}>
-          <EnvironmentMap key={night ? 'night' : 'day'} intensity={night ? 0.35 : 0.7} />
-        </Suspense>
-      )}
-      <ambientLight ref={ambient} name="environment-ambient" intensity={1.3} color="#FFC79A" />
-      <directionalLight ref={key} position={[4, 6, 5]} intensity={1.6} color="#FFC79A" />
+      <ambientLight ref={ambient} name="environment-ambient" intensity={0.72} color="#b7d9ff" />
+      <directionalLight ref={key} position={[-7, 6, 4]} intensity={2.55} color="#FFC79A" />
       <directionalLight
         ref={fill}
         position={[-3, 2, -4]}
-        intensity={0.8}
+        intensity={0.32}
         color={night ? '#FFB868' : '#7C7AB8'}
       />
     </>

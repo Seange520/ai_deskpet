@@ -1,6 +1,7 @@
 import { useLayoutEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { AdditiveBlending, CatmullRomCurve3, Matrix4, Vector3 } from 'three';
+import { CatmullRomCurve3, Matrix4, Vector3 } from 'three';
+import ToonMaterial from '../npr/ToonMaterial';
 import { HUB, ISLANDS } from './world';
 
 const count = 60;
@@ -17,26 +18,6 @@ const rail = new CatmullRomCurve3(
   ].map((position) => new Vector3(...position)),
   true,
 );
-const railVertex = `
-varying vec2 railUv;
-void main() {
-  railUv = uv;
-  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-}
-`;
-const railFragment = `
-uniform float time;
-varying vec2 railUv;
-void main() {
-  float phase = railUv.x * 10.0 - time * 0.92;
-  float pulse = pow(0.5 + 0.5 * cos(6.2831853 * phase), 8.0);
-  float filament = 0.65 + 0.35 * cos(6.2831853 * railUv.y);
-  vec3 cold = vec3(0.11, 0.69, 1.45);
-  vec3 hot = vec3(1.9, 0.77, 0.23);
-  gl_FragColor = vec4(mix(cold * filament, hot, pulse), 0.79);
-}
-`;
-
 function RailBeads({ paused, reduced }) {
   const mesh = useRef(null);
   const offset = useRef(0);
@@ -66,42 +47,19 @@ function RailBeads({ paused, reduced }) {
       frustumCulled={false}
     >
       <sphereGeometry args={[0.055, 8, 5]} />
-      <meshStandardMaterial
-        color="#a1f7f0"
-        emissive="#56eadf"
-        emissiveIntensity={2.2}
-        toneMapped={false}
-      />
+      <ToonMaterial color="#a1f7f0" emissive="#56eadf" emissiveIntensity={2.2} toneMapped={false} />
     </instancedMesh>
   );
 }
 
 export default function EnergyRail({ tier, paused, reduced }) {
-  const uniforms = useMemo(() => ({ time: { value: 0 } }), []);
-  useFrame((_, delta) => {
-    if (tier === 3 && !paused && !reduced) uniforms.time.value += Math.min(delta, 0.05);
-  });
   return (
     <group name="space-energy-rail">
       <mesh name="rail-tube">
         <tubeGeometry
           args={[rail, tier === 1 ? 72 : 144, tier === 3 ? 0.095 : 0.062, tier === 1 ? 4 : 8, true]}
         />
-        {tier === 3 ? (
-          <shaderMaterial
-            vertexShader={railVertex}
-            fragmentShader={railFragment}
-            uniforms={uniforms}
-            blending={AdditiveBlending}
-            transparent
-            depthWrite={false}
-            toneMapped={false}
-          />
-        ) : tier === 2 ? (
-          <meshStandardMaterial color="#367c90" emissive="#3db8c7" emissiveIntensity={0.95} />
-        ) : (
-          <meshBasicMaterial color="#477b88" />
-        )}
+        <ToonMaterial color="#5ecfdf" emissive="#3db8c7" emissiveIntensity={0.35} />
       </mesh>
       {tier >= 2 && <RailBeads paused={paused} reduced={reduced} />}
     </group>

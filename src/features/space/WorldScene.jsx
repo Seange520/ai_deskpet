@@ -12,11 +12,13 @@ import WorldLabel from './WorldLabel';
 import TravelRig from './TravelRig';
 import NightValley from './NightValley';
 import { ISLANDS, RING_RADIUS } from './world';
+import ToonMaterial from '../npr/ToonMaterial';
+import ObservatoryEcology from '../npr/ObservatoryEcology';
+import ToonClouds from '../npr/ToonClouds';
 import { useIslandAtmosphere } from './useIslandAtmosphere';
 
 const StageAtmosphere = lazy(() => import('../stage/StageAtmosphere'));
 const StageEffects = lazy(() => import('../stage/StageEffects'));
-const CinematicStageEffects = lazy(() => import('../stage/CinematicStageEffects'));
 const SpaceEnvironment = lazy(() => import('./SpaceEnvironment'));
 const IslandLights = lazy(() =>
   import('./SpaceEnvironment').then(({ IslandLights }) => ({ default: IslandLights })),
@@ -50,11 +52,7 @@ function IslandDetail({ island, tier, children }) {
       {[-2.55, 2.55].map((x) => (
         <mesh key={x} position={[x, 0.18, 0]}>
           <cylinderGeometry args={[0.12, 0.2, 0.36, 12]} />
-          <meshStandardMaterial
-            emissive={island.accent}
-            emissiveIntensity={1.6}
-            color={island.accent}
-          />
+          <ToonMaterial emissive={island.accent} emissiveIntensity={1.6} color={island.accent} />
         </mesh>
       ))}
       {children}
@@ -85,7 +83,7 @@ export default function WorldScene({ paused, reduced, tier, performanceStep, adv
   const focusTarget = useMemo(() => new Vector3(...ISLANDS.dashboard.camera.focus), []);
   const travelProgress = useRef(0);
   const fogColor = tier >= 2 ? '#1b1626' : DUSK;
-  const Effects = advanced.selectiveBloom ? CinematicStageEffects : StageEffects;
+  const Effects = StageEffects;
   const atmosphere = useIslandAtmosphere({
     fogColor,
     night,
@@ -104,6 +102,7 @@ export default function WorldScene({ paused, reduced, tier, performanceStep, adv
         tier={tier}
         atmosphere={atmosphere}
       />
+      {tier === 3 && performanceStep < 1 && <ToonClouds paused={paused} reduced={reduced} />}
       <NightValley tier={tier} paused={paused} reduced={reduced} />
       {tier >= 2 ? (
         <Suspense fallback={null}>
@@ -129,6 +128,9 @@ export default function WorldScene({ paused, reduced, tier, performanceStep, adv
                 <Suspense fallback={null}>
                   <IslandLights island={island} tier={tier} volume={performanceStep < 1} />
                 </Suspense>
+              )}
+              {island.id === 'dashboard' && (
+                <ObservatoryEcology tier={tier} paused={paused} reduced={reduced} />
               )}
               <WorldLabel
                 title={plaques[island.id][0]}

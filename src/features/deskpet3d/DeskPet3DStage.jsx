@@ -3,6 +3,8 @@ import { Canvas, useThree } from '@react-three/fiber';
 import { AdaptiveDpr, OrbitControls } from '@react-three/drei';
 import { useReducedMotion } from 'framer-motion';
 import './scene.css';
+import { ToonPalette } from '../npr/ToonMaterial';
+import PetToonEffects from '../npr/PetToonEffects';
 import PetModel from './PetModel';
 import EnvironmentLighting from './EnvironmentLighting';
 import { usePetAffection } from './usePetAffection';
@@ -113,6 +115,7 @@ const DeskPet3DStage = forwardRef(function DeskPet3DStage(
     >
       <StageBoundary onUnsupported={onUnsupported}>
         <Canvas
+          flat={tier >= 2}
           frameloop={paused ? 'never' : 'demand'}
           dpr={compact || constrained ? 1 : [1, 1.5]}
           camera={{ position: INITIAL_CAMERA, fov: 40, near: 0.1, far: 40 }}
@@ -126,17 +129,20 @@ const DeskPet3DStage = forwardRef(function DeskPet3DStage(
             paused={paused}
             reducedMotion={reducedMotion || still}
           />
-          <PetModel
-            tier={tier}
-            runtime={runtime}
-            reducedMotion={reducedMotion || still}
-            paused={paused}
-            interaction={interaction}
-            petting={petting}
-            dizzy={dizzy}
-            environment={environment}
-            onPetHead={compact ? undefined : petHead}
-          />
+          <ToonPalette tier={tier}>
+            <PetModel
+              tier={tier}
+              runtime={runtime}
+              reducedMotion={reducedMotion || still}
+              paused={paused}
+              interaction={interaction}
+              petting={petting}
+              dizzy={dizzy}
+              environment={environment}
+              onPetHead={compact ? undefined : petHead}
+            />
+          </ToonPalette>
+          <PetToonEffects tier={tier} paused={paused} />
           <ContextGuard onUnsupported={onUnsupported} />
           <OrbitControls
             ref={controls}

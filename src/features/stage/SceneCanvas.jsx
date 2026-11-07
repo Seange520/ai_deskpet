@@ -4,6 +4,7 @@ import { PerformanceMonitor } from '@react-three/drei';
 import useReducedMotionPreference from '../../lib/useReducedMotionPreference';
 import { useDeviceDetect } from '../../lib/useDeviceDetect';
 import RenderBoundary from './RenderBoundary';
+import { ToonPalette } from '../npr/ToonMaterial';
 import WorldScene from '../space/WorldScene';
 import IslandHotspotProjection from '../space/IslandHotspotProjection';
 import { ISLANDS } from '../space/world';
@@ -107,13 +108,14 @@ export default function SceneCanvas({ quality, onReady, dock }) {
       className="scene-stage"
       data-testid="scene-stage"
       data-paused={paused}
-      data-effects={effects}
+      data-effects={tier >= 2 ? 'toon-outline-selective-bloom-aces-fxaa' : effects}
       data-performance-step={performanceStep}
       data-startup-fps={quality.startupFps === null ? undefined : quality.startupFps.toFixed(1)}
       aria-hidden="true"
     >
       <RenderBoundary onFail={quality.fail}>
         <Canvas
+          flat={tier >= 2}
           camera={camera}
           style={{ pointerEvents: 'none' }}
           frameloop={paused ? 'never' : 'demand'}
@@ -137,13 +139,15 @@ export default function SceneCanvas({ quality, onReady, dock }) {
                 onDecline={quality.degrade}
               />
             )}
-          <WorldScene
-            reduced={reduced || tier === 1}
-            paused={paused}
-            tier={tier}
-            performanceStep={performanceStep}
-            advanced={quality.advanced}
-          />
+          <ToonPalette tier={tier}>
+            <WorldScene
+              reduced={reduced || tier === 1}
+              paused={paused}
+              tier={tier}
+              performanceStep={performanceStep}
+              advanced={quality.advanced}
+            />
+          </ToonPalette>
         </Canvas>
       </RenderBoundary>
     </div>
