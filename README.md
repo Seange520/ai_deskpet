@@ -9,7 +9,7 @@
 [![Vite](https://img.shields.io/badge/Vite-6-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vite.dev)
 [![React](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev)
 [![Zustand](https://img.shields.io/badge/Zustand-5-2D3748?style=flat-square)](https://zustand.docs.pmnd.rs)
-[![Release](https://img.shields.io/badge/release-v0.9.6--beta-FFC98B?style=flat-square)](https://github.com/Seange520/ai_deskpet/tree/v0.9.6-beta)
+[![Release](https://img.shields.io/badge/release-v0.9.7--alpha-FFC98B?style=flat-square)](https://github.com/Seange520/ai_deskpet/tree/main)
 ![Status](https://img.shields.io/badge/status-Testing-orange?style=flat-square)
 [![Vercel](https://img.shields.io/badge/Vercel-Deployed-000000?style=flat-square&logo=vercel&logoColor=white)](https://www.seange.cn)
 
@@ -20,6 +20,14 @@
 </div>
 
 ---
+
+## 当前版本 · v0.9.7-alpha · P9-M2 世界资产与视觉重塑
+
+P9 分支现已加载原创 Blender 石碑、水晶簇和岩石 GLB，以四个实例批次分布于 HUB 与四岛，配套模型包围盒碰撞；恢复 P8 Toon 岛座、冷暖色阶/Rim/描边及星空、极光、光轨与深渊光带。原 E2E 67/67，最终 M2 5/5、物理 M1 8/8。Tier 1 不加载物理或 GLB，失败时保留 DOM 教学。仍以 `?quality=3&world=p9` 进入，用户已准予封板，暂不推送，详见 [M2 实施、异常与截图](docs/P9_M2_ASSETS_REVIEW.md)。
+
+## P9-M1 自由探索（待审核）
+
+本地以 `?quality=3&world=p9` 打开已获认可的世界骨架，点击「开始自由探索」：WASD/Shift 跑动、空格跳跃、鼠标/触控视角、V 平滑切换 TPS/FPS、Esc 返回教学。新增固定步长 Rapier 原生 KCC 与 Ecctrl 角色/摇杆适配，真实验证 45° 坡和 0.5m 台阶；Tier 0/1/2 保留原降级底座。M1 等待用户审核，未提交或发布。详见 [M1 实施与证据](docs/P9_M1_EXPLORATION_REVIEW.md) 和 [P0 构图记录](docs/P9_P0_WORLD_REVIEW.md)。
 
 ## 当前版本 · v0.9.6-beta《第七校验》世界观与桌宠进化
 

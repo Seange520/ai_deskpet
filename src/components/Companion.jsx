@@ -1,3 +1,4 @@
+import { useStageLayer } from '../features/stage/StageLayer';
 import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { motion, useAnimationControls, useReducedMotion } from 'framer-motion';
 import { useLearningStore } from '../stores/useLearningStore';
@@ -34,6 +35,18 @@ export default function Companion({ celebrations, feedback, hidden }) {
   const interaction = usePetActions();
 
   const quality = useQualityTier();
+  const { exploring } = useStageLayer();
+  const [canvasReady, setCanvasReady] = useState(true);
+  useEffect(() => {
+    if (exploring) {
+      setCanvasReady(false);
+      return;
+    }
+    if (!canvasReady) {
+      const id = setTimeout(() => setCanvasReady(true), 600);
+      return () => clearTimeout(id);
+    }
+  }, [exploring, canvasReady]);
   const stage = useRef(null);
   const [focused, setFocused] = useState(false);
   const [curious, setCurious] = useState(false);
@@ -66,6 +79,7 @@ export default function Companion({ celebrations, feedback, hidden }) {
       });
   }, [celebrations, controls, reduced]);
   const fallback = <Companion2D celebrations={celebrations} feedback={feedback} hidden={hidden} />;
+  if (exploring || !canvasReady) return null;
   if (unsupported || quality.tier === 0) return fallback;
   return (
     <Suspense fallback={fallback}>

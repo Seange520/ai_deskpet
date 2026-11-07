@@ -1,0 +1,149 @@
+.world-preview {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  z-index: 5;
+  max-width: min(620px, calc(100vw - 48px));
+  padding: 16px 20px;
+  border: 1px solid #b9d9e34d;
+  border-radius: 16px;
+  background: #172330ec;
+  color: #e5eff5;
+  box-shadow: 0 12px 40px #0004;
+}
+.world-preview p {
+  color: #e7c48e;
+  letter-spacing: 0.15em;
+  font-size: 12px;
+  margin: 0 0 8px;
+}
+.world-preview h1 {
+  font-size: 22px;
+  margin: 0 0 8px;
+}
+.world-preview span,
+.world-preview small {
+  font-size: 12px;
+  color: #b4c7d2;
+}
+.world-preview small {
+  display: block;
+  margin-top: 8px;
+}
+.world-preview nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 14px 0;
+}
+.world-preview button {
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid #b9d9e355;
+  border-radius: 8px;
+  background: #293c4a;
+  color: #e5eff5;
+  cursor: pointer;
+}
+.world-preview button[aria-pressed='true'] {
+  background: #496270;
+  border-color: #e7c48e;
+}
+.world-preview button:focus-visible {
+  outline: 3px solid #e7c48e;
+  outline-offset: 3px;
+}
+.world-preview button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+.render-shell[data-world-preview='true'] .hud-layer {
+  visibility: hidden;
+}
+@media (max-width: 600px) {
+  .world-preview {
+    left: 12px;
+    bottom: 12px;
+    max-width: calc(100vw - 24px);
+    padding: 12px;
+  }
+  .world-preview h1 {
+    font-size: 18px;
+  }
+}
+
+.exploration-ui {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+.exploration-surface {
+  position: absolute;
+  inset: 0;
+  pointer-events: auto;
+  touch-action: none;
+  outline: none;
+}
+.exploration-surface.touch-look {
+  left: 50%;
+}
+.exploration-caption {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  padding: 12px 16px;
+  border: 1px solid #91adbd55;
+  border-radius: 14px;
+  background: #172330e8;
+  color: #e5eff5;
+  pointer-events: auto;
+  max-width: calc(100vw - 36px);
+}
+.exploration-caption p {
+  margin: 0 0 5px;
+  color: #edd3a4;
+}
+.exploration-caption span,
+.exploration-caption small {
+  font-size: 12px;
+  display: block;
+}
+.exploration-caption button,
+.exploration-jump {
+  min-height: 44px;
+  border-radius: 8px;
+  background: #293c4a;
+  color: #e5eff5;
+  padding: 8px 12px;
+  margin: 8px 6px 0 0;
+  border: 1px solid #b9d9e355;
+  pointer-events: auto;
+}
+.exploration-caption button:focus-visible,
+.exploration-jump:focus-visible {
+  outline: 3px solid #e7c48e;
+}
+.exploration-reticle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+}
+.exploration-jump {
+  position: absolute;
+  bottom: 26px;
+  right: 24px;
+  touch-action: none;
+}
+
+.exploration-surface:focus-visible {
+  outline: none;
+}
+.exploration-ui #ecctrl-joystick {
+  pointer-events: auto !important;
+}
+.exploration-ui #ecctrl-joystick canvas {
+  touch-action: none;
+}

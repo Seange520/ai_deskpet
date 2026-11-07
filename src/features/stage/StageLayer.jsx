@@ -7,20 +7,40 @@ import { RelicOverlay } from '../space/RelicOverlay';
 import EvolutionOverlay from '../space/EvolutionOverlay';
 import LoreOverlay from '../space/LoreOverlay';
 import './lore.css';
+const ExplorationOverlay = lazy(() => import('../world/ExplorationOverlay'));
+const WorldPreview = lazy(() => import('../world/WorldPreview'));
 const SceneCanvas = lazy(() => import('./SceneCanvas'));
 const StageContext = createContext({ ready: false });
 export const useStageLayer = () => useContext(StageContext);
 export default function StageLayer({ children }) {
   const quality = useQualityTier();
   const [ready, setReady] = useState(false);
+  const [preview, setPreview] = useState(
+    () => new URLSearchParams(location.search).get('world') === 'p9',
+  );
+  const [exploring, setExploring] = useState(false);
+  const [inputElement, setInputElement] = useState(null);
+  const [view, setView] = useState('hub');
+  const previewEnabled = new URLSearchParams(location.search).get('world') === 'p9';
+  const active = previewEnabled && preview && quality.tier === 3 && ready;
   const dock = useRef(null);
   const relic = useRef(null);
   const meteor = useRef(null);
   return (
-    <StageContext.Provider value={{ ready: ready && quality.tier > 0, dock }}>
+    <StageContext.Provider
+      value={{ ready: ready && quality.tier > 0, dock, exploring: active && exploring }}
+    >
       <div
         className="render-shell"
         data-quality-tier={quality.tier}
+        data-world-preview={active}
+        onKeyDown={(event) => {
+          if (active && event.key === 'Escape') {
+            event.preventDefault();
+            setExploring(false);
+            setPreview(false);
+          }
+        }}
         data-stage-ready={ready && quality.tier > 0}
       >
         <div className="visual-fallback" aria-hidden="true">
@@ -31,6 +51,10 @@ export default function StageLayer({ children }) {
             <Suspense fallback={null}>
               <SceneCanvas
                 quality={quality}
+                preview={previewEnabled && preview && quality.tier === 3}
+                view={view}
+                exploring={active && exploring}
+                inputElement={inputElement}
                 onReady={setReady}
                 dock={dock}
                 relic={relic}
@@ -39,10 +63,35 @@ export default function StageLayer({ children }) {
             </Suspense>
           </RenderBoundary>
         )}
-        <div className="hud-layer">{children}</div>
-        <RelicOverlay overlay={relic} tier={quality.tier} ready={ready} />
-        <LoreOverlay meteor={meteor} tier={quality.tier} />
-        <EvolutionOverlay tier={quality.tier} />
+        <div className="hud-layer" inert={active ? '' : undefined}>
+          {children}
+        </div>
+        {previewEnabled && !(active && exploring) && (
+          <Suspense fallback={null}>
+            <WorldPreview
+              active={active}
+              available={quality.tier === 3 && ready}
+              view={view}
+              onView={setView}
+              onExplore={() => setExploring(true)}
+              onToggle={() => setPreview((p) => !p)}
+            />
+          </Suspense>
+        )}
+        {active && exploring && (
+          <Suspense fallback={null}>
+            <ExplorationOverlay
+              onSurface={setInputElement}
+              onExit={() => {
+                setExploring(false);
+                setPreview(false);
+              }}
+            />
+          </Suspense>
+        )}
+        {!active && <RelicOverlay overlay={relic} tier={quality.tier} ready={ready} />}
+        {!active && <LoreOverlay meteor={meteor} tier={quality.tier} />}
+        {!active && <EvolutionOverlay tier={quality.tier} />}
       </div>
     </StageContext.Provider>
   );

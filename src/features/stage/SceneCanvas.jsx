@@ -10,6 +10,9 @@ import { RelicProjection } from '../space/MaintainerRelic';
 import IslandHotspotProjection from '../space/IslandHotspotProjection';
 import { ISLANDS } from '../space/world';
 
+const Exploration = lazy(() => import('../world/Exploration'));
+const P9World = lazy(() => import('../world/WorldScene'));
+
 const GpuProbe = lazy(() => import('../../lib/GpuProbe'));
 
 const camera = {
@@ -68,7 +71,17 @@ function DeviceProbe({ paused, quality }) {
     </Suspense>
   ) : null;
 }
-export default function SceneCanvas({ quality, onReady, dock, relic, meteor }) {
+export default function SceneCanvas({
+  quality,
+  onReady,
+  dock,
+  relic,
+  meteor,
+  preview = false,
+  view,
+  exploring = false,
+  inputElement,
+}) {
   const reduced = useReducedMotionPreference();
   const [hidden, setHidden] = useState(document.hidden);
   useEffect(() => {
@@ -109,7 +122,13 @@ export default function SceneCanvas({ quality, onReady, dock, relic, meteor }) {
       className="scene-stage"
       data-testid="scene-stage"
       data-paused={paused}
-      data-effects={tier >= 2 ? 'toon-outline-selective-bloom-aces-fxaa' : effects}
+      data-effects={
+        preview
+          ? 'toon-outline-selective-bloom-aces-fxaa'
+          : tier >= 2
+            ? 'toon-outline-selective-bloom-aces-fxaa'
+            : effects
+      }
       data-performance-step={performanceStep}
       data-startup-fps={quality.startupFps === null ? undefined : quality.startupFps.toFixed(1)}
       aria-hidden="true"
@@ -119,17 +138,18 @@ export default function SceneCanvas({ quality, onReady, dock, relic, meteor }) {
           flat={tier >= 2}
           camera={camera}
           style={{ pointerEvents: 'none' }}
-          frameloop={paused ? 'never' : 'demand'}
+          frameloop={paused ? 'never' : exploring ? 'always' : 'demand'}
           dpr={[1, quality.maxDpr]}
           gl={{ alpha: true, antialias: quality.tier >= 2, powerPreference: 'low-power' }}
           fallback={<span>3D 暂不可用</span>}
         >
           <Lifecycle quality={quality} onReady={onReady} />
-          <IslandHotspotProjection dock={dock} />
-          <RelicProjection overlay={relic} paused={paused} />
+          {!preview && <IslandHotspotProjection dock={dock} />}
+          {!preview && <RelicProjection overlay={relic} paused={paused} />}
           {quality.autoMode && <DeviceProbe paused={paused} quality={quality} />}
           <StagePixelRatio adaptive={adaptive} maxDpr={quality.maxDpr} />
-          {adaptive &&
+          {!preview &&
+            adaptive &&
             (quality.override !== null || quality.startupFps !== null) &&
             tier >= 2 &&
             !paused &&
@@ -142,14 +162,24 @@ export default function SceneCanvas({ quality, onReady, dock, relic, meteor }) {
               />
             )}
           <ToonPalette tier={tier}>
-            <WorldScene
-              meteor={meteor}
-              reduced={reduced || tier === 1}
-              paused={paused}
-              tier={tier}
-              performanceStep={performanceStep}
-              advanced={quality.advanced}
-            />
+            <Suspense fallback={null}>
+              {preview ? (
+                exploring ? (
+                  <Exploration paused={paused} inputElement={inputElement} />
+                ) : (
+                  <P9World view={view} paused={paused} />
+                )
+              ) : (
+                <WorldScene
+                  meteor={meteor}
+                  reduced={reduced || tier === 1}
+                  paused={paused}
+                  tier={tier}
+                  performanceStep={performanceStep}
+                  advanced={quality.advanced}
+                />
+              )}
+            </Suspense>
           </ToonPalette>
         </Canvas>
       </RenderBoundary>

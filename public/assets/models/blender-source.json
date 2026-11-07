@@ -1,0 +1,23 @@
+{
+  "generator": "Original bpy script; first MCP export, final clean Blender background export",
+  "blender": "4.5.10 LTS",
+  "seed": 9102,
+  "units": "metres",
+  "assets": [
+    {
+      "file": "stone_tablet.glb",
+      "objects": 9,
+      "vertices": 100
+    },
+    {
+      "file": "crystals.glb",
+      "objects": 4,
+      "vertices": 24
+    },
+    {
+      "file": "rocks.glb",
+      "objects": 3,
+      "vertices": 36
+    }
+  ]
+}
