@@ -1,0 +1,138 @@
+{
+  "schema": "lesson.v1",
+  "lessonId": "L-K8-01",
+  "kp": {
+    "id": "K8-01",
+    "name": "需求拆解与项目计划",
+    "layer": "L8",
+    "pillar": "spire",
+    "oneLiner": "先写清做什么，再动手",
+    "prereq": ["三柱基础校验"],
+    "storyScene": "P10-SpireCommission",
+    "spoilerLevel": 7,
+    "license": "CC-BY-4.0",
+    "status": "planned"
+  },
+  "meta": {
+    "version": "0.1.0",
+    "updatedAt": "2026-11-09",
+    "author": "DSH-Lead",
+    "estimatedMinutes": 11,
+    "template": "six-segment-v1",
+    "gameMount": "spire-commission"
+  },
+  "segments": [
+    {
+      "id": "hook",
+      "type": "hook",
+      "durationSec": 40,
+      "narration": "回响塔的委托只有一句话：「让这条街不再跳闸。」你打算先写代码，还是先写清楚「做到什么算完成」？",
+      "interaction": "choice",
+      "choices": [
+        { "id": "a", "text": "先写代码，边写边想", "correct": false, "feedback": "没有验收标准，改到哪算完没人知道。" },
+        { "id": "b", "text": "先定验收指标，再拆任务", "correct": true, "feedback": "对。先定义完成，再分配动作。" },
+        { "id": "c", "text": "先问委托人多长时间能做完", "correct": false, "feedback": "时长不是需求，指标才是。" }
+      ]
+    },
+    {
+      "id": "explain",
+      "type": "explain",
+      "durationSec": 100,
+      "narration": "项目计划=需求→约束→验收→任务。需求写「要什么」，约束写「不能碰什么」，验收写「怎么算完成」，任务写「谁在什么依赖下做什么」。验收指标必须可测：不是「更稳定」，而是「连续 10 次分断不复位」；不是「更省电」，而是「待机电流 <50mA」。拆任务时先画依赖：哪些能并行、哪些必须等。先写清做什么，再动手。",
+      "media": [
+        {
+          "kind": "card",
+          "src": "assets/lessons/K8-01/requirement-card.svg",
+          "alt": "需求/约束/验收/任务四格任务单模板",
+          "status": "planned",
+          "license": "original",
+          "notes": "原创卡片，UI 内联"
+        },
+        {
+          "kind": "sim",
+          "src": "assets/lessons/K8-01/task-breakdown-sim.json",
+          "alt": "冷库支路改造任务单填写仿真：3 个验收指标与 5 个任务",
+          "status": "planned",
+          "license": "original",
+          "notes": "确定性教学模型"
+        }
+      ]
+    },
+    {
+      "id": "practice",
+      "type": "practice",
+      "durationSec": 210,
+      "task": "为「冷库支路改造」写一页任务单：目标、约束、3 个可测验收指标、5 个任务与依赖。",
+      "steps": [
+        { "action": "code", "target": "write-task-sheet", "hint": "验收指标要带数字" },
+        { "action": "inspect", "target": "dependency-graph", "hint": "先画任务依赖再排顺序" },
+        { "action": "measure", "target": "acceptance-check", "hint": "每条验收都能测" }
+      ],
+      "failureHints": [
+        "验收写「稳定/好用」：不可测，无法结案",
+        "任务没有依赖：并行冲突，返工",
+        "只写目标不写约束：改到不该改的地方"
+      ]
+    },
+    {
+      "id": "verify",
+      "type": "verify",
+      "durationSec": 150,
+      "checks": [
+        { "id": "v_acceptance", "type": "measurement", "probe": "acceptance_metrics", "expected": 3, "tolerance": 0, "unit": "items" },
+        { "id": "v_tasks", "type": "measurement", "probe": "task_count_with_dependency", "expected": 5, "tolerance": 0, "unit": "tasks" }
+      ],
+      "safety": "写字任务不涉及带电操作；真实项目开工前须断电挂牌、确认约束。"
+    },
+    {
+      "id": "transfer",
+      "type": "transfer",
+      "durationSec": 150,
+      "prompt": "「让灯更省电」这个模糊需求，怎么拆成可测任务？",
+      "options": [
+        { "id": "a", "text": "先定待机电流与运行功耗指标，再测功耗、改驱动、复测", "correct": true, "why": "先把「省」变成数字，再谈改法。" },
+        { "id": "b", "text": "直接换低功耗灯珠", "correct": false, "why": "没测过就改，可能省错地方。" },
+        { "id": "c", "text": "让 AI 给一个省电方案", "correct": false, "why": "AI 可以建议，但指标与验证仍要人定。" }
+      ],
+      "solution": "模糊词→可测指标→基线测量→改动→复测。"
+    },
+    {
+      "id": "recap",
+      "type": "recap",
+      "durationSec": 30,
+      "lines": [
+        "先写清做什么，再动手。",
+        "验收指标必须可测。",
+        "先画依赖，再排任务。"
+      ]
+    }
+  ],
+  "checks": [
+    { "id": "p1", "type": "project", "weight": 0.5, "pass": "任务单含 3 个可测验收指标与 5 个带依赖任务" },
+    { "id": "m1", "type": "measurement", "weight": 0.3, "pass": "验收指标 3 项、任务 5 项且依赖完整" },
+    { "id": "q1", "type": "quiz", "weight": 0.2, "pass": "能把模糊需求改写成可测指标" }
+  ],
+  "assessment": {
+    "masteryWeights": { "hook": 0.1, "practice": 0.3, "verify": 0.3, "transfer": 0.3 },
+    "passScore": 0.7,
+    "retentionDays": [1, 3, 7, 21]
+  },
+  "storyBinding": {
+    "scene": "P10-SpireCommission",
+    "npc": "阿卡夏",
+    "dialogueHint": "先写清做到什么算完成，再谈怎么做。",
+    "worldPhenomenon": "回响塔贴出一张只有一句话的委托单。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["第七校验", "熵", "残响", "第一编译者", "网页游戏"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true,
+    "noSacrificeGlorification": true
+  },
+  "safety": {
+    "requiresPowerOffBeforeRewire": true,
+    "voltageModeOnlyForLive": true,
+    "resistanceModeBlockedWhenLive": true,
+    "currentModeRequiresSeries": true
+  }
+}

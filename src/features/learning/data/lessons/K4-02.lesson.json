@@ -1,0 +1,140 @@
+{
+  "schema": "lesson.v1",
+  "lessonId": "L-K4-02",
+  "kp": {
+    "id": "K4-02",
+    "name": "I2C地址与时序",
+    "layer": "L4",
+    "pillar": "weave",
+    "oneLiner": "一条线两个地址，冲突就找冒名者",
+    "prereq": ["K3-02"],
+    "storyScene": "P10-AddressMaze",
+    "spoilerLevel": 4,
+    "license": "CC-BY-4.0",
+    "status": "planned"
+  },
+  "meta": {
+    "version": "0.1.0",
+    "updatedAt": "2026-11-09",
+    "author": "DSH-Lead",
+    "estimatedMinutes": 11,
+    "template": "six-segment-v1",
+    "gameMount": "weave-corridor"
+  },
+  "segments": [
+    {
+      "id": "hook",
+      "type": "hook",
+      "durationSec": 35,
+      "narration": "一条总线上挂了两只设备，读出来的却永远只有一只。丝把地址表扔给你：不是线坏了，是两个名字撞在了一起。你要先拆哪个？",
+      "interaction": "choice",
+      "choices": [
+        { "id": "a", "text": "先把两只设备都拆下来，重焊一遍", "correct": false, "feedback": "焊接没坏，地址冲突不会因为重焊消失。" },
+        { "id": "b", "text": "先看地址表，按段隔离找冒名者", "correct": true, "feedback": "对。先分清总线与设备，再谈地址。" },
+        { "id": "c", "text": "把总线换成 SPI，绕开问题", "correct": false, "feedback": "换总线能绕过，但没学会怎么定位冲突。" }
+      ]
+    },
+    {
+      "id": "explain",
+      "type": "explain",
+      "durationSec": 100,
+      "narration": "I2C 只用两根线：SDA 数据、SCL 时钟。两根都是开漏，必须外接上拉电阻，空闲时被拉高。每个设备有 7 位地址（0x00–0x7F），主设备先发地址，被叫到的从机才应答。冲突有三种样子：一个设备永远不应答、两台同时应答把数据拉成半高、或者时好时坏。排查顺序永远是：先看电平，再看地址表，最后按段隔离。",
+      "media": [
+        {
+          "kind": "diagram",
+          "src": "assets/lessons/K4-02/i2c-bus.svg",
+          "alt": "I2C 主从连接、上拉电阻、起始条件与 7 位地址帧",
+          "status": "planned",
+          "license": "original",
+          "notes": "原创 SVG，UI 内联"
+        },
+        {
+          "kind": "simulation",
+          "src": "assets/lessons/K4-02/address-scan.json",
+          "alt": "地址扫描仿真：列表出现重复地址，隔离后消失",
+          "status": "planned",
+          "license": "original",
+          "notes": "页面内确定性仿真"
+        }
+      ]
+    },
+    {
+      "id": "practice",
+      "type": "practice",
+      "durationSec": 210,
+      "task": "在地址迷宫总线上找冒名者：先读地址表，再逐段隔离，最后确认唯一设备应答。",
+      "steps": [
+        { "action": "scan", "target": "i2c-addresses", "hint": "先列出现有地址，找出重复项" },
+        { "action": "disconnect", "target": "segment-b", "hint": "从末端开始断开，缩小范围" },
+        { "action": "rescan", "target": "i2c-addresses", "hint": "看重复地址是否消失" },
+        { "action": "confirm", "target": "i2c-read", "hint": "只剩唯一设备应答才算定位" }
+      ],
+      "failureHints": [
+        "两段一起断：范围被自己放大，证据作废",
+        "不断电直接拆线：联锁会拦截并记录一次错误",
+        "只看地址表不隔离：无法确定是哪一台在冒名"
+      ]
+    },
+    {
+      "id": "verify",
+      "type": "verify",
+      "durationSec": 150,
+      "checks": [
+        { "id": "v_scl", "type": "measurement", "probe": "i2c_scl_idle", "expected": 3.3, "tolerance": 0.2, "unit": "V" },
+        { "id": "v_conflict", "type": "measurement", "probe": "i2c_conflict_count", "expected": 0, "tolerance": 0, "unit": "count" },
+        { "id": "v_read", "type": "measurement", "probe": "i2c_read_ok", "expected": 1, "tolerance": 0, "unit": "bool" }
+      ],
+      "safety": "教学仿真总线不接触真实设备；真实 I2C 拆线前必须断电，上拉电阻与电平（3.3V/5V）须核对后再连。"
+    },
+    {
+      "id": "transfer",
+      "type": "transfer",
+      "durationSec": 150,
+      "prompt": "两只同型号传感器默认地址都是 0x48，现在必须同时挂在一条总线上。给出两种不改固件的消解方式。",
+      "options": [
+        { "id": "a", "text": "改其中一个的地址跳线，或用 I2C 多路复用器分总线", "correct": true, "why": "改地址是最轻的；多路复用器把冲突设备分到不同通道。" },
+        { "id": "b", "text": "把总线电压从 3.3V 抬到 5V", "correct": false, "why": "电压不改变地址，反而可能损坏 3.3V 设备。" },
+        { "id": "c", "text": "两个传感器都换掉，买地址不同的型号", "correct": false, "why": "能解决，但成本最高，也没学会复用与隔离。" }
+      ],
+      "solution": "方式一：利用 ADDR 跳线把其中一只改成 0x49；方式二：用 TCA9548A 等多路复用器，把两只分别挂在通道 0/1。"
+    },
+    {
+      "id": "recap",
+      "type": "recap",
+      "durationSec": 30,
+      "lines": [
+        "先看电平，再看地址表，最后按段隔离。",
+        "地址冲突不是线坏，是两个名字重了。",
+        "上拉缺失会让整条总线趴下。"
+      ]
+    }
+  ],
+  "checks": [
+    { "id": "s1", "type": "sim-task", "weight": 0.4, "pass": "隔离顺序正确、地址表定位到冒名设备" },
+    { "id": "m1", "type": "measurement", "weight": 0.3, "pass": "SCL 空闲高电平 3.3V ± 0.2V、冲突地址数为 0" },
+    { "id": "q1", "type": "quiz", "weight": 0.3, "pass": "7 位地址范围与起始条件判断正确" }
+  ],
+  "assessment": {
+    "masteryWeights": { "hook": 0.1, "practice": 0.35, "verify": 0.3, "transfer": 0.25 },
+    "passScore": 0.7,
+    "retentionDays": [1, 3, 7, 21]
+  },
+  "storyBinding": {
+    "scene": "P10-AddressMaze",
+    "npc": "丝",
+    "dialogueHint": "地址撞了，不是线坏，是名字重了。",
+    "worldPhenomenon": "迷宫走廊的传感器时而回应两只名字，时而一只都不应。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["第七校验", "熵", "残响", "第一编译者", "网页游戏"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true,
+    "noSacrificeGlorification": true
+  },
+  "safety": {
+    "requiresPowerOffBeforeRewire": true,
+    "voltageModeOnlyForLive": true,
+    "resistanceModeBlockedWhenLive": true,
+    "currentModeRequiresSeries": true
+  }
+}

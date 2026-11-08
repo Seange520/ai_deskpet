@@ -1,0 +1,1519 @@
+{
+  "schema": "knowledge-graph.v1",
+  "version": "0.1.0",
+  "updatedAt": "2026-11-09",
+  "source": "work/handoff/KP_MVP40.csv",
+  "note": "MVP40 范围（40 KP）；完整版 120 KP 在同一 schema 下扩展，不另起格式。",
+  "pillars": [
+    {
+      "id": "foundation",
+      "name": "基石",
+      "nameEn": "Foundation",
+      "domain": "安全、工具、电学基础"
+    },
+    {
+      "id": "forge",
+      "name": "熔炉",
+      "nameEn": "The Forge",
+      "domain": "GPIO、电路、点灯"
+    },
+    {
+      "id": "weave",
+      "name": "织网",
+      "nameEn": "The Weave",
+      "domain": "传感器、I2C/SPI/UART"
+    },
+    {
+      "id": "echo",
+      "name": "回声",
+      "nameEn": "The Echo",
+      "domain": "WiFi、HTTP、MQTT"
+    },
+    {
+      "id": "symbiosis",
+      "name": "共生",
+      "nameEn": "Symbiosis",
+      "domain": "AI、感知、状态机"
+    },
+    {
+      "id": "craft",
+      "name": "意匠",
+      "nameEn": "The Craft",
+      "domain": "嵌入式编程、控制、机器人"
+    },
+    {
+      "id": "spire",
+      "name": "回响塔",
+      "nameEn": "The Echo Spire",
+      "domain": "系统工程、项目、调试"
+    }
+  ],
+  "layers": [
+    {
+      "id": "L0",
+      "order": 0,
+      "name": "安全与工具",
+      "pillars": [
+        "foundation"
+      ]
+    },
+    {
+      "id": "L1",
+      "order": 1,
+      "name": "电学基础",
+      "pillars": [
+        "foundation",
+        "forge"
+      ]
+    },
+    {
+      "id": "L2",
+      "order": 2,
+      "name": "数字与信号",
+      "pillars": [
+        "forge"
+      ]
+    },
+    {
+      "id": "L3",
+      "order": 3,
+      "name": "嵌入式编程",
+      "pillars": [
+        "craft"
+      ]
+    },
+    {
+      "id": "L4",
+      "order": 4,
+      "name": "外设与总线",
+      "pillars": [
+        "weave"
+      ]
+    },
+    {
+      "id": "L5",
+      "order": 5,
+      "name": "通信与云",
+      "pillars": [
+        "echo"
+      ]
+    },
+    {
+      "id": "L6",
+      "order": 6,
+      "name": "控制与机器人",
+      "pillars": [
+        "craft",
+        "forge"
+      ]
+    },
+    {
+      "id": "L7",
+      "order": 7,
+      "name": "AI 与感知",
+      "pillars": [
+        "symbiosis"
+      ]
+    },
+    {
+      "id": "L8",
+      "order": 8,
+      "name": "系统工程",
+      "pillars": [
+        "spire"
+      ]
+    }
+  ],
+  "gates": [
+    {
+      "id": "gate-three-pillar-basics",
+      "name": "三柱基础校验",
+      "type": "any-three-pillars",
+      "requiresMinPillars": 3,
+      "description": "任意三柱各至少 1 个 KP 达到 mastered（掌握度 ≥ 0.8 且通过对应校验），方可进入 L8 系统工程。"
+    }
+  ],
+  "kps": [
+    {
+      "id": "K0-01",
+      "name": "用电安全与断电原则",
+      "oneLiner": "先断电再动手，命比灯重要",
+      "layer": "L0",
+      "pillar": "foundation",
+      "prereq": [],
+      "gatePrereq": null,
+      "lessonRef": "lessons/K0-01.json",
+      "lessonAvailable": true,
+      "media": [
+        "card",
+        "anim"
+      ],
+      "practice": "安全情景判断",
+      "check": {
+        "type": "quiz",
+        "task": "安全判断题100%",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "维修间",
+      "spoilerLevel": 0,
+      "license": "CC-BY-4.0",
+      "status": "planned",
+      "priority": "P0"
+    },
+    {
+      "id": "K0-02",
+      "name": "万用表电压通断电阻档",
+      "oneLiner": "先选对档，再碰电路",
+      "layer": "L0",
+      "pillar": "foundation",
+      "prereq": [
+        "K0-01"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons/K0-02.json",
+      "lessonAvailable": true,
+      "media": [
+        "card",
+        "sim"
+      ],
+      "practice": "测电池与通断",
+      "check": {
+        "type": "measurement",
+        "task": "选档并读数",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "P10鹰眼面板/街灯配电盒",
+      "spoilerLevel": 0,
+      "license": "CC-BY-4.0",
+      "status": "partial",
+      "priority": "P0"
+    },
+    {
+      "id": "K0-03",
+      "name": "面包板与杜邦线极性",
+      "oneLiner": "面包板是地图，电源轨是主干道",
+      "layer": "L0",
+      "pillar": "foundation",
+      "prereq": [
+        "K0-01"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons/K0-03.json",
+      "lessonAvailable": true,
+      "media": [
+        "card",
+        "sim"
+      ],
+      "practice": "搭一个点灯电路",
+      "check": {
+        "type": "sim-task",
+        "task": "接对不短路",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "训练场",
+      "spoilerLevel": 0,
+      "license": "CC-BY-4.0",
+      "status": "planned",
+      "priority": "P1"
+    },
+    {
+      "id": "K0-04",
+      "name": "单位与量级",
+      "oneLiner": "毫安不是安，千欧不是欧",
+      "layer": "L0",
+      "pillar": "foundation",
+      "prereq": [],
+      "gatePrereq": null,
+      "lessonRef": "lessons/K0-04.json",
+      "lessonAvailable": true,
+      "media": [
+        "card"
+      ],
+      "practice": "单位换算",
+      "check": {
+        "type": "quiz",
+        "task": "5题换算",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "维修间",
+      "spoilerLevel": 0,
+      "license": "CC-BY-4.0",
+      "status": "planned",
+      "priority": "P0"
+    },
+    {
+      "id": "K0-05",
+      "name": "查资料与引脚图",
+      "oneLiner": "资料不会骗你，引脚图会",
+      "layer": "L0",
+      "pillar": "foundation",
+      "prereq": [
+        "K0-04"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons/K0-05.json",
+      "lessonAvailable": true,
+      "media": [
+        "card",
+        "pdf"
+      ],
+      "practice": "从图中找引脚",
+      "check": {
+        "type": "quiz",
+        "task": "定位引脚",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "虚拟资料库",
+      "spoilerLevel": 0,
+      "license": "CC-BY-4.0",
+      "status": "planned",
+      "priority": "P1"
+    },
+    {
+      "id": "K0-06",
+      "name": "焊接与接线安全",
+      "oneLiner": "烙铁很烫，松香很香，安全第一",
+      "layer": "L0",
+      "pillar": "foundation",
+      "prereq": [
+        "K0-01"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons/K0-06.json",
+      "lessonAvailable": true,
+      "media": [
+        "card",
+        "video"
+      ],
+      "practice": "安全检查清单",
+      "check": {
+        "type": "quiz",
+        "task": "安全检查",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "维修间",
+      "spoilerLevel": 0,
+      "license": "CC-BY-4.0",
+      "status": "planned",
+      "priority": "P2"
+    },
+    {
+      "id": "K1-01",
+      "name": "欧姆定律与串联分压",
+      "oneLiner": "电压会按电阻分蛋糕",
+      "layer": "L1",
+      "pillar": "forge",
+      "prereq": [
+        "K0-02"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons/K1-01.json",
+      "lessonAvailable": true,
+      "media": [
+        "card",
+        "sim"
+      ],
+      "practice": "算并测分压",
+      "check": {
+        "type": "sim-task",
+        "task": "算电压",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "P10配电盒",
+      "spoilerLevel": 1,
+      "license": "CC-BY-4.0",
+      "status": "partial",
+      "priority": "P0"
+    },
+    {
+      "id": "K1-02",
+      "name": "并联与分流",
+      "oneLiner": "两条路都走，电阻小的多走",
+      "layer": "L1",
+      "pillar": "forge",
+      "prereq": [
+        "K1-01"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons/K1-02.json",
+      "lessonAvailable": true,
+      "media": [
+        "card",
+        "sim"
+      ],
+      "practice": "判断断支路",
+      "check": {
+        "type": "sim-task",
+        "task": "找断线",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "训练场",
+      "spoilerLevel": 1,
+      "license": "CC-BY-4.0",
+      "status": "planned",
+      "priority": "P1"
+    },
+    {
+      "id": "K1-03",
+      "name": "功率与发热",
+      "oneLiner": "发热是能量在找出口",
+      "layer": "L1",
+      "pillar": "forge",
+      "prereq": [
+        "K1-01"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons/K1-03.json",
+      "lessonAvailable": true,
+      "media": [
+        "card",
+        "sim"
+      ],
+      "practice": "解释保险丝熔断",
+      "check": {
+        "type": "quiz",
+        "task": "解释功率与熔断",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "P10热故障",
+      "spoilerLevel": 1,
+      "license": "CC-BY-4.0",
+      "status": "partial",
+      "priority": "P0"
+    },
+    {
+      "id": "K1-04",
+      "name": "压降线损与接触电阻",
+      "oneLiner": "远端不亮，先量两端",
+      "layer": "L1",
+      "pillar": "forge",
+      "prereq": [
+        "K1-01"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons/K1-04.json",
+      "lessonAvailable": true,
+      "media": [
+        "card",
+        "sim"
+      ],
+      "practice": "测压差定位",
+      "check": {
+        "type": "measurement",
+        "task": "压降诊断",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "P10 G0回流",
+      "spoilerLevel": 1,
+      "license": "CC-BY-4.0",
+      "status": "partial",
+      "priority": "P0"
+    },
+    {
+      "id": "K1-05",
+      "name": "接地与回流",
+      "oneLiner": "回流的终点不是地，是电源",
+      "layer": "L1",
+      "pillar": "forge",
+      "prereq": [
+        "K1-04"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons/K1-05.json",
+      "lessonAvailable": true,
+      "media": [
+        "card",
+        "sim"
+      ],
+      "practice": "G0诊断",
+      "check": {
+        "type": "quiz",
+        "task": "区分回流与PE",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "P10接地",
+      "spoilerLevel": 1,
+      "license": "CC-BY-4.0",
+      "status": "partial",
+      "priority": "P0"
+    },
+    {
+      "id": "K1-06",
+      "name": "保险丝与保护",
+      "oneLiner": "保险丝是替你烧的那根线",
+      "layer": "L1",
+      "pillar": "forge",
+      "prereq": [
+        "K1-03"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons/K1-06.json",
+      "lessonAvailable": true,
+      "media": [
+        "card",
+        "sim"
+      ],
+      "practice": "选型并解释",
+      "check": {
+        "type": "quiz",
+        "task": "保险丝选型与熔断",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "P10熔断链",
+      "spoilerLevel": 1,
+      "license": "CC-BY-4.0",
+      "status": "partial",
+      "priority": "P1"
+    },
+    {
+      "id": "K2-01",
+      "name": "高低电平与数字输入",
+      "oneLiner": "0和1也有脾气",
+      "layer": "L2",
+      "pillar": "forge",
+      "prereq": [
+        "K1-01"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons/K2-01.json",
+      "lessonAvailable": true,
+      "media": [
+        "card",
+        "sim"
+      ],
+      "practice": "判断逻辑电平",
+      "check": {
+        "type": "sim-task",
+        "task": "读电平",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "织网入口",
+      "spoilerLevel": 2,
+      "license": "CC-BY-4.0",
+      "status": "planned",
+      "priority": "P0"
+    },
+    {
+      "id": "K2-02",
+      "name": "PWM与占空比",
+      "oneLiner": "亮不亮看时间比例",
+      "layer": "L2",
+      "pillar": "forge",
+      "prereq": [
+        "K2-01"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons/K2-02.json",
+      "lessonAvailable": true,
+      "media": [
+        "sim",
+        "anim"
+      ],
+      "practice": "4通道解码",
+      "check": {
+        "type": "sim-task",
+        "task": "占空比解码",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "调光谜题",
+      "spoilerLevel": 2,
+      "license": "CC-BY-4.0",
+      "status": "planned",
+      "priority": "P0"
+    },
+    {
+      "id": "K2-03",
+      "name": "ADC采样与阈值",
+      "oneLiner": "模拟世界要划一条线",
+      "layer": "L2",
+      "pillar": "forge",
+      "prereq": [
+        "K2-01"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons/K2-03.json",
+      "lessonAvailable": true,
+      "media": [
+        "card",
+        "sim"
+      ],
+      "practice": "设阈值验证",
+      "check": {
+        "type": "sim-task",
+        "task": "调阈值",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "传感器台",
+      "spoilerLevel": 2,
+      "license": "CC-BY-4.0",
+      "status": "planned",
+      "priority": "P1"
+    },
+    {
+      "id": "K2-04",
+      "name": "上拉下拉与去抖",
+      "oneLiner": "按钮会抖，逻辑要稳",
+      "layer": "L2",
+      "pillar": "forge",
+      "prereq": [
+        "K2-01"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons/K2-04.json",
+      "lessonAvailable": true,
+      "media": [
+        "card",
+        "sim"
+      ],
+      "practice": "修正抖动",
+      "check": {
+        "type": "code",
+        "task": "去抖逻辑",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "按钮谜题",
+      "spoilerLevel": 2,
+      "license": "CC-BY-4.0",
+      "status": "planned",
+      "priority": "P1"
+    },
+    {
+      "id": "K2-05",
+      "name": "逻辑门与真值表",
+      "oneLiner": "门电路是判决书",
+      "layer": "L2",
+      "pillar": "forge",
+      "prereq": [
+        "K2-01"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons/K2-05.json",
+      "lessonAvailable": true,
+      "media": [
+        "card",
+        "sim"
+      ],
+      "practice": "填真值表",
+      "check": {
+        "type": "quiz",
+        "task": "真值表",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "校验室",
+      "spoilerLevel": 2,
+      "license": "CC-BY-4.0",
+      "status": "planned",
+      "priority": "P2"
+    },
+    {
+      "id": "K3-01",
+      "name": "第一个程序",
+      "oneLiner": "编辑校验运行，三步走",
+      "layer": "L3",
+      "pillar": "craft",
+      "prereq": [],
+      "gatePrereq": null,
+      "lessonRef": "lessons/K3-01.json",
+      "lessonAvailable": true,
+      "media": [
+        "card",
+        "ide"
+      ],
+      "practice": "跑通点灯",
+      "check": {
+        "type": "code",
+        "task": "跑通程序",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "虚拟IDE",
+      "spoilerLevel": 3,
+      "license": "CC-BY-4.0",
+      "status": "planned",
+      "priority": "P0"
+    },
+    {
+      "id": "K3-02",
+      "name": "GPIO输出与输入",
+      "oneLiner": "引脚是手，电是动作",
+      "layer": "L3",
+      "pillar": "craft",
+      "prereq": [
+        "K3-01"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons/K3-02.json",
+      "lessonAvailable": true,
+      "media": [
+        "card",
+        "ide"
+      ],
+      "practice": "输入控输出",
+      "check": {
+        "type": "code",
+        "task": "按钮点灯",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "虚拟开发板",
+      "spoilerLevel": 3,
+      "license": "CC-BY-4.0",
+      "status": "planned",
+      "priority": "P0"
+    },
+    {
+      "id": "K3-03",
+      "name": "变量类型与运算符",
+      "oneLiner": "变量是盒子，类型是形状",
+      "layer": "L3",
+      "pillar": "craft",
+      "prereq": [
+        "K3-01"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons/K3-03.json",
+      "lessonAvailable": true,
+      "media": [
+        "card",
+        "ide"
+      ],
+      "practice": "改到目标值",
+      "check": {
+        "type": "code",
+        "task": "填值",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "课节卡",
+      "spoilerLevel": 3,
+      "license": "CC-BY-4.0",
+      "status": "planned",
+      "priority": "P1"
+    },
+    {
+      "id": "K3-04",
+      "name": "条件与循环",
+      "oneLiner": "循环是让灯呼吸的肺",
+      "layer": "L3",
+      "pillar": "craft",
+      "prereq": [
+        "K3-03"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons/K3-04.json",
+      "lessonAvailable": true,
+      "media": [
+        "ide"
+      ],
+      "practice": "写呼吸灯",
+      "check": {
+        "type": "code",
+        "task": "循环实现",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "灯效谜题",
+      "spoilerLevel": 3,
+      "license": "CC-BY-4.0",
+      "status": "planned",
+      "priority": "P1"
+    },
+    {
+      "id": "K3-05",
+      "name": "定时器与延时",
+      "oneLiner": "时间也是参数",
+      "layer": "L3",
+      "pillar": "craft",
+      "prereq": [
+        "K3-04"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons/K3-05.json",
+      "lessonAvailable": true,
+      "media": [
+        "card",
+        "ide"
+      ],
+      "practice": "调周期",
+      "check": {
+        "type": "code",
+        "task": "调频率",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "PWM谜题",
+      "spoilerLevel": 3,
+      "license": "CC-BY-4.0",
+      "status": "planned",
+      "priority": "P1"
+    },
+    {
+      "id": "K3-06",
+      "name": "串口打印与调试",
+      "oneLiner": "看不见就打印出来",
+      "layer": "L3",
+      "pillar": "craft",
+      "prereq": [
+        "K3-02"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons/K3-06.json",
+      "lessonAvailable": true,
+      "media": [
+        "card",
+        "ide"
+      ],
+      "practice": "读日志定位",
+      "check": {
+        "type": "code",
+        "task": "修bug",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "虚拟串口",
+      "spoilerLevel": 3,
+      "license": "CC-BY-4.0",
+      "status": "planned",
+      "priority": "P1"
+    },
+    {
+      "id": "K4-01",
+      "name": "传感器模拟与数字",
+      "oneLiner": "传感器是城市的皮肤",
+      "layer": "L4",
+      "pillar": "weave",
+      "prereq": [
+        "K2-03"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons/K4-01.json",
+      "lessonAvailable": true,
+      "media": [
+        "card",
+        "sim"
+      ],
+      "practice": "选型读数",
+      "check": {
+        "type": "sim-task",
+        "task": "选对传感器",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "织网回廊",
+      "spoilerLevel": 4,
+      "license": "CC-BY-4.0",
+      "status": "planned",
+      "priority": "P1"
+    },
+    {
+      "id": "K4-02",
+      "name": "I2C地址与时序",
+      "oneLiner": "一条线两个地址，冲突就找冒名者",
+      "layer": "L4",
+      "pillar": "weave",
+      "prereq": [
+        "K3-02"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons/K4-02.json",
+      "lessonAvailable": true,
+      "media": [
+        "sim"
+      ],
+      "practice": "隔离找冲突",
+      "check": {
+        "type": "sim-task",
+        "task": "找冲突地址",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "地址迷宫",
+      "spoilerLevel": 4,
+      "license": "CC-BY-4.0",
+      "status": "planned",
+      "priority": "P1"
+    },
+    {
+      "id": "K4-03",
+      "name": "SPI主从与时钟",
+      "oneLiner": "时钟一响，数据排队",
+      "layer": "L4",
+      "pillar": "weave",
+      "prereq": [
+        "K3-02"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons/K4-03.json",
+      "lessonAvailable": true,
+      "media": [
+        "card",
+        "sim"
+      ],
+      "practice": "解释四线",
+      "check": {
+        "type": "quiz",
+        "task": "四线作用",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "显示模块",
+      "spoilerLevel": 4,
+      "license": "CC-BY-4.0",
+      "status": "planned",
+      "priority": "P2"
+    },
+    {
+      "id": "K4-04",
+      "name": "UART与串口协议",
+      "oneLiner": "波特率不对，全是乱码",
+      "layer": "L4",
+      "pillar": "weave",
+      "prereq": [
+        "K3-06"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons/K4-04.json",
+      "lessonAvailable": true,
+      "media": [
+        "card",
+        "sim"
+      ],
+      "practice": "还原报文",
+      "check": {
+        "type": "sim-task",
+        "task": "拼报文",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "报文谜题",
+      "spoilerLevel": 4,
+      "license": "CC-BY-4.0",
+      "status": "planned",
+      "priority": "P1"
+    },
+    {
+      "id": "K4-05",
+      "name": "显示与存储",
+      "oneLiner": "屏是眼睛，存储是记忆",
+      "layer": "L4",
+      "pillar": "weave",
+      "prereq": [
+        "K4-02"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons/K4-05.json",
+      "lessonAvailable": true,
+      "media": [
+        "ide",
+        "sim"
+      ],
+      "practice": "显示指定内容",
+      "check": {
+        "type": "code",
+        "task": "显示",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "织网任务",
+      "spoilerLevel": 4,
+      "license": "CC-BY-4.0",
+      "status": "planned",
+      "priority": "P2"
+    },
+    {
+      "id": "K4-06",
+      "name": "总线排障",
+      "oneLiner": "先分段，再二分",
+      "layer": "L4",
+      "pillar": "weave",
+      "prereq": [
+        "K4-02",
+        "K4-03"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons/K4-06.json",
+      "lessonAvailable": true,
+      "media": [
+        "sim"
+      ],
+      "practice": "二分找故障线",
+      "check": {
+        "type": "sim-task",
+        "task": "定位断线",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "织网案件",
+      "spoilerLevel": 4,
+      "license": "CC-BY-4.0",
+      "status": "planned",
+      "priority": "P1"
+    },
+    {
+      "id": "K5-01",
+      "name": "WiFi连接与状态",
+      "oneLiner": "联网先看状态灯",
+      "layer": "L5",
+      "pillar": "echo",
+      "prereq": [
+        "K3-02"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons/K5-01.json",
+      "lessonAvailable": true,
+      "media": [
+        "card",
+        "sim"
+      ],
+      "practice": "读状态排错",
+      "check": {
+        "type": "code",
+        "task": "连接并读状态",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "回声集市",
+      "spoilerLevel": 5,
+      "license": "CC-BY-4.0",
+      "status": "planned",
+      "priority": "P2"
+    },
+    {
+      "id": "K5-02",
+      "name": "HTTP与JSON",
+      "oneLiner": "请求要有格式，数据要有结构",
+      "layer": "L5",
+      "pillar": "echo",
+      "prereq": [
+        "K5-01"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons/K5-02.json",
+      "lessonAvailable": true,
+      "media": [
+        "card",
+        "sim"
+      ],
+      "practice": "构造请求",
+      "check": {
+        "type": "code",
+        "task": "发请求",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "数据交换台",
+      "spoilerLevel": 5,
+      "license": "CC-BY-4.0",
+      "status": "planned",
+      "priority": "P2"
+    },
+    {
+      "id": "K5-03",
+      "name": "MQTT主题负载QoS",
+      "oneLiner": "发对主题，才有人听",
+      "layer": "L5",
+      "pillar": "echo",
+      "prereq": [
+        "K5-01"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons/K5-03.json",
+      "lessonAvailable": true,
+      "media": [
+        "card",
+        "sim"
+      ],
+      "practice": "拼报文",
+      "check": {
+        "type": "sim-task",
+        "task": "拼发布订阅",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "报文拼图",
+      "spoilerLevel": 5,
+      "license": "CC-BY-4.0",
+      "status": "planned",
+      "priority": "P2"
+    },
+    {
+      "id": "K5-04",
+      "name": "断线重连与完整性",
+      "oneLiner": "网会断，账要对",
+      "layer": "L5",
+      "pillar": "echo",
+      "prereq": [
+        "K5-03"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons/K5-04.json",
+      "lessonAvailable": true,
+      "media": [
+        "sim"
+      ],
+      "practice": "找丢失报文",
+      "check": {
+        "type": "sim-task",
+        "task": "查丢包",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "异步残响",
+      "spoilerLevel": 5,
+      "license": "CC-BY-4.0",
+      "status": "planned",
+      "priority": "P3"
+    },
+    {
+      "id": "K6-01",
+      "name": "电机与驱动含续流",
+      "oneLiner": "电感断电会反咬一口",
+      "layer": "L6",
+      "pillar": "craft",
+      "prereq": [
+        "K1-06",
+        "K3-02"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons/K6-01.json",
+      "lessonAvailable": true,
+      "media": [
+        "card",
+        "sim"
+      ],
+      "practice": "选驱动加保护",
+      "check": {
+        "type": "sim-task",
+        "task": "加续流",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "M1反峰",
+      "spoilerLevel": 6,
+      "license": "CC-BY-4.0",
+      "status": "planned",
+      "priority": "P1"
+    },
+    {
+      "id": "K6-02",
+      "name": "PID概念",
+      "oneLiner": "先P起来，再看I和D",
+      "layer": "L6",
+      "pillar": "craft",
+      "prereq": [
+        "K6-01"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons/K6-02.json",
+      "lessonAvailable": true,
+      "media": [
+        "sim",
+        "anim"
+      ],
+      "practice": "调参稳定",
+      "check": {
+        "type": "sim-task",
+        "task": "调参",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "机械臂挑战",
+      "spoilerLevel": 6,
+      "license": "CC-BY-4.0",
+      "status": "planned",
+      "priority": "P2"
+    },
+    {
+      "id": "K6-03",
+      "name": "安全联锁与限位",
+      "oneLiner": "机器会伤人，联锁先装",
+      "layer": "L6",
+      "pillar": "craft",
+      "prereq": [
+        "K6-01"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons/K6-03.json",
+      "lessonAvailable": true,
+      "media": [
+        "card",
+        "sim"
+      ],
+      "practice": "设计联锁",
+      "check": {
+        "type": "quiz",
+        "task": "安全联锁设计",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "意匠工坊",
+      "spoilerLevel": 6,
+      "license": "CC-BY-4.0",
+      "status": "planned",
+      "priority": "P2"
+    },
+    {
+      "id": "K7-01",
+      "name": "AI是什么",
+      "oneLiner": "数据进，推理出，结果要对",
+      "layer": "L7",
+      "pillar": "symbiosis",
+      "prereq": [
+        "K3-01"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons/K7-01.json",
+      "lessonAvailable": true,
+      "media": [
+        "card",
+        "anim"
+      ],
+      "practice": "解释分类器",
+      "check": {
+        "type": "quiz",
+        "task": "解释行为",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "共生温室",
+      "spoilerLevel": 6,
+      "license": "CC-BY-4.0",
+      "status": "planned",
+      "priority": "P2"
+    },
+    {
+      "id": "K7-02",
+      "name": "视觉语音LLM边界",
+      "oneLiner": "AI会答，但不是神",
+      "layer": "L7",
+      "pillar": "symbiosis",
+      "prereq": [
+        "K7-01"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons/K7-02.json",
+      "lessonAvailable": true,
+      "media": [
+        "card",
+        "sim"
+      ],
+      "practice": "判断能力边界",
+      "check": {
+        "type": "explain",
+        "task": "边界判断",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "零的对话",
+      "spoilerLevel": 6,
+      "license": "CC-BY-4.0",
+      "status": "planned",
+      "priority": "P3"
+    },
+    {
+      "id": "K8-01",
+      "name": "需求拆解与项目计划",
+      "oneLiner": "先写清做什么，再动手",
+      "layer": "L8",
+      "pillar": "spire",
+      "prereq": [],
+      "gatePrereq": "gate-three-pillar-basics",
+      "lessonRef": "lessons/K8-01.json",
+      "lessonAvailable": true,
+      "media": [
+        "card"
+      ],
+      "practice": "写任务单",
+      "check": {
+        "type": "project",
+        "task": "任务单",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "回响塔委托",
+      "spoilerLevel": 7,
+      "license": "CC-BY-4.0",
+      "status": "planned",
+      "priority": "P3"
+    },
+    {
+      "id": "K8-02",
+      "name": "调试方法论与复盘",
+      "oneLiner": "先复现，再二分，最后复盘",
+      "layer": "L8",
+      "pillar": "spire",
+      "prereq": [
+        "K8-01"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons/K8-02.json",
+      "lessonAvailable": true,
+      "media": [
+        "card"
+      ],
+      "practice": "定位综合故障",
+      "check": {
+        "type": "project",
+        "task": "综合修复",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "终局项目",
+      "spoilerLevel": 7,
+      "license": "CC-BY-4.0",
+      "status": "planned",
+      "priority": "P3"
+    }
+  ],
+  "edges": [
+    {
+      "from": "K0-01",
+      "to": "K0-02",
+      "kind": "prereq"
+    },
+    {
+      "from": "K0-01",
+      "to": "K0-03",
+      "kind": "prereq"
+    },
+    {
+      "from": "K0-04",
+      "to": "K0-05",
+      "kind": "prereq"
+    },
+    {
+      "from": "K0-01",
+      "to": "K0-06",
+      "kind": "prereq"
+    },
+    {
+      "from": "K0-02",
+      "to": "K1-01",
+      "kind": "prereq"
+    },
+    {
+      "from": "K1-01",
+      "to": "K1-02",
+      "kind": "prereq"
+    },
+    {
+      "from": "K1-01",
+      "to": "K1-03",
+      "kind": "prereq"
+    },
+    {
+      "from": "K1-01",
+      "to": "K1-04",
+      "kind": "prereq"
+    },
+    {
+      "from": "K1-04",
+      "to": "K1-05",
+      "kind": "prereq"
+    },
+    {
+      "from": "K1-03",
+      "to": "K1-06",
+      "kind": "prereq"
+    },
+    {
+      "from": "K1-01",
+      "to": "K2-01",
+      "kind": "prereq"
+    },
+    {
+      "from": "K2-01",
+      "to": "K2-02",
+      "kind": "prereq"
+    },
+    {
+      "from": "K2-01",
+      "to": "K2-03",
+      "kind": "prereq"
+    },
+    {
+      "from": "K2-01",
+      "to": "K2-04",
+      "kind": "prereq"
+    },
+    {
+      "from": "K2-01",
+      "to": "K2-05",
+      "kind": "prereq"
+    },
+    {
+      "from": "K3-01",
+      "to": "K3-02",
+      "kind": "prereq"
+    },
+    {
+      "from": "K3-01",
+      "to": "K3-03",
+      "kind": "prereq"
+    },
+    {
+      "from": "K3-03",
+      "to": "K3-04",
+      "kind": "prereq"
+    },
+    {
+      "from": "K3-04",
+      "to": "K3-05",
+      "kind": "prereq"
+    },
+    {
+      "from": "K3-02",
+      "to": "K3-06",
+      "kind": "prereq"
+    },
+    {
+      "from": "K2-03",
+      "to": "K4-01",
+      "kind": "prereq"
+    },
+    {
+      "from": "K3-02",
+      "to": "K4-02",
+      "kind": "prereq"
+    },
+    {
+      "from": "K3-02",
+      "to": "K4-03",
+      "kind": "prereq"
+    },
+    {
+      "from": "K3-06",
+      "to": "K4-04",
+      "kind": "prereq"
+    },
+    {
+      "from": "K4-02",
+      "to": "K4-05",
+      "kind": "prereq"
+    },
+    {
+      "from": "K4-02",
+      "to": "K4-06",
+      "kind": "prereq"
+    },
+    {
+      "from": "K4-03",
+      "to": "K4-06",
+      "kind": "prereq"
+    },
+    {
+      "from": "K3-02",
+      "to": "K5-01",
+      "kind": "prereq"
+    },
+    {
+      "from": "K5-01",
+      "to": "K5-02",
+      "kind": "prereq"
+    },
+    {
+      "from": "K5-01",
+      "to": "K5-03",
+      "kind": "prereq"
+    },
+    {
+      "from": "K5-03",
+      "to": "K5-04",
+      "kind": "prereq"
+    },
+    {
+      "from": "K1-06",
+      "to": "K6-01",
+      "kind": "prereq"
+    },
+    {
+      "from": "K3-02",
+      "to": "K6-01",
+      "kind": "prereq"
+    },
+    {
+      "from": "K6-01",
+      "to": "K6-02",
+      "kind": "prereq"
+    },
+    {
+      "from": "K6-01",
+      "to": "K6-03",
+      "kind": "prereq"
+    },
+    {
+      "from": "K3-01",
+      "to": "K7-01",
+      "kind": "prereq"
+    },
+    {
+      "from": "K7-01",
+      "to": "K7-02",
+      "kind": "prereq"
+    },
+    {
+      "from": "gate-three-pillar-basics",
+      "to": "K8-01",
+      "kind": "gate"
+    },
+    {
+      "from": "K8-01",
+      "to": "K8-02",
+      "kind": "prereq"
+    }
+  ],
+  "stats": {
+    "total": 40,
+    "edges": 39,
+    "gates": 1,
+    "byLayer": {
+      "L0": 6,
+      "L1": 6,
+      "L2": 5,
+      "L3": 6,
+      "L4": 6,
+      "L5": 4,
+      "L6": 3,
+      "L7": 2,
+      "L8": 2
+    },
+    "byPillar": {
+      "foundation": 6,
+      "forge": 11,
+      "craft": 9,
+      "weave": 6,
+      "echo": 4,
+      "symbiosis": 2,
+      "spire": 2
+    },
+    "byStatus": {
+      "partial": 6,
+      "planned": 34,
+      "ready": 0
+    },
+    "byPriority": {
+      "P0": 11,
+      "P1": 15,
+      "P2": 10,
+      "P3": 4
+    },
+    "gateReferenced": true
+  }
+}

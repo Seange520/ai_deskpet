@@ -1,0 +1,139 @@
+{
+  "schema": "lesson.v1",
+  "lessonId": "L-K1-05",
+  "kp": {
+    "id": "K1-05",
+    "name": "接地与回流",
+    "layer": "L1",
+    "pillar": "forge",
+    "oneLiner": "回流的终点不是地，是电源",
+    "prereq": ["K1-04"],
+    "storyScene": "P10-GroundPoint",
+    "spoilerLevel": 1,
+    "license": "CC-BY-4.0",
+    "status": "sample"
+  },
+  "meta": {
+    "version": "0.1.0",
+    "updatedAt": "2026-11-09",
+    "author": "DSH-Lead",
+    "estimatedMinutes": 11,
+    "template": "six-segment-v1",
+    "gameMount": "street-p10"
+  },
+  "segments": [
+    {
+      "id": "hook",
+      "type": "hook",
+      "durationSec": 45,
+      "narration": "P10 街区的配电盒上有一个贴着「G0」的接点。摊主指着它：这不就是地线吗？接上就行。赫菲摇头：在这个系统里，G0 是电流回家的路，不是保命的保护地。它一松，灯就闪。",
+      "interaction": "choice",
+      "choices": [
+        { "id": "a", "text": "G0 是工作回流接点，不等于保护地 PE，先查它的连接与压降", "correct": true, "feedback": "对。回流的终点是电源负极，不是大地。" },
+        { "id": "b", "text": "G0 就是地线，随便接哪都一样", "correct": false, "feedback": "工作回流与保护地是两套概念，混接会埋下故障。" },
+        { "id": "c", "text": "灯闪是灯的问题，与 G0 无关", "correct": false, "feedback": "回流不良会让整条回路的电压跟着负载波动。" }
+      ]
+    },
+    {
+      "id": "explain",
+      "type": "explain",
+      "durationSec": 105,
+      "narration": "在 24V 安全特低电压的教学系统里，G0 是工作回流：电流从电源正极出发，经过负载，再沿 G0 回到电源负极，形成闭合回路。它不等于保护地 PE。保护地 PE 的作用是在绝缘失效时把危险电流引走，保护人；工作回流 G0 的作用是让电路正常工作，它本身可能带有电流和压降。回流路径上如果有接触电阻，负载两端拿到的电压就会下降，负载一大，压降更明显，灯就会闪。多接地点还会形成地环路：电流在不同接地点之间流动，引入干扰和不确定的压降。正确做法是单点接地：工作回流只在一个点汇合到电源，避免多点形成回路。测量时把表笔放在 G0 与参考点之间，正常压降应在 0.1 伏以内；超过 0.5 伏，基本可以判定回流路径接触不良。",
+      "media": [
+        {
+          "kind": "card",
+          "src": "assets/lessons/K1-05/g0-vs-pe.svg",
+          "alt": "24V 安全特低电压系统：G0 工作回流与 PE 保护地两套路径对比",
+          "status": "planned",
+          "license": "original",
+          "notes": "原创 SVG，UI 内联"
+        },
+        {
+          "kind": "sim",
+          "src": "assets/lessons/K1-05/g0-drop-sim.json",
+          "alt": "DOM 仿真：改变 G0 接点电阻，观察负载电压与灯亮度变化",
+          "status": "planned",
+          "license": "original",
+          "notes": "教学模型，非真实器件认证曲线"
+        }
+      ]
+    },
+    {
+      "id": "practice",
+      "type": "practice",
+      "durationSec": 210,
+      "task": "完成 4 个 G0/PE 判断，并在拓扑图上点出单点接地的正确示意：G0 只在电源端汇合，负载回流各自回到该点，不在地线上再连第二个接地点。",
+      "steps": [
+        { "action": "judge", "target": "g0-is-not-pe", "hint": "工作回流负责让电路工作" },
+        { "action": "judge", "target": "pe-protects-people", "hint": "保护地负责漏电时保护人" },
+        { "action": "judge", "target": "common-ground-drop", "hint": "共用回流会增加压降" },
+        { "action": "choose", "target": "single-point-topology", "hint": "只保留一个汇合点" }
+      ],
+      "failureHints": [
+        "把 G0 当成 PE：接线对象与保护逻辑都会错",
+        "多点接地：形成地环路，压降不可预测",
+        "只测负载电压不看回流压降：找不到真正原因"
+      ]
+    },
+    {
+      "id": "verify",
+      "type": "verify",
+      "durationSec": 150,
+      "checks": [
+        { "id": "v_g0", "type": "measurement", "probe": "g0_voltage", "expected": 0.05, "tolerance": 0.05, "unit": "V" },
+        { "id": "v_loop", "type": "quiz", "ask": "G0 与 PE 是不是同一个东西", "expected": ["no"] }
+      ],
+      "safety": "测量回流压降前先断电并验电；禁止把 G0 与 PE 短接来「消除干扰」；不得在带电回路上重新接线。"
+    },
+    {
+      "id": "transfer",
+      "type": "transfer",
+      "durationSec": 150,
+      "prompt": "系统里有两个接地点，测量时发现某个接地点之间竟然有电流。最可能的原因与正确处理是？",
+      "options": [
+        { "id": "loop", "text": "形成地环路；改为单点接地，去掉多余接地点", "correct": true, "why": "多接地点之间的电位差会驱动环流，单点接地才能消除。" },
+        { "id": "bigger-wire", "text": "把接地线换成更粗的就行", "correct": false, "why": "加粗只降低阻抗，环路依然存在。" },
+        { "id": "floating", "text": "把所有接地点都断开", "correct": false, "why": "回流没了，设备根本不工作，还可能失去保护。" }
+      ],
+      "solution": "两个接地点之间存在电位差，就会通过地线形成环流。处理方式是单点接地：只保留一个回流汇合点，其他接地点断开或改为不参与回流的保护地。"
+    },
+    {
+      "id": "recap",
+      "type": "recap",
+      "durationSec": 30,
+      "lines": [
+        "G0 是工作回流，PE 是保护地，两者不是一回事。",
+        "回流路径有接触电阻，灯就会闪、负载电压就会掉。",
+        "单点接地消环路；回流压降超 0.5 伏判回流不良。"
+      ]
+    }
+  ],
+  "checks": [
+    { "id": "q1", "type": "quiz", "weight": 0.35, "pass": "4 个 G0/PE 判断全部正确" },
+    { "id": "q2", "type": "measurement", "weight": 0.35, "pass": "G0 压降测量与判档正确" },
+    { "id": "q3", "type": "quiz", "weight": 0.3, "pass": "地环路修复选择单点接地" }
+  ],
+  "assessment": {
+    "masteryWeights": { "hook": 0.1, "practice": 0.3, "verify": 0.35, "transfer": 0.25 },
+    "passScore": 0.7,
+    "retentionDays": [1, 3, 7, 21]
+  },
+  "storyBinding": {
+    "scene": "P10-GroundPoint",
+    "npc": "赫菲",
+    "dialogueHint": "电流不是被地吞掉了，它只是绕一圈回到电源。",
+    "worldPhenomenon": "P10 街区路灯闪，G0 接点松动，负载一启动电压就掉。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["第七校验", "熵", "残响", "第一编译者", "网页游戏"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true,
+    "noSacrificeGlorification": true
+  },
+  "safety": {
+    "requiresPowerOffBeforeRewire": true,
+    "voltageModeOnlyForLive": true,
+    "resistanceModeBlockedWhenLive": true,
+    "currentModeRequiresSeries": true
+  }
+}

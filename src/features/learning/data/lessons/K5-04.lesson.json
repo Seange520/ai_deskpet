@@ -1,0 +1,139 @@
+{
+  "schema": "lesson.v1",
+  "lessonId": "L-K5-04",
+  "kp": {
+    "id": "K5-04",
+    "name": "断线重连与完整性",
+    "layer": "L5",
+    "pillar": "echo",
+    "oneLiner": "网会断，账要对",
+    "prereq": ["K5-03"],
+    "storyScene": "P10-EchoLedger",
+    "spoilerLevel": 5,
+    "license": "CC-BY-4.0",
+    "status": "planned"
+  },
+  "meta": {
+    "version": "0.1.0",
+    "updatedAt": "2026-11-09",
+    "author": "DSH-Lead",
+    "estimatedMinutes": 11,
+    "template": "six-segment-v1",
+    "gameMount": "echo-ledger"
+  },
+  "segments": [
+    {
+      "id": "hook",
+      "type": "hook",
+      "durationSec": 40,
+      "narration": "回声集市的账单只到一半，摊主说网断了又自己连上了。你手里有 5 条报文，其中一部分可能重复——你怎么保证既不漏、也不多记账？",
+      "interaction": "choice",
+      "choices": [
+        { "id": "a", "text": "全部重发一遍，多了总比漏了好", "correct": false, "feedback": "重复记账会让账目翻倍，多和漏一样错。" },
+        { "id": "b", "text": "先查丢了哪几条，再用幂等键重放并确认", "correct": true, "feedback": "对。先定位丢包，再保证重放不重复。" },
+        { "id": "c", "text": "断网就等，不重发", "correct": false, "feedback": "漏掉的报文不会自己回来。" }
+      ]
+    },
+    {
+      "id": "explain",
+      "type": "explain",
+      "durationSec": 100,
+      "narration": "可靠传输的三件事：重连（断线后按退避重试，别一秒重连十次）、确认（收到 ack 才算送达）、去重（QoS 1 是「至少一次」，可能重复；用幂等键或序号把重复的扔掉）。发送端保留本地队列，重放时按原顺序；接收端对重复的请求返回同样的结果，但只入账一次。网络会断，账本不能乱。",
+      "media": [
+        {
+          "kind": "sim",
+          "src": "assets/lessons/K5-04/packet-loss.json",
+          "alt": "20% 丢包模拟：5 条报文、重连退避与幂等去重的状态面板",
+          "status": "planned",
+          "license": "original",
+          "notes": "确定性仿真，丢包率与重试为教学口径"
+        },
+        {
+          "kind": "animation",
+          "src": "assets/lessons/K5-04/reconnect-flow.mp4",
+          "alt": "12 秒无旁白动画：断电—重连—补发—收到 ack 的完整流程",
+          "status": "planned",
+          "license": "original",
+          "notes": "原创动画，字幕"
+        }
+      ]
+    },
+    {
+      "id": "practice",
+      "type": "practice",
+      "durationSec": 210,
+      "task": "在 20% 丢包的虚拟链路上，把 5 条账单报文完整送达，记录重试次数与重复次数。",
+      "steps": [
+        { "action": "send", "target": "invoice-queue", "hint": "先发一轮，看看哪些没有 ack" },
+        { "action": "retry", "target": "invoice-retry", "hint": "只补发未 ack 的，别整队重发" },
+        { "action": "inspect", "target": "invoice-ledger", "hint": "核对入账条数与报文条数" }
+      ],
+      "failureHints": [
+        "整队重发：5 条变 8 条入账，重复 3 条",
+        "重连不退避：一秒内重连十次，服务端直接拒绝",
+        "只重发不检查 ack：看起来发出去了，其实仍在丢"
+      ]
+    },
+    {
+      "id": "verify",
+      "type": "verify",
+      "durationSec": 150,
+      "checks": [
+        { "id": "v_lost", "type": "measurement", "probe": "packets_lost", "expected": 0, "tolerance": 0, "unit": "packets" },
+        { "id": "v_dup", "type": "measurement", "probe": "packets_duplicated", "expected": 0, "tolerance": 0, "unit": "packets" },
+        { "id": "v_retry", "type": "measurement", "probe": "reconnect_attempts", "expected": 2, "tolerance": 1, "unit": "times" }
+      ],
+      "safety": "全流程为教学仿真，不接入真实服务器；真实联网须校验证书与权限。"
+    },
+    {
+      "id": "transfer",
+      "type": "transfer",
+      "durationSec": 150,
+      "prompt": "断网、重复、乱序三种现象，分别主要用哪个手段兜底？",
+      "options": [
+        { "id": "a", "text": "断网=重连退避；重复=幂等键；乱序=序号+缓冲", "correct": true, "why": "三种现象对应三种机制，混用会补错方向。" },
+        { "id": "b", "text": "全部靠加长超时", "correct": false, "why": "超时只能发现，不能修复重复与乱序。" },
+        { "id": "c", "text": "全部靠 TCP，TCP 不会出这些问题", "correct": false, "why": "TCP 保证字节序，不保证应用层不重复入账。" }
+      ],
+      "solution": "先分类再兜底：断网重连、重复幂等、乱序排序。"
+    },
+    {
+      "id": "recap",
+      "type": "recap",
+      "durationSec": 30,
+      "lines": [
+        "网会断，账要对。",
+        "QoS 1 可能重复，重复用幂等键消掉。",
+        "先定位丢包，再补发；别整队重发。"
+      ]
+    }
+  ],
+  "checks": [
+    { "id": "s1", "type": "sim-task", "weight": 0.45, "pass": "5 条报文全部 ack、记录重试次数" },
+    { "id": "m1", "type": "measurement", "weight": 0.3, "pass": "丢失 0、重复 0、重连 ≤3 次" },
+    { "id": "q1", "type": "quiz", "weight": 0.25, "pass": "能区分重连/幂等/序号三个手段的职责" }
+  ],
+  "assessment": {
+    "masteryWeights": { "hook": 0.1, "practice": 0.3, "verify": 0.3, "transfer": 0.3 },
+    "passScore": 0.7,
+    "retentionDays": [1, 3, 7, 21]
+  },
+  "storyBinding": {
+    "scene": "P10-EchoLedger",
+    "npc": "弥",
+    "dialogueHint": "网会断，账要对；重复比丢失更隐蔽。",
+    "worldPhenomenon": "回声集市的账本偶尔会多出一行重复的委托。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["第七校验", "熵", "残响", "第一编译者", "网页游戏"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true,
+    "noSacrificeGlorification": true
+  },
+  "safety": {
+    "requiresPowerOffBeforeRewire": true,
+    "voltageModeOnlyForLive": true,
+    "resistanceModeBlockedWhenLive": true,
+    "currentModeRequiresSeries": true
+  }
+}

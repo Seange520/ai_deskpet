@@ -1,0 +1,139 @@
+{
+  "schema": "lesson.v1",
+  "lessonId": "L-K3-06",
+  "kp": {
+    "id": "K3-06",
+    "name": "串口打印与调试",
+    "layer": "L3",
+    "pillar": "craft",
+    "oneLiner": "看不见就打印出来",
+    "prereq": ["K3-02"],
+    "storyScene": "P10-ForgeSerial",
+    "spoilerLevel": 3,
+    "license": "CC-BY-4.0",
+    "status": "planned"
+  },
+  "meta": {
+    "version": "0.1.0",
+    "updatedAt": "2026-11-09",
+    "author": "DSH-Lead",
+    "estimatedMinutes": 11,
+    "template": "six-segment-v1",
+    "gameMount": "forge-serial"
+  },
+  "segments": [
+    {
+      "id": "hook",
+      "type": "hook",
+      "durationSec": 40,
+      "narration": "灯不亮，代码看起来「没问题」。赫菲递来一根调试线：看不见的变量，怎么让它开口说话？",
+      "interaction": "choice",
+      "choices": [
+        { "id": "a", "text": "把代码重写一遍，说不定就好了", "correct": false, "feedback": "没有观察就没有假设，重写只是碰运气。" },
+        { "id": "b", "text": "打开串口，把关键变量和状态打出来", "correct": true, "feedback": "对。先让程序说出它看见了什么。" },
+        { "id": "c", "text": "直接换一块新板子", "correct": false, "feedback": "换板子跳过证据，问题可能还在。" }
+      ]
+    },
+    {
+      "id": "explain",
+      "type": "explain",
+      "durationSec": 100,
+      "narration": "串口是程序对外的窗口：Serial.begin(115200) 约定速度，Serial.println() 输出一行。波特率不对就是一堆乱码；打印位置不对就永远只看到启动那一次。调试打印要打三样东西：走到哪一步、关键变量是多少、状态机在哪个态。打印不是越多越好，太多会拖慢主循环。",
+      "media": [
+        {
+          "kind": "card",
+          "src": "assets/lessons/K3-06/serial-card.svg",
+          "alt": "串口初始化、波特率、打印位置的检查卡片",
+          "status": "planned",
+          "license": "original",
+          "notes": "原创卡片，UI 内联"
+        },
+        {
+          "kind": "ide",
+          "src": "assets/lessons/K3-06/serial-debug.ide.json",
+          "alt": "可运行的虚拟串口示例：打印 state 与 cycle 计数",
+          "status": "planned",
+          "license": "original",
+          "notes": "虚拟 IDE 片段，非真实烧录"
+        }
+      ]
+    },
+    {
+      "id": "practice",
+      "type": "practice",
+      "durationSec": 210,
+      "task": "修复虚拟串口里的 bug：把 state 打印成 sate 导致日志搜不到，修好后让日志出现 state=1。",
+      "steps": [
+        { "action": "code", "target": "fix-print-bug", "hint": "打印的变量名拼错，日志里就不会出现 state" },
+        { "action": "open", "target": "serial-monitor", "hint": "先确认波特率与代码一致" },
+        { "action": "verify", "target": "state-1-line", "hint": "日志里应当出现 state=1 且只出现一次" }
+      ],
+      "failureHints": [
+        "波特率 9600 对 115200：屏幕一片乱码",
+        "打印写在 setup 里：只看到上电那一次，看不到循环状态",
+        "打印太多、没有关键字段：日志刷屏但找不到 state"
+      ]
+    },
+    {
+      "id": "verify",
+      "type": "verify",
+      "durationSec": 150,
+      "checks": [
+        { "id": "v_baud", "type": "measurement", "probe": "serial_baud", "expected": 115200, "tolerance": 0, "unit": "baud" },
+        { "id": "v_state", "type": "measurement", "probe": "serial_state_value", "expected": 1, "tolerance": 0, "unit": "" },
+        { "id": "v_lines", "type": "measurement", "probe": "serial_state_lines", "expected": 3, "tolerance": 0, "unit": "lines" }
+      ],
+      "safety": "教学仿真在虚拟串口中运行；真实操作须断电接线、注意串口电平与共地。"
+    },
+    {
+      "id": "transfer",
+      "type": "transfer",
+      "durationSec": 150,
+      "prompt": "串口不出字、出乱码、只出一行，三种现象分别先怀疑什么？",
+      "options": [
+        { "id": "a", "text": "不出字=串口初始化/接线；乱码=波特率；只一行=打印位置", "correct": true, "why": "现象与最可能的根因一一对应。" },
+        { "id": "b", "text": "三种都先重写代码", "correct": false, "why": "没有先观察就没有证据。" },
+        { "id": "c", "text": "三种都先换电脑", "correct": false, "why": "换环境会掩盖问题，也可能让问题消失一会儿。" }
+      ],
+      "solution": "先看窗口有没有配好（波特率/端口），再看程序有没有走到打印那一行。"
+    },
+    {
+      "id": "recap",
+      "type": "recap",
+      "durationSec": 30,
+      "lines": [
+        "看不见就打印出来。",
+        "先对齐波特率，再用关键变量定位。",
+        "打印要打在会重复执行的位置。"
+      ]
+    }
+  ],
+  "checks": [
+    { "id": "c1", "type": "code", "weight": 0.4, "pass": "修复打印变量名，日志出现 state=1" },
+    { "id": "m1", "type": "measurement", "weight": 0.3, "pass": "波特率 115200、日志状态行 3 行、state=1" },
+    { "id": "q1", "type": "quiz", "weight": 0.3, "pass": "能由「不出字/乱码/只一行」判断检查顺序" }
+  ],
+  "assessment": {
+    "masteryWeights": { "hook": 0.1, "practice": 0.3, "verify": 0.3, "transfer": 0.3 },
+    "passScore": 0.7,
+    "retentionDays": [1, 3, 7, 21]
+  },
+  "storyBinding": {
+    "scene": "P10-ForgeSerial",
+    "npc": "赫菲",
+    "dialogueHint": "看不见就打印出来；别猜，让它说。",
+    "worldPhenomenon": "熔炉外街的维护屏背面拖着一根从未用过的调试线。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["第七校验", "熵", "残响", "第一编译者", "网页游戏"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true,
+    "noSacrificeGlorification": true
+  },
+  "safety": {
+    "requiresPowerOffBeforeRewire": true,
+    "voltageModeOnlyForLive": true,
+    "resistanceModeBlockedWhenLive": true,
+    "currentModeRequiresSeries": true
+  }
+}

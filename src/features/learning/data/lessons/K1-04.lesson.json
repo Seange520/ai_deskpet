@@ -1,0 +1,144 @@
+{
+  "schema": "lesson.v1",
+  "lessonId": "L-K1-04",
+  "kp": {
+    "id": "K1-04",
+    "name": "压降线损与接触电阻",
+    "layer": "L1",
+    "pillar": "forge",
+    "oneLiner": "远端不亮，先量两端",
+    "prereq": ["K1-01"],
+    "storyScene": "P10-Street-G0-Return",
+    "spoilerLevel": 1,
+    "license": "CC-BY-4.0",
+    "status": "sample"
+  },
+  "meta": {
+    "version": "0.1.0",
+    "updatedAt": "2026-11-09",
+    "author": "DSH-Lead",
+    "estimatedMinutes": 13,
+    "template": "six-segment-v1",
+    "gameMount": "street-p10"
+  },
+  "segments": [
+    {
+      "id": "hook",
+      "type": "hook",
+      "durationSec": 50,
+      "narration": "熔炉外街的夜宵摊说，最远那盏灯总比别的暗一截。摊主猜是灯旧了，赫菲却说：先别换灯，量两端。同一根线，为什么远端会矮一截？",
+      "interaction": "choice",
+      "choices": [
+        { "id": "a", "text": "量电源端和远端灯座的电压，比较差值", "correct": true, "feedback": "对。压降要靠两端对比，不靠猜。" },
+        { "id": "b", "text": "直接换一根更粗的线", "correct": false, "feedback": "没定位就换线，可能白花成本，接头问题还在。" },
+        { "id": "c", "text": "把电源电压调高来补偿", "correct": false, "feedback": "越过额定电压会烧灯，也会掩盖接触不良。" }
+      ]
+    },
+    {
+      "id": "explain",
+      "type": "explain",
+      "durationSec": 100,
+      "narration": "导线不是理想导体，每一米都有电阻；电流流过导线，就会按 U = I × R 掉一部分电压，这叫压降。接头比导线更容易出问题：氧化、松动都会让接触电阻变大，几安培的电流经过它，压降能到零点几伏。远端灯暗，常见原因不是灯，而是线太细、线太长或接点松。判断规则：压降超过额定电压的 5% 就要查，超过 10% 必须修。",
+      "media": [
+        {
+          "kind": "diagram",
+          "src": "assets/lessons/K1-04/drop-segments.svg",
+          "alt": "24 伏电源经两段导线与两个接点接到远端灯，标注每段压降",
+          "status": "planned",
+          "license": "original",
+          "notes": "原创 SVG，标注 24.0 / 23.1 / 0.9 伏三处读数"
+        },
+        {
+          "kind": "sim",
+          "src": "assets/lessons/K1-04/drop-inspector.html",
+          "alt": "可交互压降排查模拟：移动表笔测各接点，结果实时显示",
+          "status": "planned",
+          "license": "original",
+          "notes": "复用 P10 配电盒面板组件与电压档逻辑，只做教学简化"
+        }
+      ]
+    },
+    {
+      "id": "practice",
+      "type": "practice",
+      "durationSec": 230,
+      "task": "在 P10 街区教学面板上，沿 24V 供电支路依次测量：电源端、远端灯座、G0 回流接点对电源负极的电压；用压降公式判断哪一段异常，再断电检查接点。",
+      "steps": [
+        { "action": "probe", "target": "V_supply", "mode": "voltage", "hint": "红笔接 24V+，黑笔接电源负极" },
+        { "action": "probe", "target": "V_far_lamp", "mode": "voltage", "hint": "表笔跨接在灯座两端" },
+        { "action": "probe", "target": "V_g0_return", "mode": "voltage", "hint": "测回流接点对电源负极的压差" },
+        { "action": "compute", "target": "drop_total", "hint": "电源电压 − 远端灯电压" },
+        { "action": "power_off", "target": "g0_contact", "hint": "先断电，再摸接点/测电阻" }
+      ],
+      "failureHints": [
+        "带电测电阻档：联锁阻止并记错，先断电",
+        "表笔跨错位置：读数接近 0 或满量程，回到接线图核对",
+        "只看灯不测接点：会漏掉接触电阻"
+      ]
+    },
+    {
+      "id": "verify",
+      "type": "verify",
+      "durationSec": 160,
+      "checks": [
+        { "id": "v_supply", "type": "measurement", "probe": "V_supply", "expected": 24.0, "tolerance": 0.2, "unit": "V" },
+        { "id": "v_far", "type": "measurement", "probe": "V_far_lamp", "expected": 23.1, "tolerance": 0.2, "unit": "V" },
+        { "id": "v_g0", "type": "measurement", "probe": "V_g0_return", "expected": 0.9, "tolerance": 0.1, "unit": "V" },
+        { "id": "c_contact", "type": "computed", "formula": "V_g0_return / I_load (I=4A)", "expected": 0.225, "tolerance": 0.03, "unit": "Ω" },
+        { "id": "j_verdict", "type": "sim-task", "probe": "diagnosis", "expected": "G0 回流接点接触电阻过大", "tolerance": 0, "unit": "text" }
+      ],
+      "safety": "测电压可以带电；测接触电阻必须先断电并确认无残余电荷。任何改线动作前先断电。"
+    },
+    {
+      "id": "transfer",
+      "type": "transfer",
+      "durationSec": 160,
+      "prompt": "一条 24V 灯路，负载电流 2A，导线总电阻 0.10Ω，两个接点合计接触电阻 0.05Ω。总压降是多少？若灯允许 ±10%，这条线路合格吗？",
+      "options": [
+        { "id": "0.30_p", "text": "0.30V，合格（<2.4V）", "correct": true, "why": "2A × 0.15Ω = 0.30V，小于 24V 的 10%（2.4V），在容差内。" },
+        { "id": "0.30_f", "text": "0.30V，不合格", "correct": false, "why": "0.30V 只占 24V 的 1.25%，远低于 10% 阈值。" },
+        { "id": "3.0_p", "text": "3.0V，合格", "correct": false, "why": "漏乘了 10 倍：0.15Ω × 2A 应为 0.30V。" }
+      ],
+      "solution": "U = I × R_total = 2A × (0.10Ω + 0.05Ω) = 0.30V。阈值 = 24V × 10% = 2.4V，0.30V < 2.4V，合格。"
+    },
+    {
+      "id": "recap",
+      "type": "recap",
+      "durationSec": 30,
+      "lines": [
+        "压降 = 电流 × 电阻，导线和接点都有电阻。",
+        "远端异常先量两端，再分段定位到接点。",
+        "电压档可以带电测；电阻档与改线必须先断电。"
+      ]
+    }
+  ],
+  "checks": [
+    { "id": "hook-diagnose", "type": "quiz", "weight": 0.1, "pass": "选择先测两端" },
+    { "id": "sim-drop", "type": "sim-task", "weight": 0.25, "pass": "完成三处测量并计算总压降" },
+    { "id": "verify-drop", "type": "measurement", "weight": 0.4, "pass": "四项测量/计算通过且诊断正确" },
+    { "id": "transfer-drop", "type": "numeric-choice", "weight": 0.25, "pass": "算出 0.30V 并判断合格" }
+  ],
+  "assessment": {
+    "masteryWeights": { "hook": 0.1, "practice": 0.25, "verify": 0.4, "transfer": 0.25 },
+    "passScore": 0.7,
+    "retentionDays": [1, 3, 7, 21]
+  },
+  "storyBinding": {
+    "scene": "P10-Street-G0-Return",
+    "npc": "夜宵摊老板",
+    "dialogueHint": "灯不是坏了，是电走到我这儿就瘦了一圈。",
+    "worldPhenomenon": "远端灯暗、压缩机启动时更明显；根因是 G0 回流接点氧化。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["第七校验", "熵", "残响", "第一编译者", "网页游戏"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true,
+    "noSacrificeGlorification": true
+  },
+  "safety": {
+    "requiresPowerOffBeforeRewire": true,
+    "voltageModeOnlyForLive": true,
+    "resistanceModeBlockedWhenLive": true,
+    "currentModeRequiresSeries": true
+  }
+}

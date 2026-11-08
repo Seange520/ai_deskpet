@@ -1,0 +1,141 @@
+{
+  "schema": "lesson.v1",
+  "lessonId": "L-K1-02",
+  "kp": {
+    "id": "K1-02",
+    "name": "并联与分流",
+    "layer": "L1",
+    "pillar": "forge",
+    "oneLiner": "两条路都走，电阻小的多走",
+    "prereq": ["K1-01"],
+    "storyScene": "TrainingGround",
+    "spoilerLevel": 1,
+    "license": "CC-BY-4.0",
+    "status": "sample"
+  },
+  "meta": {
+    "version": "0.1.0",
+    "updatedAt": "2026-11-09",
+    "author": "DSH-Lead",
+    "estimatedMinutes": 11,
+    "template": "six-segment-v1",
+    "gameMount": "street-p10"
+  },
+  "segments": [
+    {
+      "id": "hook",
+      "type": "hook",
+      "durationSec": 40,
+      "narration": "训练场里两盏路灯接在同一个 24 伏电源上。一盏亮，一盏暗。摊主挠头：同样的电，为什么它们不一样？赫菲把两张接线图摊开：因为电走到岔路口，会自己挑路。",
+      "interaction": "choice",
+      "choices": [
+        { "id": "a", "text": "两条支路并联，电阻小的分到更多电流", "correct": true, "feedback": "对。并联电压相同，电流按支路电阻分配。" },
+        { "id": "b", "text": "电只走一条路，另一条是备用的", "correct": false, "feedback": "并联支路同时有电流，断路才会让另一条路「接班」。" },
+        { "id": "c", "text": "亮的那盏省电，所以更亮", "correct": false, "feedback": "省电和亮不亮不是同一回事，要看实际功率。" }
+      ]
+    },
+    {
+      "id": "explain",
+      "type": "explain",
+      "durationSec": 100,
+      "narration": "并联的意思是几条支路并排接在相同的两个节点之间，所以每条支路两端的电压相同。电流走到岔路口，根据各支路的电阻分配：支路电阻小，分到的电流大；支路电阻大，分到的电流小。每条支路的电流仍服从欧姆定律 I=U/R，总电流是各支路电流之和。并联还有两个重要性质：一条支路断路，其他支路照常工作；但一条支路短路，等于把电源两端直接连起来，总电流会急剧上升，把电源拖垮。所以并联回路里，保险丝和断线判断都要看总电流与各支路的分工。",
+      "media": [
+        {
+          "kind": "diagram",
+          "src": "assets/lessons/K1-02/parallel-branches.svg",
+          "alt": "并联双支路：24V 电源、两支路 12Ω 与 24Ω、电流 2A 与 1A、总电流 3A",
+          "status": "planned",
+          "license": "original",
+          "notes": "原创 SVG，UI 内联"
+        },
+        {
+          "kind": "animation",
+          "src": "assets/lessons/K1-02/parallel-current.mp4",
+          "alt": "24 秒无旁白动画：电流分流、总电流相加、一条支路断开另一条继续工作，含字幕",
+          "status": "planned",
+          "license": "original",
+          "notes": "需配 SRT 字幕与静音回退图"
+        }
+      ]
+    },
+    {
+      "id": "practice",
+      "type": "practice",
+      "durationSec": 210,
+      "task": "一条 24V 总线带两条并联支路：A 支路 12Ω，B 支路 24Ω。① 算两条支路电流 ② 算总电流 ③ 判断总线保险丝至少该选多大 ④ 若 A 支路断线，B 支路电流会怎么变？",
+      "steps": [
+        { "action": "calc", "target": "branch-a", "hint": "I=U/R，24÷12=2A" },
+        { "action": "calc", "target": "branch-b", "hint": "24÷24=1A" },
+        { "action": "calc", "target": "total-current", "hint": "并联总电流是各支路之和" },
+        { "action": "select", "target": "fuse-rating", "hint": "3A 负载至少留 1.2 倍裕量" },
+        { "action": "predict", "target": "branch-a-open", "hint": "并联支路互不影响电压" }
+      ],
+      "failureHints": [
+        "把支路电流当成总电流：总电流要相加",
+        "并联当串联算：串联电流相同，并联电压相同",
+        "支路断线就认为另一条也灭：并联支路各自独立"
+      ]
+    },
+    {
+      "id": "verify",
+      "type": "verify",
+      "durationSec": 150,
+      "checks": [
+        { "id": "v_branch_a", "type": "measurement", "probe": "branch_a_voltage", "expected": 24.0, "tolerance": 0.5, "unit": "V" },
+        { "id": "v_branch_b", "type": "measurement", "probe": "branch_b_voltage", "expected": 24.0, "tolerance": 0.5, "unit": "V" },
+        { "id": "v_total", "type": "measurement", "probe": "total_current", "expected": 3.0, "tolerance": 0.15, "unit": "A" }
+      ],
+      "safety": "仿真内才允许带载测量；真实接线前必须断电，电流档要串入回路，禁止并联在电源两端。"
+    },
+    {
+      "id": "transfer",
+      "type": "transfer",
+      "durationSec": 150,
+      "prompt": "训练场两盏灯并联，其中一盏不亮。用通断档检查，下列哪种做法最有效？",
+      "options": [
+        { "id": "measure-all", "text": "通断档逐段检查不亮那盏灯的支路，找断点", "correct": true, "why": "先定位支路断点，不必拆整条总线。" },
+        { "id": "replace-lamp", "text": "直接换灯，换好为止", "correct": false, "why": "灯可能没坏，断线在别处。" },
+        { "id": "raise-voltage", "text": "把电源电压调高，把灯顶亮", "correct": false, "why": "并联支路电压由电源决定，调高会伤其他支路。" }
+      ],
+      "solution": "并联支路各自独立，先在不亮的那条支路上用通断档分段测，找到断点或接触不良的位置，再决定修复方式。"
+    },
+    {
+      "id": "recap",
+      "type": "recap",
+      "durationSec": 30,
+      "lines": [
+        "并联看电压：各支路电压相同。",
+        "电流按电阻分配：电阻小的支路分得多。",
+        "支路断线互不影响；支路短路会拖垮电源。"
+      ]
+    }
+  ],
+  "checks": [
+    { "id": "q1", "type": "numeric-choice", "weight": 0.3, "pass": "两条支路电流 2A/1A、总电流 3A 正确" },
+    { "id": "q2", "type": "measurement", "weight": 0.4, "pass": "两支路电压 24±0.5V、总电流 3±0.15A" },
+    { "id": "q3", "type": "quiz", "weight": 0.3, "pass": "断线定位选择逐段通断检查" }
+  ],
+  "assessment": {
+    "masteryWeights": { "hook": 0.1, "practice": 0.3, "verify": 0.4, "transfer": 0.2 },
+    "passScore": 0.7,
+    "retentionDays": [1, 3, 7, 21]
+  },
+  "storyBinding": {
+    "scene": "TrainingGround",
+    "npc": "赫菲",
+    "dialogueHint": "并联不是两条路选一条，是两条路一起走。",
+    "worldPhenomenon": "训练场两盏并联路灯一亮一暗，摊主以为电源坏了。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["第七校验", "熵", "残响", "第一编译者", "网页游戏"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true,
+    "noSacrificeGlorification": true
+  },
+  "safety": {
+    "requiresPowerOffBeforeRewire": true,
+    "voltageModeOnlyForLive": true,
+    "resistanceModeBlockedWhenLive": true,
+    "currentModeRequiresSeries": true
+  }
+}

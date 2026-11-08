@@ -1,0 +1,140 @@
+{
+  "schema": "lesson.v1",
+  "lessonId": "L-K4-05",
+  "kp": {
+    "id": "K4-05",
+    "name": "显示与存储",
+    "layer": "L4",
+    "pillar": "weave",
+    "oneLiner": "屏是眼睛，存储是记忆",
+    "prereq": ["K4-02"],
+    "storyScene": "P10-WeaveTask",
+    "spoilerLevel": 4,
+    "license": "CC-BY-4.0",
+    "status": "planned"
+  },
+  "meta": {
+    "version": "0.1.0",
+    "updatedAt": "2026-11-09",
+    "author": "DSH-Lead",
+    "estimatedMinutes": 11,
+    "template": "six-segment-v1",
+    "gameMount": "weave-corridor"
+  },
+  "segments": [
+    {
+      "id": "hook",
+      "type": "hook",
+      "durationSec": 35,
+      "narration": "织网任务台上，屏幕里的「24.0」少了一笔，掉电后设置又全丢。丝问：先修眼睛，还是先修记忆？",
+      "interaction": "choice",
+      "choices": [
+        { "id": "a", "text": "先看显示内容与坐标是否正确，再查存储", "correct": true, "feedback": "对。先分清「看不清」还是「记不住」。" },
+        { "id": "b", "text": "两个都重写，反正代码不长", "correct": false, "feedback": "重写不定位，下次还会坏。" },
+        { "id": "c", "text": "把屏幕和存储芯片都换新", "correct": false, "feedback": "换件是最后手段，不是第一步。" }
+      ]
+    },
+    {
+      "id": "explain",
+      "type": "explain",
+      "durationSec": 100,
+      "narration": "显示靠「帧缓冲 + 字库 + 坐标」：先算像素，再按页/列写进显存，屏幕才亮。存储分两类：EEPROM 按字节擦写、寿命约十万次，适合少量设置；Flash 按扇区擦、寿命有限，适合大块数据，写入前要整块擦。掉电丢失多半是「写没落盘」或「写到了 RAM」。所以要点是：屏幕写对位置，存储写对类型，还要考虑擦写寿命。",
+      "media": [
+        {
+          "kind": "diagram",
+          "src": "assets/lessons/K4-05/framebuffer-coord.svg",
+          "alt": "帧缓冲、字库与屏幕坐标的对应关系图",
+          "status": "planned",
+          "license": "original",
+          "notes": "原创 SVG，UI 内联"
+        },
+        {
+          "kind": "simulation",
+          "src": "assets/lessons/K4-05/display-store.json",
+          "alt": "显示与存储仿真：画字符到坐标、写 EEPROM 后模拟掉电重启",
+          "status": "planned",
+          "license": "original",
+          "notes": "页面内确定性仿真"
+        }
+      ]
+    },
+    {
+      "id": "practice",
+      "type": "practice",
+      "durationSec": 210,
+      "task": "在织网任务台完成两件事：把「24.0」画到屏幕 (10,20)；把 3 字节设置写入 EEPROM 并读回。",
+      "steps": [
+        { "action": "draw", "target": "display-draw", "hint": "坐标从左上角起算" },
+        { "action": "write", "target": "eeprom-write", "hint": "按字节写，注意地址" },
+        { "action": "read", "target": "eeprom-read", "hint": "写后读回核对" },
+        { "action": "reboot", "target": "power-cycle", "hint": "模拟掉电重启，看设置是否保留" }
+      ],
+      "failureHints": [
+        "坐标算成像素偏移：字画到屏幕外",
+        "每帧都写 EEPROM：寿命很快耗尽",
+        "写 Flash 前不擦除：新数据写不进去"
+      ]
+    },
+    {
+      "id": "verify",
+      "type": "verify",
+      "durationSec": 140,
+      "checks": [
+        { "id": "v_display", "type": "measurement", "probe": "display_text", "expected": "24.0", "tolerance": 0, "unit": "string" },
+        { "id": "v_store", "type": "measurement", "probe": "store_readback_ok", "expected": 1, "tolerance": 0, "unit": "bool" },
+        { "id": "v_retain", "type": "measurement", "probe": "store_retained_after_reboot", "expected": 1, "tolerance": 0, "unit": "bool" }
+      ],
+      "safety": "教学仿真不接触真实屏幕与存储芯片；真实操作须断电接线，写入寿命与擦除周期以数据手册为准。"
+    },
+    {
+      "id": "transfer",
+      "type": "transfer",
+      "durationSec": 150,
+      "prompt": "为什么不能每个循环都把设置写进 Flash？给出两种改法。",
+      "options": [
+        { "id": "a", "text": "Flash 擦写寿命有限；可 RAM 暂存+定时落盘，或加磨损均衡", "correct": true, "why": "减少写入次数、把写分散到不同扇区，都能延长寿命。" },
+        { "id": "b", "text": "Flash 太慢；换成内存卡就行", "correct": false, "why": "卡也有寿命与掉电风险，根因是写太频繁。" },
+        { "id": "c", "text": "只要断电前写一次就不会坏", "correct": false, "why": "断电时刻不可控，频繁写仍会磨损。" }
+      ],
+      "solution": "设置变化才写、定时合并落盘；或用磨损均衡把写分散；关键数据可双备份+校验。"
+    },
+    {
+      "id": "recap",
+      "type": "recap",
+      "durationSec": 30,
+      "lines": [
+        "屏是眼睛，存储是记忆。",
+        "EEPROM 按字节写，Flash 按扇区擦。",
+        "写之前先想擦写代价。"
+      ]
+    }
+  ],
+  "checks": [
+    { "id": "c1", "type": "code", "weight": 0.4, "pass": "屏幕坐标与存储写入代码正确" },
+    { "id": "m1", "type": "measurement", "weight": 0.3, "pass": "显示内容与存储读回一致" },
+    { "id": "q1", "type": "quiz", "weight": 0.3, "pass": "EEPROM/Flash 擦写特性判断正确" }
+  ],
+  "assessment": {
+    "masteryWeights": { "hook": 0.1, "practice": 0.35, "verify": 0.3, "transfer": 0.25 },
+    "passScore": 0.7,
+    "retentionDays": [1, 3, 7, 21]
+  },
+  "storyBinding": {
+    "scene": "P10-WeaveTask",
+    "npc": "丝",
+    "dialogueHint": "记得住，才算修好。",
+    "worldPhenomenon": "任务台的屏幕数字缺笔，重启后设定回到出厂值。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["第七校验", "熵", "残响", "第一编译者", "网页游戏"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true,
+    "noSacrificeGlorification": true
+  },
+  "safety": {
+    "requiresPowerOffBeforeRewire": true,
+    "voltageModeOnlyForLive": true,
+    "resistanceModeBlockedWhenLive": true,
+    "currentModeRequiresSeries": true
+  }
+}

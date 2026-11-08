@@ -1,0 +1,162 @@
+{
+  "schema": "lesson.v1",
+  "lessonId": "L-K3-02",
+  "kp": {
+    "id": "K3-02",
+    "name": "GPIO输出与输入",
+    "layer": "L3",
+    "pillar": "craft",
+    "oneLiner": "引脚是手，电是动作",
+    "prereq": ["K3-01"],
+    "storyScene": "P10-VirtualBoard",
+    "spoilerLevel": 3,
+    "license": "CC-BY-4.0",
+    "status": "sample"
+  },
+  "meta": {
+    "version": "0.1.0",
+    "updatedAt": "2026-11-09",
+    "author": "DSH-Lead",
+    "estimatedMinutes": 11,
+    "template": "six-segment-v1",
+    "gameMount": "street-p10"
+  },
+  "segments": [
+    {
+      "id": "hook",
+      "type": "hook",
+      "durationSec": 40,
+      "narration": "虚拟开发板上，按钮和灯都接着，代码也没报错，可按下去灯就是不亮。赫菲把两个引脚的模式摆在你面前：一个写着输出，一个写着输入。摊主在旁边小声说：它到底是在听，还是在说？",
+      "interaction": "choice",
+      "choices": [
+        { "id": "a", "text": "引脚要先分方向：按钮接输入、灯接输出，程序读输入再写输出", "correct": true, "feedback": "对。GPIO 的方向决定了它是在听还是说。" },
+        { "id": "b", "text": "把按钮和灯接到同一个引脚上，省一个口", "correct": false, "feedback": "同脚同时输入输出会互相打架。" },
+        { "id": "c", "text": "代码能编译就行，硬件不用管", "correct": false, "feedback": "方向没设对，代码跑起来也没有现象。" }
+      ]
+    },
+    {
+      "id": "explain",
+      "type": "explain",
+      "durationSec": 105,
+      "narration": "每个 GPIO 引脚都能输出，也能输入，但同一时刻只能选一个方向。输出模式用来驱动灯、蜂鸣器、继电器信号；输入模式用来读按钮、传感器开关量。方向用引脚模式函数设置，且只做一次，放在初始化块里。按钮一般接成低电平有效：引脚下拉或上拉电阻，让空闲有一个确定电平，按下时被拉到另一边。程序在循环里读输入，再根据读数写输出。注意两件事：输入脚空闲不能悬空，否则会乱跳；GPIO 只能出小电流信号，不能直接带动电机、大功率灯，需要三极管/驱动模块。",
+      "media": [
+        {
+          "kind": "card",
+          "src": "assets/lessons/K3-02/gpio-direction.svg",
+          "alt": "GPIO 方向示意图：输出驱动 LED、输入读按钮，标注输入输出模式与上拉电阻",
+          "status": "planned",
+          "license": "original",
+          "notes": "原创 SVG，UI 内联"
+        },
+        {
+          "kind": "ide",
+          "src": "assets/lessons/K3-02/button-led-code.json",
+          "alt": "虚拟开发板示例代码：初始化设置模式，循环读按钮控制灯",
+          "status": "planned",
+          "license": "original",
+          "notes": "网页内虚拟 IDE 数据，不依赖外部服务"
+        }
+      ]
+    },
+    {
+      "id": "practice",
+      "type": "practice",
+      "durationSec": 210,
+      "task": "三份代码里哪份能让「按住按钮灯亮、松开灭」正常工作？说明另外两份各错在哪里。",
+      "steps": [
+        { "action": "choose", "target": "code-candidate", "hint": "看模式设置与读写方向是否匹配" },
+        { "action": "explain", "target": "wrong-modes", "hint": "输入当输出、输出当输入都会没现象" },
+        { "action": "fill", "target": "pullup", "hint": "按钮空闲电平要有确定来源" }
+      ],
+      "code": {
+        "language": "pseudo",
+        "answerType": "structured-choice",
+        "options": [
+          {
+            "id": "correct",
+            "code": "初始化:\n  设置 LED 脚为输出\n  设置按钮脚为输入（启用上拉）\n循环:\n  如果 按钮读数 == 低:\n    输出高到 LED\n  否则:\n    输出低到 LED",
+            "correct": true,
+            "why": "方向正确，按钮有上拉，按键低有效，读写分离。"
+          },
+          {
+            "id": "swapped",
+            "code": "初始化:\n  设置 LED 脚为输入\n  设置按钮脚为输出\n循环:\n  如果 按钮读数 == 低: 输出高到 LED",
+            "correct": false,
+            "why": "方向设反：灯脚变输入，按钮脚变输出。"
+          },
+          {
+            "id": "no-pull",
+            "code": "初始化:\n  设置 LED 脚为输出\n  设置按钮脚为输入\n循环:\n  如果 按钮读数 == 低: 输出高到 LED",
+            "correct": false,
+            "why": "缺上拉，按钮空闲时输入悬空，读数乱跳。"
+          }
+        ]
+      },
+      "failureHints": [
+        "模式写反：输出当输入、输入当输出",
+        "按钮无上拉：空闲电平不确定",
+        "用 GPIO 直接驱动电机：电流不够还可能损坏引脚"
+      ]
+    },
+    {
+      "id": "verify",
+      "type": "verify",
+      "durationSec": 150,
+      "checks": [
+        { "id": "v_out", "type": "measurement", "probe": "led-output", "expected": 3.3, "tolerance": 0.2, "unit": "V" },
+        { "id": "v_btn", "type": "measurement", "probe": "button-pressed", "expected": 0, "tolerance": 0.3, "unit": "V" }
+      ],
+      "safety": "改接线前断电；GPIO 只接信号，不直接带电机或大功率负载；测量时表笔不要同时碰电源与地。"
+    },
+    {
+      "id": "transfer",
+      "type": "transfer",
+      "durationSec": 150,
+      "prompt": "按钮松开后灯偶尔自己亮，手指靠近灯座时更明显。最可能的原因是？",
+      "options": [
+        { "id": "floating", "text": "按钮输入悬空，拾取环境干扰；启用上拉/下拉固定空闲电平", "correct": true, "why": "悬空输入是高阻天线，靠近人体更容易耦合干扰。" },
+        { "id": "brightness", "text": "灯太灵敏，换一个暗一点的灯", "correct": false, "why": "灯只是执行机构，问题在输入判断。" },
+        { "id": "code-speed", "text": "程序循环太慢，把循环加快就好", "correct": false, "why": "悬空输入读多少次都是随机的。" }
+      ],
+      "solution": "输入悬空会随机翻转。启用内部上拉（或外接上拉/下拉）把空闲电平钉死，再读按钮。"
+    },
+    {
+      "id": "recap",
+      "type": "recap",
+      "durationSec": 30,
+      "lines": [
+        "GPIO 要分方向：输出驱动，输入读取。",
+        "输入空闲电平必须确定（上拉/下拉），不能悬空。",
+        "GPIO 只是小电流信号，负载要加驱动。"
+      ]
+    }
+  ],
+  "checks": [
+    { "id": "q1", "type": "code", "weight": 0.4, "pass": "选出模式/上拉/读写都正确的代码并指出另两份错误" },
+    { "id": "q2", "type": "measurement", "weight": 0.3, "pass": "LED 输出高 3.3±0.2V、按钮按下 0±0.3V" },
+    { "id": "q3", "type": "quiz", "weight": 0.3, "pass": "按钮悬空误亮时选择启用上拉/下拉" }
+  ],
+  "assessment": {
+    "masteryWeights": { "hook": 0.1, "practice": 0.35, "verify": 0.3, "transfer": 0.25 },
+    "passScore": 0.7,
+    "retentionDays": [1, 3, 7, 21]
+  },
+  "storyBinding": {
+    "scene": "P10-VirtualBoard",
+    "npc": "赫菲",
+    "dialogueHint": "先问它是在听，还是在说。",
+    "worldPhenomenon": "虚拟开发板上按钮与灯都接好，按下去灯却不亮。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["第七校验", "熵", "残响", "第一编译者", "网页游戏"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true,
+    "noSacrificeGlorification": true
+  },
+  "safety": {
+    "requiresPowerOffBeforeRewire": true,
+    "voltageModeOnlyForLive": true,
+    "resistanceModeBlockedWhenLive": true,
+    "currentModeRequiresSeries": true
+  }
+}

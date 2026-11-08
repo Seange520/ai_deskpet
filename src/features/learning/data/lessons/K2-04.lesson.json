@@ -1,0 +1,162 @@
+{
+  "schema": "lesson.v1",
+  "lessonId": "L-K2-04",
+  "kp": {
+    "id": "K2-04",
+    "name": "上拉下拉与去抖",
+    "layer": "L2",
+    "pillar": "forge",
+    "oneLiner": "按钮会抖，逻辑要稳",
+    "prereq": ["K2-01"],
+    "storyScene": "P10-ButtonPuzzle",
+    "spoilerLevel": 2,
+    "license": "CC-BY-4.0",
+    "status": "sample"
+  },
+  "meta": {
+    "version": "0.1.0",
+    "updatedAt": "2026-11-09",
+    "author": "DSH-Lead",
+    "estimatedMinutes": 11,
+    "template": "six-segment-v1",
+    "gameMount": "street-p10"
+  },
+  "segments": [
+    {
+      "id": "hook",
+      "type": "hook",
+      "durationSec": 40,
+      "narration": "按钮谜题的门锁按一次跳三下，像按钮在打喷嚏。摊主使劲按了一下：你看，我就按了一次。赫菲盯着计数屏：机械按钮按下去的那一瞬间，金属片会弹跳好几下，快过你的手指，也快过你的眼睛。",
+      "interaction": "choice",
+      "choices": [
+        { "id": "a", "text": "机械触点有毫秒级弹跳，程序把一次按下识别成了多次", "correct": true, "feedback": "对。这是抖动，不是按钮坏了。" },
+        { "id": "b", "text": "按钮接触不良，要换新的", "correct": false, "feedback": "每次按都跳三下，是稳定的机械弹跳特征，不是接触不良。" },
+        { "id": "c", "text": "程序跑太快了，把 CPU 降速就好", "correct": false, "feedback": "降速会拖慢整个系统，去抖应该在输入处理里做。" }
+      ]
+    },
+    {
+      "id": "explain",
+      "type": "explain",
+      "durationSec": 105,
+      "narration": "机械按钮按下和松开时，金属触点在几毫秒到二十毫秒内会反复接触、断开，这叫抖动。程序读取速度很快，于是把一次按下读成好几个上升沿。要稳，先解决「空闲电平」：输入脚悬空会乱跳，所以用上拉电阻把空闲拉到高，按钮按下时接地变低（低电平有效）；或者用下拉电阻做高电平有效。然后做软件去抖：常见两种，一是延时确认——检测到变化后等 20ms 再读一次，仍然相同才认；二是采样状态机——每 10ms 采一次，连续 2–3 次相同才更新状态。不要在中断里死等延时，也不要用阻塞式 delay 拖住整个程序。",
+      "media": [
+        {
+          "kind": "card",
+          "src": "assets/lessons/K2-04/pullup-bounce-debounce.svg",
+          "alt": "上拉电阻与按钮接线图，右侧为按下瞬间的抖动波形与 20ms 去抖窗口",
+          "status": "planned",
+          "license": "original",
+          "notes": "原创 SVG，UI 内联"
+        },
+        {
+          "kind": "sim",
+          "src": "assets/lessons/K2-04/debounce-trace-sim.json",
+          "alt": "DOM 仿真：回放按钮采样序列，逐步显示原始计数与去抖后计数",
+          "status": "planned",
+          "license": "original",
+          "notes": "网页内 DOM 仿真，不依赖外部引擎"
+        }
+      ]
+    },
+    {
+      "id": "practice",
+      "type": "practice",
+      "durationSec": 210,
+      "task": "给定一段采样序列 [0,1,0,1,1,0,1,1,1,1,0,0,0,0]，每 10ms 采一次。用「连续 3 次相同才确认」的状态机，写出每次采样后的稳定状态，并说出原始计数和去抖计数的差别。下面三份去抖逻辑，哪份能在不阻塞主循环的前提下正确去抖？",
+      "steps": [
+        { "action": "trace", "target": "sample-sequence", "hint": "先标出每次采样，再数连续相同次数" },
+        { "action": "choose", "target": "code-candidate", "hint": "看是否用了阻塞延时或只采样一次" },
+        { "action": "explain", "target": "count-diff", "hint": "原始计数把每次跳变都当按下" }
+      ],
+      "code": {
+        "language": "pseudo",
+        "answerType": "structured-choice",
+        "options": [
+          {
+            "id": "state-machine",
+            "code": "last = read(); stable = last; same = 0\n每 10ms:\n  now = read()\n  if now == last: same += 1 else: same = 0\n  last = now\n  if same >= 2: stable = last",
+            "correct": true,
+            "why": "非阻塞采样 + 连续 3 次相同才确认，主循环不被拖住。"
+          },
+          {
+            "id": "blocking-delay",
+            "code": "if read() == 0:\n  delay(20)\n  if read() == 0: count += 1",
+            "correct": false,
+            "why": "阻塞 20ms 会拖慢主循环；按钮多时相互影响。"
+          },
+          {
+            "id": "single-sample",
+            "code": "if read() == 0: count += 1",
+            "correct": false,
+            "why": "没有去抖，弹跳会被重复计数。"
+          }
+        ]
+      },
+      "failureHints": [
+        "用阻塞 delay 去抖：主循环会被拖住",
+        "只看一次采样：弹跳的每一次都会被当成按下",
+        "上拉/下拉接反：空闲电平不确定，读数依旧乱跳"
+      ]
+    },
+    {
+      "id": "verify",
+      "type": "verify",
+      "durationSec": 150,
+      "checks": [
+        { "id": "v_idle", "type": "measurement", "probe": "button-idle", "expected": 3.3, "tolerance": 0.2, "unit": "V" },
+        { "id": "v_pressed", "type": "measurement", "probe": "button-pressed", "expected": 0, "tolerance": 0.3, "unit": "V" }
+      ],
+      "safety": "测量按钮两端前先断电确认接线；上拉电阻阻值按 10kΩ 级选择，避免按下时电流过大；不要带电插拔杜邦线。"
+    },
+    {
+      "id": "transfer",
+      "type": "transfer",
+      "durationSec": 150,
+      "prompt": "按钮换了 2 米长线以后又开始偶尔双触发，软件去抖还在。最可能的原因与处理是？",
+      "options": [
+        { "id": "rc", "text": "长线拾取干扰，加 RC 低通并保留软件去抖", "correct": true, "why": "长线像天线，硬件滤波压制高频毛刺，软件去抖兜底。" },
+        { "id": "longer", "text": "把去抖时间从 20ms 调到 500ms", "correct": false, "why": "过度延时会让快速连按丢失，且没解决干扰源头。" },
+        { "id": "pullup", "text": "去掉上拉电阻，让线自己决定电平", "correct": false, "why": "去掉上拉会让空闲重新悬空，问题更严重。" }
+      ],
+      "solution": "长线引入的高频干扰需要硬件 RC 滤波先压制，软件去抖处理机械弹跳；两者作用不同，不能互相替代。"
+    },
+    {
+      "id": "recap",
+      "type": "recap",
+      "durationSec": 30,
+      "lines": [
+        "机械按钮有 5–20ms 弹跳，程序会把它读成多次按下。",
+        "上拉/下拉先给空闲一个确定电平，再用非阻塞采样去抖。",
+        "长线干扰靠硬件滤波，软件去抖兜底。"
+      ]
+    }
+  ],
+  "checks": [
+    { "id": "q1", "type": "code", "weight": 0.4, "pass": "选出非阻塞状态机去抖方案并说明阻塞延时的问题" },
+    { "id": "q2", "type": "measurement", "weight": 0.3, "pass": "空闲 3.3±0.2V、按下 0±0.3V" },
+    { "id": "q3", "type": "quiz", "weight": 0.3, "pass": "长线干扰选择 RC 滤波 + 软件去抖" }
+  ],
+  "assessment": {
+    "masteryWeights": { "hook": 0.1, "practice": 0.35, "verify": 0.3, "transfer": 0.25 },
+    "passScore": 0.7,
+    "retentionDays": [1, 3, 7, 21]
+  },
+  "storyBinding": {
+    "scene": "P10-ButtonPuzzle",
+    "npc": "赫菲",
+    "dialogueHint": "它按一次，弹三下，你得让它只算一次。",
+    "worldPhenomenon": "按钮谜题的门锁按一下跳三次计数。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["第七校验", "熵", "残响", "第一编译者", "网页游戏"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true,
+    "noSacrificeGlorification": true
+  },
+  "safety": {
+    "requiresPowerOffBeforeRewire": true,
+    "voltageModeOnlyForLive": true,
+    "resistanceModeBlockedWhenLive": true,
+    "currentModeRequiresSeries": true
+  }
+}

@@ -1,0 +1,138 @@
+{
+  "schema": "lesson.v1",
+  "lessonId": "L-K6-02",
+  "kp": {
+    "id": "K6-02",
+    "name": "PID概念",
+    "layer": "L6",
+    "pillar": "craft",
+    "oneLiner": "先P起来，再看I和D",
+    "prereq": ["K6-01"],
+    "storyScene": "P10-ArmChallenge",
+    "spoilerLevel": 6,
+    "license": "CC-BY-4.0",
+    "status": "planned"
+  },
+  "meta": {
+    "version": "0.1.0",
+    "updatedAt": "2026-11-09",
+    "author": "DSH-Lead",
+    "estimatedMinutes": 11,
+    "template": "six-segment-v1",
+    "gameMount": "arm-challenge"
+  },
+  "segments": [
+    {
+      "id": "hook",
+      "type": "hook",
+      "durationSec": 40,
+      "narration": "意匠工坊的机械臂每次都冲过目标点再弹回来，像一个刹不住车的新手。你要让它停得稳，先从哪个参数下手？",
+      "interaction": "choice",
+      "choices": [
+        { "id": "a", "text": "三个参数一起调，总有一个组合能蒙对", "correct": false, "feedback": "三参数同时动，你无法知道是谁起了作用。" },
+        { "id": "b", "text": "先把 P 调到临界，再看 I 和 D", "correct": true, "feedback": "对。先让系统有基本跟随，再补残差和阻尼。" },
+        { "id": "c", "text": "把电机换成更大扭矩的", "correct": false, "feedback": "换硬件不解决控制律带来的过冲。" }
+      ]
+    },
+    {
+      "id": "explain",
+      "type": "explain",
+      "durationSec": 100,
+      "narration": "PID 用三种眼光看误差：P 看现在（误差越大，修正越猛），I 看过去（残差累积，慢慢补上），D 看未来（误差变化率，提前刹车）。P 太大=过冲振荡，P 太小=慢吞吞；I 消稳态误差，但会引入过冲；D 压过冲，但放大了噪声。先 P 起来，再加 I，最后加 D，一次只改一个变量。",
+      "media": [
+        {
+          "kind": "sim",
+          "src": "assets/lessons/K6-02/pid-tune.json",
+          "alt": "机械臂角度响应仿真：P/I/D 三滑块实时看过冲与稳定时间",
+          "status": "planned",
+          "license": "original",
+          "notes": "确定性控制模型，教学口径"
+        },
+        {
+          "kind": "animation",
+          "src": "assets/lessons/K6-02/pid-curves.mp4",
+          "alt": "12 秒动画：P 欠阻尼、P 过阻尼、PI、PID 四条响应曲线对比",
+          "status": "planned",
+          "license": "original",
+          "notes": "原创动画，字幕"
+        }
+      ]
+    },
+    {
+      "id": "practice",
+      "type": "practice",
+      "durationSec": 210,
+      "task": "在机械臂仿真里把 P 从 0.2 调到临界，记录过冲百分比与稳定时间。",
+      "steps": [
+        { "action": "code", "target": "tune-p", "hint": "先只动 P，观察过冲与振荡" },
+        { "action": "measure", "target": "overshoot", "hint": "过冲=峰值超出目标的比例" },
+        { "action": "measure", "target": "settle-time", "hint": "进入 ±5% 并保持的时间点" }
+      ],
+      "failureHints": [
+        "P 从 0.2 直接跳到 10：系统直接振荡发散",
+        "只看最终位置不看曲线：过冲被忽略",
+        "一次改三个参数：无法归因"
+      ]
+    },
+    {
+      "id": "verify",
+      "type": "verify",
+      "durationSec": 150,
+      "checks": [
+        { "id": "v_overshoot", "type": "measurement", "probe": "pid_overshoot_percent", "expected": 8.0, "tolerance": 5.0, "unit": "%" },
+        { "id": "v_settle", "type": "measurement", "probe": "pid_settle_seconds", "expected": 1.8, "tolerance": 0.4, "unit": "s" }
+      ],
+      "safety": "全在仿真环境调参；真实机械臂调试须限速、设限位、留安全距离。"
+    },
+    {
+      "id": "transfer",
+      "type": "transfer",
+      "durationSec": 150,
+      "prompt": "恒温箱、机械臂定位、无人机悬停，各自最怕过冲还是稳态误差？",
+      "options": [
+        { "id": "a", "text": "恒温箱怕稳态误差，机械臂怕过冲，悬停两者都怕", "correct": true, "why": "温度重在最终精度；定位过冲=撞限位；悬停要稳又要准。" },
+        { "id": "b", "text": "都最怕过冲，先加 D 再说", "correct": false, "why": "恒温箱的慢过程更怕长期残差。" },
+        { "id": "c", "text": "都最怕稳态误差，I 拉满", "correct": false, "why": "I 拉满会让机械臂冲过头。" }
+      ],
+      "solution": "先写清「什么算稳」，再决定 P/I/D 的优先级。"
+    },
+    {
+      "id": "recap",
+      "type": "recap",
+      "durationSec": 30,
+      "lines": [
+        "P 看现在，I 看过去，D 看未来。",
+        "先 P 起来，再加 I，最后加 D。",
+        "一次只改一个变量。"
+      ]
+    }
+  ],
+  "checks": [
+    { "id": "s1", "type": "sim-task", "weight": 0.4, "pass": "P 调到临界并记录过冲/稳定时间" },
+    { "id": "m1", "type": "measurement", "weight": 0.35, "pass": "过冲 ≤10%、稳定时间 ≤2s" },
+    { "id": "q1", "type": "quiz", "weight": 0.25, "pass": "能说明 P/I/D 各自解决什么问题" }
+  ],
+  "assessment": {
+    "masteryWeights": { "hook": 0.1, "practice": 0.3, "verify": 0.3, "transfer": 0.3 },
+    "passScore": 0.7,
+    "retentionDays": [1, 3, 7, 21]
+  },
+  "storyBinding": {
+    "scene": "P10-ArmChallenge",
+    "npc": "阿卡夏",
+    "dialogueHint": "先让手臂学会停，学会稳，再学会快。",
+    "worldPhenomenon": "工坊机械臂每次归位都撞一下限位。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["第七校验", "熵", "残响", "第一编译者", "网页游戏"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true,
+    "noSacrificeGlorification": true
+  },
+  "safety": {
+    "requiresPowerOffBeforeRewire": true,
+    "voltageModeOnlyForLive": true,
+    "resistanceModeBlockedWhenLive": true,
+    "currentModeRequiresSeries": true
+  }
+}

@@ -1,0 +1,162 @@
+{
+  "schema": "lesson.v1",
+  "lessonId": "L-K3-03",
+  "kp": {
+    "id": "K3-03",
+    "name": "变量类型与运算符",
+    "layer": "L3",
+    "pillar": "craft",
+    "oneLiner": "变量是盒子，类型是形状",
+    "prereq": ["K3-01"],
+    "storyScene": "P10-LessonCard",
+    "spoilerLevel": 3,
+    "license": "CC-BY-4.0",
+    "status": "sample"
+  },
+  "meta": {
+    "version": "0.1.0",
+    "updatedAt": "2026-11-09",
+    "author": "DSH-Lead",
+    "estimatedMinutes": 11,
+    "template": "six-segment-v1",
+    "gameMount": "street-p10"
+  },
+  "segments": [
+    {
+      "id": "hook",
+      "type": "hook",
+      "durationSec": 40,
+      "narration": "课节卡上有一道调光题：占空比 25%，电源 5V，平均电压是多少？计算区给了 5、25、100 三个数，答案区却写着 0。赫菲敲了敲屏幕：三个数字都对，但放错了盒子——整数盒子装不下 1.25。",
+      "interaction": "choice",
+      "choices": [
+        { "id": "a", "text": "25/100 在整数里被截成 0，要用浮点数或先乘后除", "correct": true, "feedback": "对。整数除法会把小数部分直接丢掉。" },
+        { "id": "b", "text": "5V 不能算平均电压，题目错了", "correct": false, "feedback": "能算，问题在运算类型上。" },
+        { "id": "c", "text": "把答案四舍五入成 1 就行", "correct": false, "feedback": "不是精度问题，是整数类型直接截断。" }
+      ]
+    },
+    {
+      "id": "explain",
+      "type": "explain",
+      "durationSec": 105,
+      "narration": "变量是装数据的盒子，类型决定盒子的形状：整数盒装不下小数，浮点盒可以装小数但会有精度误差。两个整数相除，结果仍然是整数，小数部分被截掉——25 / 100 得到 0，不是 0.25。要得到小数，至少让其中一个数变成浮点，或者先乘后除（25 × 5 / 100 仍可能截断，所以通常写成 25.0 / 100 × 5）。运算符也有优先级和顺序：先乘除后加减，括号最优先。混用类型时编译器会做隐式转换，方向不一定是你想要的，关键计算建议显式转换。把结果写回引脚或占空比之前，再确认范围：占空比 0–100%，电压不能超过电源，数组下标不能越界。",
+      "media": [
+        {
+          "kind": "card",
+          "src": "assets/lessons/K3-03/int-float-boxes.svg",
+          "alt": "整数盒与浮点盒示意：25/100 被截断为 0，25.0/100 得到 0.25",
+          "status": "planned",
+          "license": "original",
+          "notes": "原创 SVG，UI 内联"
+        },
+        {
+          "kind": "card",
+          "src": "assets/lessons/K3-03/operator-precedence.svg",
+          "alt": "运算符优先级表与一个括号改写的对比例子",
+          "status": "planned",
+          "license": "original",
+          "notes": "原创 SVG，UI 内联"
+        }
+      ]
+    },
+    {
+      "id": "practice",
+      "type": "practice",
+      "durationSec": 210,
+      "task": "把下面三处填空改成能得到正确结果的形式：① duty = 25 / 100（想要 0.25）② avg = duty * 5（想要 1.25）③ 判断 adc > 2048 时灯亮，但 adc 是整数、阈值需要按比例缩放。并解释为什么 25 / 100 得到 0。",
+      "steps": [
+        { "action": "fill", "target": "duty-cast", "hint": "至少一边是浮点：25.0 / 100" },
+        { "action": "fill", "target": "avg-value", "hint": "0.25 × 5 = 1.25" },
+        { "action": "explain", "target": "int-division", "hint": "整数相除结果仍是整数，小数被截断" },
+        { "action": "judge", "target": "range-check", "hint": "占空比限定 0–100%，电压不超过电源" }
+      ],
+      "code": {
+        "language": "pseudo",
+        "answerType": "structured-choice",
+        "options": [
+          {
+            "id": "float",
+            "code": "duty = 25.0 / 100        // 0.25\navg  = duty * 5          // 1.25",
+            "correct": true,
+            "why": "浮点除法保留小数，再乘电源电压得到平均电压。"
+          },
+          {
+            "id": "int-ok",
+            "code": "duty = 25 / 100          // 0\navg  = duty * 5          // 0",
+            "correct": false,
+            "why": "整数除法先截断，后面怎么乘都是 0。"
+          },
+          {
+            "id": "int-ok2",
+            "code": "duty = 25 / 100 * 100    // 0\navg  = duty * 5 / 100    // 0",
+            "correct": false,
+            "why": "运算顺序救不了整数截断。"
+          }
+        ]
+      },
+      "failureHints": [
+        "用整数除法算比例：25/100 直接变成 0",
+        "以为先乘后除一定安全：整数乘除仍会截断",
+        "忘记范围检查：算出的占空比可能超出 0–100%"
+      ]
+    },
+    {
+      "id": "verify",
+      "type": "verify",
+      "durationSec": 145,
+      "checks": [
+        { "id": "v_avg", "type": "measurement", "probe": "pwm-avg", "expected": 1.25, "tolerance": 0.1, "unit": "V" }
+      ],
+      "safety": "测量 PWM 平均电压用直流电压档；改参数后重新烧录再测；接线前断电。"
+    },
+    {
+      "id": "transfer",
+      "type": "transfer",
+      "durationSec": 150,
+      "prompt": "同一段调光代码，在温度计算里正常，在占空比计算里总是 0。最可能的原因是？",
+      "options": [
+        { "id": "type", "text": "占空比那几步用了整数相除，小数被截断；改成浮点或先放大后缩小", "correct": true, "why": "类型决定了会不会丢小数，同一公式换类型结果就变。" },
+        { "id": "hw", "text": "硬件不支持调光", "correct": false, "why": "代码里就已经是 0 了，还没到硬件。" },
+        { "id": "clock", "text": "板子主频太低，算不过来", "correct": false, "why": "整数截断是语义问题，不是性能问题。" }
+      ],
+      "solution": "先定位是哪一步把小数丢了：检查变量类型、除法两边是否都是整数、有没有隐式转换；关键比例用浮点或定点放大计算。"
+    },
+    {
+      "id": "recap",
+      "type": "recap",
+      "durationSec": 30,
+      "lines": [
+        "变量有类型，类型决定能装什么、运算后剩什么。",
+        "整数相除会截断；要小数至少一边用浮点。",
+        "关键计算显式转换并做范围检查。"
+      ]
+    }
+  ],
+  "checks": [
+    { "id": "q1", "type": "code", "weight": 0.4, "pass": "三处填空改为正确类型与顺序，能解释 25/100=0" },
+    { "id": "q2", "type": "measurement", "weight": 0.3, "pass": "PWM 平均电压 1.25±0.1V" },
+    { "id": "q3", "type": "quiz", "weight": 0.3, "pass": "占空比恒为 0 时定位到整数截断" }
+  ],
+  "assessment": {
+    "masteryWeights": { "hook": 0.1, "practice": 0.35, "verify": 0.3, "transfer": 0.25 },
+    "passScore": 0.7,
+    "retentionDays": [1, 3, 7, 21]
+  },
+  "storyBinding": {
+    "scene": "P10-LessonCard",
+    "npc": "赫菲",
+    "dialogueHint": "数字没错，盒子不对。",
+    "worldPhenomenon": "课节卡上的调光题答案恒为 0，三个数字看起来都对。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["第七校验", "熵", "残响", "第一编译者", "网页游戏"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true,
+    "noSacrificeGlorification": true
+  },
+  "safety": {
+    "requiresPowerOffBeforeRewire": true,
+    "voltageModeOnlyForLive": true,
+    "resistanceModeBlockedWhenLive": true,
+    "currentModeRequiresSeries": true
+  }
+}

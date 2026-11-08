@@ -1,0 +1,139 @@
+{
+  "schema": "lesson.v1",
+  "lessonId": "L-K1-06",
+  "kp": {
+    "id": "K1-06",
+    "name": "保险丝与保护",
+    "layer": "L1",
+    "pillar": "forge",
+    "oneLiner": "保险丝是替你烧的那根线",
+    "prereq": ["K1-03"],
+    "storyScene": "P10-Street-FuseChain",
+    "spoilerLevel": 1,
+    "license": "CC-BY-4.0",
+    "status": "sample"
+  },
+  "meta": {
+    "version": "0.1.0",
+    "updatedAt": "2026-11-09",
+    "author": "DSH-Lead",
+    "estimatedMinutes": 11,
+    "template": "six-segment-v1",
+    "gameMount": "street-p10"
+  },
+  "segments": [
+    {
+      "id": "hook",
+      "type": "hook",
+      "durationSec": 40,
+      "narration": "冷库支路的保险丝又熔断了。摊主从抽屉里摸出一根铜丝：先凑合一下。赫菲把铜丝按在桌上：短路的时候，你希望先断的应该是什么？",
+      "interaction": "choice",
+      "choices": [
+        { "id": "a", "text": "先断保险丝，把故障挡在线路外面", "correct": true, "feedback": "对。保险丝就是那道替你牺牲的门。" },
+        { "id": "b", "text": "先断压缩机，保护电机", "correct": false, "feedback": "压缩机是负载，短路时电流会先烧线。" },
+        { "id": "c", "text": "用铜丝代替，先让它通着", "correct": false, "feedback": "铜丝不会熔断，故障电流会烧到线缆和设备。" }
+      ]
+    },
+    {
+      "id": "explain",
+      "type": "explain",
+      "durationSec": 100,
+      "narration": "保险丝是故意做得最弱的一段导体。电流超过额定值，它先发热、先熔断，把故障挡在线路外面。选型看三件事：额定电流、熔断特性（快熔/慢熔）、熔断能量 I²t。正常负载电流要落在额定的 60%–80%，也就是 1.2–2.0 倍裕量，既不过热，也能在故障时果断熔断。电机启动电流大，正确做法是慢熔保险或软启动，而不是换一根更大的保险丝。",
+      "media": [
+        {
+          "kind": "diagram",
+          "src": "assets/lessons/K1-06/fuse-margin.svg",
+          "alt": "额定电流、工作电流与 1.2–2.0 裕量的关系图",
+          "status": "planned",
+          "license": "original",
+          "notes": "原创 SVG，UI 内联"
+        },
+        {
+          "kind": "animation",
+          "src": "assets/lessons/K1-06/short-circuit-fuse.mp4",
+          "alt": "22 秒无旁白动画：短路电流上升、保险丝发热熔断、线路保住，含字幕",
+          "status": "planned",
+          "license": "original",
+          "notes": "教学模型，需标注非真实认证曲线"
+        }
+      ]
+    },
+    {
+      "id": "practice",
+      "type": "practice",
+      "durationSec": 210,
+      "task": "给 3 个负载场景选保险丝并说明理由：24V/2A 灯带、24V/0.5A 控制器、启动电流 6A 的压缩机（额定 2A）。",
+      "steps": [
+        { "action": "select", "target": "fuse-strip", "hint": "工作电流落在额定的 60%–80%" },
+        { "action": "select", "target": "fuse-controller", "hint": "0.5A 负载选 1A 仍有裕量" },
+        { "action": "select", "target": "fuse-motor", "hint": "启动电流大，用慢熔或软启动" },
+        { "action": "explain", "target": "why-not-copper", "hint": "铜丝不会熔断，故障电流会烧线" }
+      ],
+      "failureHints": [
+        "裕量过小：正常启动就熔断，误判为故障",
+        "裕量过大：短路时保险丝不动作，线缆先烧",
+        "用铜丝/铁丝代替：失去唯一的过流保护"
+      ]
+    },
+    {
+      "id": "verify",
+      "type": "verify",
+      "durationSec": 150,
+      "checks": [
+        { "id": "v_time", "type": "measurement", "probe": "fuse_blow_time", "expected": 0.4, "tolerance": 0.2, "unit": "s" },
+        { "id": "v_current", "type": "measurement", "probe": "fuse_blow_current", "expected": 6.5, "tolerance": 1.0, "unit": "A" }
+      ],
+      "safety": "短路仿真只在教学模型内允许：保险丝熔断实验由仿真完成，真实设备禁止直接短接；更换保险丝前必须断电并确认故障已排除。"
+    },
+    {
+      "id": "transfer",
+      "type": "transfer",
+      "durationSec": 160,
+      "prompt": "压缩机额定 2A，启动瞬间 6A。原保险丝是 3A 快熔，一启动就断。下列哪个做法正确？",
+      "options": [
+        { "id": "bigger", "text": "换 10A 快熔，保证启动不断", "correct": false, "why": "短路时 10A 也可能不断，线缆先烧。" },
+        { "id": "slow", "text": "用 3A 慢熔或给压缩机加软启动，限制启动冲击", "correct": true, "why": "慢熔容忍短时启动电流，软启动减少冲击，短路保护仍保留。" },
+        { "id": "copper", "text": "先用铜丝顶着，等有钱再换", "correct": false, "why": "铜丝没有熔断点，等于取消保护。" }
+      ],
+      "solution": "慢熔保险能在启动的几百毫秒内容忍 6A 冲击，短路时仍会熔断；软启动把启动电流压低，是更根本的做法。"
+    },
+    {
+      "id": "recap",
+      "type": "recap",
+      "durationSec": 30,
+      "lines": [
+        "保险丝是最弱的一节，故意让故障从这里断开。",
+        "工作电流落在额定的 60%–80%，裕量不是越大越好。",
+        "电机启动用慢熔或软启动，不用铜丝，也不盲目换大。"
+      ]
+    }
+  ],
+  "checks": [
+    { "id": "q1", "type": "quiz", "weight": 0.35, "pass": "3 个场景选型正确并说明理由" },
+    { "id": "q2", "type": "measurement", "weight": 0.4, "pass": "熔断时间与熔断电流在容差内" },
+    { "id": "q3", "type": "numeric-choice", "weight": 0.25, "pass": "电机启动场景选择慢熔或软启动" }
+  ],
+  "assessment": {
+    "masteryWeights": { "hook": 0.1, "practice": 0.25, "verify": 0.4, "transfer": 0.25 },
+    "passScore": 0.7,
+    "retentionDays": [1, 3, 7, 21]
+  },
+  "storyBinding": {
+    "scene": "P10-Street-FuseChain",
+    "npc": "赫菲",
+    "dialogueHint": "保险丝是替你烧的那一条线，别让它白烧。",
+    "worldPhenomenon": "冷库支路的保险丝反复熔断，摊主想用铜丝顶替。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["第七校验", "熵", "残响", "第一编译者", "网页游戏"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true,
+    "noSacrificeGlorification": true
+  },
+  "safety": {
+    "requiresPowerOffBeforeRewire": true,
+    "voltageModeOnlyForLive": true,
+    "resistanceModeBlockedWhenLive": true,
+    "currentModeRequiresSeries": true
+  }
+}

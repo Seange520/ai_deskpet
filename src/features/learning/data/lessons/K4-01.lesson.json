@@ -1,0 +1,141 @@
+{
+  "schema": "lesson.v1",
+  "lessonId": "L-K4-01",
+  "kp": {
+    "id": "K4-01",
+    "name": "传感器模拟与数字",
+    "layer": "L4",
+    "pillar": "weave",
+    "oneLiner": "传感器是城市的皮肤",
+    "prereq": ["K2-03"],
+    "storyScene": "P10-WeaveCorridor",
+    "spoilerLevel": 4,
+    "license": "CC-BY-4.0",
+    "status": "planned"
+  },
+  "meta": {
+    "version": "0.1.0",
+    "updatedAt": "2026-11-09",
+    "author": "DSH-Lead",
+    "estimatedMinutes": 11,
+    "template": "six-segment-v1",
+    "gameMount": "weave-corridor"
+  },
+  "segments": [
+    {
+      "id": "hook",
+      "type": "hook",
+      "durationSec": 40,
+      "narration": "织网回廊的温度计忽高忽低，灯却没有坏。丝把两只传感器摆在你面前：一只只会说「高/低」，一只能把温度画成一条线。要判断「谁在说谎」，你该先问哪一个？",
+      "interaction": "choice",
+      "choices": [
+        { "id": "a", "text": "先问只会说高/低的那只，它不会骗人", "correct": false, "feedback": "它只能给出两态，看不出变化趋势。" },
+        { "id": "b", "text": "先问能画曲线的那只，趋势藏在连续读数里", "correct": true, "feedback": "对。要趋势就要连续量，要门限才用开关量。" },
+        { "id": "c", "text": "两只都不用，直接换一根线", "correct": false, "feedback": "没有读数就没有证据，换线只是猜。" }
+      ]
+    },
+    {
+      "id": "explain",
+      "type": "explain",
+      "durationSec": 95,
+      "narration": "传感器分两大家族。数字量只回答两个问题：通/断、高/低——按键、霍尔开关、浮球水位都是这一类，输出 0V 或 3.3V。模拟量回答「多少」：LM35 每摄氏度输出 10mV，电位器把位置变成分压，光敏电阻把光变成阻值。选型先看世界要什么：要门限还是要曲线；再看元件给什么：两态还是连续。",
+      "media": [
+        {
+          "kind": "diagram",
+          "src": "assets/lessons/K4-01/digital-vs-analog.svg",
+          "alt": "数字量两态台阶与模拟量连续曲线的对比图",
+          "status": "planned",
+          "license": "original",
+          "notes": "原创 SVG，UI 内联"
+        },
+        {
+          "kind": "animation",
+          "src": "assets/lessons/K4-01/lm35-voltage.mp4",
+          "alt": "18 秒无旁白动画：温度上升，LM35 输出 0.25V 到 0.35V 的连续变化，含字幕",
+          "status": "planned",
+          "license": "original",
+          "notes": "教学模型，10mV/°C 为教学口径"
+        }
+      ]
+    },
+    {
+      "id": "practice",
+      "type": "practice",
+      "durationSec": 200,
+      "task": "在传感器台上读三个测点并判断类型：按键（未按/按下）、LM35（室温）、电位器（旋到一半）。",
+      "steps": [
+        { "action": "measure", "target": "button-idle", "hint": "未按时应接近 0V" },
+        { "action": "measure", "target": "button-pressed", "hint": "按下后应接近 3.3V" },
+        { "action": "measure", "target": "lm35-room", "hint": "25°C 对应 0.25V（10mV/°C）" },
+        { "action": "measure", "target": "pot-half", "hint": "旋到一半约 3.3V 的一半" },
+        { "action": "classify", "target": "sensor-kind", "hint": "两态=数字，连续=模拟" }
+      ],
+      "failureHints": [
+        "把浮球开关当模拟量读：读数只有两态，画不出曲线",
+        "用 LM35 判断水位高低：连续量需要先定阈值",
+        "电位器两端接反：旋到一半仍可能是 1.65V，但方向相反"
+      ]
+    },
+    {
+      "id": "verify",
+      "type": "verify",
+      "durationSec": 140,
+      "checks": [
+        { "id": "v_button", "type": "measurement", "probe": "button_pressed_voltage", "expected": 3.3, "tolerance": 0.2, "unit": "V" },
+        { "id": "v_lm35", "type": "measurement", "probe": "lm35_room_voltage", "expected": 0.25, "tolerance": 0.02, "unit": "V" },
+        { "id": "v_pot", "type": "measurement", "probe": "pot_half_voltage", "expected": 1.65, "tolerance": 0.1, "unit": "V" }
+      ],
+      "safety": "教学仿真读数由确定性模型给出；真实传感器需按数据手册核对供电范围与输出范围。"
+    },
+    {
+      "id": "transfer",
+      "type": "transfer",
+      "durationSec": 150,
+      "prompt": "三个场景：门磁报警、旋钮音量、电池电压监测。分别该用哪一类传感器？",
+      "options": [
+        { "id": "a", "text": "门磁=模拟，旋钮=数字，电池=数字", "correct": false, "why": "门磁和电池都要连续量或阈值判断，反了。" },
+        { "id": "b", "text": "门磁=数字，旋钮=模拟，电池=模拟", "correct": true, "why": "开/关用两态；位置和电压要连续量。" },
+        { "id": "c", "text": "全部用模拟量，模拟量更准", "correct": false, "why": "门磁只需要两态，模拟量反而增加噪声与成本。" }
+      ],
+      "solution": "门磁是典型开关量；旋钮位置和电池电压都是连续量，需要模拟输入（ADC）。"
+    },
+    {
+      "id": "recap",
+      "type": "recap",
+      "durationSec": 30,
+      "lines": [
+        "要门限用数字量，要趋势用模拟量。",
+        "数字量输出 0V/3.3V 两态；模拟量输出连续电压。",
+        "先问世界要什么，再问传感器给什么。"
+      ]
+    }
+  ],
+  "checks": [
+    { "id": "s1", "type": "sim-task", "weight": 0.35, "pass": "3 个测点类型判断正确并说明理由" },
+    { "id": "m1", "type": "measurement", "weight": 0.35, "pass": "LM35 读数 0.25V ± 0.02V、按键高电平 3.3V ± 0.2V" },
+    { "id": "q1", "type": "quiz", "weight": 0.3, "pass": "3.3V 判为数字高电平、0V 判为低电平" }
+  ],
+  "assessment": {
+    "masteryWeights": { "hook": 0.1, "practice": 0.35, "verify": 0.3, "transfer": 0.25 },
+    "passScore": 0.7,
+    "retentionDays": [1, 3, 7, 21]
+  },
+  "storyBinding": {
+    "scene": "P10-WeaveCorridor",
+    "npc": "丝",
+    "dialogueHint": "别急着换线；先问传感器它在说什么话。",
+    "worldPhenomenon": "回廊温度计忽高忽低，读数在两种传感器之间打架。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["第七校验", "熵", "残响", "第一编译者", "网页游戏"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true,
+    "noSacrificeGlorification": true
+  },
+  "safety": {
+    "requiresPowerOffBeforeRewire": true,
+    "voltageModeOnlyForLive": true,
+    "resistanceModeBlockedWhenLive": true,
+    "currentModeRequiresSeries": true
+  }
+}

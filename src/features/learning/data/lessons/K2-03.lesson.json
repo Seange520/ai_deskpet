@@ -1,0 +1,139 @@
+{
+  "schema": "lesson.v1",
+  "lessonId": "L-K2-03",
+  "kp": {
+    "id": "K2-03",
+    "name": "ADC采样与阈值",
+    "layer": "L2",
+    "pillar": "forge",
+    "oneLiner": "模拟世界要划一条线",
+    "prereq": ["K2-01"],
+    "storyScene": "P10-SensorBench",
+    "spoilerLevel": 2,
+    "license": "CC-BY-4.0",
+    "status": "sample"
+  },
+  "meta": {
+    "version": "0.1.0",
+    "updatedAt": "2026-11-09",
+    "author": "DSH-Lead",
+    "estimatedMinutes": 11,
+    "template": "six-segment-v1",
+    "gameMount": "street-p10"
+  },
+  "segments": [
+    {
+      "id": "hook",
+      "type": "hook",
+      "durationSec": 40,
+      "narration": "传感器台的小灯在天色变暗时闪了三下才亮，像在犹豫。赫菲把万用表夹在光敏分压点上：电压明明在慢慢降，它的判断却一会儿亮一会儿灭。摊主凑过来：它是不是怕黑？赫菲摇头：它没有「中间」这个概念。",
+      "interaction": "choice",
+      "choices": [
+        { "id": "a", "text": "模拟电压是连续的，控制器要把它变成数字，再和一个阈值比较", "correct": true, "feedback": "对。它读的是数字量，所以需要一条判断线。" },
+        { "id": "b", "text": "灯在犹豫，说明传感器坏了", "correct": false, "feedback": "读数连续变化是正常的，问题在判断规则。" },
+        { "id": "c", "text": "把灯换成更亮的，就不会闪了", "correct": false, "feedback": "换灯只掩盖症状，阈值判据没解决。" }
+      ]
+    },
+    {
+      "id": "explain",
+      "type": "explain",
+      "durationSec": 105,
+      "narration": "真实世界的电压是连续的，比如光敏分压点在天黑过程中会从 3V 慢慢滑到 0.5V。控制器的数字口只认识 0 和 1，所以它内部有一个模数转换器 ADC：把输入电压按参考电压切成很多份，再输出一个整数。教学模型用 12 位 ADC、3.3V 参考：满量程 4096 个刻度，每个刻度约 0.8mV；1.65V 正好落在中间，读数约 2048。有了数字读数，还要划一条「阈值线」：读数高于阈值就开灯，低于就关灯。问题在于，如果读数正好停在阈值附近抖动，灯就会反复开关——这叫阈值抖动。解决办法是加回差（滞回）：开灯线 2100、关灯线 2000，让两个动作之间有重叠区；再配合几次采样取平均降噪。",
+      "media": [
+        {
+          "kind": "card",
+          "src": "assets/lessons/K2-03/adc-threshold-hysteresis.svg",
+          "alt": "ADC 量化与阈值回差示意图：3.3V 参考、4096 刻度、开灯 2100 / 关灯 2000 的回差带",
+          "status": "planned",
+          "license": "original",
+          "notes": "原创 SVG，UI 内联"
+        },
+        {
+          "kind": "sim",
+          "src": "assets/lessons/K2-03/adc-threshold-sim.json",
+          "alt": "DOM 仿真：拖动光敏电压，查看 ADC 读数与开/关灯判定，切换回差开关观察抖动",
+          "status": "planned",
+          "license": "original",
+          "notes": "网页内 DOM 仿真，不依赖外部引擎"
+        }
+      ]
+    },
+    {
+      "id": "practice",
+      "type": "practice",
+      "durationSec": 210,
+      "task": "光敏分压点在天黑过程中从 3.0V 降到 0.6V。给控制器设一个阈值：低于 1.65V 开灯、高于 1.85V 关灯。算出两个动作对应的 ADC 读数，并解释为什么不能用同一个数当开关线。",
+      "steps": [
+        { "action": "calculate", "target": "on-counts", "hint": "1.65V / 3.3V × 4096 ≈ 2048" },
+        { "action": "calculate", "target": "off-counts", "hint": "1.85V / 3.3V × 4096 ≈ 2296" },
+        { "action": "judge", "target": "chatter", "hint": "同一阈值附近读数抖动会导致灯反复开关" },
+        { "action": "set", "target": "hysteresis", "hint": "开灯线低于关灯线，形成回差带" }
+      ],
+      "failureHints": [
+        "把 3.0V 当满量程：满量程是参考电压 3.3V",
+        "只设一个阈值：读数在阈值附近抖动会反复开关",
+        "把回差方向设反：开灯线应低于关灯线"
+      ]
+    },
+    {
+      "id": "verify",
+      "type": "verify",
+      "durationSec": 145,
+      "checks": [
+        { "id": "v_threshold", "type": "measurement", "probe": "adc-threshold-v", "expected": 1.65, "tolerance": 0.1, "unit": "V" },
+        { "id": "v_off", "type": "measurement", "probe": "adc-off-v", "expected": 1.85, "tolerance": 0.1, "unit": "V" }
+      ],
+      "safety": "传感器分压点只做直流电压测量；调线前断电；不要把 5V 信号直接接进 3.3V 的 ADC 输入脚。"
+    },
+    {
+      "id": "transfer",
+      "type": "transfer",
+      "durationSec": 150,
+      "prompt": "阴天时灯一直闪，晴天正常。最合理的处理是？",
+      "options": [
+        { "id": "hysteresis", "text": "加回差并增加采样平均，让判断不再卡在阈值线上", "correct": true, "why": "阴天光照缓慢变化但读数有噪声，回差+平均能消除临界抖动。" },
+        { "id": "raise", "text": "把阈值调到最高，灯就不会闪了", "correct": false, "why": "调高阈值只是换个位置抖，阴天照样临界。" },
+        { "id": "remove", "text": "把光敏传感器拆掉，改成手动开关", "correct": false, "why": "掩盖问题，没有解决模拟量判断的本质。" }
+      ],
+      "solution": "阈值判定在临界区必然遇到噪声抖动。回差给出开/关两条不同的线，采样平均降低噪声，两者配合才能稳定。"
+    },
+    {
+      "id": "recap",
+      "type": "recap",
+      "durationSec": 30,
+      "lines": [
+        "模拟量连续，数字量离散；ADC 把电压切成整数刻度。",
+        "12 位 ADC：4096 刻度，3.3V 参考时 1.65V≈2048。",
+        "阈值判断要留回差，否则临界点会反复开关。"
+      ]
+    }
+  ],
+  "checks": [
+    { "id": "q1", "type": "sim-task", "weight": 0.4, "pass": "开灯阈值 2048、关灯阈值 2296 计算正确，回差方向正确" },
+    { "id": "q2", "type": "measurement", "weight": 0.35, "pass": "开灯线 1.65±0.1V、关灯线 1.85±0.1V" },
+    { "id": "q3", "type": "quiz", "weight": 0.25, "pass": "阴天闪烁选择加回差+采样平均" }
+  ],
+  "assessment": {
+    "masteryWeights": { "hook": 0.1, "practice": 0.35, "verify": 0.3, "transfer": 0.25 },
+    "passScore": 0.7,
+    "retentionDays": [1, 3, 7, 21]
+  },
+  "storyBinding": {
+    "scene": "P10-SensorBench",
+    "npc": "赫菲",
+    "dialogueHint": "它只认识数，不认识黄昏。",
+    "worldPhenomenon": "传感器台的小灯在黄昏时反复闪亮，白天与深夜都正常。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["第七校验", "熵", "残响", "第一编译者", "网页游戏"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true,
+    "noSacrificeGlorification": true
+  },
+  "safety": {
+    "requiresPowerOffBeforeRewire": true,
+    "voltageModeOnlyForLive": true,
+    "resistanceModeBlockedWhenLive": true,
+    "currentModeRequiresSeries": true
+  }
+}

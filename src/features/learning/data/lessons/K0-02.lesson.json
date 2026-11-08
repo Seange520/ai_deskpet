@@ -1,0 +1,142 @@
+{
+  "schema": "lesson.v1",
+  "lessonId": "L-K0-02",
+  "kp": {
+    "id": "K0-02",
+    "name": "万用表电压通断电阻档",
+    "layer": "L0",
+    "pillar": "foundation",
+    "oneLiner": "先选对档，再碰电路",
+    "prereq": ["K0-01"],
+    "storyScene": "P10-DistributionBox",
+    "spoilerLevel": 0,
+    "license": "CC-BY-4.0",
+    "status": "sample"
+  },
+  "meta": {
+    "version": "0.1.0",
+    "updatedAt": "2026-11-09",
+    "author": "DSH-Lead",
+    "estimatedMinutes": 11,
+    "template": "six-segment-v1",
+    "gameMount": "street-p10"
+  },
+  "segments": [
+    {
+      "id": "hook",
+      "type": "hook",
+      "durationSec": 40,
+      "narration": "配电盒旁边，赫菲把一块万用表拍在摊主手里：电池有电吗？表笔插哪个孔？摊主翻来覆去看了半天，红色表笔还捏在手里没敢动。",
+      "interaction": "choice",
+      "choices": [
+        { "id": "a", "text": "先选对档，再碰线路；表笔插 COM 与 VΩ", "correct": true, "feedback": "对。档位和插孔错了，读数再准也没意义。" },
+        { "id": "b", "text": "档位随便转，通电了再说", "correct": false, "feedback": "带着错误档位碰线路，轻则读数溢出，重则烧表。" },
+        { "id": "c", "text": "不用表，摸一下烫不烫就知道", "correct": false, "feedback": "手不是仪表。摸之前，先用表确认电压。" }
+      ]
+    },
+    {
+      "id": "explain",
+      "type": "explain",
+      "durationSec": 110,
+      "narration": "万用表把不同的电学量翻译成同一块屏幕上的数字。测电压用 V 档，两支表笔并联在要测的两个点之间，看的是两点之间的电势差；测通断和电阻用 Ω 档，表笔跨接在导体两端，表会送出一小股电流再按欧姆定律算回阻值。通断档不是「有没有电」，而是「这根线连不连得通」。表笔插孔要记牢：黑笔插 COM，红笔测电压电阻时插 VΩ，只有测大电流才换到 10A 孔。量程宁大勿小：不知道电压多高，先放最大档，再往下调。",
+      "media": [
+        {
+          "kind": "diagram",
+          "src": "assets/lessons/K0-02/meter-dial.svg",
+          "alt": "万用表表盘：V 档、Ω/通断档、10A 孔与 COM 孔的插法示意",
+          "status": "planned",
+          "license": "original",
+          "notes": "原创 SVG，UI 内联"
+        },
+        {
+          "kind": "animation",
+          "src": "assets/lessons/K0-02/meter-three-modes.mp4",
+          "alt": "26 秒无旁白动画：同一块表分别测 24V 电压、一根断线、一只 220Ω 电阻，含字幕",
+          "status": "planned",
+          "license": "original",
+          "notes": "需配 SRT 字幕与静音回退图"
+        }
+      ]
+    },
+    {
+      "id": "practice",
+      "type": "practice",
+      "durationSec": 210,
+      "task": "给 6 个情景分别选档与插孔：① 测 24V 回路两端 ② 测一根可能断掉的线 ③ 测一只 220Ω 电阻 ④ 测一节 1.5V 电池 ⑤ 测保险丝是否通 ⑥ 判断插座有没有电。",
+      "steps": [
+        { "action": "select", "target": "case-24v-loop", "hint": "两点之间看势差，用 V 档并接" },
+        { "action": "select", "target": "case-broken-wire", "hint": "通断档测的是连不连得通" },
+        { "action": "select", "target": "case-220ohm", "hint": "电阻档要断电，别带电测" },
+        { "action": "select", "target": "case-battery", "hint": "直流电压档，量程宁大勿小" },
+        { "action": "select", "target": "case-fuse", "hint": "通断档找到底通不通" },
+        { "action": "select", "target": "case-socket", "hint": "被测电压未知，先上最大交流档" }
+      ],
+      "failureHints": [
+        "用通断档判断带电线：只报导通，不报告电压高低",
+        "带电测电阻：读数不可信，还可能损坏仪表",
+        "红笔插错 10A 孔测电压：相当于给电流反着开了一扇门"
+      ]
+    },
+    {
+      "id": "verify",
+      "type": "verify",
+      "durationSec": 150,
+      "checks": [
+        { "id": "v_volt", "type": "measurement", "probe": "supply_terminal", "expected": 24.0, "tolerance": 0.2, "unit": "V" },
+        { "id": "v_ohm", "type": "measurement", "probe": "known_resistor", "expected": 220, "tolerance": 20, "unit": "Ω" }
+      ],
+      "safety": "测电压必须用 V 档并接；带电时禁止切换电阻/通断档；测电阻前先断电，表笔先接好再碰被测点。"
+    },
+    {
+      "id": "transfer",
+      "type": "transfer",
+      "durationSec": 150,
+      "prompt": "同一根线，通断档会「响」，但电阻档显示 2Ω。下面哪个判断对？",
+      "options": [
+        { "id": "normal", "text": "线是通的，肯定没问题", "correct": false, "why": "导通不等于接触良好，2Ω 对一根短线偏大。" },
+        { "id": "contact", "text": "可能是接触不良（虚接/氧化），需要复查端子", "correct": true, "why": "通断只判通/断，电阻值才暴露接触电阻。" },
+        { "id": "battery", "text": "万用表电池快没电了", "correct": false, "why": "电量不足通常让读数漂移，而不是稳定在 2Ω。" }
+      ],
+      "solution": "通断档只回答「连没连上」，电阻档才回答「连得好不好」。2Ω 的去向要查端子压接、氧化与线缆受损。"
+    },
+    {
+      "id": "recap",
+      "type": "recap",
+      "durationSec": 30,
+      "lines": [
+        "先想测什么，再选档，最后碰线路。",
+        "电压并联、通断电阻跨接；带电不测电阻。",
+        "量程宁大勿小；通断只判通断，读数才判好坏。"
+      ]
+    }
+  ],
+  "checks": [
+    { "id": "q1", "type": "quiz", "weight": 0.35, "pass": "6 个情景选档与插孔全部正确" },
+    { "id": "q2", "type": "measurement", "weight": 0.25, "pass": "24V 端子读数 23.8–24.2V" },
+    { "id": "q3", "type": "measurement", "weight": 0.2, "pass": "220Ω 电阻读数 200–240Ω" },
+    { "id": "q4", "type": "quiz", "weight": 0.2, "pass": "通断响但 2Ω 判断为接触不良" }
+  ],
+  "assessment": {
+    "masteryWeights": { "hook": 0.1, "practice": 0.35, "verify": 0.35, "transfer": 0.2 },
+    "passScore": 0.7,
+    "retentionDays": [1, 3, 7, 21]
+  },
+  "storyBinding": {
+    "scene": "P10-DistributionBox",
+    "npc": "赫菲",
+    "dialogueHint": "表不会骗你，前提是你先选对档。",
+    "worldPhenomenon": "摊主拿着万用表不敢下手，怕把配电盒弄坏。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["第七校验", "熵", "残响", "第一编译者", "网页游戏"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true,
+    "noSacrificeGlorification": true
+  },
+  "safety": {
+    "requiresPowerOffBeforeRewire": true,
+    "voltageModeOnlyForLive": true,
+    "resistanceModeBlockedWhenLive": true,
+    "currentModeRequiresSeries": true
+  }
+}

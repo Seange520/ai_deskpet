@@ -1,0 +1,141 @@
+{
+  "schema": "lesson.v1",
+  "lessonId": "L-K2-01",
+  "kp": {
+    "id": "K2-01",
+    "name": "高低电平与数字输入",
+    "layer": "L2",
+    "pillar": "forge",
+    "oneLiner": "0和1也有脾气",
+    "prereq": ["K1-01"],
+    "storyScene": "P10-WeaveEntrance",
+    "spoilerLevel": 2,
+    "license": "CC-BY-4.0",
+    "status": "sample"
+  },
+  "meta": {
+    "version": "0.1.0",
+    "updatedAt": "2026-11-09",
+    "author": "DSH-Lead",
+    "estimatedMinutes": 11,
+    "template": "six-segment-v1",
+    "gameMount": "street-p10"
+  },
+  "segments": [
+    {
+      "id": "hook",
+      "type": "hook",
+      "durationSec": 35,
+      "narration": "织网入口的按钮还没被按下，板子上的读数却自己跳了起来。摊主瞪大眼睛：我没碰它。赫菲看了一眼悬空的杜邦线：它不是在读你，它是在读空气。",
+      "interaction": "choice",
+      "choices": [
+        { "id": "a", "text": "输入悬空，先给它一个确定的默认电平（上拉或下拉）", "correct": true, "feedback": "对。悬空是高阻，读数会随机漂移。" },
+        { "id": "b", "text": "板子坏了，换一块新的", "correct": false, "feedback": "读数乱跳不一定是硬件坏，先查输入是否有确定电平。" },
+        { "id": "c", "text": "把线接长一点，信号就稳了", "correct": false, "feedback": "加长导线只会更容易捡到干扰。" }
+      ]
+    },
+    {
+      "id": "explain",
+      "type": "explain",
+      "durationSec": 105,
+      "narration": "数字电路只认高和低两种电平，但「高」和「低」不是一个精确的点，而是一段电压区间。教学模型里约定：高于电源电压的七成算高电平，低于三成算低电平，中间那条带子属于不确定区。芯片内部对电平的判定有阈值和回差，所以真实数字输入不能停在中间地带。输入脚悬空时呈高阻态，像一根没收线的小天线，会拾取环境干扰，读数随机跳。解决方式是给它一个确定的默认电平：上拉电阻把空闲电平拉到高，下拉电阻把它拉到低。另外，3.3V 的输入脚不能直接接 5V 信号，会过压；需要电平匹配或分压。读输入之前先问三件事：它是高还是低？它的默认电平由谁决定？它会不会停在中间？",
+      "media": [
+        {
+          "kind": "card",
+          "src": "assets/lessons/K2-01/logic-level-bands.svg",
+          "alt": "数字电平区间图：高电平带、不确定带、低电平带与 0.7/0.3 倍电源电压阈值",
+          "status": "planned",
+          "license": "original",
+          "notes": "原创 SVG，UI 内联"
+        },
+        {
+          "kind": "sim",
+          "src": "assets/lessons/K2-01/level-reader-sim.json",
+          "alt": "DOM 电平读数仿真：可调输入电压，显示读数与高/低/不确定判定",
+          "status": "planned",
+          "license": "original",
+          "notes": "网页内 DOM 仿真，不依赖外部引擎"
+        }
+      ]
+    },
+    {
+      "id": "practice",
+      "type": "practice",
+      "durationSec": 210,
+      "task": "给 6 个输入场景判定「高 / 低 / 不确定」，并说明不确定的原因：① 3.3V ② 0V ③ 1.65V ④ 悬空 ⑤ 5V 信号接到 3.3V 输入脚 ⑥ 带抖动的按钮。",
+      "steps": [
+        { "action": "judge", "target": "case-33v", "hint": "接近电源电压，稳定高电平" },
+        { "action": "judge", "target": "case-0v", "hint": "接近地，稳定低电平" },
+        { "action": "judge", "target": "case-165v", "hint": "落在不确定带里" },
+        { "action": "judge", "target": "case-floating", "hint": "高阻输入会拾取干扰" },
+        { "action": "judge", "target": "case-5v-into-33", "hint": "超过输入额定电压" },
+        { "action": "judge", "target": "case-bouncing", "hint": "机械抖动是毫秒级跳变" }
+      ],
+      "failureHints": [
+        "把悬空当成低电平：高阻不是 0V",
+        "把 1.65V 当成高：中间带不算有效电平",
+        "忽略输入耐压：5V 直灌 3.3V 脚会损伤输入级"
+      ]
+    },
+    {
+      "id": "verify",
+      "type": "verify",
+      "durationSec": 140,
+      "checks": [
+        { "id": "v_high", "type": "measurement", "probe": "input_high", "expected": 3.3, "tolerance": 0.2, "unit": "V" },
+        { "id": "v_low", "type": "measurement", "probe": "input_low", "expected": 0, "tolerance": 0.3, "unit": "V" }
+      ],
+      "safety": "测量与接线前先断电；3.3V 输入脚不得直接接 5V 信号；测试夹具要固定，避免表笔滑落短路。"
+    },
+    {
+      "id": "transfer",
+      "type": "transfer",
+      "durationSec": 150,
+      "prompt": "一个按钮不按的时候读数乱跳，按下反而正常。最合理的处理是？",
+      "options": [
+        { "id": "pull", "text": "给输入加一个上拉或下拉，固定空闲电平", "correct": true, "why": "空闲悬空才是乱跳的根因，默认电平要由电阻决定。" },
+        { "id": "replace", "text": "换一个更贵的按钮", "correct": false, "why": "按钮没坏，是输入端没有默认电平。" },
+        { "id": "ignore", "text": "把乱跳的读数在程序里忽略掉", "correct": false, "why": "掩盖症状会把随机误触发带进逻辑。" }
+      ],
+      "solution": "悬空输入会拾取干扰。按有效电平选择上拉或下拉，让空闲状态有确定电平；若按钮在长线上，再配合去抖与滤波。"
+    },
+    {
+      "id": "recap",
+      "type": "recap",
+      "durationSec": 30,
+      "lines": [
+        "电平是区间，不是精确的点；中间带不确定。",
+        "悬空输入呈高阻，读数会乱跳，必须有上拉或下拉。",
+        "3.3V 输入脚不能直接接 5V 信号。"
+      ]
+    }
+  ],
+  "checks": [
+    { "id": "q1", "type": "sim-task", "weight": 0.4, "pass": "6 个场景高/低/不确定判定正确并说明原因" },
+    { "id": "q2", "type": "measurement", "weight": 0.3, "pass": "高 3.3±0.2V、低 0±0.3V" },
+    { "id": "q3", "type": "quiz", "weight": 0.3, "pass": "悬空输入选择上拉/下拉而非换按钮" }
+  ],
+  "assessment": {
+    "masteryWeights": { "hook": 0.1, "practice": 0.35, "verify": 0.3, "transfer": 0.25 },
+    "passScore": 0.7,
+    "retentionDays": [1, 3, 7, 21]
+  },
+  "storyBinding": {
+    "scene": "P10-WeaveEntrance",
+    "npc": "赫菲",
+    "dialogueHint": "没接确定的电平，就别怪它乱说话。",
+    "worldPhenomenon": "织网入口的按钮悬空，板子读数自己跳。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["第七校验", "熵", "残响", "第一编译者", "网页游戏"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true,
+    "noSacrificeGlorification": true
+  },
+  "safety": {
+    "requiresPowerOffBeforeRewire": true,
+    "voltageModeOnlyForLive": true,
+    "resistanceModeBlockedWhenLive": true,
+    "currentModeRequiresSeries": true
+  }
+}

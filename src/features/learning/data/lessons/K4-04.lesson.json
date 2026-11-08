@@ -1,0 +1,140 @@
+{
+  "schema": "lesson.v1",
+  "lessonId": "L-K4-04",
+  "kp": {
+    "id": "K4-04",
+    "name": "UART与串口协议",
+    "layer": "L4",
+    "pillar": "weave",
+    "oneLiner": "波特率不对，全是乱码",
+    "prereq": ["K3-06"],
+    "storyScene": "P10-PacketPuzzle",
+    "spoilerLevel": 4,
+    "license": "CC-BY-4.0",
+    "status": "planned"
+  },
+  "meta": {
+    "version": "0.1.0",
+    "updatedAt": "2026-11-09",
+    "author": "DSH-Lead",
+    "estimatedMinutes": 11,
+    "template": "six-segment-v1",
+    "gameMount": "weave-corridor"
+  },
+  "segments": [
+    {
+      "id": "hook",
+      "type": "hook",
+      "durationSec": 35,
+      "narration": "串口屏闪着一行乱码，隔壁师傅头也不抬：波特率不对。你手里的收发线上，到底哪根接反了、哪个数填错了？",
+      "interaction": "choice",
+      "choices": [
+        { "id": "a", "text": "先换一根线，乱码多半是线坏了", "correct": false, "feedback": "线坏通常完全没数据；有规律的乱码更像参数不匹配。" },
+        { "id": "b", "text": "先核对波特率与 TX/RX 交叉，再看报文", "correct": true, "feedback": "对。串口三件事：参数、方向、格式。" },
+        { "id": "c", "text": "把发送端和接收端都改成最高波特率", "correct": false, "feedback": "两端必须一致；盲目拉高只会更快地乱码。" }
+      ]
+    },
+    {
+      "id": "explain",
+      "type": "explain",
+      "durationSec": 100,
+      "narration": "UART 是异步串口：没有共享时钟，靠双方约定同一个波特率对时。9600 表示每秒 9600 个位，一个位约 104 微秒。每帧 = 1 起始位 + 8 数据位 + 1 停止位（8N1），还可以加校验。TX 接 RX、RX 接 TX，方向必须交叉。波特率、数据位、校验、停止位有一个不一致，整帧就会错位成乱码。协议层再规定报文格式，比如 `L1:ON\\n` 加一个异或校验。",
+      "media": [
+        {
+          "kind": "diagram",
+          "src": "assets/lessons/K4-04/uart-frame.svg",
+          "alt": "UART 8N1 一帧的起始位、8 个数据位、停止位与时间轴",
+          "status": "planned",
+          "license": "original",
+          "notes": "原创 SVG，UI 内联"
+        },
+        {
+          "kind": "simulation",
+          "src": "assets/lessons/K4-04/uart-terminal.json",
+          "alt": "串口终端仿真：切换波特率与校验位，观察正确报文与乱码",
+          "status": "planned",
+          "license": "original",
+          "notes": "页面内确定性仿真"
+        }
+      ]
+    },
+    {
+      "id": "practice",
+      "type": "practice",
+      "durationSec": 210,
+      "task": "在串口终端里把报文 `L1:ON\\n` 发出去：先确认 9600/8N1，再核对 TX/RX 交叉，最后拼校验。",
+      "steps": [
+        { "action": "connect", "target": "uart-tx-rx", "hint": "TX 接 RX，不是 TX 接 TX" },
+        { "action": "set-baud", "target": "uart-baud", "hint": "两端必须同为 9600" },
+        { "action": "type", "target": "uart-frame", "hint": "L1:ON 后跟换行符" },
+        { "action": "append-checksum", "target": "uart-xor", "hint": "对负载逐字节异或" }
+      ],
+      "failureHints": [
+        "TX 接 TX：两边都在发，收不到",
+        "波特率 115200 对 9600：出现规律性乱码",
+        "忘记换行符：接收端一直等不到一帧结束"
+      ]
+    },
+    {
+      "id": "verify",
+      "type": "verify",
+      "durationSec": 140,
+      "checks": [
+        { "id": "v_baud", "type": "measurement", "probe": "uart_baud", "expected": 9600, "tolerance": 96, "unit": "baud" },
+        { "id": "v_frame", "type": "measurement", "probe": "uart_frame_ok", "expected": 1, "tolerance": 0, "unit": "bool" },
+        { "id": "v_xor", "type": "measurement", "probe": "uart_checksum", "expected": 94, "tolerance": 0, "unit": "byte" }
+      ],
+      "safety": "串口仿真不接触真实设备；真实串口连接前须确认电平（3.3V/5V/RS-232）与共地，禁止带电插拔。"
+    },
+    {
+      "id": "transfer",
+      "type": "transfer",
+      "durationSec": 150,
+      "prompt": "要发送 `T=24.0`，协议规定「逐字节异或」校验，合法报文应该是？",
+      "options": [
+        { "id": "a", "text": "T=24.0 + 校验 0x71", "correct": true, "why": "对 T、=、2、4、.、0 逐字节异或得到 0x71。" },
+        { "id": "b", "text": "T=24.0 + 校验 0x5E", "correct": false, "why": "0x5E 是 L1:ON 的校验值，不能套用。" },
+        { "id": "c", "text": "T=24.0，不需要校验", "correct": false, "why": "协议要求校验，缺失会收到乱码或拒收。" }
+      ],
+      "solution": "逐字节异或得 0x71；换负载就要重算校验，不能复用上一帧的值。"
+    },
+    {
+      "id": "recap",
+      "type": "recap",
+      "durationSec": 30,
+      "lines": [
+        "先对参数，再对方向，最后对报文。",
+        "TX 接 RX；波特率两端一致。",
+        "校验是给数据的一把锁，不是装饰。"
+      ]
+    }
+  ],
+  "checks": [
+    { "id": "s1", "type": "sim-task", "weight": 0.4, "pass": "报文拼装正确、校验通过" },
+    { "id": "m1", "type": "measurement", "weight": 0.3, "pass": "波特率 9600 与帧位宽测量正确" },
+    { "id": "q1", "type": "quiz", "weight": 0.3, "pass": "TX/RX 交叉与 8N1 帧结构判断正确" }
+  ],
+  "assessment": {
+    "masteryWeights": { "hook": 0.1, "practice": 0.35, "verify": 0.3, "transfer": 0.25 },
+    "passScore": 0.7,
+    "retentionDays": [1, 3, 7, 21]
+  },
+  "storyBinding": {
+    "scene": "P10-PacketPuzzle",
+    "npc": "丝",
+    "dialogueHint": "乱码不是鬼，是两边没对好表。",
+    "worldPhenomenon": "回廊串口屏周期性乱码，有人把校验位当成了装饰。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["第七校验", "熵", "残响", "第一编译者", "网页游戏"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true,
+    "noSacrificeGlorification": true
+  },
+  "safety": {
+    "requiresPowerOffBeforeRewire": true,
+    "voltageModeOnlyForLive": true,
+    "resistanceModeBlockedWhenLive": true,
+    "currentModeRequiresSeries": true
+  }
+}

@@ -1,0 +1,139 @@
+{
+  "schema": "lesson.v1",
+  "lessonId": "L-K1-03",
+  "kp": {
+    "id": "K1-03",
+    "name": "功率与发热",
+    "layer": "L1",
+    "pillar": "forge",
+    "oneLiner": "发热是能量在找出口",
+    "prereq": ["K1-01"],
+    "storyScene": "P10-Street-HeatFault",
+    "spoilerLevel": 1,
+    "license": "CC-BY-4.0",
+    "status": "sample"
+  },
+  "meta": {
+    "version": "0.1.0",
+    "updatedAt": "2026-11-09",
+    "author": "DSH-Lead",
+    "estimatedMinutes": 11,
+    "template": "six-segment-v1",
+    "gameMount": "street-p10"
+  },
+  "segments": [
+    {
+      "id": "hook",
+      "type": "hook",
+      "durationSec": 45,
+      "narration": "街角的线槽摸上去烫手，可电压表显示才 24 伏。摊主嘟囔：电压又不高，怎么会这么热？赫菲把电流表夹上去：热不热，不只看电压，还看有多少电在往一个地方挤。",
+      "interaction": "choice",
+      "choices": [
+        { "id": "a", "text": "同样的电压，电流越大、电阻越大，发热越多", "correct": true, "feedback": "对。P=UI=I²R，热是能量损耗出来的。" },
+        { "id": "b", "text": "电压低就不会发热，肯定不是电的问题", "correct": false, "feedback": "低压大电流同样能烧线，功率才是关键。" },
+        { "id": "c", "text": "发热是正常的，线越热说明越耐用", "correct": false, "feedback": "持续过热会加速绝缘老化，是故障前兆。" }
+      ]
+    },
+    {
+      "id": "explain",
+      "type": "explain",
+      "durationSec": 100,
+      "narration": "电流流经导体，电能有一部分变成热，这就是功率损耗。功率有三种等价写法：P=UI、P=I²R、P=U²/R，同一个电路用哪个方便用哪个。发热量不仅看瞬时功率，还看时间：能量是功率乘时间，短时间的过载可能只是温升，长时间的过载会持续积累热量，直到绝缘老化甚至起火。导线发热还受散热条件影响：同样的功率，走线槽里比架空更热，捆扎在一起比单根更热。保险丝正是利用这一点：用一段故意做弱的导体，在持续过流时先熔断，把故障挡在线路外面。温升曲线是教学模型，用来建立「功率—时间—温升」的直觉，不代表真实器件的认证数据。",
+      "media": [
+        {
+          "kind": "diagram",
+          "src": "assets/lessons/K1-03/i2r-heat.svg",
+          "alt": "同一电流下导线发热对比图：P=UI、P=I²R 与散热条件的示意",
+          "status": "planned",
+          "license": "original",
+          "notes": "原创 SVG，UI 内联"
+        },
+        {
+          "kind": "animation",
+          "src": "assets/lessons/K1-03/heat-curve.mp4",
+          "alt": "26 秒无旁白动画：7 秒温升曲线，正常档与过热档对比，含字幕与教学模型声明",
+          "status": "planned",
+          "license": "original",
+          "notes": "教学模型，需标注非真实认证曲线"
+        }
+      ]
+    },
+    {
+      "id": "practice",
+      "type": "practice",
+      "durationSec": 210,
+      "task": "算三条线路的功率并判断哪根最热：① 24V×2A 的灯带总线 ② 4A 电流流过 0.5Ω 的接点 ③ 12V×0.5A 的控制线。再判断：为什么 ② 最热？",
+      "steps": [
+        { "action": "calc", "target": "line-a", "hint": "P=UI，24×2=48W" },
+        { "action": "calc", "target": "line-b", "hint": "P=I²R，4²×0.5=8W" },
+        { "action": "calc", "target": "line-c", "hint": "12×0.5=6W" },
+        { "action": "explain", "target": "line-b-hottest", "hint": "单位体积内能量集中，接点散热面积小" }
+      ],
+      "failureHints": [
+        "只比电压：电压高不等于发热多",
+        "忽略接点面积：同样的功率，集中在一点更危险",
+        "把瞬时温升当成安全结论：热会随时间长出来"
+      ]
+    },
+    {
+      "id": "verify",
+      "type": "verify",
+      "durationSec": 150,
+      "checks": [
+        { "id": "v_temp", "type": "measurement", "probe": "line_temp_rise_7s", "expected": 18.0, "tolerance": 4.0, "unit": "°C" },
+        { "id": "v_class", "type": "quiz", "ask": "7 秒温升曲线属于哪一档", "expected": ["overheat"] }
+      ],
+      "safety": "温升测试只在仿真里进行；真实设备测温需断电冷却后接触，禁止用手直接摸运行中的线路与接点。"
+    },
+    {
+      "id": "transfer",
+      "type": "transfer",
+      "durationSec": 150,
+      "prompt": "一条 2A 的负载线路要选保险丝。保险丝额定按 1.2–2.0 倍裕量，下列哪个选择合理？",
+      "options": [
+        { "id": "3a", "text": "选 3A（裕量 1.5 倍）", "correct": true, "why": "工作电流落在额定的 60%–80%，短路时仍能熔断。" },
+        { "id": "5a", "text": "选 5A，越大越保险", "correct": false, "why": "裕量过大，短路时可能不动作，线缆先烧。" },
+        { "id": "1a", "text": "选 1A，越小越灵敏", "correct": false, "why": "正常启动就会熔断，误判为故障。" }
+      ],
+      "solution": "2A 负载选 3A：额定电流约为工作电流的 1.5 倍，既避开正常波动，又能在短路时可靠熔断。"
+    },
+    {
+      "id": "recap",
+      "type": "recap",
+      "durationSec": 30,
+      "lines": [
+        "发热看功率：P=UI=I²R，不只比电压。",
+        "热会随时间积累；散热条件差的地方先出问题。",
+        "保险丝是最后一道门，裕量 1.2–2.0 倍。"
+      ]
+    }
+  ],
+  "checks": [
+    { "id": "q1", "type": "numeric-choice", "weight": 0.3, "pass": "三条线路功率 48W/8W/6W 计算正确" },
+    { "id": "q2", "type": "measurement", "weight": 0.35, "pass": "7 秒温升读数与判档正确" },
+    { "id": "q3", "type": "quiz", "weight": 0.35, "pass": "2A 负载选择 3A 保险丝" }
+  ],
+  "assessment": {
+    "masteryWeights": { "hook": 0.1, "practice": 0.3, "verify": 0.35, "transfer": 0.25 },
+    "passScore": 0.7,
+    "retentionDays": [1, 3, 7, 21]
+  },
+  "storyBinding": {
+    "scene": "P10-Street-HeatFault",
+    "npc": "赫菲",
+    "dialogueHint": "电不会凭空消失，它只是换了个样子待着。",
+    "worldPhenomenon": "街角线槽发烫，电压正常，保险丝却反复熔断。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["第七校验", "熵", "残响", "第一编译者", "网页游戏"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true,
+    "noSacrificeGlorification": true
+  },
+  "safety": {
+    "requiresPowerOffBeforeRewire": true,
+    "voltageModeOnlyForLive": true,
+    "resistanceModeBlockedWhenLive": true,
+    "currentModeRequiresSeries": true
+  }
+}

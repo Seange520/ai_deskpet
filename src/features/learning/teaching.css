@@ -1,0 +1,251 @@
+.teaching-modal {
+  width: min(1050px, calc(100vw - 24px)) !important;
+  max-width: 1050px !important;
+  max-height: calc(100dvh - 24px);
+  overflow: auto;
+  padding: 28px !important;
+}
+.teaching-panel {
+  color: #e7edf4;
+  text-align: left;
+  line-height: 1.65;
+}
+.teaching-panel h2 {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding-right: 30px;
+}
+.teaching-panel h3 {
+  font-size: 1.1rem;
+  margin: 12px 0;
+}
+.teaching-panel p {
+  white-space: pre-wrap;
+}
+.teaching-panel button,
+.teaching-panel input,
+.teaching-panel select,
+.teaching-panel textarea {
+  font: inherit;
+}
+.teaching-panel button {
+  border: 1px solid #567789;
+  border-radius: 10px;
+  padding: 9px 12px;
+  color: #e8f6ff;
+  background: #263b4c;
+  cursor: pointer;
+  min-height: 44px;
+}
+.teaching-panel button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.teaching-panel :focus-visible {
+  outline: 3px solid #ffc686;
+  outline-offset: 3px;
+}
+.teaching-panel [role='tablist'] {
+  display: flex;
+  gap: 8px;
+  margin: 20px 0;
+}
+.teaching-panel [aria-selected='true'] {
+  background: #31625e;
+}
+.teaching-panel label {
+  display: block;
+  margin: 10px 0;
+}
+.teaching-panel input:not([type='radio']):not([type='checkbox']),
+.teaching-panel select,
+.teaching-panel textarea {
+  display: block;
+  max-width: 100%;
+  width: 100%;
+  background: #172631;
+  color: #eff8ff;
+  border: 1px solid #718a9b;
+  border-radius: 7px;
+  padding: 9px;
+}
+.teaching-panel input[type='radio'],
+.teaching-panel input[type='checkbox'] {
+  margin-right: 10px;
+}
+.teaching-panel textarea {
+  min-height: 90px;
+}
+.teaching-lessons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+}
+.teaching-card,
+.teaching-meter,
+.teaching-media figure {
+  background: #182d3b;
+  border: 1px solid #486172;
+  border-radius: 14px;
+  padding: 16px;
+  margin: 12px 0;
+}
+.teaching-card button {
+  display: block;
+  margin-top: 10px;
+}
+.teaching-run-head {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.teaching-segment {
+  border: 0;
+  padding: 0;
+  min-width: 0;
+}
+.teaching-panel fieldset {
+  min-width: 0;
+}
+.teaching-choice {
+  white-space: pre-wrap;
+  padding: 12px;
+  border: 1px solid #617584;
+  border-radius: 8px;
+}
+.teaching-panel progress {
+  width: 100%;
+  accent-color: #8dd9c3;
+}
+.teaching-media {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.teaching-media svg {
+  width: 100%;
+  color: #a0e7d5;
+}
+.teaching-media small {
+  display: block;
+  opacity: 0.75;
+}
+.teaching-measure-row {
+  padding: 12px 0;
+  border-top: 1px solid #456071;
+}
+.teaching-measure-row output {
+  display: block;
+  color: #b9f4c0;
+  font: 1.3rem monospace;
+  padding: 10px;
+}
+.teaching-map-layout {
+  display: grid;
+  grid-template-columns: 1fr 230px;
+  gap: 16px;
+}
+.teaching-map {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(65px, 1fr));
+  gap: 6px;
+  overflow: auto;
+  padding: 6px;
+}
+.teaching-column {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: center;
+}
+.teaching-column strong {
+  font-size: 12px;
+}
+.teaching-column button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 11px;
+  padding: 6px !important;
+}
+.teaching-column svg {
+  width: 30px;
+  height: 30px;
+}
+.teaching-column [data-state='locked'] {
+  color: #8493a1;
+}
+.teaching-column [data-state='open'] {
+  color: #a3cfdd;
+}
+.teaching-column [data-state='learning'] {
+  color: #f4c185;
+}
+.teaching-column [data-state='mastered'] {
+  color: #abf0ca;
+  background: #245445;
+  box-shadow: 0 0 12px #99ddbb44;
+}
+.teaching-entry {
+  white-space: nowrap;
+}
+@media (max-width: 600px) {
+  .teaching-modal {
+    padding: 20px 14px !important;
+  }
+  .teaching-map-layout {
+    grid-template-columns: 1fr;
+  }
+  .teaching-media {
+    grid-template-columns: 1fr;
+  }
+  .teaching-lessons {
+    grid-template-columns: 1fr;
+  }
+  .topbar:has(.teaching-entry) {
+    flex-wrap: wrap;
+  }
+  .teaching-map {
+    max-width: 100%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .teaching-panel * {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.teaching-map-scroll {
+  overflow: auto;
+  max-height: 60dvh;
+}
+.teaching-map {
+  grid-template-columns: 32px repeat(7, minmax(65px, 1fr));
+  overflow: visible;
+  min-width: 565px;
+  font-size: 12px;
+  text-align: center;
+}
+.teaching-layer {
+  display: contents;
+}
+.teaching-layer > strong,
+.teaching-layer > .teaching-column {
+  border-top: 1px solid #51647755;
+  padding-top: 8px;
+  min-height: 56px;
+}
+.teaching-column {
+  gap: 5px;
+}
+.teaching-map-layout > .teaching-card {
+  align-self: start;
+  position: sticky;
+  top: 0;
+}
+.teaching-panel button[aria-pressed='true'] {
+  outline: 2px solid #ffce8e;
+}

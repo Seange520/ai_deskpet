@@ -26,6 +26,8 @@ import Graduation from './components/Graduation';
 import useHardwareProgress from './hooks/useHardwareProgress';
 import { getHardwareRoute } from './data/hardwareRoutes';
 
+const TeachingPanel = lazy(() => import('./features/learning/TeachingPanel'));
+
 const ResonancePanel = lazy(() => import('./features/resonance/ResonancePanel'));
 
 function ModalLayer({active,children}) { return active ? createPortal(children,document.body) : children; }
@@ -282,6 +284,7 @@ export default function App() {
               {muted ? <VolumeX size={18} /> : <Volume2 size={18} />}
             </Button>
             <QualitySettings />
+            <ModalLayer active={new URLSearchParams(location.search).get('world') === 'p9'}><Button style={new URLSearchParams(location.search).get('world') === 'p9' ? {position:'fixed',left:16,top:16,zIndex:30,visibility:'visible',width:'auto',paddingInline:10} : {width:'auto',paddingInline:10}} disabled={Boolean(modal)} className="icon-btn teaching-entry" aria-label="校验之径" data-testid="teaching-entry" onClick={() => openModal('teaching')}>校验之径</Button></ModalLayer>
             {tier === 3 && !exploring && <ModalLayer active={new URLSearchParams(location.search).get('world') === 'p9'}><Button className="icon-btn" style={new URLSearchParams(location.search).get('world') === 'p9' ? {position:'fixed',right:24,top:24,zIndex:30,visibility:'visible'} : undefined} aria-label="共鸣链" data-testid="resonance-entry" onClick={() => openModal('resonance')}><GitBranch size={18}/></Button></ModalLayer>}
             <Button
               className="icon-btn"
@@ -383,16 +386,16 @@ export default function App() {
           </div>
         )}
         <AnimatePresence>
-          {modal && (<ModalLayer active={modal === 'resonance'}>
+          {modal && (<ModalLayer active={modal === 'resonance' || modal === 'teaching'}>
             <motion.div
-              className="modal-backdrop" style={modal === 'resonance' ? {visibility:'visible',zIndex:1000} : undefined}
+              className="modal-backdrop" style={modal === 'resonance' || modal === 'teaching' ? {visibility:'visible',zIndex:1000} : undefined}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setModal(null)}
             >
               <motion.section
-                className={`modal panel ${modal === 'materials' || modal === 'shop' ? 'materials-modal' : ''} ${modal === 'success' ? 'graduation-modal' : ''} ${modal === 'resonance' ? 'resonance-modal' : ''}`}
+                className={`modal panel ${modal === 'materials' || modal === 'shop' ? 'materials-modal' : ''} ${modal === 'success' ? 'graduation-modal' : ''} ${modal === 'resonance' ? 'resonance-modal' : ''} ${modal === 'teaching' ? 'teaching-modal' : ''}`}
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="modal-title"
@@ -402,7 +405,7 @@ export default function App() {
                 onKeyDown={(e) => {
                   if (e.key === 'Tab') {
                     const buttons = e.currentTarget.querySelectorAll(
-                      'button:not(:disabled),input:not(:disabled),select:not(:disabled)',
+                      'button:not(:disabled):not([tabindex="-1"]),input:not(:disabled),select:not(:disabled),textarea:not(:disabled)',
                     );
                     const first = buttons[0],
                       last = buttons[buttons.length - 1];
@@ -424,7 +427,7 @@ export default function App() {
                 >
                   <X size={20} />
                 </Button>
-                {modal === 'resonance' ? (<Suspense fallback={<h2 id="modal-title">共鸣链载入中</h2>}><ResonancePanel /></Suspense>) : modal === 'materials' || modal === 'shop' ? (
+                {modal === 'teaching' ? (<Suspense fallback={<h2 id="modal-title">校验之径载入中</h2>}><TeachingPanel /></Suspense>) : modal === 'resonance' ? (<Suspense fallback={<h2 id="modal-title">共鸣链载入中</h2>}><ResonancePanel /></Suspense>) : modal === 'materials' || modal === 'shop' ? (
                   <Materials
                     key={routeId}
                     routeId={routeId}

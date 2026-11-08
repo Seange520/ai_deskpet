@@ -1,0 +1,142 @@
+{
+  "schema": "lesson.v1",
+  "lessonId": "L-K0-06",
+  "kp": {
+    "id": "K0-06",
+    "name": "焊接与接线安全",
+    "layer": "L0",
+    "pillar": "foundation",
+    "oneLiner": "烙铁很烫，松香很香，安全第一",
+    "prereq": ["K0-01"],
+    "storyScene": "P10-MaintenanceRoom",
+    "spoilerLevel": 0,
+    "license": "CC-BY-4.0",
+    "status": "sample"
+  },
+  "meta": {
+    "version": "0.1.0",
+    "updatedAt": "2026-11-09",
+    "author": "DSH-Lead",
+    "estimatedMinutes": 11,
+    "template": "six-segment-v1",
+    "gameMount": "street-p10"
+  },
+  "segments": [
+    {
+      "id": "hook",
+      "type": "hook",
+      "durationSec": 40,
+      "narration": "维修间里那块板子时好时坏。摊主翻来覆去检查了半天：灯没坏，线也没断。赫菲把板子凑到灯下：你看这个焊点，灰的，带气泡，看着连上了，其实一拉就断。",
+      "interaction": "choice",
+      "choices": [
+        { "id": "a", "text": "先断电防烫，再检查焊点并重新补焊", "correct": true, "feedback": "对。先安全，再谈修复。" },
+        { "id": "b", "text": "用烙铁多烤一会儿，烤化了就结实", "correct": false, "feedback": "过度加热会伤焊盘和元件，虚焊另有成因。" },
+        { "id": "c", "text": "直接用力把线拽紧，能通就行", "correct": false, "feedback": "拽紧只是暂时接触，拉断后可能短路。" }
+      ]
+    },
+    {
+      "id": "explain",
+      "type": "explain",
+      "durationSec": 105,
+      "narration": "好的焊点应该发亮、圆润、像小火山，锡量不多不少。发灰、有气孔、拉尖、锡量堆成一团，都可能是虚焊：表面连上，内部没熔透，通了电却扛不住震动。焊接前要断电、拔插头，烙铁放在支架上，工作区通风；松香助焊剂加热会冒烟，不要凑近闻。温度不是越高越好，太高会伤焊盘与元件；先把烙铁头挂一点锡，再同时加热焊盘和引脚，让锡自己流开。拆焊用吸锡器或吸锡带，不要硬掰。压接和焊接是两种工艺：压接适合端子，焊接适合板级连接；压接处氧化时优先重新压接，不要直接在氧化层上补焊。",
+      "media": [
+        {
+          "kind": "card",
+          "src": "assets/lessons/K0-06/solder-joint-quality.svg",
+          "alt": "焊点质量对比图：合格/虚焊/锡量过多/拉尖四类特征",
+          "status": "planned",
+          "license": "original",
+          "notes": "原创 SVG，UI 内联"
+        },
+        {
+          "kind": "video",
+          "src": "assets/lessons/K0-06/solder-safety.mp4",
+          "alt": "24 秒分镜动画：断电、固定板子、通风、烙铁支架、补焊合格焊点，含字幕",
+          "status": "planned",
+          "license": "original",
+          "notes": "分镜动画占位；本课不要求真实动火"
+        }
+      ]
+    },
+    {
+      "id": "practice",
+      "type": "practice",
+      "durationSec": 200,
+      "task": "判断 6 张焊点照片的好坏并说明理由，再为 3 个场景选工具：① 拆一个通孔焊点 ② 补一个虚焊 ③ 清理焊盘残留锡。",
+      "steps": [
+        { "action": "judge", "target": "joint-good", "hint": "亮、圆、润，锡量适中" },
+        { "action": "judge", "target": "joint-cold", "hint": "发灰、没熔透，轻拉即断" },
+        { "action": "judge", "target": "joint-bridge", "hint": "两个焊盘被锡连在一起" },
+        { "action": "select", "target": "tool-desolder", "hint": "拆焊优先吸锡器/吸锡带" },
+        { "action": "select", "target": "tool-reflow", "hint": "补焊先加助焊剂再重新熔透" },
+        { "action": "select", "target": "tool-clean", "hint": "清理残锡不要用蛮力刮" }
+      ],
+      "failureHints": [
+        "把发灰当正常：虚焊的典型外观",
+        "烙铁温度一味调高：伤焊盘与元件",
+        "带电焊接：短路、烫伤与电击风险叠加"
+      ]
+    },
+    {
+      "id": "verify",
+      "type": "verify",
+      "durationSec": 140,
+      "checks": [
+        { "id": "v_cont", "type": "measurement", "probe": "joint_continuity", "expected": 0.2, "tolerance": 0.3, "unit": "Ω" },
+        { "id": "v_pull", "type": "measurement", "probe": "joint_pull_test", "expected": 5, "tolerance": 2, "unit": "N" },
+        { "id": "v_visual", "type": "quiz", "ask": "发灰、气孔、拉尖的焊点属于哪一类", "expected": ["cold"] }
+      ],
+      "safety": "本课为仿真教学，不要求真实动火。若实际焊接：先断电、拔插头；烙铁放回支架；工作区通风；不触摸烙铁头与刚焊完的焊点；松香烟雾不凑近闻；备好烫伤处理与灭火条件。"
+    },
+    {
+      "id": "transfer",
+      "type": "transfer",
+      "durationSec": 150,
+      "prompt": "一个压接端子表面已经氧化发黑，接触电阻变大。下列处理最合适的是？",
+      "options": [
+        { "id": "solder-over", "text": "直接在上面补一层焊锡盖住", "correct": false, "why": "氧化层没清除，焊锡也挂不牢，问题会复发。" },
+        { "id": "re-crimp", "text": "剪掉氧化段，重新压接并做防氧化处理", "correct": true, "why": "压接靠金属冷变形接触，清除氧化层才能恢复低阻连接。" },
+        { "id": "ignore", "text": "涂点油继续用", "correct": false, "why": "油不能降低接触电阻，还可能吸灰。" }
+      ],
+      "solution": "压接端子氧化属于接触面问题：剪掉氧化段、重新压接、必要时加防氧化处理，最后用通断/电阻档复测，并轻拉确认机械强度。"
+    },
+    {
+      "id": "recap",
+      "type": "recap",
+      "durationSec": 30,
+      "lines": [
+        "好焊点亮、圆、润；发灰、气孔、拉尖都是线索。",
+        "焊接先断电、通风、烙铁归架，别用手试温度。",
+        "压接氧化重新压接，别在氧化层上补焊。"
+      ]
+    }
+  ],
+  "checks": [
+    { "id": "q1", "type": "quiz", "weight": 0.4, "pass": "6 张焊点照片判断正确并说明理由" },
+    { "id": "q2", "type": "quiz", "weight": 0.2, "pass": "3 个场景工具选择正确" },
+    { "id": "q3", "type": "measurement", "weight": 0.4, "pass": "通断+轻拉测试记录正确" }
+  ],
+  "assessment": {
+    "masteryWeights": { "hook": 0.1, "practice": 0.35, "verify": 0.3, "transfer": 0.25 },
+    "passScore": 0.7,
+    "retentionDays": [1, 3, 7, 21]
+  },
+  "storyBinding": {
+    "scene": "P10-MaintenanceRoom",
+    "npc": "赫菲",
+    "dialogueHint": "看着连上不算数，拉一拉、测一测再相信它。",
+    "worldPhenomenon": "板子时好时坏，灯没坏、线没断，问题在一颗发灰的焊点上。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["第七校验", "熵", "残响", "第一编译者", "网页游戏"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true,
+    "noSacrificeGlorification": true
+  },
+  "safety": {
+    "requiresPowerOffBeforeRewire": true,
+    "voltageModeOnlyForLive": true,
+    "resistanceModeBlockedWhenLive": true,
+    "currentModeRequiresSeries": true
+  }
+}

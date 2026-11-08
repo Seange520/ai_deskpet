@@ -1,0 +1,140 @@
+{
+  "schema": "lesson.v1",
+  "lessonId": "L-K4-03",
+  "kp": {
+    "id": "K4-03",
+    "name": "SPI主从与时钟",
+    "layer": "L4",
+    "pillar": "weave",
+    "oneLiner": "时钟一响，数据排队",
+    "prereq": ["K3-02"],
+    "storyScene": "P10-DisplayModule",
+    "spoilerLevel": 4,
+    "license": "CC-BY-4.0",
+    "status": "planned"
+  },
+  "meta": {
+    "version": "0.1.0",
+    "updatedAt": "2026-11-09",
+    "author": "DSH-Lead",
+    "estimatedMinutes": 11,
+    "template": "six-segment-v1",
+    "gameMount": "weave-corridor"
+  },
+  "segments": [
+    {
+      "id": "hook",
+      "type": "hook",
+      "durationSec": 35,
+      "narration": "显示模块亮起一片雪花。阿卡夏按了按时钟线：换线没用，四根里有一根接错了。你能先说出四根各管什么吗？",
+      "interaction": "choice",
+      "choices": [
+        { "id": "a", "text": "先背四条线的名字，再对照接线", "correct": true, "feedback": "对。先知道谁管时钟、谁管片选，才知道该动哪根。" },
+        { "id": "b", "text": "四根线全部互换位置试一遍", "correct": false, "feedback": "带电乱换可能把从机打坏；先看定义再动手。" },
+        { "id": "c", "text": "把屏幕换成 I2C 屏", "correct": false, "feedback": "能绕开，但没学会 SPI 四线。" }
+      ]
+    },
+    {
+      "id": "explain",
+      "type": "explain",
+      "durationSec": 95,
+      "narration": "SPI 是同步串行：主设备发时钟，数据跟着时钟走。四根线各管一件事——SCK 时钟、MOSI 主出从入、MISO 主入从出、CS 片选。CS 空闲是高电平，拉低才选中某个从机；多从机时可以共用 SCK/MOSI/MISO，但每个从机要有一根独立 CS。时钟极性与相位（CPOL/CPHA）决定在上升沿还是下降沿采样，两边必须约定一致。",
+      "media": [
+        {
+          "kind": "diagram",
+          "src": "assets/lessons/K4-03/spi-four-wires.svg",
+          "alt": "SPI 四线连接：SCK/MOSI/MISO/CS 与主从设备",
+          "status": "planned",
+          "license": "original",
+          "notes": "原创 SVG，UI 内联"
+        },
+        {
+          "kind": "simulation",
+          "src": "assets/lessons/K4-03/spi-mode.json",
+          "alt": "SPI 模式仿真：切换 CPOL/CPHA 观察数据位错位",
+          "status": "planned",
+          "license": "original",
+          "notes": "页面内确定性仿真"
+        }
+      ]
+    },
+    {
+      "id": "practice",
+      "type": "practice",
+      "durationSec": 200,
+      "task": "给显示模块重接四根线：先按定义接对，再拉低 CS 选中它，最后切换模式观察采样边沿。",
+      "steps": [
+        { "action": "wire", "target": "spi-wires", "hint": "SCK 对 SCK，MOSI 对 MOSI" },
+        { "action": "select", "target": "spi-cs", "hint": "CS 拉低才选中该从机" },
+        { "action": "set-mode", "target": "spi-mode", "hint": "CPOL/CPHA 两边一致" },
+        { "action": "read", "target": "spi-data", "hint": "看收到的位是否与发的一致" }
+      ],
+      "failureHints": [
+        "CS 常低：两个从机同时应答，数据打架",
+        "CPOL 不一致：在错误的边沿采样，字节整体错位",
+        "MISO 与 MOSI 接反：主设备收到自己发的数据"
+      ]
+    },
+    {
+      "id": "verify",
+      "type": "verify",
+      "durationSec": 140,
+      "checks": [
+        { "id": "v_cs", "type": "measurement", "probe": "spi_cs_selected", "expected": 0.1, "tolerance": 0.2, "unit": "V" },
+        { "id": "v_sck", "type": "measurement", "probe": "spi_sck_freq_khz", "expected": 1000, "tolerance": 50, "unit": "kHz" },
+        { "id": "v_frame", "type": "measurement", "probe": "spi_frame_ok", "expected": 1, "tolerance": 0, "unit": "bool" }
+      ],
+      "safety": "教学仿真不接触真实模块；真实 SPI 接线须断电操作，3.3V/5V 电平不匹配时须加电平转换，禁止带电插拔。"
+    },
+    {
+      "id": "transfer",
+      "type": "transfer",
+      "durationSec": 150,
+      "prompt": "三个从机共用一组 SCK/MOSI/MISO，接线表该怎么写？",
+      "options": [
+        { "id": "a", "text": "SCK/MOSI/MISO 三线并联，每个从机一根独立 CS", "correct": true, "why": "共用时钟与数据线，靠 CS 决定谁被选中。" },
+        { "id": "b", "text": "三根线也并联，CS 全部接地", "correct": false, "why": "CS 全低会让三个从机同时应答，数据冲突。" },
+        { "id": "c", "text": "每个从机单独一组四线", "correct": false, "why": "能用但浪费引脚，也失去 SPI 总线复用的意义。" }
+      ],
+      "solution": "SCK/MOSI/MISO 并联到三个从机，CS0/CS1/CS2 分别独立；同一时刻只拉低一个 CS。"
+    },
+    {
+      "id": "recap",
+      "type": "recap",
+      "durationSec": 30,
+      "lines": [
+        "SCK 管时钟，CS 管谁在听。",
+        "四线各司其职：时钟、主出、主入、片选。",
+        "模式不一致，数据就错位。"
+      ]
+    }
+  ],
+  "checks": [
+    { "id": "q1", "type": "quiz", "weight": 0.5, "pass": "四线作用与多从机 CS 接法判断正确" },
+    { "id": "m1", "type": "measurement", "weight": 0.3, "pass": "CS 选中低电平 0.1V ± 0.2V、SCK 频率 1MHz ± 50kHz" },
+    { "id": "q2", "type": "quiz", "weight": 0.2, "pass": "CPOL/CPHA 采样边沿判断正确" }
+  ],
+  "assessment": {
+    "masteryWeights": { "hook": 0.1, "practice": 0.35, "verify": 0.3, "transfer": 0.25 },
+    "passScore": 0.7,
+    "retentionDays": [1, 3, 7, 21]
+  },
+  "storyBinding": {
+    "scene": "P10-DisplayModule",
+    "npc": "阿卡夏",
+    "dialogueHint": "一响一排队，选错人全场听错。",
+    "worldPhenomenon": "显示模块周期性花屏，像有人在错误的节拍上抄数据。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["第七校验", "熵", "残响", "第一编译者", "网页游戏"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true,
+    "noSacrificeGlorification": true
+  },
+  "safety": {
+    "requiresPowerOffBeforeRewire": true,
+    "voltageModeOnlyForLive": true,
+    "resistanceModeBlockedWhenLive": true,
+    "currentModeRequiresSeries": true
+  }
+}

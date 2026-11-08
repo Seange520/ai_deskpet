@@ -1,0 +1,138 @@
+{
+  "schema": "lesson.v1",
+  "lessonId": "L-K8-02",
+  "kp": {
+    "id": "K8-02",
+    "name": "调试方法论与复盘",
+    "layer": "L8",
+    "pillar": "spire",
+    "oneLiner": "先复现，再二分，最后复盘",
+    "prereq": ["K8-01"],
+    "storyScene": "P10-FinalProject",
+    "spoilerLevel": 7,
+    "license": "CC-BY-4.0",
+    "status": "planned"
+  },
+  "meta": {
+    "version": "0.1.0",
+    "updatedAt": "2026-11-09",
+    "author": "DSH-Lead",
+    "estimatedMinutes": 11,
+    "template": "six-segment-v1",
+    "gameMount": "final-project"
+  },
+  "segments": [
+    {
+      "id": "hook",
+      "type": "hook",
+      "durationSec": 40,
+      "narration": "终局项目一次报三个故障：灯闪、通信断、读数乱。你只有一双手，先修哪个？",
+      "interaction": "choice",
+      "choices": [
+        { "id": "a", "text": "三个一起改，改完看哪个先好", "correct": false, "feedback": "同时改三处，好了也不知道是哪处的功劳。" },
+        { "id": "b", "text": "先复现，再二分定位，一次只改一个变量", "correct": true, "feedback": "对。证据优先，变量隔离。" },
+        { "id": "c", "text": "从最贵的模块开始换", "correct": false, "feedback": "先换件不产生证据，只产生账单。" }
+      ]
+    },
+    {
+      "id": "explain",
+      "type": "explain",
+      "durationSec": 100,
+      "narration": "调试的顺序是：先复现（让故障稳定出现，记下现象与条件）→ 再二分（把系统切成两半，测哪边先坏）→ 后复盘（写清根因、修复、下次怎么更快）。一次只改一个变量，改完立刻验证；证据要留（读数、截图、日志）。复盘不是写检讨，是把经验变成下次的检查清单。",
+      "media": [
+        {
+          "kind": "card",
+          "src": "assets/lessons/K8-02/debug-card.svg",
+          "alt": "复现→二分→复盘三步法检查卡片，附证据清单",
+          "status": "planned",
+          "license": "original",
+          "notes": "原创卡片，UI 内联"
+        },
+        {
+          "kind": "sim",
+          "src": "assets/lessons/K8-02/final-fault-sim.json",
+          "alt": "终局综合故障仿真：三个故障叠加，按二分法逐步定位",
+          "status": "planned",
+          "license": "original",
+          "notes": "确定性教学模型"
+        }
+      ]
+    },
+    {
+      "id": "practice",
+      "type": "practice",
+      "durationSec": 210,
+      "task": "按二分法定位终局项目的综合故障：用测温/通断/日志三步缩小范围，并记录每一步证据。",
+      "steps": [
+        { "action": "measure", "target": "reproduce", "hint": "先让故障稳定复现" },
+        { "action": "inspect", "target": "bisect", "hint": "每次切一半，测靠近故障的一侧" },
+        { "action": "code", "target": "fix-one", "hint": "一次只改一个变量，改后立即验证" }
+      ],
+      "failureHints": [
+        "不复现就开始改：改完不知道好没好",
+        "三个变量一起改：无法归因",
+        "不留证据：复盘时只剩记忆"
+      ]
+    },
+    {
+      "id": "verify",
+      "type": "verify",
+      "durationSec": 150,
+      "checks": [
+        { "id": "v_metrics", "type": "measurement", "probe": "final_acceptance_passed", "expected": 3, "tolerance": 0, "unit": "items" },
+        { "id": "v_review", "type": "measurement", "probe": "review_lessons", "expected": 1, "tolerance": 0, "unit": "items" }
+      ],
+      "safety": "全程教学仿真；真实项目调试须断电、限速、有人监护。"
+    },
+    {
+      "id": "transfer",
+      "type": "transfer",
+      "durationSec": 150,
+      "prompt": "如果故障每 20 分钟才出现一次、无法稳定复现，调试顺序该怎么变？",
+      "options": [
+        { "id": "a", "text": "先加日志与监测抓现场，把偶发做成可复现", "correct": true, "why": "没有现场就没有证据，先提高可观测性。" },
+        { "id": "b", "text": "守在设备旁，用手按住可疑接点", "correct": false, "why": "「按住」会改变工况，可能人为制造假象。" },
+        { "id": "c", "text": "直接换掉最可疑的模块", "correct": false, "why": "偶发故障换件可能只是碰巧消失。" }
+      ],
+      "solution": "偶发故障先加观测，把时间线变成证据，再二分。"
+    },
+    {
+      "id": "recap",
+      "type": "recap",
+      "durationSec": 30,
+      "lines": [
+        "先复现，再二分，最后复盘。",
+        "一次只改一个变量，改完立刻验证。",
+        "复盘产出的是检查清单，不是检讨。"
+      ]
+    }
+  ],
+  "checks": [
+    { "id": "p1", "type": "project", "weight": 0.5, "pass": "按二分法修复综合故障并保留证据" },
+    { "id": "m1", "type": "measurement", "weight": 0.3, "pass": "3 项终局验收全过、复盘 ≥1 条" },
+    { "id": "q1", "type": "quiz", "weight": 0.2, "pass": "能说明复现/二分/复盘的顺序与理由" }
+  ],
+  "assessment": {
+    "masteryWeights": { "hook": 0.1, "practice": 0.3, "verify": 0.3, "transfer": 0.3 },
+    "passScore": 0.7,
+    "retentionDays": [1, 3, 7, 21]
+  },
+  "storyBinding": {
+    "scene": "P10-FinalProject",
+    "npc": "零",
+    "dialogueHint": "先让问题稳定出现，再谈怎么修。",
+    "worldPhenomenon": "终局项目的三条线路在同一晚先后报警。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["第七校验", "熵", "残响", "第一编译者", "网页游戏"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true,
+    "noSacrificeGlorification": true
+  },
+  "safety": {
+    "requiresPowerOffBeforeRewire": true,
+    "voltageModeOnlyForLive": true,
+    "resistanceModeBlockedWhenLive": true,
+    "currentModeRequiresSeries": true
+  }
+}
