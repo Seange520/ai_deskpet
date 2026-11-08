@@ -31,7 +31,7 @@ const state = () =>
     player: r.camera.userData.player,
     blend: r.camera.userData.fpsBlend,
     owner: r.camera.userData.cameraOwner,
-    canvas: document.querySelectorAll('canvas').length,
+    canvas: document.querySelectorAll('canvas[data-engine]').length,
     assets: r.scene.getObjectByName('p9-blender-assets')?.children.map((g) => ({
       name: g.name,
       count: g.userData.count,

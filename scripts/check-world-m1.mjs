@@ -45,7 +45,7 @@ const state = (p) =>
     ...r.camera.userData,
     camera: r.camera.position.toArray(),
     fov: r.camera.fov,
-    canvases: document.querySelectorAll('canvas').length,
+    canvases: document.querySelectorAll('canvas[data-engine]').length,
   }));
 let p;
 try {
@@ -196,7 +196,7 @@ try {
   const mobile = await open(true);
   const cdp = await mobile.context().newCDPSession(mobile);
   await expect(mobile.locator('#ecctrl-joystick canvas')).toBeVisible();
-  expect(await mobile.locator('canvas').count()).toBeLessThanOrEqual(2);
+  expect(await mobile.locator('canvas[data-engine]').count()).toBeLessThanOrEqual(2);
   const box = await mobile.locator('#ecctrl-joystick').boundingBox();
   const x = box.x + box.width / 2,
     y = box.y + box.height / 2;

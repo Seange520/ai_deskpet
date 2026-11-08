@@ -168,16 +168,17 @@ function renderNormals(renderer, scene, camera, material, target) {
   }
 }
 
-class ScreenLightingEffect extends Effect {
-  constructor(gl, scene, camera, reflections, ao) {
+export class ScreenLightingEffect extends Effect {
+  constructor(gl, scene, camera, reflections, ao, resolution = maxResolution) {
     const uniforms = new Map([
       ['reflections', new Uniform(null)],
       ['contactAO', new Uniform(null)],
       ['reflectionMix', new Uniform(reflections ? 1.08 : 0)],
-      ['occlusionMix', new Uniform(ao ? 0.79 : 0)],
+      ['occlusionMix', new Uniform(ao ? (resolution > maxResolution ? 0.95 : 0.79) : 0)],
     ]);
     super('ScreenLightingEffect', composite, { attributes: EffectAttribute.CONVOLUTION, uniforms });
     this.scene = scene;
+    this.resolution = resolution;
     this.camera = camera;
     this.clearColor = new Color();
     this.normalMaterial = new MeshNormalMaterial({ side: DoubleSide });
@@ -200,7 +201,12 @@ class ScreenLightingEffect extends Effect {
         1,
         1,
         undefined,
-        { radius: 1.55, thickness: 1.7, distanceExponent: 1.15, samples: 12 },
+        {
+          radius: resolution > maxResolution ? 2.0 : 1.55,
+          thickness: 1.7,
+          distanceExponent: 1.15,
+          samples: resolution > maxResolution ? 24 : 12,
+        },
         { radius: 4, samples: 8, depthPhi: 0.65, normalPhi: 4 },
       );
       this.ambientOcclusion.setGBuffer(this.buffer.depthTexture, this.buffer.texture);
@@ -210,7 +216,7 @@ class ScreenLightingEffect extends Effect {
   }
 
   setSize(width, height) {
-    const scale = Math.min(1, maxResolution / Math.max(1, width, height));
+    const scale = Math.min(1, this.resolution / Math.max(1, width, height));
     const w = Math.max(1, Math.round(width * scale));
     const h = Math.max(1, Math.round(height * scale));
     if (w === this.buffer.width && h === this.buffer.height) return;
@@ -260,6 +266,8 @@ class ScreenLightingEffect extends Effect {
     this.ambientOcclusion?.gtaoMaterial.dispose();
     this.ambientOcclusion?.blendMaterial.dispose();
     this.ambientOcclusion?.dispose();
+    this.normalMaterial.dispose();
+    this.buffer.dispose();
     super.dispose();
   }
 }

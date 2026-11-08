@@ -1,0 +1,19 @@
+{
+  "generator": "Blender MCP execute_blender_code",
+  "blender": "4.5.10 LTS",
+  "assets": [
+    {
+      "file": "companion_refined.glb",
+      "objects": 23
+    },
+    {
+      "file": "temple_refined.glb",
+      "objects": 73
+    },
+    {
+      "file": "crystal_refined.glb",
+      "objects": 1
+    }
+  ],
+  "microNormal": 2048
+}

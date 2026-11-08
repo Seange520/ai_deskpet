@@ -1,0 +1,131 @@
+.world-minimap {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  width: 190px;
+  padding: 12px;
+  z-index: 7;
+  background: #132536ed;
+  border: 1px solid #83b8bf70;
+  border-radius: 16px;
+  color: #e4eeee;
+  box-shadow: 0 8px 28px #0004;
+}
+.world-minimap span {
+  display: block;
+  font-size: 12px;
+  color: #dccea6;
+}
+.world-minimap small {
+  float: right;
+}
+.world-minimap svg {
+  width: 100%;
+  display: block;
+}
+.world-minimap button,
+.world-map-panel button {
+  min-height: 36px;
+  border: 1px solid #aadac460;
+  background: #284452;
+  color: #e9efe8;
+  border-radius: 8px;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+.world-minimap button {
+  width: 100%;
+}
+.world-minimap output {
+  display: block;
+  text-align: center;
+  font-size: 11px;
+  margin-top: 6px;
+  color: #b7d5d9;
+}
+.world-map-backdrop {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: #07121ec9;
+  z-index: 12;
+  backdrop-filter: blur(8px);
+}
+.world-map-panel {
+  width: min(720px, 94vw);
+  max-height: 94dvh;
+  overflow: auto;
+  background: #152c3e;
+  border: 1px solid #93c3c575;
+  border-radius: 22px;
+  padding: 22px;
+  color: #e9efe8;
+  box-shadow: 0 20px 80px #0008;
+}
+.world-map-panel header {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: start;
+}
+.world-map-panel h2 {
+  font-size: 23px;
+  margin: 0 0 6px;
+  color: #f2d7a6;
+}
+.world-map-panel p {
+  font-size: 12px;
+  color: #acc9d1;
+}
+.world-map-panel svg {
+  display: block;
+  width: 100%;
+  max-height: 72vh;
+}
+.world-map-panel button:focus-visible,
+.world-minimap button:focus-visible {
+  outline: 2px solid #ffe4a4;
+  outline-offset: 3px;
+}
+@media (max-width: 700px) {
+  .world-minimap {
+    width: 128px;
+    top: auto;
+    bottom: 185px;
+    right: 12px;
+    padding: 8px;
+  }
+  .world-map-panel {
+    padding: 14px;
+  }
+}
+
+.world-map-panel svg [role='button'] {
+  cursor: pointer;
+}
+.world-map-panel svg [role='button']:focus-visible {
+  outline: none;
+}
+.world-map-panel svg [role='button']:focus-visible circle {
+  stroke: #ffe4a4;
+  stroke-width: 0.7;
+}
+
+.world-minimap-terrain {
+  position: relative;
+  aspect-ratio: 1;
+  margin: 8px 0;
+  overflow: hidden;
+  border-radius: 10px;
+}
+.world-minimap-terrain canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.world-minimap-terrain svg {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+}

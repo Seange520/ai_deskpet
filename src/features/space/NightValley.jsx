@@ -53,7 +53,7 @@ function MoonSky() {
   return <primitive object={sky} />;
 }
 
-function ValleyStars({ tier, reduced }) {
+function ValleyStars({ tier, reduced, occluded }) {
   const stars = useRef(null);
   const count = tier === 3 ? 1400 : tier === 2 ? 620 : 105;
   const positions = useMemo(() => {
@@ -85,7 +85,7 @@ function ValleyStars({ tier, reduced }) {
         uniforms={uniforms}
         transparent
         depthWrite={false}
-        depthTest={false}
+        depthTest={occluded}
         blending={AdditiveBlending}
         vertexShader={`
         uniform float time; varying float brightness;
@@ -120,7 +120,7 @@ void main() {
 }
 `;
 const auroraFragment = `
-uniform float time;
+uniform float time; uniform float contrast;
 varying vec2 coord;
 void main() {
   float angle = atan(coord.y, coord.x);
@@ -131,12 +131,15 @@ void main() {
   float filament = 0.45 + 0.55 * pow(0.5 + 0.5 * sin(angle * 76.0 + 1.4 * sin(angle * 21.0 + time)), 3.0);
   float breakUp = 0.22 + 0.78 * pow(0.5 + 0.5 * sin(angle * 3.0 - 0.8), 2.0);
   vec3 tint = mix(vec3(0.09, 0.54, 0.36), vec3(0.25, 0.20, 0.58), 0.5 + 0.5 * sin(angle * 5.0));
-  gl_FragColor = vec4(tint, sheet * filament * breakUp * 0.64);
+  gl_FragColor = vec4(tint, sheet * filament * breakUp * 0.64 * contrast);
 }
 `;
 
-function AuroraPlane({ paused, reduced }) {
-  const uniforms = useMemo(() => ({ time: { value: 0 } }), []);
+function AuroraPlane({ paused, reduced, contrast = 1 }) {
+  const uniforms = useMemo(
+    () => ({ time: { value: 0 }, contrast: { value: contrast } }),
+    [contrast],
+  );
   useFrame((_, delta) => {
     if (!paused && !reduced) uniforms.time.value += Math.min(delta, 0.05);
   });
@@ -215,7 +218,7 @@ function ridgeHaze(shader) {
   `,
   );
 }
-function Ridge({ radius, amplitude, segments, tint }) {
+function Ridge({ radius, amplitude, segments, tint, smooth = false }) {
   const { positions, colors, indices } = useMemo(
     () => ridgeMesh(radius, amplitude, segments, tint),
     [radius, amplitude, segments, tint],
@@ -229,7 +232,7 @@ function Ridge({ radius, amplitude, segments, tint }) {
       </bufferGeometry>
       <ToonMaterial
         vertexColors
-        flatShading
+        flatShading={!smooth}
         fog={false}
         side={DoubleSide}
         onBeforeCompile={ridgeHaze}
@@ -296,16 +299,35 @@ function WorkshopTowers({ tier }) {
   );
 }
 
-export default function NightValley({ tier, paused, reduced }) {
+export default function NightValley({
+  tier,
+  paused,
+  reduced,
+  occludeStars = false,
+  detailed = false,
+  contrast = 1,
+}) {
   return (
     <>
       <MoonSky />
-      <ValleyStars tier={tier} reduced={paused || reduced} />
-      {tier >= 2 && <AuroraPlane paused={paused} reduced={reduced} />}
-      <Ridge radius={79} amplitude={16} segments={tier === 1 ? 54 : 104} tint="#727fae" />
-      <Ridge radius={61} amplitude={12} segments={tier === 1 ? 54 : 104} tint="#3c6584" />
-      {tier >= 2 && <WorkshopTowers tier={tier} />}
-      {tier >= 2 && (
+      <ValleyStars tier={tier} reduced={paused || reduced} occluded={occludeStars} />
+      {tier >= 2 && <AuroraPlane paused={paused} reduced={reduced} contrast={contrast} />}
+      <Ridge
+        radius={79}
+        amplitude={16}
+        segments={tier === 1 ? 54 : 104}
+        tint={detailed ? '#425771' : '#727fae'}
+        smooth={detailed}
+      />
+      <Ridge
+        radius={61}
+        amplitude={12}
+        segments={tier === 1 ? 54 : 104}
+        tint={detailed ? '#294a60' : '#3c6584'}
+        smooth={detailed}
+      />
+      {tier >= 2 && !detailed && <WorkshopTowers tier={tier} />}
+      {tier >= 2 && !detailed && (
         <Suspense fallback={null}>
           <DistantSkyline tier={tier} />
         </Suspense>

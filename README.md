@@ -9,7 +9,7 @@
 [![Vite](https://img.shields.io/badge/Vite-6-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vite.dev)
 [![React](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev)
 [![Zustand](https://img.shields.io/badge/Zustand-5-2D3748?style=flat-square)](https://zustand.docs.pmnd.rs)
-[![Release](https://img.shields.io/badge/release-v0.9.7--alpha-FFC98B?style=flat-square)](https://github.com/Seange520/ai_deskpet/tree/main)
+[![Release](https://img.shields.io/badge/release-v0.9.7--beta-FFC98B?style=flat-square)](https://github.com/Seange520/ai_deskpet/tree/main)
 ![Status](https://img.shields.io/badge/status-Testing-orange?style=flat-square)
 [![Vercel](https://img.shields.io/badge/Vercel-Deployed-000000?style=flat-square&logo=vercel&logoColor=white)](https://www.seange.cn)
 
@@ -21,15 +21,17 @@
 
 ---
 
-## 当前版本 · v0.9.7-alpha · P9-M2 世界资产与视觉重塑
+## 当前版本 · v0.9.7-beta · P9 开放世界阶段性封板
 
-P9 分支现已加载原创 Blender 石碑、水晶簇和岩石 GLB，以四个实例批次分布于 HUB 与四岛，配套模型包围盒碰撞；恢复 P8 Toon 岛座、冷暖色阶/Rim/描边及星空、极光、光轨与深渊光带。原 E2E 67/67，最终 M2 5/5、物理 M1 8/8。Tier 1 不加载物理或 GLB，失败时保留 DOM 教学。仍以 `?quality=3&world=p9` 进入，用户已准予封板，暂不推送，详见 [M2 实施、异常与截图](docs/P9_M2_ASSETS_REVIEW.md)。
+P9 已通过主策划最终视觉与交互验收：Rapier 原生 KCC 物理漫游、TPS/FPS 平滑切换、三段传送和材质小地图形成探索闭环；原创 Blender 陶瓷机器人、雕花神殿、折射水晶、破损石阶与 Toon/PBR 混合渲染接入完成。光轨采用细弧能量束、流动粒子与稀疏光雨；远景包含 7800 窗格和透明体积散射光束，原教学业务与碰撞边界保持独立。
 
-## P9-M1 自由探索（待审核）
+封板验证：**E2E 67/67、质量/传送单测 8/8、最终视觉专项 3/3、生产构建通过**；此前物理 M1 8/8、地图 M3 6/6 通过。版本标签 `v0.9.7-beta`。入口仍为 `?quality=3&world=p9`，点击「开始自由探索」。
 
-本地以 `?quality=3&world=p9` 打开已获认可的世界骨架，点击「开始自由探索」：WASD/Shift 跑动、空格跳跃、鼠标/触控视角、V 平滑切换 TPS/FPS、Esc 返回教学。新增固定步长 Rapier 原生 KCC 与 Ecctrl 角色/摇杆适配，真实验证 45° 坡和 0.5m 台阶；Tier 0/1/2 保留原降级底座。M1 等待用户审核，未提交或发布。详见 [M1 实施与证据](docs/P9_M1_EXPLORATION_REVIEW.md) 和 [P0 构图记录](docs/P9_P0_WORLD_REVIEW.md)。
+[Codex 交接提示词 15.0（架构图与接管边界）](docs/CODEX_HANDOFF_15_0.md) · [最终光轨与远景审核](docs/P9_LIGHT_RAIL_REVIEW.md) · [资产精修记录](docs/P9_FINAL_ART_REVIEW.md) · [视觉换装记录](docs/P9_SKIN_REVIEW.md) · [地图传送记录](docs/P9_M3_MAP_TELEPORT_REVIEW.md)
 
-## 当前版本 · v0.9.6-beta《第七校验》世界观与桌宠进化
+以上历史实施记录中的“待审核/未提交”是当时状态，本次封板已统一验收。**P10 待办池挂起：ESP32 真机联调暂缓，等待主策划进一步战略决策。** 下一阶段候选为移动端实体机性能压测、Tauri 桌面封装评估及更多大世界探索玩法；不自动开工。
+
+## 历史版本 · v0.9.6-beta《第七校验》世界观与桌宠进化
 
 P8-M3 已通过总指挥视觉与交互验收，封板为 `v0.9.6-beta`：建立世界观数据表，接入 500 XP 的 Spark → Kernel 粒子重组进化、Tier 2+ 深渊记忆鱼群与 Tier 3 可读取的流星记忆。原学习奖励、存档规则与教学交互保留。验收：E2E **67/67**、M3 专项 **11/11**、NPR 专项 **9/9**、画质/飞行单测 **7/7**，生产构建通过。详情见 [M3 审核记录](docs/P8_M3_LORE_REVIEW.md)。
 

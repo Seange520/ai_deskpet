@@ -124,7 +124,7 @@ export default function SceneCanvas({
       data-paused={paused}
       data-effects={
         preview
-          ? 'toon-outline-selective-bloom-aces-fxaa'
+          ? 'pbr-toon-gtao24-bloom2.8-outline-volume-clouds-aces-fxaa'
           : tier >= 2
             ? 'toon-outline-selective-bloom-aces-fxaa'
             : effects

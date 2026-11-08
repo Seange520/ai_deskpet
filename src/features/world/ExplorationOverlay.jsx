@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { EcctrlJoystick, useJoystickControls } from 'ecctrl';
+import { useWorldMap } from './navigationStore';
 import { look, useExploration, resetExploration } from './explorationState';
 
 function JoystickResources() {
@@ -37,6 +38,7 @@ export default function ExplorationOverlay({ onSurface, onExit }) {
   }, []);
   const [lockError, setLockError] = useState(false);
   const fps = useExploration((s) => s.fps);
+  const traveling = useWorldMap((s) => s.active);
   const blocked = useExploration((s) => s.blocked);
   const [touch] = useState(
     () => matchMedia('(pointer: coarse)').matches || navigator.maxTouchPoints > 0,
@@ -86,10 +88,20 @@ export default function ExplorationOverlay({ onSurface, onExit }) {
     const lock = () => {
       const current = document.pointerLockElement === surface.current;
       setLocked(current);
-      if (wasLocked.current && !current && !useExploration.getState().blocked) onExit();
+      if (
+        wasLocked.current &&
+        !current &&
+        !useExploration.getState().blocked &&
+        !useWorldMap.getState().open &&
+        !useWorldMap.getState().active
+      )
+        onExit();
       wasLocked.current = current;
       stop();
     };
+    const unsubscribeMap = useWorldMap.subscribe((next, previous) => {
+      if ((next.open && !previous.open) || (next.active && !previous.active)) stop();
+    });
     document.addEventListener('pointerlockchange', lock);
     const element = surface.current;
     element.addEventListener('focusout', stop);
@@ -97,6 +109,7 @@ export default function ExplorationOverlay({ onSurface, onExit }) {
     window.addEventListener('blur', block);
     window.addEventListener('focus', block);
     return () => {
+      unsubscribeMap();
       element.removeEventListener('focusout', stop);
       observer.disconnect();
       stop();
@@ -113,7 +126,7 @@ export default function ExplorationOverlay({ onSurface, onExit }) {
     if (!blocked) surface.current?.focus();
   }, [blocked]);
   function move(event) {
-    if (blocked) return;
+    if (blocked || useWorldMap.getState().open || useWorldMap.getState().active) return;
     const previous = dragging.current;
     if (!previous && document.pointerLockElement !== surface.current) return;
     const dx = locked ? event.movementX : event.clientX - previous.x;
@@ -137,6 +150,7 @@ export default function ExplorationOverlay({ onSurface, onExit }) {
             e.preventDefault();
             onExit();
           }
+          if (useWorldMap.getState().active) return;
           if (e.code === 'Space' && !e.repeat) useExploration.setState({ jumpQueued: true });
           if (e.code === 'KeyV' && !e.repeat) useExploration.setState((s) => ({ fps: !s.fps }));
           if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code))
@@ -161,7 +175,10 @@ export default function ExplorationOverlay({ onSurface, onExit }) {
         </p>
         <span>WASD 移动 · Shift 跑动 · 空格跳跃 · V 切换 · 鼠标拖动视角</span>
         <div>
-          <button onClick={() => useExploration.setState((s) => ({ fps: !s.fps }))}>
+          <button
+            disabled={traveling}
+            onClick={() => useExploration.setState((s) => ({ fps: !s.fps }))}
+          >
             切换视角 V
           </button>
           {!touch && (
@@ -180,6 +197,7 @@ export default function ExplorationOverlay({ onSurface, onExit }) {
               {locked ? '鼠标已锁定' : '锁定鼠标'}
             </button>
           )}
+          <button onClick={() => useWorldMap.getState().toggle()}>大地图 M</button>
           <button onClick={onExit}>返回教学 Esc</button>
         </div>
         {lockError && <small>鼠标锁定不可用，可按住画面拖动视角。</small>}

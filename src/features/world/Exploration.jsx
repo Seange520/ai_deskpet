@@ -1,3 +1,6 @@
+import VisualAvatar from './VisualAvatar';
+import PlayerContactShadow from './PlayerContactShadow';
+import RockFinish from './RockFinish';
 import { useEffect, useMemo, useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { KeyboardControls, useKeyboardControls } from '@react-three/drei';
@@ -11,9 +14,12 @@ import {
 } from '@react-three/rapier';
 import Ecctrl, { useJoystickControls } from 'ecctrl';
 import { Vector3, Raycaster } from 'three';
+import PetDissolve from '../space/PetDissolve';
+import useReducedMotionPreference from '../../lib/useReducedMotionPreference';
+import { useWorldMap } from './navigationStore';
+import { advanceTeleport } from './teleportRig';
 import WorldScene from './WorldScene';
 import { ANCHORS } from './poi';
-import ToonMaterial from '../npr/ToonMaterial';
 import { look, useExploration } from './explorationState';
 
 const MAP = [
@@ -88,24 +94,28 @@ function Course() {
     <group name="p9-m1-course">
       <mesh position={[0, 0.93, 4.5]} rotation={[-Math.PI / 4, 0, 0]}>
         <boxGeometry args={[2.35, 0.2, Math.sqrt(8)]} />
-        <ToonMaterial color="#89beb1" />
+        <RockFinish color="#8fa5a3" />
       </mesh>
       <mesh position={[0, 1, 6.5]}>
         <boxGeometry args={[2.35, 2, 2]} />
-        <ToonMaterial color="#89beb1" />
+        <RockFinish color="#8fa5a3" />
       </mesh>
       <mesh name="p9-step-0.5m" position={[0, 1.25, 8.5]}>
         <boxGeometry args={[2.35, 2.5, 2]} />
-        <ToonMaterial color="#e0bd85" />
+        <RockFinish color="#b6a18a" />
       </mesh>
       <mesh position={[0, 1.18, 10.75]} rotation={[Math.PI / 4, 0, 0]}>
         <boxGeometry args={[2.35, 0.2, Math.sqrt(12.5)]} />
-        <ToonMaterial color="#a6b7c6" />
+        <RockFinish color="#a6b7c6" />
       </mesh>
     </group>
   );
 }
 function Player({ paused, inputElement }) {
+  const bodyData = useMemo(() => ({ canJump: false }), []);
+  const reduced = useReducedMotionPreference(),
+    shell = useRef(null),
+    flight = useRef(null);
   const body = useRef(null),
     model = useRef(null),
     controller = useRef(null);
@@ -157,6 +167,7 @@ function Player({ paused, inputElement }) {
     const rb = body.current,
       kcc = controller.current;
     if (!rb || !kcc) return;
+    if (useWorldMap.getState().active || useWorldMap.getState().open) return;
     const state = motion.current,
       keys = getKeys(),
       joy = useJoystickControls.getState();
@@ -220,6 +231,11 @@ function Player({ paused, inputElement }) {
   useFrame((_, dt) => {
     const rb = body.current;
     if (!rb || paused || useExploration.getState().blocked) return;
+    if (useWorldMap.getState().open) return;
+    if (advanceTeleport({ flight, body: rb, camera, motion: motion.current, look, dt, reduced })) {
+      if (model.current) model.current.visible = true;
+      return;
+    }
     const state = motion.current,
       s = scratch,
       pos = rb.translation();
@@ -263,12 +279,19 @@ function Player({ paused, inputElement }) {
       physicsSteps: state.steps,
     };
     if (model.current) model.current.visible = state.blend < 0.85;
+    state.mapClock = (state.mapClock || 0) + Math.min(dt, 0.05);
+    if (state.mapClock >= 0.1) {
+      state.mapClock = 0;
+      useWorldMap.setState({ position: [pos.x, pos.y, pos.z], yaw: look.yaw });
+    }
   }, -0.1);
   useEffect(
     () => () => {
       delete camera.userData.cameraOwner;
       delete camera.userData.fpsBlend;
       delete camera.userData.player;
+      delete camera.userData.teleport;
+      useWorldMap.getState().reset();
     },
     [camera],
   );
@@ -276,6 +299,7 @@ function Player({ paused, inputElement }) {
     <Ecctrl
       ref={body}
       name="p9-player"
+      userData={bodyData}
       type="kinematicPosition"
       position={[0, 1.1, 1.6]}
       capsuleHalfHeight={0.35}
@@ -288,39 +312,32 @@ function Player({ paused, inputElement }) {
       enabledRotations={[false, false, false]}
       friction={0}
     >
-      <group ref={model} name="p9-player-model">
-        <mesh>
-          <capsuleGeometry args={[0.26, 0.62, 4, 8]} />
-          <ToonMaterial color="#f2d6a2" />
-        </mesh>
-        <mesh position={[0, 0.43, 0]}>
-          <boxGeometry args={[0.48, 0.38, 0.4]} />
-          <ToonMaterial color="#b3e4dc" />
-        </mesh>
-        <mesh position={[0, 0.45, 0.22]}>
-          <boxGeometry args={[0.3, 0.1, 0.04]} />
-          <meshBasicMaterial color="#293f55" />
-        </mesh>
-        {[-1, 1].map((side) => (
-          <mesh key={side} position={[side * 0.14, -0.53, 0.06]}>
-            <boxGeometry args={[0.18, 0.22, 0.35]} />
-            <ToonMaterial color="#617c94" />
-          </mesh>
-        ))}
+      <group ref={shell} name="p9-player-shell">
+        <group ref={model} name="command-pet">
+          <VisualAvatar />
+        </group>
+        <PetDissolve pet={shell} paused={paused} amount={() => motion.current.dissolve || 0} />
       </group>
     </Ecctrl>
   );
 }
 export default function Exploration({ paused, inputElement }) {
   const blocked = useExploration((s) => s.blocked);
-  // Keys are scoped to the focusable exploration surface, never window or forms.
+  const mapOpen = useWorldMap((s) => s.open);
+  if (!inputElement) return null;
+  // Wait for the real input surface before creating the physics/player world.
   return (
     <KeyboardControls
       key={inputElement ? 'ready' : 'waiting'}
       map={MAP}
       domElement={inputElement || new EventTarget()}
     >
-      <Physics timeStep={STEP} paused={paused || blocked} gravity={[0, -9.81, 0]} interpolate>
+      <Physics
+        timeStep={STEP}
+        paused={paused || blocked || mapOpen}
+        gravity={[0, -9.81, 0]}
+        interpolate
+      >
         <WorldScene
           survey={false}
           paused={paused || blocked}
@@ -338,6 +355,7 @@ export default function Exploration({ paused, inputElement }) {
           )}
         />
         <Player paused={paused || blocked} inputElement={inputElement} />
+        <PlayerContactShadow/>
       </Physics>
     </KeyboardControls>
   );

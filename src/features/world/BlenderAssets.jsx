@@ -1,9 +1,11 @@
 import { useMemo, useEffect, useLayoutEffect, useRef } from 'react';
 import { useGLTF } from '@react-three/drei';
-import { Box3, Vector3, Matrix4, Quaternion, Euler } from 'three';
+import { Box3, Vector3, Matrix4, Quaternion, Euler, BufferAttribute } from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import ToonMaterial from '../npr/ToonMaterial';
+import { RockToonFinish } from './RockFinish';
 import { ANCHORS } from './poi';
+import { CrystalClusters } from './RefinedAssets';
 
 export const ASSET_LAYOUT = {
   stone_tablet: [
@@ -58,16 +60,20 @@ function Batch({ part, placements, kind }) {
       args={[part.geometry, undefined, placements.length]}
       userData={{ source: kind + '.glb', instances: placements.length }}
     >
-      <ToonMaterial
-        color={part.color}
-        flatShading
-        emissive={part.emissive}
-        emissiveIntensity={part.intensity}
-      />
+      {!part.glow && kind !== 'crystals' ? (
+        <RockToonFinish color={part.color} />
+      ) : (
+        <ToonMaterial
+          color={part.color}
+          flatShading
+          emissive={part.emissive}
+          emissiveIntensity={part.glow ? Math.min(1.35, part.intensity) : part.intensity}
+        />
+      )}
     </instancedMesh>
   );
 }
-function Asset({ kind, colliderWrapper }) {
+export function Asset({ kind, colliderWrapper, visualPlacements }) {
   const { scene } = useGLTF('/assets/models/' + kind + '.glb');
   const model = useMemo(() => {
     scene.updateMatrixWorld(true);
@@ -90,6 +96,18 @@ function Asset({ kind, colliderWrapper }) {
     const parts = [...groups.values()].map((g) => {
       const geometry = mergeGeometries(g.geometries);
       g.geometries.forEach((p) => p.dispose());
+      // Projection UVs affect shading only; original positions/normals/bounds stay intact.
+      const pos = geometry.attributes.position,
+        normals = geometry.attributes.normal,
+        uv = new Float32Array(pos.count * 2);
+      for (let i = 0; i < pos.count; i++) {
+        const nx = Math.abs(normals.getX(i)),
+          ny = Math.abs(normals.getY(i)),
+          nz = Math.abs(normals.getZ(i));
+        uv[i * 2] = (nx > nz ? pos.getZ(i) : pos.getX(i)) * 0.7;
+        uv[i * 2 + 1] = (ny > Math.max(nx, nz) ? pos.getZ(i) : pos.getY(i)) * 0.7;
+      }
+      geometry.setAttribute('uv', new BufferAttribute(uv, 2));
       geometry.computeBoundingBox();
       bounds.union(geometry.boundingBox);
       return {
@@ -103,15 +121,17 @@ function Asset({ kind, colliderWrapper }) {
     return { parts, bounds };
   }, [scene]);
   useEffect(() => () => model.parts.forEach((p) => p.geometry.dispose()), [model]);
-  const placements = ASSET_LAYOUT[kind];
+  const placements = visualPlacements || ASSET_LAYOUT[kind];
   return (
     <group
       name={'blender-assets-' + kind}
       userData={{ source: kind + '.glb', count: placements.length }}
     >
-      {model.parts.map((p, i) => (
-        <Batch key={i} part={p} kind={kind} placements={placements} />
-      ))}
+      {kind === 'crystals' ? (
+        <CrystalClusters placements={placements} />
+      ) : (
+        model.parts.map((p, i) => <Batch key={i} part={p} kind={kind} placements={placements} />)
+      )}
       {colliderWrapper &&
         placements.map((p, i) => {
           const transform = new Matrix4().compose(

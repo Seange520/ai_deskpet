@@ -8,6 +8,7 @@ import EvolutionOverlay from '../space/EvolutionOverlay';
 import LoreOverlay from '../space/LoreOverlay';
 import './lore.css';
 const ExplorationOverlay = lazy(() => import('../world/ExplorationOverlay'));
+const WorldMap = lazy(() => import('../world/WorldMap'));
 const WorldPreview = lazy(() => import('../world/WorldPreview'));
 const SceneCanvas = lazy(() => import('./SceneCanvas'));
 const StageContext = createContext({ ready: false });
@@ -86,6 +87,15 @@ export default function StageLayer({ children }) {
                 setExploring(false);
                 setPreview(false);
               }}
+            />
+          </Suspense>
+        )}
+        {previewEnabled && (
+          <Suspense fallback={null}>
+            <WorldMap
+              exploring={active && exploring}
+              tier={quality.tier}
+              onSurveySelect={active && !exploring ? setView : undefined}
             />
           </Suspense>
         )}

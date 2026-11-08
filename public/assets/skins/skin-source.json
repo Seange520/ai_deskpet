@@ -1,0 +1,16 @@
+{
+  "generator": "Blender MCP / bpy",
+  "blender": "4.5.10 LTS",
+  "assets": [
+    {
+      "file": "island_skin.glb",
+      "vertices": 9600
+    },
+    {
+      "file": "companion_skin.glb",
+      "vertices": 3770
+    }
+  ],
+  "textureSize": 1024,
+  "walkPlane": 0.008
+}
