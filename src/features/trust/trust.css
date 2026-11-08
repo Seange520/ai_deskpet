@@ -1,0 +1,186 @@
+.trust-entry {
+  position: fixed;
+  right: 24px;
+  top: 230px;
+  z-index: 47;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #213c43;
+  color: #ffe0ac;
+  border: 1px solid #bc9163;
+  border-radius: 12px;
+  padding: 14px;
+  pointer-events: auto;
+}
+.trust-shade {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  background: #06151cce;
+  display: grid;
+  place-items: center;
+  pointer-events: auto;
+  padding: 22px;
+}
+.trust-panel {
+  width: min(1120px, 96vw);
+  max-height: 91vh;
+  overflow: auto;
+  color: #dbe7e4;
+  background: #122830;
+  border: 1px solid #67887f;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 22px 80px #0009;
+  font-size: 14px;
+}
+.trust-panel header,
+.trust-panel h1 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.trust-panel h1 {
+  justify-content: start;
+  font-size: 28px;
+}
+.trust-panel h2 {
+  font-size: 18px;
+  margin: 10px 0;
+}
+.trust-panel h3 {
+  margin: 15px 0 5px;
+  color: #ffdaa0;
+}
+.trust-panel small {
+  color: #b4c6bc;
+  letter-spacing: 2px;
+}
+.trust-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 24px;
+}
+.trust-layout aside {
+  border-right: 1px solid #43615e;
+  padding-right: 20px;
+}
+.trust-panel button,
+.trust-panel select {
+  border: 1px solid #58736b;
+  border-radius: 8px;
+  padding: 9px 12px;
+  margin: 5px;
+  background: #29464b;
+  color: #eef1dd;
+}
+.trust-panel button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.trust-panel button:focus-visible,
+.trust-panel select:focus-visible {
+  outline: 2px solid #ffe0a2;
+  outline-offset: 2px;
+}
+.trust-panel p {
+  line-height: 1.7;
+  margin: 8px 0;
+}
+.trust-panel blockquote {
+  border-left: 2px solid #c59a6c;
+  padding: 12px;
+  background: #223a3e;
+  margin: 14px 0;
+  color: #ffddb2;
+}
+.trust-scale {
+  display: flex;
+  justify-content: space-between;
+  gap: 3px;
+}
+.trust-scale span {
+  padding: 4px;
+  background: #29424a;
+  border-radius: 5px;
+  color: #92a4a5;
+}
+.trust-scale .lit {
+  background: #a7794e;
+  color: #fff3d2;
+}
+.trust-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.trust-cards article {
+  padding: 12px;
+  border: 1px solid #45615e;
+  border-radius: 12px;
+}
+.trust-act {
+  margin-top: 20px;
+  border-top: 1px solid #45615e;
+  padding-top: 15px;
+}
+.trust-act svg {
+  width: 100%;
+  max-height: 150px;
+  border-radius: 10px;
+}
+.trust-panel output {
+  display: block;
+  background: #0a1e27;
+  color: #9bf6d9;
+  padding: 12px;
+  font-family: monospace;
+  margin: 8px 0;
+  white-space: normal;
+}
+.trust-panel fieldset {
+  border: 1px solid #597268;
+  padding: 10px;
+  margin: 14px 0;
+}
+.trust-helper {
+  color: #7fffe8;
+}
+.trust-panel details {
+  margin-top: 18px;
+}
+.trust-panel summary {
+  cursor: pointer;
+}
+.trust-panel [role='status'] {
+  color: #ffdda1;
+}
+@media (max-width: 700px) {
+  .trust-shade {
+    padding: 8px;
+  }
+  .trust-panel {
+    padding: 15px;
+    max-height: 94vh;
+  }
+  .trust-layout {
+    grid-template-columns: 1fr;
+  }
+  .trust-layout aside {
+    border-right: 0;
+    border-bottom: 1px solid #43615e;
+    padding: 0 0 15px;
+  }
+  .trust-cards {
+    grid-template-columns: 1fr;
+  }
+  .trust-entry {
+    right: 12px;
+    top: 260px;
+  }
+  .trust-panel button {
+    min-height: 40px;
+  }
+}

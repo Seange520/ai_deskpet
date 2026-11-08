@@ -568,3 +568,8 @@ Built while learning, shared for discussion.
 Tier 3 的 P9 自由探索到达冷库门旁后，点击“根之手装配台”。放置四模块、调整线径/连接/屏蔽/固定，查看三张工程图，预检后完成真实 20 秒供电实测。独立装配存档保存 100XP + 1 棱镜、失败图鉴与通关参考答案；不并入教学路线积分。Esc 关闭，打开时暂停探索输入。
 
 使用现有 React、Zustand、Framer Motion、Lucide 和 SVG/CSS；不增加依赖或三维资产。专项：`D:\Node\node.exe scripts/check-assembly.mjs`；单测：`D:\Node\node.exe --test tests/assembly.unit.mjs`。先按运行指南启动 15262 服务。模型与限制见 [M3 审核](docs/P10_M3_ASSEMBLY_REVIEW.md)。Roadmap：本轮单案件装配台待人工验收，后续案件与自由拼装仍未实施。
+### P10-M4 · 信任与邀约（本地待验收）
+
+在 Tier 3、`?quality=3&world=p9` 自由探索中，沿东桥到熔炉工坊门口，点击「赫菲 · 对话」。完成 M1、交流价值观后逐步解锁三幕；开发构建面板提供 +2 点按钮。断电测量与维修旧熔炉、用线长/电阻找焊枪、为纪念灯接24V安全支路；选择可回放，三幕各发1枚独立记忆棱镜，XP为0。第三幕可选择不点灯。
+
+信任独立保存，按本地日期每日问候；每周赠送半点受40%累计限制。三幕完成且4级解锁「老匠之眼」，本轮仅赫菲场景有视觉提示。无新资产或依赖。验证：`D:\Node\node.exe --test --test-isolation=none tests/trust.unit.mjs`；15262服务启动后运行 `D:\Node\node.exe scripts/check-trust.mjs`。详情见 [M4 审核](docs/P10_M4_TRUST_REVIEW.md)。Roadmap：三幕体验时长与台词待人工试玩打磨，其他NPC与其他场景芯片提示留待后续。

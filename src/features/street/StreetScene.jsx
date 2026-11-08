@@ -1,3 +1,4 @@
+import HefiNpc from '../trust/HefiNpc';
 import KickbackScene from './KickbackScene';
 import { useEffect, useMemo, useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
@@ -395,6 +396,7 @@ export default function StreetScene({ paused = false }) {
     >
       <StreetRuntime paused={paused} />
       <KickbackScene paused={paused} />
+      <HefiNpc />
       {/* Existing bridge is the only walkable surface. Both ends stay open. */}
       {[-1, 1].map((side) =>
         [6.5, 9, 11.5].map((x, i) => <Shop key={`${side}:${i}`} x={x} side={side} index={i} />),

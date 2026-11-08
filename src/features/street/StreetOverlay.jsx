@@ -1,3 +1,4 @@
+import TrustEntry from '../trust/TrustPanel';
 import AssemblyEntry from '../assembly/AssemblyEntry';
 import { confidenceFor, verifyDuration } from '../resonance/resonance.mjs';
 import KickbackOverlay from './KickbackOverlay';
@@ -44,6 +45,7 @@ export default function StreetOverlay() {
     >
       <KickbackOverlay />
       <AssemblyEntry />
+      <TrustEntry />
       {s.scanner && available && <div className="street-scan-filter" aria-hidden="true" />}
       <section className="street-title" aria-label="会呼吸的路灯任务">
         <small>THE SEVENTH CHECKSUM / P10 · 01</small>
