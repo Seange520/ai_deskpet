@@ -557,3 +557,425 @@
 .street-meter.minimized header h2 {
   font-size: 12px;
 }
+/* M1 is scoped to its own branch. Existing P0 rules and semantics remain intact. */
+.kickback-ui {
+  position: fixed;
+  inset: 0;
+  z-index: 8;
+  pointer-events: none;
+  color: #e2f0ed;
+  font-family: Inter, 'Microsoft YaHei', sans-serif;
+}
+.kickback-ui button,
+.kickback-ui select,
+.kickback-ui input {
+  pointer-events: auto;
+  font: inherit;
+}
+.kickback-ui button {
+  min-height: 36px;
+  background: #24434d;
+  color: #d9eee8;
+  border: 1px solid #87b8ad60;
+  border-radius: 7px;
+  padding: 7px 9px;
+  cursor: pointer;
+  font-size: 11px;
+}
+.kickback-ui button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.kickback-ui :focus-visible {
+  outline: 2px solid #b5f8dc;
+  outline-offset: 3px;
+}
+.kickback-ui select {
+  display: block;
+  width: 100%;
+  min-height: 36px;
+  background: #12313d;
+  color: #e1eee7;
+  border: 1px solid #7aaba760;
+  border-radius: 5px;
+  padding: 5px;
+  margin-top: 4px;
+  font-size: 11px;
+}
+.kickback-launch {
+  position: absolute;
+  left: 24px;
+  top: 285px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  background: #234757ed !important;
+  box-shadow: 0 8px 24px #0004;
+}
+.kickback-panel {
+  position: absolute;
+  left: 24px;
+  top: 175px;
+  width: 360px;
+  max-height: calc(100dvh - 195px);
+  overflow: auto;
+  pointer-events: auto;
+  padding: 17px;
+  background: linear-gradient(145deg, #133344f5, #142b38f5);
+  border: 1px solid #8abec477;
+  border-radius: 16px;
+  scrollbar-width: thin;
+  box-shadow: 0 12px 40px #0005;
+}
+.kickback-panel > header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  color: #b4e1e1;
+}
+.kickback-panel > header button {
+  margin-left: auto;
+}
+.kickback-panel h2 {
+  font-size: 20px;
+  margin: 3px 0;
+}
+.kickback-panel header small {
+  font-size: 8px;
+  letter-spacing: 0.18em;
+  color: #8ab6be;
+}
+.kickback-panel details {
+  border-top: 1px solid #81b2ad30;
+  padding: 8px 0;
+}
+.kickback-panel summary {
+  font-size: 11px;
+  cursor: pointer;
+  color: #bddbd1;
+  padding: 5px 0;
+}
+.kickback-panel details p {
+  font-size: 10px;
+  color: #a4c0c0;
+  line-height: 1.65;
+}
+.kickback-panel label {
+  display: block;
+  font-size: 11px;
+  color: #bcd1cd;
+  margin: 7px 0;
+}
+.kickback-hypothesis {
+  display: flex !important;
+  align-items: flex-start;
+  gap: 7px;
+  font-size: 10px !important;
+  line-height: 1.6;
+}
+.kickback-hypothesis input {
+  margin-top: 3px;
+  accent-color: #9ed7c5;
+}
+.kickback-panel details > small {
+  display: inline-block;
+  font-size: 10px;
+  margin-left: 8px;
+  color: #9fc2bc;
+}
+.kickback-lenses {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+  margin: 10px 0;
+}
+.kickback-lenses button {
+  font-size: 10px;
+}
+.kickback-lenses button[aria-pressed='true'] {
+  background: #447b77;
+  border-color: #c3f1d6;
+}
+.kickback-range {
+  display: flex;
+  gap: 8px;
+}
+.kickback-range > label {
+  flex: 1;
+  min-width: 0;
+}
+.kickback-lcd {
+  min-height: 100px;
+}
+.kickback-lcd output {
+  font-size: 22px;
+}
+.kickback-panel .street-focus {
+  flex-wrap: wrap;
+}
+.kickback-panel .street-focus small {
+  font-size: 9px;
+  margin-left: auto;
+}
+.kickback-evidence {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  font-size: 10px;
+  color: #add1ca;
+  margin: 8px 0;
+}
+.kickback-evidence span {
+  font-size: 8px;
+  padding: 3px 4px;
+  border: 1px solid #71958e66;
+  border-radius: 4px;
+  color: #789995;
+}
+.kickback-evidence span[data-recorded='true'] {
+  color: #c5f4d6;
+  background: #315951;
+  border-color: #8cdab6;
+}
+.kickback-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+  margin: 8px 0;
+}
+.kickback-actions button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 10px;
+}
+.kickback-panel footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+  border-top: 1px solid #7aa59c30;
+  padding-top: 9px;
+  font-size: 9px;
+  color: #8eb9b7;
+}
+.kickback-reward {
+  padding: 10px;
+  border: 1px solid #8bceb355;
+  border-radius: 7px;
+  font-size: 11px;
+  color: #c7ecd0;
+  background: #244b40;
+}
+.kickback-catalog article {
+  border: 1px solid #70988955;
+  border-radius: 6px;
+  padding: 8px;
+  margin: 6px 0;
+}
+.kickback-catalog article[data-active='false'] {
+  opacity: 0.5;
+}
+.kickback-catalog b {
+  font-size: 12px;
+}
+.kickback-catalog small {
+  float: right;
+  font-size: 9px;
+  color: #88b9b1;
+}
+.kickback-catalog p {
+  margin: 5px 0;
+}
+.kickback-lesson-backdrop {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: auto;
+  background: #041b2adb;
+  backdrop-filter: blur(7px);
+  padding: 20px;
+  z-index: 20;
+}
+.kickback-lesson {
+  width: min(850px, 94vw);
+  max-height: 92dvh;
+  overflow: auto;
+  background: linear-gradient(135deg, #183846, #132934);
+  border: 1px solid #9cd5c977;
+  border-radius: 18px;
+  padding: 26px;
+  outline: none;
+  box-shadow: 0 20px 80px #0007;
+}
+.kickback-lesson > small {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: #9ed8ce;
+}
+.kickback-lesson h2 {
+  font-size: 27px;
+  margin: 12px 0;
+  color: #f0e4c6;
+}
+.kickback-lesson > p {
+  font-size: 12px;
+  color: #acc8c2;
+  line-height: 1.6;
+}
+.kickback-lesson-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 20px 0;
+}
+.kickback-lesson-grid article {
+  padding: 15px;
+  border: 1px solid #7aa79844;
+  border-radius: 10px;
+  background: #23465099;
+}
+.kickback-lesson-grid b {
+  font-size: 11px;
+  color: #d7d0aa;
+}
+.kickback-lesson-grid small {
+  font-size: 10px;
+  color: #87b6b1;
+}
+.kickback-lesson-grid p {
+  font-size: 12px;
+  line-height: 1.8;
+  color: #c7dbd3;
+  margin: 8px 0;
+}
+.kickback-lesson > label {
+  font-size: 12px;
+  display: block;
+  color: #e2e5d2;
+}
+.kickback-lesson footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-top: 16px;
+}
+.kickback-lesson output {
+  font: 12px monospace;
+  color: #a7d9cb;
+}
+.kickback-lesson button {
+  background: #acd4ba;
+  color: #1a3b34;
+  min-height: 40px;
+}
+.kickback-probe {
+  z-index: 9;
+}
+.kickback-probe span {
+  font-size: 10px;
+  max-width: 150px;
+}
+.kickback-probe.probe-K1,
+.kickback-probe.probe-U1 {
+  flex-direction: row-reverse;
+}
+.kickback-dialogue {
+  position: absolute;
+  right: 230px;
+  bottom: 28px;
+  width: min(520px, calc(100vw - 40px));
+  padding: 17px 21px;
+  border: 1px solid #ccb89066;
+  border-radius: 10px;
+  background: #18343cf5;
+  box-shadow: 0 12px 35px #0005;
+  pointer-events: auto;
+}
+.kickback-dialogue small {
+  font-size: 10px;
+  color: #d1bd96;
+}
+.kickback-dialogue p {
+  font-size: 18px;
+  line-height: 1.7;
+  color: #f3e3bb;
+  margin: 9px 0;
+}
+.kickback-dialogue button {
+  float: right;
+  font-size: 10px;
+}
+.kickback-dialogue:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+.kickback-ui.fatigued:before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(2px);
+  pointer-events: none;
+}
+@media (max-width: 700px) {
+  .kickback-panel {
+    left: 10px;
+    right: 10px;
+    top: 220px;
+    width: auto;
+    max-height: calc(100dvh - 390px);
+    padding: 12px;
+  }
+  .kickback-launch {
+    left: 10px;
+    top: auto;
+    bottom: 260px;
+  }
+  .kickback-lesson-backdrop {
+    padding: 10px;
+  }
+  .kickback-lesson {
+    width: 100%;
+    padding: 17px;
+    max-height: 94dvh;
+  }
+  .kickback-lesson h2 {
+    font-size: 22px;
+  }
+  .kickback-lesson-grid {
+    grid-template-columns: 1fr;
+    gap: 7px;
+    margin: 10px 0;
+  }
+  .kickback-lesson-grid article {
+    padding: 9px;
+  }
+  .kickback-lesson-grid p {
+    font-size: 11px;
+    margin: 3px 0;
+    line-height: 1.5;
+  }
+  .kickback-lesson footer {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .kickback-dialogue {
+    right: 10px;
+    left: 10px;
+    bottom: 165px;
+    width: auto;
+    padding: 12px;
+  }
+  .kickback-dialogue p {
+    font-size: 14px;
+  }
+  .kickback-probe span {
+    max-width: 100px;
+    font-size: 9px;
+  }
+}

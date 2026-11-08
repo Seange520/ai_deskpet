@@ -158,6 +158,12 @@ Debug 为离线课程诊断，不给实物通电；示例 GPIO 需要与实际�
 
 热参数与时间压缩用于教学演示，不代表真实器件的认证保护曲线。完整实现与验证见 [P10 切片验收](docs/P10_STREET_P0_REVIEW.md)。
 
+### P10-M1《反峰陷阱》本地开发切片（未发布）
+
+在同一探索入口沿东侧连桥继续前行，进入冷库控制柜支路。首次进入需完成 30 秒观察微课与单选，再记录 2–3 条假设；六种透镜及多量程测量帮助区分分断尖峰、控制复位与工作回流。离线诊断后，可按正确极性安装续流二极管或 RC 吸收；连续 10 次安全分断才触发 NPC 反馈，首次独立获得 100 XP 与 1 枚记忆棱镜。
+
+M1 使用独立版本化存档 `sparkmate.seventh-checksum.kickback.v1`，不接入原 2200 XP、排行榜或 P0 奖励。L/R、峰值、耦合与能量累积属于确定性的等效教学模型；交流档显示约定分断包络的 RMS 保持值，不能据此宣称真实仪表带宽或器件保护认证。范围、参数、复现与本轮证据见 [M1 审核记录](docs/P10_M1_KICKBACK_REVIEW.md)。发布版本和既有标签仍为 `v0.9.8-alpha`，本轮不提交、不推送、不打标签。
+
 ## 技术架构
 
 ### 原教学与常驻桌宠
@@ -345,10 +351,17 @@ node --test tests/code-runner.unit.mjs
 node --test --test-isolation=none tests/m2-quality.unit.mjs tests/quality-tier.unit.mjs tests/travel-timeline.unit.mjs tests/teleport-timeline.unit.mjs tests/street-circuit.unit.mjs
 ```
 
+M1 新增模型与反应表单测（可与上面的原 14 项一起执行）：
+
+```bash
+node --test --test-isolation=none tests/kickback-circuit.unit.mjs tests/reactions.unit.mjs
+```
+
 保持 15262 的正常开发服务运行后，按顺序执行：
 
 ```bash
 node scripts/check-street-p0.mjs
+node scripts/check-street-m1.mjs # 本地 M1 真实键鼠闭环与证据
 node scripts/check-world-m1.mjs
 node scripts/check-world-m3.mjs
 node scripts/check-world-rail.mjs

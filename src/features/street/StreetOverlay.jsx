@@ -1,3 +1,4 @@
+import KickbackOverlay from './KickbackOverlay';
 import { useEffect, useState } from 'react';
 import {
   Activity,
@@ -39,6 +40,7 @@ export default function StreetOverlay() {
       data-street-active={available}
       data-street-stage={s.stage}
     >
+      <KickbackOverlay />
       {s.scanner && available && <div className="street-scan-filter" aria-hidden="true" />}
       <section className="street-title" aria-label="会呼吸的路灯任务">
         <small>THE SEVENTH CHECKSUM / P10 · 01</small>

@@ -1,3 +1,4 @@
+import KickbackScene from './KickbackScene';
 import { useEffect, useMemo, useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { RoundedBox } from '@react-three/drei';
@@ -393,6 +394,7 @@ export default function StreetScene({ paused = false }) {
       userData={{ visualOnly: true, terrain: 'original-p9-hardware-bridge' }}
     >
       <StreetRuntime paused={paused} />
+      <KickbackScene paused={paused} />
       {/* Existing bridge is the only walkable surface. Both ends stay open. */}
       {[-1, 1].map((side) =>
         [6.5, 9, 11.5].map((x, i) => <Shop key={`${side}:${i}`} x={x} side={side} index={i} />),
