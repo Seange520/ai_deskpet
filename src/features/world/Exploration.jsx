@@ -1,4 +1,5 @@
 import VisualAvatar from './VisualAvatar';
+import StreetScene from '../street/StreetScene';
 import PlayerContactShadow from './PlayerContactShadow';
 import RockFinish from './RockFinish';
 import { useEffect, useMemo, useRef } from 'react';
@@ -355,7 +356,8 @@ export default function Exploration({ paused, inputElement }) {
           )}
         />
         <Player paused={paused || blocked} inputElement={inputElement} />
-        <PlayerContactShadow/>
+        <PlayerContactShadow />
+        <StreetScene paused={paused || blocked || mapOpen} />
       </Physics>
     </KeyboardControls>
   );

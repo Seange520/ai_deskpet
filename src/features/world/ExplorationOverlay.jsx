@@ -1,3 +1,4 @@
+import StreetOverlay from '../street/StreetOverlay';
 import { useEffect, useRef, useState } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { EcctrlJoystick, useJoystickControls } from 'ecctrl';
@@ -203,6 +204,7 @@ export default function ExplorationOverlay({ onSurface, onExit }) {
         {lockError && <small>鼠标锁定不可用，可按住画面拖动视角。</small>}
         {blocked && <small>探索已暂停，返回窗口后继续。</small>}
       </div>
+      <StreetOverlay />
       {fps && (
         <span className="exploration-reticle" aria-hidden="true">
           ＋
