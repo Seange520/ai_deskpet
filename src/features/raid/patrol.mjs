@@ -1,10 +1,10 @@
 ﻿// X/Z plane in metres; analytic slab intersections, no pathfinding.
 export const DETECTION = Object.freeze({
   path: [
-    [15, -5],
-    [20, -5],
-    [20, -11],
-    [15, -11],
+    [25, 7],
+    [41, 7],
+    [41, 8],
+    [25, 8],
   ],
   speed: 1.4,
   viewRange: 9,

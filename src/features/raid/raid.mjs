@@ -152,11 +152,19 @@ export function alarmEvent(s, type) {
 export function cutPower(s) {
   if (s.state !== 'running') return s;
   const room = s.rooms[s.room];
-  if (room.powerUsed) return s;
+  if (room.powerUsed || s.elapsed < room.disabledUntil) return s;
   return {
     ...s,
     rooms: s.rooms.map((r, i) =>
-      i === s.room ? { ...r, powerUsed: true, powered: false, disabledUntil: s.elapsed + 8 } : r,
+      i === s.room
+        ? {
+            ...r,
+            powerUsed: (r.powerCuts || 0) + 1 >= effects(s).powerFrequency,
+            powerCuts: (r.powerCuts || 0) + 1,
+            powered: false,
+            disabledUntil: s.elapsed + 8,
+          }
+        : r,
     ),
   };
 }

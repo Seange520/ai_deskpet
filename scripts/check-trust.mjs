@@ -1,3 +1,4 @@
+import { freshResonance } from '../src/features/resonance/resonance.mjs';
 import { chromium, expect } from '@playwright/test';
 import { mkdirSync, writeFileSync, readFileSync, readdirSync } from 'node:fs';
 import { createHash } from 'node:crypto';
@@ -27,8 +28,8 @@ const snapshot = () =>
   page.evaluate((keys) => Object.fromEntries(keys.map((k) => [k, localStorage.getItem(k)])), keys);
 const saved = () =>
   page.evaluate(() => JSON.parse(localStorage.getItem('sparkmate.seventh-checksum.trust.v1')));
-const resonance = () =>
-  page.evaluate(() => JSON.parse(localStorage.getItem('sparkmate.seventh-checksum.resonance.v1')));
+const resonance = async () =>
+  (await page.evaluate(() => JSON.parse(localStorage.getItem('sparkmate.seventh-checksum.resonance.v1')))) || freshResonance();
 async function scene() {
   return page.evaluate(async () => {
     const entry = performance
@@ -37,7 +38,7 @@ async function scene() {
     if (!entry) return {};
     const { _roots } = await import(entry.name),
       root = _roots.get(document.querySelector('.scene-stage canvas'));
-    return root ? { ...root.store.getState().camera.userData } : {};
+    return root ? { ...root.store.getState().camera.userData, lesson:!!document.querySelector('[data-testid=kickback-lesson]') } : {};
   });
 }
 async function walk(key, predicate) {
@@ -61,7 +62,7 @@ async function enter() {
   await page.mouse.down();
   await page.mouse.move(776.4, 650, { steps: 18 });
   await page.mouse.up();
-  await walk('KeyW', (s) => s.player.x > 10.3);
+  await walk('KeyW', (s) => s.player.x > 10.3 || s.lesson);
   if (await page.getByTestId('kickback-lesson').isVisible()) {
     await page.getByTestId('kickback-lesson-answer').selectOption('release');
     await expect(page.getByTestId('kickback-lesson-submit')).toBeEnabled({ timeout: 45000 });
@@ -69,6 +70,14 @@ async function enter() {
     await page.getByTestId('kickback-close').click();
   }
   await walk('KeyW', (s) => s.player.x > 11);
+  // Complete the neighboring lesson before taking the isolation baseline, even if the first approach missed its auto-open frame.
+  if ((await page.getByTestId('kickback-telemetry').getAttribute('data-lesson')) !== 'true') {
+    if (!(await page.getByTestId('kickback-lesson').isVisible())) await page.getByTestId('kickback-enter').click();
+    await page.getByTestId('kickback-lesson-answer').selectOption('release');
+    await expect(page.getByTestId('kickback-lesson-submit')).toBeEnabled({timeout:65000});
+    await page.getByTestId('kickback-lesson-submit').click();
+    await page.getByTestId('kickback-close').click();
+  }
   await expect(page.locator('[data-hefi-talk]')).toBeVisible();
   await page.locator('[data-hefi-talk]').click();
   await expect(panel).toBeVisible();

@@ -109,11 +109,25 @@ try {
   await p.locator('#exploration-input').focus();
   await p.keyboard.down('KeyS');
   await p.waitForTimeout(180);
-  await p.screenshot({ path: out + '/rail-tps-panorama.png' });
   await p.keyboard.up('KeyS');
-  const land = await state();
+  await p.screenshot({ path: out + '/rail-tps-panorama.png' });
+  // Observe the panorama after the released movement has settled on the old stepped terrain.
+  // Require three consecutive grounded samples; retain all original geometry assertions.
+  let land,
+    groundedSamples = 0;
+  await expect
+    .poll(
+      async () => {
+        land = await state();
+        groundedSamples = land.player.grounded ? groundedSamples + 1 : 0;
+        return groundedSamples;
+      },
+      { timeout: 5000, intervals: [100] },
+    )
+    .toBeGreaterThanOrEqual(3);
   samples.push({ name: 'TPS island panorama', state: land });
   expect(land.player.grounded).toBe(true);
+  expect(Math.hypot(land.player.x, land.player.z + 16)).toBeLessThan(4.8);
   expect(land.rail.oldTube).toBe(false);
   expect(land.rail.oldTowers).toBe(false);
   expect(land.rail.coreRadius).toBe(0.012);

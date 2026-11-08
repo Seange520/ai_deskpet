@@ -57,3 +57,5 @@ test('clean completion requires historical no-fuse no-penalty outcome',()=>{
 });
 
 test('legacy v1 log keys migrate before the bounded log rolls over',()=>{let s=restoreResonance(JSON.stringify({version:1,syncLog:[{key:'street:jumper:case'}]}));for(let i=0;i<51;i++)s=reduceResonance(s,{type:'sync',kind:'dialogue',key:'legacy:'+i});const sync=s.sync;s=restoreResonance(JSON.stringify(s));assert.equal(reduceResonance(s,{type:'sync',kind:'jumper',key:'street:jumper:case'}).sync,sync);});
+
+test('unchanged reconciliation and rejected action preserve saved bytes and timestamp',()=>{let raw=JSON.stringify(freshResonance()),writes=0;const storage={getItem:()=>raw,setItem:(_,s)=>{raw=s;writes++;}};const store=createResonanceStore(storage);const before=raw;store.getState().reconcile({level:1,prisms:0});store.getState().dispatch({type:'unlock',id:'missing'});assert.equal(raw,before);assert.equal(writes,0);store.getState().reconcile({level:2,prisms:0});assert.equal(writes,1);assert.equal(JSON.parse(raw).points,1);});

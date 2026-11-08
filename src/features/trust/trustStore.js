@@ -20,12 +20,14 @@ try {
   initial = restoreTrust(null);
 }
 export const useTrust = create((set, get) => {
-  let timer;
+  let timer, dirty = false;
   const persist = () => {
     clearTimeout(timer);
+    if (!dirty) return;
     try {
       localStorage.setItem(TRUST_KEY, JSON.stringify(get().save));
       localStorage.setItem(PRISMS_KEY, String(prismCount(get().save)));
+      dirty = false;
     } catch {
       set({ storageError: true });
     }
@@ -39,6 +41,7 @@ export const useTrust = create((set, get) => {
       const previous = get().save,
         next = reduceTrust(previous, event);
       if (JSON.stringify(previous) === JSON.stringify(next)) return;
+      dirty = true;
       set({ save: next });
       clearTimeout(timer);
       timer = setTimeout(persist, 100);

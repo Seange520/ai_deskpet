@@ -1,3 +1,4 @@
+import { RaidOverlayGate } from './RaidGate';
 import EnvEntry from '../env/CaseBoardPanel';
 import TrustEntry from '../trust/TrustPanel';
 import AssemblyEntry from '../assembly/AssemblyEntry';
@@ -48,6 +49,7 @@ export default function StreetOverlay() {
       <AssemblyEntry />
       <TrustEntry />
       <EnvEntry />
+      <RaidOverlayGate />
       {s.scanner && available && <div className="street-scan-filter" aria-hidden="true" />}
       <section className="street-title" aria-label="会呼吸的路灯任务">
         <small>THE SEVENTH CHECKSUM / P10 · 01</small>

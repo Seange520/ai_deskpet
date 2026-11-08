@@ -386,3 +386,31 @@ test('new runtime has no forbidden truth dialogue, new text is UTF8', () => {
     assert.equal(text.includes('?'.repeat(2)), false, f);
   }
 });
+
+// Geometry is the authority for both physical blocking and patrol ray tests.
+test('courtyard occluders match every solid obstacle footprint', async () => {
+  const { BOXES, OCCLUDERS, FLOORS, FENCES } = await import('../src/features/raid/layout.mjs');
+  assert.equal(BOXES.length, OCCLUDERS.length);
+  BOXES.forEach(({ position: p, size: s }, i) =>
+    assert.deepEqual(OCCLUDERS[i], {
+      min: [p[0] - s[0] / 2, p[2] - s[2] / 2],
+      max: [p[0] + s[0] / 2, p[2] + s[2] / 2],
+    }),
+  );
+  for (const { position: p, size: s } of FLOORS) {
+    assert.ok(p[0] - s[0] / 2 >= 20.78 - 1e-8);
+    assert.ok(Math.abs(p[1] + s[1] / 2 - 0.008) < 1e-8);
+  }
+  assert.ok(FENCES.every(({ position: p, size: s }) => p[0] - s[0] / 2 >= 20.78 - 1e-8));
+});
+
+test('fuse permits a second outage only after the first eight-second window', () => {
+  let s = { ...start(), mods: ['fuse'] };
+  s = cutPower(s);
+  assert.equal(s.rooms[0].powerUsed, false);
+  assert.equal(cutPower(s), s);
+  s = tick(s, 8, { player: [-100, -100] });
+  s = cutPower(s);
+  assert.equal(s.rooms[0].powerUsed, true);
+  assert.equal(s.rooms[0].powerCuts, 2);
+});

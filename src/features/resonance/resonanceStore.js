@@ -5,7 +5,7 @@ export function createResonanceStore(storage){
  try{initial=restoreResonance(storage.getItem(SAVE_KEY));}catch{storageError=true;}
  return create((set,get)=>{
  // resonanceNotes are session-only clues and are deliberately excluded from saves.
- const persist=next=>{const data=Object.fromEntries(Object.keys(freshResonance()).filter(k=>k!=='resonanceNotes').map(k=>[k,next[k]]));data.updatedAt=Date.now();try{storage.setItem(SAVE_KEY,JSON.stringify(data));}catch{next.storageError=true;}set({...next,updatedAt:data.updatedAt});};
+ const persist=next=>{const data=Object.fromEntries(Object.keys(freshResonance()).filter(k=>k!=='resonanceNotes').map(k=>[k,next[k]]));const previous=Object.fromEntries(Object.keys(data).map(k=>[k,get()[k]])); if(JSON.stringify({...data,updatedAt:0})===JSON.stringify({...previous,updatedAt:0})){set(next);return;}data.updatedAt=Date.now();try{storage.setItem(SAVE_KEY,JSON.stringify(data));}catch{next.storageError=true;}set({...next,updatedAt:data.updatedAt});};
  return {...initial,storageError,availablePrisms:0,exploring:false,message:'',
  dispatch:a=>persist(reduceResonance(get(),a)),
  reconcile:sources=>persist(grantPoints(get(),sources)),

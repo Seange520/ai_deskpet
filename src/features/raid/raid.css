@@ -1,0 +1,143 @@
+.raid-entry,
+.raid-panel {
+  position: fixed;
+  z-index: 120;
+  right: 18px;
+  top: 90px;
+  width: min(380px, calc(100vw - 28px));
+  padding: 16px;
+  border: 1px solid #8fa89e66;
+  border-radius: 14px;
+  background: linear-gradient(145deg, #172c39f5, #11202ef5);
+  color: #e9dfc8;
+  box-shadow: 0 16px 48px #0007;
+  pointer-events: auto;
+  font-size: 12px;
+  line-height: 1.5;
+  max-height: calc(100dvh - 180px);
+  overflow: auto;
+  box-sizing: border-box;
+}
+.raid-panel *,
+.raid-entry * {
+  box-sizing: border-box;
+}
+.raid-panel header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  position: sticky;
+  top: -16px;
+  background: #172c39;
+  padding: 8px 0;
+  z-index: 2;
+}
+.raid-panel header b {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.raid-panel header output {
+  font: 20px monospace;
+  color: #e7bd7b;
+}
+.raid-panel button,
+.raid-entry button,
+.raid-panel select {
+  background: #294451;
+  border: 1px solid #759b9766;
+  border-radius: 6px;
+  color: #e9dfc8;
+  padding: 8px;
+  cursor: pointer;
+  max-width: 100%;
+  font: inherit;
+}
+.raid-panel button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.raid-panel button:hover:enabled,
+.raid-entry button:hover {
+  background: #3e6268;
+}
+.raid-bars {
+  display: flex;
+  gap: 12px;
+}
+.raid-bars label {
+  width: 50%;
+}
+.raid-bars progress {
+  width: 100%;
+  accent-color: #d2a570;
+  height: 6px;
+  display: block;
+}
+.raid-objective {
+  border-left: 2px solid #dfab65;
+  padding-left: 9px;
+}
+.raid-measure {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin: 12px 0;
+}
+.raid-lcd {
+  width: 100%;
+  background: #bac9b0;
+  color: #182b2d;
+  padding: 8px 12px;
+  font: 22px monospace;
+  border-radius: 4px;
+}
+.raid-measure > span {
+  width: 100%;
+}
+.raid-measure > div {
+  display: flex;
+  gap: 6px;
+}
+.raid-choices {
+  display: grid;
+  gap: 6px;
+  margin: 10px 0;
+}
+.raid-choices button {
+  text-align: left;
+}
+.raid-choices small {
+  display: block;
+}
+.raid-panel pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 11px;
+}
+.raid-panel small {
+  color: #acbab5;
+}
+.raid-panel details {
+  margin-top: 10px;
+}
+.raid-panel svg {
+  vertical-align: middle;
+}
+@media (max-width: 700px) {
+  .raid-entry,
+  .raid-panel {
+    top: 216px;
+    right: 8px;
+    width: calc(100vw - 16px);
+    max-height: calc(100dvh - 328px);
+    padding: 12px;
+  }
+  .raid-panel header {
+    top: -12px;
+  }
+  .raid-panel header button {
+    padding: 6px;
+  }
+}
