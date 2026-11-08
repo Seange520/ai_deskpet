@@ -1,3 +1,4 @@
+import AssemblyEntry from '../assembly/AssemblyEntry';
 import { confidenceFor, verifyDuration } from '../resonance/resonance.mjs';
 import KickbackOverlay from './KickbackOverlay';
 import { useEffect, useState } from 'react';
@@ -42,6 +43,7 @@ export default function StreetOverlay() {
       data-street-stage={s.stage}
     >
       <KickbackOverlay />
+      <AssemblyEntry />
       {s.scanner && available && <div className="street-scan-filter" aria-hidden="true" />}
       <section className="street-title" aria-label="会呼吸的路灯任务">
         <small>THE SEVENTH CHECKSUM / P10 · 01</small>

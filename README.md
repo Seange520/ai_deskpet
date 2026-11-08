@@ -562,3 +562,9 @@ P9 已通过主策划最终视觉与交互验收：Rapier 原生 KCC 物理漫�
 Built while learning, shared for discussion.
 
 </div>
+
+### P10-M3 · 根之手装配台（本地待验收）
+
+Tier 3 的 P9 自由探索到达冷库门旁后，点击“根之手装配台”。放置四模块、调整线径/连接/屏蔽/固定，查看三张工程图，预检后完成真实 20 秒供电实测。独立装配存档保存 100XP + 1 棱镜、失败图鉴与通关参考答案；不并入教学路线积分。Esc 关闭，打开时暂停探索输入。
+
+使用现有 React、Zustand、Framer Motion、Lucide 和 SVG/CSS；不增加依赖或三维资产。专项：`D:\Node\node.exe scripts/check-assembly.mjs`；单测：`D:\Node\node.exe --test tests/assembly.unit.mjs`。先按运行指南启动 15262 服务。模型与限制见 [M3 审核](docs/P10_M3_ASSEMBLY_REVIEW.md)。Roadmap：本轮单案件装配台待人工验收，后续案件与自由拼装仍未实施。
