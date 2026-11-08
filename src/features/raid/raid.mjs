@@ -8,7 +8,15 @@ export const SKILL = Object.freeze({
   name: '静默脚步',
   duration: 5,
   cooldown: 30,
-  description: '[COPY-PENDING]',
+  description: '把脚步压到最低，五秒内巡线机听不见你。',
+});
+const LOOT_DESCRIPTIONS = Object.freeze({
+  thick: '换粗线，压降砍半，跑起来略沉。',
+  shield: '绞合屏蔽，替你挡下一次噪声误报。',
+  capacitor: '储能更稳，技能冷却缩短，热势更显眼。',
+  fuse: '短路时它先断，少丢六成材料。',
+  loose: '每间房多一处松动接点，材料多拿一份。',
+  mute: '鹰眼不再显示文字，算力 +20。',
 });
 export const LOOT = Object.freeze(
   [
@@ -18,7 +26,7 @@ export const LOOT = Object.freeze(
     { id: 'fuse', name: '快熔保险', shortFactor: 0.4, powerFrequency: 2 },
     { id: 'loose', name: '虚接', loosePerRoom: 1, extraDrop: 1 },
     { id: 'mute', name: '静默', eyeText: false, compute: 20 },
-  ].map((v) => Object.freeze({ ...v, description: '[COPY-PENDING]' })),
+  ].map((v) => Object.freeze({ ...v, description: LOOT_DESCRIPTIONS[v.id] })),
 );
 export const CODE_MODULE = Object.freeze([
   { id: 'watchdog', name: 'watchdog', code: 'if now - heartbeat > limit:\n    reset_worker()' },
@@ -33,7 +41,7 @@ export const ROOMS = Object.freeze([
   {
     id: 'room1',
     name: '外院',
-    objective: '[COPY-PENDING]',
+    objective: '外院：测出带电卷帘门支路的电压。',
     mode: 'voltage',
     target: '带电卷帘门支路',
     pool: ['thick', 'shield', 'capacitor'],
@@ -41,7 +49,7 @@ export const ROOMS = Object.freeze([
   {
     id: 'room2',
     name: '压缩机棚',
-    objective: '[COPY-PENDING]',
+    objective: '压缩机棚：找出未短接的照明支路。',
     mode: 'voltage',
     target: '未短接的照明支路',
     pool: ['shield', 'fuse', 'loose'],
@@ -49,7 +57,7 @@ export const ROOMS = Object.freeze([
   {
     id: 'room3',
     name: '熔炉坑',
-    objective: '[COPY-PENDING]',
+    objective: '熔炉坑：断电隔离，验证低阻接地路径。',
     mode: 'continuity',
     target: '隔离后的低阻接地路径',
     pool: ['capacitor', 'loose', 'mute'],

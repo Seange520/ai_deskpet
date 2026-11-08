@@ -29,7 +29,7 @@ export default function RaidOverlay() {
   if (!r)
     return nearEntry && !nav.open && !nav.active ? (
       <section className="raid-entry">
-        <b>[COPY-PENDING] 残响潜行 · 熔炉废料场</b>
+        <b>残响潜行 · 熔炉废料场</b>
         <p>12 分钟 / 三房测量 / 三枚核心。刷新或离开即放弃，失败保留 30% 材料。</p>
         <button
           data-raid-enter
@@ -79,7 +79,7 @@ export default function RaidOverlay() {
       </header>
       {terminal ? (
         <div data-raid-result>
-          <h2>[COPY-PENDING] {r.state === 'extracted' ? '撤离成功' : '本局结束'}</h2>
+          <h2>{r.state === 'extracted' ? '撤离成功' : '本局结束'}</h2>
           <p>
             携回材料 {r.state === 'extracted' ? r.materials : Math.floor(r.materials * 0.3)} /{' '}
             {r.materials} · 核心 {r.cores}/3
@@ -110,7 +110,7 @@ export default function RaidOverlay() {
             </label>
           </div>
           <p className="raid-objective">
-            [COPY-PENDING]{' '}
+            任务：{' '}
             {r.state === 'running'
               ? room.name + ' · ' + (r.kit.scanner && !effects(r).eyeText ? '—' : room.target)
               : r.state === 'checkpoint'
@@ -176,7 +176,7 @@ export default function RaidOverlay() {
               {!near && <small>靠近当前房间的三灯测量柜（2.4m 内）才能操作。</small>}
               {!!choices.length && (
                 <div className="raid-choices" data-raid-loot>
-                  <b>[COPY-PENDING] 固定掉落：核心 ×1、材料 ×10；选择一项词条</b>
+                  <b>固定掉落：核心 ×1、材料 ×10；选择一项词条</b>
                   {choices.map((id) => (
                     <button key={id} data-raid-mod={id} onClick={() => send('loot', { id })}>
                       <b>{LOOT.find((m) => m.id === id).name}</b>
@@ -189,7 +189,7 @@ export default function RaidOverlay() {
           )}
           {r.state === 'checkpoint' && (
             <div className="raid-choices">
-              <p>[COPY-PENDING] 重组机会 {r.rebuilds}/2 · 静默脚步 5s / CD30s</p>
+              <p>重组机会 {r.rebuilds}/2 · 静默脚步 5s / CD30s</p>
               <button
                 data-raid-rebuild
                 disabled={!node || r.rebuilds === 0}
