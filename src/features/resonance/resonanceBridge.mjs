@@ -5,7 +5,7 @@ import { useStreet } from '../street/streetStore.js';
 import { useKickback } from '../street/kickbackStore.js';
 import { useLearningStore, totalXP, levelFor } from '../../stores/useLearningStore.js';
 let users=0,cleanup;
-export function emitSyncEvent(kind,meta={}){useResonance.getState().dispatch({type:'sync',kind,...meta,key:meta.key||`${meta.caseId}:${kind}:${meta.evidenceId||'case'}`});}
+export function emitSyncEvent(kind,meta={}){if(meta.readOnly===true){if(typeof window!=='undefined')window.dispatchEvent(new CustomEvent('sparkmate:sync-event',{detail:{kind,...meta}}));return;}useResonance.getState().dispatch({type:'sync',kind,...meta,key:meta.key||`${meta.caseId}:${kind}:${meta.evidenceId||'case'}`});}
 export function abortResonanceVerification(){
  for(const [store,caseId] of [[useStreet,'street'],[useKickback,'kickback']])if(store.getState().verifying){emitSyncEvent('verifyAbort',{caseId});store.setState({verifying:false});}
 }
