@@ -1,3 +1,4 @@
+import { confidenceFor, verifyDuration } from '../resonance/resonance.mjs';
 import KickbackOverlay from './KickbackOverlay';
 import { useEffect, useState } from 'react';
 import {
@@ -107,7 +108,7 @@ export default function StreetOverlay() {
                     : s.powered
                       ? c.voltage.toFixed(2) + ' V'
                       : '电源已隔离')}
-              </output>
+              {s.modifiers?.confidence && s.reading && <small data-resonance-confidence> · {confidenceFor(s.reading.node,s.mode,s.reading,s.resonanceAttempts?.[s.reading.node+':'+s.mode]||1)}</small>}</output>
               <span>
                 {s.reading?.detail || '每 7 秒一次负载启动。开启视野，点击空间中的测点。'}
               </span>
@@ -126,6 +127,7 @@ export default function StreetOverlay() {
               <meter min="0" max="100" value={s.focus} aria-label="专注值" />
               <b>{Math.floor(s.focus)}</b>
             </div>
+            {s.modifiers && <div>{Object.entries(s.resonanceNotes||{}).map(([k,text])=><p className="resonance-case-note" data-resonance-clue={k} key={k}>{text}</p>)}</div>}
             <div className="street-evidence">
               <small>检修记录 / {Object.keys(s.evidence).length} 项证据</small>
               <div>
@@ -179,8 +181,8 @@ export default function StreetOverlay() {
               {s.completed
                 ? '7 秒全周期校验通过'
                 : s.verifying
-                  ? `稳定性校验 ${Math.min(7, s.verifiedSeconds).toFixed(1)} / 7 s`
-                  : '恢复供电 · 7 秒校验'}
+                  ? `稳定性校验 ${Math.min(s.modifiers?.protocol ? verifyDuration(7,s.modifiers.sync) : 7, s.verifiedSeconds).toFixed(1)} / ${s.modifiers?.protocol ? verifyDuration(7,s.modifiers.sync) : 7} s`
+                  : s.modifiers?.protocol ? `恢复供电 · ${verifyDuration(7,s.modifiers.sync)} 秒校验` : '恢复供电 · 7 秒校验'}
             </button>
             <button
               className="street-danger"

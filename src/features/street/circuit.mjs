@@ -1,3 +1,4 @@
+import { adaptAction, caseClues, dodgeFault, verifyDuration } from '../resonance/resonance.mjs';
 // Local 24 V training circuit. The 0 V return is never protective earth (PE).
 // Fault energy and fuse I²t form an illustrative, deterministic thermal model.
 export const STREET = Object.freeze({ origin: [8.6, 0, 0], range: 6.3, period: 7 });
@@ -43,7 +44,7 @@ export function sampleCircuit(s) {
   return { starting, current, voltage, returnR, returnDrop: current * returnR, live };
 }
 const say = (s, message) => ({ ...s, message });
-export function actCircuit(s, action) {
+function baselineActCircuit(s, action) {
   if (action.type === 'scanner') return { ...s, scanner: !s.scanner };
   if (action.type === 'mode' && ['continuity', 'voltage'].includes(action.mode))
     return { ...s, mode: action.mode, reading: null };
@@ -195,7 +196,7 @@ export function actCircuit(s, action) {
   }
   return s;
 }
-export function advanceCircuit(s, dt) {
+function baselineAdvanceCircuit(s, dt, mods) {
   if (!(dt > 0)) return s;
   let n = { ...s, clock: s.clock + dt, focus: Math.min(100, s.focus + (s.scanner ? 0 : dt * 6)) };
   if (s.faultTime !== null && s.fuse === 'intact') {
@@ -214,7 +215,7 @@ export function advanceCircuit(s, dt) {
   } else if (s.stage === 'tripped') n.heat = Math.max(0, n.heat - dt * 25);
   if (s.verifying && n.fuse === 'intact' && n.returnFixed && n.softStart) {
     n.verifiedSeconds += dt;
-    if (n.verifiedSeconds >= STREET.period) {
+    if (n.verifiedSeconds >= (mods?.protocol ? verifyDuration(STREET.period, mods.sync) : STREET.period)) {
       n.completed = true;
       n.verifying = false;
       n.scanner = false;
@@ -222,4 +223,10 @@ export function advanceCircuit(s, dt) {
     }
   }
   return n;
+}
+
+export function actCircuit(s,action,mods){if(mods?.dodge&&s.resonanceDodgeUsed&&!s.powered&&s.faultTime===null&&action.type==='isolate')s={...s,stage:'idle'};return adaptAction(s,baselineActCircuit(s,action),action,mods);}
+export function advanceCircuit(s,dt,mods){
+ if(mods?.dodge&&s.faultTime!==null&&s.fuse==='intact') {const dodged=dodgeFault(s,mods);if(dodged)return {...dodged,faultTime:null};}
+ return caseClues(baselineAdvanceCircuit(s,dt,mods),mods,'street');
 }

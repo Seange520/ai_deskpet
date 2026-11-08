@@ -1,3 +1,4 @@
+import { caseMetadata, restoreCaseMetadata, cleanCompletion } from '../resonance/casePersistence.mjs';
 import { create } from 'zustand';
 import { useWorldMap } from '../world/navigationStore';
 import { useExploration } from '../world/explorationState';
@@ -16,7 +17,8 @@ export function nearKickback() {
 }
 function read() {
   try {
-    return restoreKickback(localStorage.getItem(KICKBACK_SAVE));
+    const raw=localStorage.getItem(KICKBACK_SAVE),s=restoreKickback(raw),d=JSON.parse(raw||'{}');
+    return {...s,...restoreCaseMetadata(d.resonanceCase),completionHistory:s.completed&&Array.isArray(d.completionHistory)?d.completionHistory.filter(h=>h?.completed===true).slice(-10):[]};
   } catch {
     return freshKickback();
   }
@@ -24,7 +26,10 @@ function read() {
 export const useKickback = create((set, get) => {
   function save(state) {
     try {
-      localStorage.setItem(KICKBACK_SAVE, serializeKickback(state));
+      const data=JSON.parse(serializeKickback(state));
+      if(state.resonanceAttempts||state.modifiers)data.resonanceCase=caseMetadata(state);
+      data.completionHistory=state.completionHistory||[];
+      localStorage.setItem(KICKBACK_SAVE,JSON.stringify(data));
     } catch {
       set({ storageError: true });
     }
@@ -33,24 +38,27 @@ export const useKickback = create((set, get) => {
     ...read(),
     encountered: false,
     storageError: false,
+    modifiers: null,
+    setModifiers: modifiers => set({modifiers}),
     dispatch: (action) => {
       const nav = useWorldMap.getState();
       if (!nearKickback() || nav.open || nav.active || useExploration.getState().blocked) return;
-      const next = actKickback(get(), action);
+      const next = actKickback(get(), action, get().modifiers);
       set(next);
       if (['lesson', 'hypotheses', 'measure', 'diagnose', 'install'].includes(action.type))
         save(next);
     },
     tick: (dt) => {
       const before = get(),
-        next = advanceKickback(before, dt);
+        next = advanceKickback(before, dt, before.modifiers);
+      if(!before.completed&&next.completed)next.completionHistory=[...(before.completionHistory||[]),{completed:true,clean:cleanCompletion(next)}];
       set(next);
-      if (!before.completed && next.completed) save(next);
+      if ((!before.completed && next.completed)||next.resonanceDodgeUsed!==before.resonanceDodgeUsed) save(next);
     },
     encounter: () => {
       if (get().encountered) return;
       set({ ...actKickback(get(), { type: 'enter' }), encountered: true });
     },
-    suspendView: () => set({ open: false, courseOpen: false, scanner: false }),
+    suspendView: () => set(get().verifying ? {open:false,courseOpen:false,scanner:false,verifying:false} : {open:false,courseOpen:false,scanner:false}),
   };
 });

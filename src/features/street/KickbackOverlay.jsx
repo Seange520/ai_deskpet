@@ -1,3 +1,4 @@
+import { confidenceFor } from '../resonance/resonance.mjs';
 import { createPortal } from 'react-dom';
 import { useEffect, useRef, useState } from 'react';
 import { Activity, Eye, Snowflake, ShieldCheck } from 'lucide-react';
@@ -39,6 +40,7 @@ export default function KickbackOverlay() {
       className={'kickback-ui' + (s.blurSeconds > 0 ? ' fatigued' : '')}
       inert={blocked ? '' : undefined}
     >
+      {s.modifiers && <div>{Object.entries(s.resonanceNotes||{}).map(([k,text])=><p className="resonance-case-note" data-resonance-clue={k} key={k}>{text}</p>)}{s.modifiers.protocol&&<p className="resonance-case-note">协议优化 · 保留十次分断验收</p>}</div>}
       <output
         hidden
         data-testid="kickback-telemetry"
@@ -216,7 +218,7 @@ export default function KickbackOverlay() {
             <small>
               {s.reading?.node ? `${s.reading.node} / ${lens.label}` : '24V 工作支路 · U1 5V'}
             </small>
-            <output data-testid="kickback-reading">{displayReading(s.reading)}</output>
+            <output data-testid="kickback-reading">{displayReading(s.reading)}{s.modifiers?.confidence && s.reading && <small data-resonance-confidence> · {confidenceFor(s.reading.node,s.mode,s.reading,s.resonanceAttempts?.[s.reading.node+':'+s.mode]||1)}</small>}</output>
             <span>
               {s.reading?.detail || '电压档的峰值保持记录最近一次分断；不能把 OL 当故障结论。'}
             </span>

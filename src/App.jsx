@@ -1,3 +1,4 @@
+import { createPortal } from 'react-dom';
 import useReducedMotionPreference from './lib/useReducedMotionPreference';
 import { isLowPowerDevice } from './lib/visualCapabilities';
 import { totalXP, levelFor, globalBadges, MAX_XP } from './stores/useLearningStore';
@@ -5,9 +6,9 @@ import { playSound } from './lib/sounds';
 import Button from './components/Button';
 import QualitySettings from './components/QualitySettings';
 import { MOTION } from './motion';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { AnimatePresence, MotionConfig, motion } from 'framer-motion';
-import { Zap, X, Check, Package, RotateCcw, Orbit, Volume2, VolumeX } from 'lucide-react';
+import { GitBranch, Zap, X, Check, Package, RotateCcw, Orbit, Volume2, VolumeX } from 'lucide-react';
 import { useQualityTier } from './lib/qualityTier';
 import { useStageLayer } from './features/stage/StageLayer';
 import { isSpaceTransition, useSpaceStore } from './features/space/spaceStore';
@@ -24,6 +25,10 @@ import MakerRanking from './components/MakerRanking';
 import Graduation from './components/Graduation';
 import useHardwareProgress from './hooks/useHardwareProgress';
 import { getHardwareRoute } from './data/hardwareRoutes';
+
+const ResonancePanel = lazy(() => import('./features/resonance/ResonancePanel'));
+
+function ModalLayer({active,children}) { return active ? createPortal(children,document.body) : children; }
 
 function HubOverview({ showMap }) {
   return (
@@ -81,7 +86,7 @@ export default function App() {
   const phase = useSpaceStore((state) => state.phase);
   const destination = useSpaceStore((state) => state.destination);
   const { tier } = useQualityTier();
-  const { ready, dock } = useStageLayer();
+  const { ready, dock, exploring } = useStageLayer();
   const reduced = useReducedMotionPreference();
   const inFlight = isSpaceTransition(phase);
   const cinematic = tier >= 2 && ready && !reduced;
@@ -277,6 +282,7 @@ export default function App() {
               {muted ? <VolumeX size={18} /> : <Volume2 size={18} />}
             </Button>
             <QualitySettings />
+            {tier === 3 && !exploring && <ModalLayer active={new URLSearchParams(location.search).get('world') === 'p9'}><Button className="icon-btn" style={new URLSearchParams(location.search).get('world') === 'p9' ? {position:'fixed',right:24,top:24,zIndex:30,visibility:'visible'} : undefined} aria-label="共鸣链" data-testid="resonance-entry" onClick={() => openModal('resonance')}><GitBranch size={18}/></Button></ModalLayer>}
             <Button
               className="icon-btn"
               aria-label="重置学习进度"
@@ -377,16 +383,16 @@ export default function App() {
           </div>
         )}
         <AnimatePresence>
-          {modal && (
+          {modal && (<ModalLayer active={modal === 'resonance'}>
             <motion.div
-              className="modal-backdrop"
+              className="modal-backdrop" style={modal === 'resonance' ? {visibility:'visible',zIndex:1000} : undefined}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setModal(null)}
             >
               <motion.section
-                className={`modal panel ${modal === 'materials' || modal === 'shop' ? 'materials-modal' : ''} ${modal === 'success' ? 'graduation-modal' : ''}`}
+                className={`modal panel ${modal === 'materials' || modal === 'shop' ? 'materials-modal' : ''} ${modal === 'success' ? 'graduation-modal' : ''} ${modal === 'resonance' ? 'resonance-modal' : ''}`}
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="modal-title"
@@ -418,7 +424,7 @@ export default function App() {
                 >
                   <X size={20} />
                 </Button>
-                {modal === 'materials' || modal === 'shop' ? (
+                {modal === 'resonance' ? (<Suspense fallback={<h2 id="modal-title">共鸣链载入中</h2>}><ResonancePanel /></Suspense>) : modal === 'materials' || modal === 'shop' ? (
                   <Materials
                     key={routeId}
                     routeId={routeId}
@@ -465,7 +471,7 @@ export default function App() {
                 )}
               </motion.section>
             </motion.div>
-          )}
+          </ModalLayer>)}
         </AnimatePresence>
       </div>
     </MotionConfig>

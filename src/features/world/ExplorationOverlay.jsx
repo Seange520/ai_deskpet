@@ -1,3 +1,4 @@
+import ResonanceHud from '../resonance/ResonanceHud';
 import StreetOverlay from '../street/StreetOverlay';
 import { useEffect, useRef, useState } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
@@ -205,6 +206,7 @@ export default function ExplorationOverlay({ onSurface, onExit }) {
         {blocked && <small>探索已暂停，返回窗口后继续。</small>}
       </div>
       <StreetOverlay />
+      <ResonanceHud />
       {fps && (
         <span className="exploration-reticle" aria-hidden="true">
           ＋

@@ -1,3 +1,4 @@
+import { adaptAction, caseClues, dodgeFault } from '../resonance/resonance.mjs';
 import { detectReactions } from './reactions.mjs';
 // Explicit reduced-order teaching model, not a component rating or SPICE claim.
 export const KICKBACK = Object.freeze({
@@ -302,7 +303,7 @@ function readingFor(s, id, selected) {
     event: e?.failed ?? null,
   };
 }
-export function actKickback(s, a) {
+function baselineActKickback(s, a) {
   if (a.type === 'enter') return s.lessonPassed ? { ...s, open: true } : { ...s, courseOpen: true };
   if (a.type === 'close') return { ...s, open: false, courseOpen: false, scanner: false };
   if (a.type === 'lesson') {
@@ -493,7 +494,7 @@ export function actKickback(s, a) {
   if (a.type === 'dismissDialogue') return { ...s, dialogue: '' };
   return s;
 }
-export function advanceKickback(s, dt) {
+function baselineAdvanceKickback(s, dt) {
   if (!Number.isFinite(dt) || dt <= 0) return s;
   let n = {
     ...s,
@@ -589,4 +590,10 @@ export function restoreKickback(raw) {
     /* Malformed or inaccessible saves cannot unlock content. */
   }
   return s;
+}
+
+export function actKickback(s,a,mods){return adaptAction(s,baselineActKickback(s,a),a,mods);}
+export function advanceKickback(s,dt,mods){
+ if(mods?.dodge&&s.powered&&s.cycleTime!==null&&s.cycleTime<0.6&&s.cycleTime+dt>=0.6&&openingEvent(s).failed){const dodged=dodgeFault(s,mods);if(dodged)return {...dodged,cycleTime:null,closed:false,residualVoltage:24};}
+ return caseClues(baselineAdvanceKickback(s,dt),mods,'kickback');
 }
