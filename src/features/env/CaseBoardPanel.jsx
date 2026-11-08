@@ -131,7 +131,7 @@ export function CaseBoardPanel({ onClose }) {
             <X />
           </button>
         </header>
-        <p>[COPY-PENDING] 夜宵摊老板：这排灯，今晚又一盏接一盏地暗了。</p>
+        <p>夜宵摊老板：这排灯，今晚又一盏接一盏地暗了。</p>
         <div className="env-layout">
           <main>
             <svg
@@ -178,13 +178,13 @@ export function CaseBoardPanel({ onClose }) {
                 </g>
               ))}
             </svg>
-            <p>[COPY-PENDING] 选已测卡片，再点击地图钉住。假设只保留你的思路。</p>
+            <p>选已测卡片，再点地图钉住。假设只记录你的思路。</p>
             <div className="env-clues">
               {ENV_CLUES.map((c) => (
                 <article key={c.id} data-env-clue={c.id}>
                   <h3>{c.phenomenon}</h3>
-                  <small>[COPY-PENDING] {c.explanation}</small>
-                  <p>[COPY-PENDING] {c.hint}</p>
+                  <small>{c.explanation}</small>
+                  <p>{c.hint}</p>
                   <button data-env-measure-clue={c.id} onClick={() => measure(c.id, c.probe)}>
                     测量 · {c.probe}
                   </button>
@@ -320,7 +320,7 @@ export function CaseBoardPanel({ onClose }) {
                 <p>{s.save.case.reportLine}</p>
                 <p>修复：补独立接地线 · 负载观察 {s.save.case.verifiedSeconds}秒</p>
                 <p>
-                  用时{' '}
+                  本机调查用时{' '}
                   {Math.max(
                     0,
                     Math.round(

@@ -3,19 +3,19 @@ import { useEnv } from './envStore';
 const names = { vendor: '夜宵摊老板', hefi: '赫菲', inspector: '巡线工' };
 export const NPC_COPY = {
   vendor: [
-    '[COPY-PENDING] 你蹲那儿看半天，我这儿夜宵都凉了。',
-    '[COPY-PENDING] 今晚这条街倒是安静。',
-    '[COPY-PENDING] 我把汤再热一遍。',
+    '灯一暗，我这锅汤就得回炉。你测，我等着。',
+    '今晚这条街安静得不像话，连汤勺响都听得见。',
+    '你要是能把这灯修好，明晚多给你留一碗。',
   ],
   hefi: [
-    '[COPY-PENDING] 那盏灯，第七年了。',
-    '[COPY-PENDING] 这双手，沾了一点街上的灰。',
-    '[COPY-PENDING] 炉火还在。',
+    '那盏灯，第七年了。手上要有读数，再来跟我说。',
+    '这双手沾了点街上的灰，灯也一样。',
+    '炉火还在。断着电的线，别碰。',
   ],
   inspector: [
-    '[COPY-PENDING] 我在这条街值过夜班。',
-    '[COPY-PENDING] 鞋底又带回一层灰。',
-    '[COPY-PENDING] 钟声刚刚响过。',
+    '我在这条街值过夜班。灯暗的时候，脚比仪器先知道。',
+    '鞋底又带回一层灰，这灰不对劲。',
+    '钟声刚刚响过，灯却没跟上。',
   ],
 };
 export default function NpcReactions() {
@@ -29,7 +29,7 @@ export default function NpcReactions() {
           data-env-npc={id}
           onClick={() => {
             if (!s.lastMeasurement) {
-              setLine('[COPY-PENDING] ' + name + '点了点头。');
+              setLine(name + '：先测，我不多嘴。');
               return;
             }
             if (s.react(id)) {
@@ -40,7 +40,7 @@ export default function NpcReactions() {
                     ? 2
                     : 1;
               setLine(name + '：' + NPC_COPY[id][i]);
-            } else setLine('[COPY-PENDING] ' + name + '继续忙自己的事。');
+            } else setLine(name + '：这会儿忙着，回头再说。');
           }}
         >
           {name}

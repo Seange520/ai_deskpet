@@ -201,7 +201,7 @@ export function runtime(save = freshEnv()) {
     verifying: false,
     reading: null,
     lastMeasurement: null,
-    message: '[COPY-PENDING] 先观察，再留下读数。',
+    message: '先看现象，再留读数。',
   };
 }
 function record(s, event, now) {
