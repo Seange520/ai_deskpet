@@ -1,0 +1,111 @@
+{
+  "schema": "lesson.v2",
+  "lessonId": "L-AD-15-v2",
+  "kp": {
+    "id": "AD-15",
+    "name": "数据自主：你的数据你说了算",
+    "layer": "L6",
+    "pillar": "weave",
+    "oneLiner": "能带走，也能删掉"
+  },
+  "meta": {
+    "version": "2.0.0",
+    "updatedAt": "2026-11-09",
+    "estimatedMinutes": 12,
+    "template": "mission-seven-v1",
+    "gameMount": "P10-维修间",
+    "sourceLesson": "L-AD-15",
+    "author": "SparkMate Automation"
+  },
+  "story": {
+    "act": 1,
+    "title": "造物时刻",
+    "scene": "P10-维修间",
+    "npc": "贺非",
+    "setup": "维护者要备份自己的记录、要清空一台旧桌宠、还要决定对话能不能拿去训练：三个请求都指向同一件事——数据归谁。"
+  },
+  "segments": [
+    {
+      "id": "mission",
+      "seconds": 25,
+      "narration": ["能带走，才算你的。", "能删掉，才叫自主。", "今天的任务：三种请求。"],
+      "task": "对三个数据请求分别选择正确处理方式，并说明为什么不能默认替用户决定。"
+    },
+    {
+      "id": "observe",
+      "seconds": 55,
+      "narration": ["学习记录可导出。", "旧设备要能真删。", "训练默认不同意。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/AD-15/data-autonomy.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "check": {
+        "id": "obs-1",
+        "type": "choice",
+        "task": "用户要导出全部学习记录，应该？",
+        "options": ["给他可读的导出文件", "拒绝，数据属于平台", "只给几张截图"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "learn",
+      "seconds": 85,
+      "narration": ["导出、删除、不上传。", "训练用途逐项同意。", "先讲清楚，再动手。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/AD-15/data-autonomy.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "term": { "text": "数据自主", "oneLine": "用户能导出、能删除、能拒绝非必需的数据用途。" },
+      "check": {
+        "id": "learn-1",
+        "type": "choice",
+        "task": "数据自主的三条底线是？",
+        "options": ["可导出、可删除、不默认训练", "只能本人看", "只能平台使用"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "do",
+      "seconds": 200,
+      "narration": ["数据，能导出。", "删除，要确认。", "训练，默认不上传。"],
+      "sim": {
+        "id": "data-autonomy",
+        "version": 1,
+        "task": "三个数据请求各选正确处理：导出可读文件 / 删除并确认 / 训练需明示同意。",
+        "hints": ["导出给可读格式，不设门槛。", "删除要二次确认，并说明范围。", "训练用途默认拒绝，逐项同意才可。"]
+      }
+    },
+    {
+      "id": "prove",
+      "seconds": 100,
+      "mode": "numeric",
+      "narration": ["导出请求要响应。", "默认上传要为零。", "两者都要可核对。"],
+      "checks": [
+        { "id": "export-requests", "type": "measurement", "task": "导出请求响应", "expected": 1, "tolerance": 0.01, "unit": "次" },
+        { "id": "default-uploads", "type": "measurement", "task": "默认上传次数", "expected": 0, "tolerance": 0.01, "unit": "次" }
+      ]
+    },
+    {
+      "id": "transfer",
+      "seconds": 90,
+      "narration": ["平台说删除会掉进度。", "听起来很合理。", "先要什么？"],
+      "prompt": "平台说「删除会影响体验，先别删」，维护者应先要什么？",
+      "options": ["删除确认与一份导出副本", "相信平台，先等一等", "换一个平台重新开始"],
+      "answerIndex": 0
+    },
+    {
+      "id": "recap",
+      "seconds": 25,
+      "narration": ["能导出，才是你的。", "能删除，才叫自主。", "不默认，才谈信任。"],
+      "lines": ["能导出，才是你的。", "能删除，才叫自主。", "不默认，才谈信任。"]
+    }
+  ],
+  "safety": {
+    "powerOffBeforeWiring": true,
+    "liveMeasurementBlocked": true,
+    "note": "导出前提醒文件可能含敏感字段；删除要二次确认，且不静默保留副本；训练用途必须逐项征得明示同意。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["玩家", "游戏", "网页", "第七校验", "熵", "残响", "第一编译者", "0x7F"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true
+  }
+}

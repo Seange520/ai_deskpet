@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <rect width="1200" height="675" fill="#0b1620"/>
+  <g stroke="#1d3442" stroke-width="1" opacity="0.55">
+    <path d="M0 90H1200M0 180H1200M0 270H1200M0 360H1200M0 450H1200M0 540H1200M0 630H1200"/>
+    <path d="M80 0V675M240 0V675M400 0V675M560 0V675M720 0V675M880 0V675M1040 0V675"/>
+  </g>
+  <text x="80" y="56" fill="#6f8f99" font-family="Consolas, monospace" font-size="15" letter-spacing="3">THE WEAVE / 检修手册 · AD-15 · 数据自主</text>
+  <text x="80" y="112" fill="#e8f4f8" font-family="'Microsoft YaHei', 'Noto Sans SC', sans-serif" font-size="34" font-weight="700">数据自主：能带走，也能删掉</text>
+  <path d="M80 136H1120" stroke="#2f5b68" stroke-width="1.5"/>
+
+  <g font-family="'Microsoft YaHei', 'Noto Sans SC', sans-serif">
+    <g>
+      <rect x="80" y="170" width="320" height="230" rx="8" fill="#102430" stroke="#2f5b68"/>
+      <text x="104" y="208" fill="#7c97a0" font-family="Consolas, monospace" font-size="13">REQUEST 01</text>
+      <text x="104" y="244" fill="#e8f4f8" font-size="21" font-weight="700">导出全部记录</text>
+      <text x="104" y="280" fill="#9fb8bd" font-size="15">可读格式，不设门槛</text>
+      <text x="104" y="310" fill="#9fb8bd" font-size="15">含学习档案与证据</text>
+      <text x="104" y="340" fill="#9fb8bd" font-size="15">提醒敏感字段，让本人保管</text>
+      <text x="104" y="376" fill="#4fd1c5" font-family="Consolas, monospace" font-size="13">EXPORT</text>
+    </g>
+    <g>
+      <rect x="440" y="170" width="320" height="230" rx="8" fill="#102430" stroke="#2f5b68"/>
+      <text x="464" y="208" fill="#7c97a0" font-family="Consolas, monospace" font-size="13">REQUEST 02</text>
+      <text x="464" y="244" fill="#e8f4f8" font-size="21" font-weight="700">删除我的数据</text>
+      <text x="464" y="280" fill="#9fb8bd" font-size="15">二次确认，说明范围</text>
+      <text x="464" y="310" fill="#9fb8bd" font-size="15">真删，不静默留副本</text>
+      <text x="464" y="340" fill="#9fb8bd" font-size="15">给一份删除回执</text>
+      <text x="464" y="376" fill="#ffd487" font-family="Consolas, monospace" font-size="13">DELETE</text>
+    </g>
+    <g>
+      <rect x="800" y="170" width="320" height="230" rx="8" fill="#102430" stroke="#3c6b4f"/>
+      <text x="824" y="208" fill="#7c97a0" font-family="Consolas, monospace" font-size="13">REQUEST 03</text>
+      <text x="824" y="244" fill="#e8f4f8" font-size="21" font-weight="700">拿去训练模型</text>
+      <text x="824" y="280" fill="#9fb8bd" font-size="15">默认拒绝，不打包上传</text>
+      <text x="824" y="310" fill="#9fb8bd" font-size="15">要训练，逐项明示同意</text>
+      <text x="824" y="340" fill="#9fb8bd" font-size="15">可随时撤回同意</text>
+      <text x="824" y="376" fill="#8fe3a8" font-family="Consolas, monospace" font-size="13">OPT-IN ONLY</text>
+    </g>
+  </g>
+
+  <g font-family="'Microsoft YaHei', 'Noto Sans SC', sans-serif">
+    <rect x="80" y="430" width="1040" height="150" rx="8" fill="#0f1f2a" stroke="#2f5b68"/>
+    <text x="104" y="470" fill="#ffd487" font-size="19" font-weight="700">三条底线：能导出 → 能删除 → 不默认训练</text>
+    <text x="104" y="504" fill="#9fb8bd" font-size="16">导出：数据用可读格式交付，用户能带走、能核对。</text>
+    <text x="104" y="530" fill="#9fb8bd" font-size="16">删除：二次确认 + 范围说明 + 回执，不留暗副本。</text>
+    <text x="104" y="556" fill="#9fb8bd" font-size="16">训练：默认不参与；要参与必须逐项同意，且可撤回。</text>
+  </g>
+  <text x="80" y="640" fill="#6f8f99" font-size="14">教学示意：导出前后提醒敏感字段；删除与训练同意都要留可审计记录。</text>
+</svg>
