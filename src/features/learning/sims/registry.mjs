@@ -15,6 +15,7 @@ export const registry = Object.freeze({
   'memory-recall': () => import('./MemoryRecallSim.jsx'),
   'tone-response': () => import('./ToneResponseSim.jsx'),
   'self-check': () => import('./SelfCheckSim.jsx'),
+  'offline-fallback': () => import('./OfflineFallbackSim.jsx'),
 });
 export const simIds = Object.freeze(Object.keys(registry));
 export function getSim(id) {

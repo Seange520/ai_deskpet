@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <rect width="1200" height="675" fill="#0b1620"/>
+  <g stroke="#1d3442" stroke-width="1" opacity="0.55">
+    <path d="M0 90H1200M0 180H1200M0 270H1200M0 360H1200M0 450H1200M0 540H1200M0 630H1200"/>
+    <path d="M80 0V675M240 0V675M400 0V675M560 0V675M720 0V675M880 0V675M1040 0V675"/>
+  </g>
+  <text x="80" y="56" fill="#6f8f99" font-family="Consolas, monospace" font-size="15" letter-spacing="3">THE WEAVE / 检修手册 · AD-14 · 离线</text>
+  <text x="80" y="112" fill="#e8f4f8" font-family="'Microsoft YaHei', 'Noto Sans SC', sans-serif" font-size="34" font-weight="700">离线兜底：断网也有三条路</text>
+  <path d="M80 136H1120" stroke="#2f5b68" stroke-width="1.5"/>
+
+  <g font-family="'Microsoft YaHei', 'Noto Sans SC', sans-serif">
+    <g>
+      <rect x="80" y="170" width="320" height="230" rx="8" fill="#102430" stroke="#2f5b68"/>
+      <text x="104" y="208" fill="#7c97a0" font-family="Consolas, monospace" font-size="13">SCENE 01</text>
+      <text x="104" y="244" fill="#e8f4f8" font-size="21" font-weight="700">地铁里没信号</text>
+      <text x="104" y="280" fill="#9fb8bd" font-size="15">打开课节 → 读本地缓存</text>
+      <text x="104" y="310" fill="#9fb8bd" font-size="15">视频没有？先读文字与图</text>
+      <text x="104" y="340" fill="#9fb8bd" font-size="15">进度先存本地，回网再补</text>
+      <text x="104" y="376" fill="#4fd1c5" font-family="Consolas, monospace" font-size="13">LOCAL CACHE</text>
+    </g>
+    <g>
+      <rect x="440" y="170" width="320" height="230" rx="8" fill="#102430" stroke="#2f5b68"/>
+      <text x="464" y="208" fill="#7c97a0" font-family="Consolas, monospace" font-size="13">SCENE 02</text>
+      <text x="464" y="244" fill="#e8f4f8" font-size="21" font-weight="700">断网，对话还在</text>
+      <text x="464" y="280" fill="#9fb8bd" font-size="15">降级到本地规则</text>
+      <text x="464" y="310" fill="#9fb8bd" font-size="15">先能答，再补全</text>
+      <text x="464" y="340" fill="#9fb8bd" font-size="15">明说：现在是本地规则</text>
+      <text x="464" y="376" fill="#ffd487" font-family="Consolas, monospace" font-size="13">LOCAL FALLBACK</text>
+    </g>
+    <g>
+      <rect x="800" y="170" width="320" height="230" rx="8" fill="#102430" stroke="#3c6b4f"/>
+      <text x="824" y="208" fill="#7c97a0" font-family="Consolas, monospace" font-size="13">SCENE 03</text>
+      <text x="824" y="244" fill="#e8f4f8" font-size="21" font-weight="700">测量刚做完，网掉</text>
+      <text x="824" y="280" fill="#9fb8bd" font-size="15">进度先入重试队列</text>
+      <text x="824" y="310" fill="#9fb8bd" font-size="15">本地留一份，不静默丢</text>
+      <text x="824" y="340" fill="#9fb8bd" font-size="15">联网后补发，账要对上</text>
+      <text x="824" y="376" fill="#8fe3a8" font-family="Consolas, monospace" font-size="13">RETRY QUEUE</text>
+    </g>
+  </g>
+
+  <g font-family="'Microsoft YaHei', 'Noto Sans SC', sans-serif">
+    <rect x="80" y="430" width="1040" height="150" rx="8" fill="#0f1f2a" stroke="#2f5b68"/>
+    <text x="104" y="470" fill="#ffd487" font-size="19" font-weight="700">离线三件事：缓存 → 降级 → 补发</text>
+    <text x="104" y="504" fill="#9fb8bd" font-size="16">缓存：内容与本地档案先存好，断网照常读。</text>
+    <text x="104" y="530" fill="#9fb8bd" font-size="16">降级：核心能用，高级功能等联网；本地规则要说明。</text>
+    <text x="104" y="556" fill="#9fb8bd" font-size="16">补发：队列带时间戳与校验，联网按顺序补，不重不漏。</text>
+  </g>
+  <text x="80" y="640" fill="#6f8f99" font-size="14">教学示意：离线只缓存学习内容与本地档案，不缓存账号密码；联网补发前先确认队列内容。</text>
+</svg>

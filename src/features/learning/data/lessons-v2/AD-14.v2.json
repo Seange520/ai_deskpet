@@ -1,0 +1,111 @@
+{
+  "schema": "lesson.v2",
+  "lessonId": "L-AD-14-v2",
+  "kp": {
+    "id": "AD-14",
+    "name": "离线：断网也能用",
+    "layer": "L6",
+    "pillar": "weave",
+    "oneLiner": "断网不等于不可用"
+  },
+  "meta": {
+    "version": "2.0.0",
+    "updatedAt": "2026-11-09",
+    "estimatedMinutes": 12,
+    "template": "mission-seven-v1",
+    "gameMount": "P10-维修间",
+    "sourceLesson": "L-AD-14",
+    "author": "SparkMate Automation"
+  },
+  "story": {
+    "act": 1,
+    "title": "造物时刻",
+    "scene": "P10-维修间",
+    "npc": "贺非",
+    "setup": "地铁里没信号、机房里断网、测量刚做完网就掉：桌宠必须能离线读课、降级对话、把进度先存住。"
+  },
+  "segments": [
+    {
+      "id": "mission",
+      "seconds": 25,
+      "narration": ["地铁没信号。", "机房突然断网。", "今天的任务：断网也能用。"],
+      "task": "对三个断网场景分别选择处理方式，并说明为什么不是「只显示错误」。"
+    },
+    {
+      "id": "observe",
+      "seconds": 55,
+      "narration": ["课节先缓存。", "对话降级到本地。", "进度先入队，别丢。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/AD-14/offline-fallback.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "check": {
+        "id": "obs-1",
+        "type": "choice",
+        "task": "地铁里没信号，打开课节应该？",
+        "options": ["读本地缓存照常上", "只显示错误", "一直转圈等网"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "learn",
+      "seconds": 85,
+      "narration": ["离线三件事。", "缓存、降级、补发。", "先说清楚，再继续给路。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/AD-14/offline-fallback.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "term": { "text": "离线兜底", "oneLine": "断网时仍能给缓存、降级与重试三条路。" },
+      "check": {
+        "id": "learn-1",
+        "type": "choice",
+        "task": "离线能力的三个关键词是？",
+        "options": ["缓存、降级、补发", "刷新、重装、等待", "换网、换机、换账号"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "do",
+      "seconds": 200,
+      "narration": ["课节，读缓存。", "对话，走本地规则。", "进度，排进重试队列。"],
+      "sim": {
+        "id": "offline-fallback",
+        "version": 1,
+        "task": "三个场景各选正确处理：读本地缓存 / 降级本地规则 / 排入重试队列。",
+        "hints": ["课节内容应提前缓存。", "断网时对话降级，并说明当前是本地规则。", "完成的测量不能丢，先入队。"]
+      }
+    },
+    {
+      "id": "prove",
+      "seconds": 100,
+      "mode": "numeric",
+      "narration": ["离线也要可用。", "不能静默失败。", "联网后，账要对上。"],
+      "checks": [
+        { "id": "offline-features", "type": "measurement", "task": "断网可用的核心功能", "expected": 12, "tolerance": 0.01, "unit": "次" },
+        { "id": "silent-failures", "type": "measurement", "task": "静默失败次数", "expected": 0, "tolerance": 0.01, "unit": "次" }
+      ]
+    },
+    {
+      "id": "transfer",
+      "seconds": 90,
+      "narration": ["用户说断网就白屏。", "是网的问题吗？", "先查哪一层？"],
+      "prompt": "用户抱怨「一断网就白屏」，最先查哪一层？",
+      "options": ["本地缓存与降级路径", "再买一个路由器", "换一个更快的网"],
+      "answerIndex": 0
+    },
+    {
+      "id": "recap",
+      "seconds": 25,
+      "narration": ["先缓存，再降级。", "进度先入队。", "联网后补发，别丢账。"],
+      "lines": ["先缓存，再降级。", "进度先入队。", "联网后补发，别丢账。"]
+    }
+  ],
+  "safety": {
+    "powerOffBeforeWiring": true,
+    "liveMeasurementBlocked": true,
+    "note": "离线只缓存学习内容与本地档案，不缓存账号密码；联网补发前先确认队列内容，不静默丢弃进度。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["玩家", "游戏", "网页", "第七校验", "熵", "残响", "第一编译者", "0x7F"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true
+  }
+}
