@@ -1,0 +1,111 @@
+{
+  "schema": "lesson.v2",
+  "lessonId": "L-AD-05-v2",
+  "kp": {
+    "id": "AD-05",
+    "name": "组装与联锁：上电前预检",
+    "layer": "L3",
+    "pillar": "craft",
+    "oneLiner": "装完不算完，先过五道关"
+  },
+  "meta": {
+    "version": "2.0.0",
+    "updatedAt": "2026-11-09",
+    "estimatedMinutes": 12,
+    "template": "mission-seven-v1",
+    "gameMount": "P10-维修间",
+    "sourceLesson": "L-AD-05",
+    "author": "SparkMate Automation"
+  },
+  "story": {
+    "act": 1,
+    "title": "造物时刻",
+    "scene": "P10-维修间",
+    "npc": "贺非",
+    "setup": "贺非把装好的桌宠放回桌面：第一次上电，只许成功，先把五道关走完。"
+  },
+  "segments": [
+    {
+      "id": "mission",
+      "seconds": 25,
+      "narration": ["装好，不等于能上电。", "第一次通电，只许成功。", "今天的任务：走完五道预检。"],
+      "task": "按顺序完成五项上电前检查，确认电源两极无短路，并让联锁放行。"
+    },
+    {
+      "id": "observe",
+      "seconds": 55,
+      "narration": ["上电前，先断电挂牌。", "再核对极性、共地与绝缘。", "最后看保险，合不合这路电。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/AD-05/power-precheck.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "check": {
+        "id": "obs-1",
+        "type": "choice",
+        "task": "上电前第一件事是什么？",
+        "options": ["断电挂牌", "直接按电源", "先接传感器"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "learn",
+      "seconds": 85,
+      "narration": ["联锁不是麻烦，是替你记住。", "少一步，它就不放行。", "通断档只能在断电后用。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/AD-05/power-precheck.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "term": { "text": "联锁", "oneLine": "条件不满足就不允许继续的保护机制。" },
+      "check": {
+        "id": "learn-1",
+        "type": "choice",
+        "task": "保险丝的作用是？",
+        "options": ["过流时切断电路", "提高电源电压", "过滤信号噪声"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "do",
+      "seconds": 200,
+      "narration": ["五项按顺序点，跳步会提示。", "再选通断档读数：OL 才正常。", "联锁放行，才算预检完成。"],
+      "sim": {
+        "id": "power-precheck",
+        "version": 1,
+        "task": "按顺序完成断电、极性、共地、绝缘、保险五项检查，用通断档确认电源两极无短路，并验证联锁放行。",
+        "hints": ["顺序：先断电，再动线。", "通断档只能断电测；读数 OL 表示没有短路。", "五项和自检都通过，联锁才允许上电。"]
+      }
+    },
+    {
+      "id": "prove",
+      "seconds": 100,
+      "mode": "numeric",
+      "narration": ["把两个数写下来。", "保险额定五百毫安。", "绝缘电阻不低于二十兆欧。"],
+      "checks": [
+        { "id": "fuse-rating", "type": "measurement", "task": "保险丝额定电流", "expected": 500, "tolerance": 50, "unit": "mA" },
+        { "id": "insulation-resistance", "type": "measurement", "task": "绝缘电阻", "expected": 20, "tolerance": 1, "unit": "MΩ" }
+      ]
+    },
+    {
+      "id": "transfer",
+      "seconds": 90,
+      "narration": ["上电瞬间闻到焦味。", "先跑，还是先断？", "你会先回到哪一步？"],
+      "prompt": "上电瞬间闻到焦味，第一反应是？",
+      "options": ["立即断电，再查极性与绝缘", "继续观察一会儿", "加大电流再试一次"],
+      "answerIndex": 0
+    },
+    {
+      "id": "recap",
+      "seconds": 25,
+      "narration": ["顺序就是安全。", "断电、核对、确认无短路。", "联锁会记住你跳过的每一步。"],
+      "lines": ["顺序就是安全。", "断电、核对、确认无短路。", "联锁会记住你跳过的每一步。"]
+    }
+  ],
+  "safety": {
+    "powerOffBeforeWiring": true,
+    "liveMeasurementBlocked": true,
+    "note": "预检为台面仿真；真实操作请断电挂牌、核对极性与保险额定值，闻到焦味立即断电。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["玩家", "游戏", "网页", "第七校验", "熵", "残响", "第一编译者", "0x7F"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true
+  }
+}

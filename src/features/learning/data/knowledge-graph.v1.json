@@ -1394,6 +1394,35 @@
       "license": "CC-BY-4.0",
       "status": "partial",
       "priority": "P0"
+    },
+    {
+      "id": "AD-05",
+      "name": "组装与联锁：上电前预检",
+      "oneLiner": "装完不算完，先过五道关",
+      "layer": "L3",
+      "pillar": "craft",
+      "prereq": [
+        "AD-04"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons-v2/AD-05.v2.json",
+      "lessonAvailable": true,
+      "media": [
+        "card",
+        "sim"
+      ],
+      "practice": "按序完成五项上电前检查并验证联锁",
+      "check": {
+        "type": "sim-task",
+        "task": "上电预检与联锁放行",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "P10维修间",
+      "spoilerLevel": 3,
+      "license": "CC-BY-4.0",
+      "status": "partial",
+      "priority": "P0"
     }
   ],
   "edges": [
@@ -1606,17 +1635,22 @@
       "from": "AD-03",
       "to": "AD-04",
       "kind": "prereq"
+    },
+    {
+      "from": "AD-04",
+      "to": "AD-05",
+      "kind": "prereq"
     }
   ],
   "stats": {
-    "total": 44,
-    "edges": 42,
+    "total": 45,
+    "edges": 43,
     "gates": 1,
     "byLayer": {
       "L0": 7,
       "L1": 7,
       "L2": 7,
-      "L3": 6,
+      "L3": 7,
       "L4": 6,
       "L5": 4,
       "L6": 3,
@@ -1624,7 +1658,7 @@
       "L8": 2
     },
     "byPillar": {
-      "craft": 10,
+      "craft": 11,
       "forge": 13,
       "foundation": 6,
       "weave": 7,
@@ -1633,11 +1667,11 @@
       "spire": 2
     },
     "byStatus": {
-      "partial": 10,
+      "partial": 11,
       "planned": 34
     },
     "byPriority": {
-      "P0": 15,
+      "P0": 16,
       "P1": 15,
       "P2": 10,
       "P3": 4

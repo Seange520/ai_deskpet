@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-label="AD-05 上电前五项预检与联锁示意">
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#12262b" stroke-width="1"/>
+    </pattern>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0 0L9 5L0 10Z" fill="#4fd1c5"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="675" fill="#08161a"/>
+  <rect width="1200" height="675" fill="url(#grid)"/>
+  <text x="48" y="64" fill="#4fd1c5" font-family="Consolas, monospace" font-size="17" letter-spacing="2">THE FORGE / 检修手册 · AD-05</text>
+  <text x="48" y="108" fill="#e6f7f5" font-family="Microsoft YaHei, sans-serif" font-size="38" font-weight="700">组装与联锁：装完不算完，先过五道关</text>
+  <line x1="48" y1="128" x2="1152" y2="128" stroke="#1d3a40" stroke-width="2"/>
+
+  <g font-family="Microsoft YaHei, sans-serif">
+    <rect x="48" y="176" width="190" height="176" rx="12" fill="#0d2328" stroke="#2b5b63"/>
+    <text x="72" y="214" fill="#4fd1c5" font-family="Consolas, monospace" font-size="15">01</text>
+    <text x="72" y="252" fill="#e6f7f5" font-size="21">断电挂牌</text>
+    <text x="72" y="288" fill="#9fb8bd" font-size="15">拔掉电源，挂上</text>
+    <text x="72" y="312" fill="#9fb8bd" font-size="15">「禁止合闸」标签</text>
+
+    <rect x="278" y="176" width="190" height="176" rx="12" fill="#0d2328" stroke="#2b5b63"/>
+    <text x="302" y="214" fill="#4fd1c5" font-family="Consolas, monospace" font-size="15">02</text>
+    <text x="302" y="252" fill="#e6f7f5" font-size="21">核对极性</text>
+    <text x="302" y="288" fill="#9fb8bd" font-size="15">电源正负与板子</text>
+    <text x="302" y="312" fill="#9fb8bd" font-size="15">丝印逐一对上</text>
+
+    <rect x="508" y="176" width="190" height="176" rx="12" fill="#0d2328" stroke="#2b5b63"/>
+    <text x="532" y="214" fill="#4fd1c5" font-family="Consolas, monospace" font-size="15">03</text>
+    <text x="532" y="252" fill="#e6f7f5" font-size="21">确认共地</text>
+    <text x="532" y="288" fill="#9fb8bd" font-size="15">逻辑地、功率地</text>
+    <text x="532" y="312" fill="#9fb8bd" font-size="15">单点相连</text>
+
+    <rect x="738" y="176" width="190" height="176" rx="12" fill="#0d2328" stroke="#2b5b63"/>
+    <text x="762" y="214" fill="#4fd1c5" font-family="Consolas, monospace" font-size="15">04</text>
+    <text x="762" y="252" fill="#e6f7f5" font-size="21">绝缘检查</text>
+    <text x="762" y="288" fill="#9fb8bd" font-size="15">线皮、焊点、金属</text>
+    <text x="762" y="312" fill="#9fb8bd" font-size="15">件不碰壳</text>
+
+    <rect x="968" y="176" width="184" height="176" rx="12" fill="#0d2328" stroke="#2b5b63"/>
+    <text x="992" y="214" fill="#4fd1c5" font-family="Consolas, monospace" font-size="15">05</text>
+    <text x="992" y="252" fill="#e6f7f5" font-size="21">保险匹配</text>
+    <text x="992" y="288" fill="#9fb8bd" font-size="15">额定电流要覆盖</text>
+    <text x="992" y="312" fill="#9fb8bd" font-size="15">正常峰值</text>
+  </g>
+
+  <g stroke="#4fd1c5" stroke-width="3" marker-end="url(#arrow)">
+    <line x1="238" y1="264" x2="272" y2="264"/>
+    <line x1="468" y1="264" x2="502" y2="264"/>
+    <line x1="698" y1="264" x2="732" y2="264"/>
+    <line x1="928" y1="264" x2="962" y2="264"/>
+  </g>
+
+  <rect x="48" y="398" width="540" height="188" rx="12" fill="#0d2328" stroke="#2b5b63"/>
+  <text x="72" y="438" fill="#8fe3d8" font-family="Microsoft YaHei, sans-serif" font-size="20">通断档自检（必须断电）</text>
+  <text x="72" y="476" fill="#d7ece9" font-family="Microsoft YaHei, sans-serif" font-size="17">表笔跨电源两极：正常读数为 OL</text>
+  <text x="72" y="508" fill="#9fb8bd" font-family="Microsoft YaHei, sans-serif" font-size="15">若读到 0.0 Ω，说明存在短路，先排除再上电。</text>
+  <text x="72" y="546" fill="#9fb8bd" font-family="Microsoft YaHei, sans-serif" font-size="15">带电测通断 = 用仪表赌命，禁止。</text>
+
+  <rect x="612" y="398" width="540" height="188" rx="12" fill="#0d2328" stroke="#2b5b63"/>
+  <text x="636" y="438" fill="#f6c177" font-family="Microsoft YaHei, sans-serif" font-size="20">上电第一秒看什么</text>
+  <text x="636" y="476" fill="#d7ece9" font-family="Microsoft YaHei, sans-serif" font-size="17">电流是否异常、有没有发热/焦味、指示灯是否按预期亮。</text>
+  <text x="636" y="508" fill="#9fb8bd" font-family="Microsoft YaHei, sans-serif" font-size="15">闻到焦味：立即断电，回到 02 与 04。</text>
+  <text x="636" y="546" fill="#9fb8bd" font-family="Microsoft YaHei, sans-serif" font-size="15">任何一项跳过，联锁保持断开，不允许上电。</text>
+
+  <text x="48" y="632" fill="#6f8f99" font-family="Microsoft YaHei, sans-serif" font-size="15">教学示意：真实装配请断电操作、核对接线图与保险额定值；不确定就停下来问。</text>
+</svg>

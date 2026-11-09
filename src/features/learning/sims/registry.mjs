@@ -1,4 +1,4 @@
-﻿export const registry = Object.freeze({
+export const registry = Object.freeze({
   meter: () => import('./MeterSim.jsx'),
   'series-voltage': () => import('./SeriesVoltageSim.jsx'),
   pwm: () => import('./PwmSim.jsx'),
@@ -6,6 +6,7 @@
   'i2c-scan': () => import('./I2cScanSim.jsx'),
   'mqtt-publish': () => import('./MqttPublishSim.jsx'),
   'pet-build': () => import('./PetBuildSim.jsx'),
+  'power-precheck': () => import('./PowerPrecheckSim.jsx'),
 });
 export const simIds = Object.freeze(Object.keys(registry));
 export function getSim(id) {
