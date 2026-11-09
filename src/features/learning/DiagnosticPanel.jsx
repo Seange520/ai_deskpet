@@ -3,6 +3,7 @@ import { ClipboardCheck } from 'lucide-react';
 import diagnostic from './data/diagnostic.v1.json';
 import { DIAGNOSTIC_PATHS } from './learning.mjs';
 import { useLearningProfile } from './learningProfileStore';
+import { playSound } from '../../lib/sounds';
 
 export default function DiagnosticPanel({ onClose }) {
   const s = useLearningProfile();
@@ -13,6 +14,7 @@ export default function DiagnosticPanel({ onClose }) {
     const all = {};
     for (const q of diagnostic.questions) all[q.id] = answers[q.id];
     s.diagnose(all);
+    playSound('confirm');
     setResult(useLearningProfile.getState().profile.diagnostic || null);
   };
   const pathInfo = result ? DIAGNOSTIC_PATHS[result.path] : null;

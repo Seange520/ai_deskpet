@@ -3,6 +3,7 @@ import { Volume2, VolumeX } from 'lucide-react';
 import SimEmbed from './sims/SimEmbed.jsx';
 import ModeMeterSim from './ModeMeterSim.jsx';
 import { createNarrator } from './teachingVoice.mjs';
+import { playSound } from '../../lib/sounds';
 
 const ORDER = ['mission', 'observe', 'learn', 'do', 'prove', 'transfer', 'recap'];
 const LABELS = {
@@ -219,6 +220,7 @@ export default function LessonRunnerV2({ lesson, onFinish, onLeave }) {
       evidence,
     };
     setFinish({ checkScore, transferScore, evidenceCount: evidence.length });
+    playSound('success');
     onFinish?.(result);
   }
 

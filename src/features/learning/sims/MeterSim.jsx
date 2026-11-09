@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { Gauge } from 'lucide-react';
 import { evaluate } from './checks.mjs';
+import { playSound } from '../../../lib/sounds';
 
 export function useEvidence(data, onComplete) {
   const [evidence, setEvidence] = useState([]);
@@ -8,11 +9,13 @@ export function useEvidence(data, onComplete) {
   const record = (values, checks = data.checks) => {
     const result = evaluate({ values, evidence }, checks);
     setEvidence(result.evidence);
+    playSound('measure');
     const complete = data.checks.every(
       (c) => result.evidence.find((e) => e.id === c.id)?.attempts.at(-1)?.passed,
     );
     if (complete && !doneRef.current) {
       doneRef.current = true;
+      playSound('success');
       onComplete?.(result.evidence, result);
     }
     return result;

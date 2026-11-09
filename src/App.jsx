@@ -4,7 +4,7 @@ import { createPortal } from 'react-dom';
 import useReducedMotionPreference from './lib/useReducedMotionPreference';
 import { isLowPowerDevice } from './lib/visualCapabilities';
 import { totalXP, levelFor, globalBadges, MAX_XP } from './stores/useLearningStore';
-import { playSound } from './lib/sounds';
+import { playSound, setMuted, startAmbient, stopAmbient } from './lib/sounds';
 import Button from './components/Button';
 import QualitySettings from './components/QualitySettings';
 import { MOTION } from './motion';
@@ -150,6 +150,41 @@ export default function App() {
     document.addEventListener('click', click, true);
     return () => document.removeEventListener('click', click, true);
   }, [muted]);
+  // 静音开关同步到音频层；取消静音时恢复氛围音（挂载时不创建音频上下文，保持惰性）。
+  const audioMounted = useRef(false);
+  useEffect(() => {
+    setMuted(muted);
+    if (muted) {
+      stopAmbient();
+      return;
+    }
+    if (!audioMounted.current) {
+      audioMounted.current = true;
+      return;
+    }
+    startAmbient();
+  }, [muted]);
+  useEffect(() => {
+    if (muted) return undefined;
+    const kick = () => startAmbient();
+    window.addEventListener('pointerdown', kick, { once: true });
+    window.addEventListener('keydown', kick, { once: true });
+    return () => {
+      window.removeEventListener('pointerdown', kick);
+      window.removeEventListener('keydown', kick);
+    };
+  }, [muted]);
+  useEffect(() => {
+    const onVisibility = () => {
+      if (document.hidden) {
+        stopAmbient();
+        return;
+      }
+      if (!muted) startAmbient();
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+    return () => document.removeEventListener('visibilitychange', onVisibility);
+  }, [muted]);
   // 弹窗打开时阻止背景滚动；关闭后把焦点还给触发按钮。
   useEffect(() => {
     if (!modal) return;
@@ -230,7 +265,17 @@ export default function App() {
 
   return (
     <MotionConfig reducedMotion={reduced ? 'always' : 'never'} transition={MOTION}>
-      {booting && createPortal(<BootScreen onDone={() => setBooting(false)} />, document.body)}
+        {booting &&
+          createPortal(
+            <BootScreen
+              onDone={() => {
+                setBooting(false);
+                playSound('chime', muted);
+                startAmbient();
+              }}
+            />,
+            document.body,
+          )}
       {import.meta.env.DEV && tier === 3 && new URLSearchParams(location.search).get('sims') === '1' && <Suspense fallback={null}><SimDemoEntry /></Suspense>}
       <div
         className="app-shell"

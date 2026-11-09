@@ -16,4 +16,10 @@ export default defineConfig({
     },
   },
   optimizeDeps: { include: ['@mediapipe/tasks-vision'] },
+  // 编辑/代理写文件会在源码目录留下临时目录，Windows 下递归 watch 会 EBUSY 使 dev server 退出。
+  server: {
+    watch: {
+      ignored: ['**/.*.tmpdir/**', '**/*.tmp'],
+    },
+  },
 });
