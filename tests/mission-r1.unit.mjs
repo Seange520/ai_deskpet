@@ -197,3 +197,33 @@ test('next order preserves history, resets local evidence and cannot skip or ove
   }
   assert.equal(run(s, 'next'), s);
 });
+
+test('三单进度持久化：记录完成、拒绝非法 id、读取容错', async () => {
+  const { readMissionProgress, markMissionCompleted, nextOrderIndex, MISSION_PROGRESS_KEY } =
+    await import('../src/features/mission/missionProgress.mjs');
+  const memory = new Map();
+  const storage = {
+    getItem: (k) => (memory.has(k) ? memory.get(k) : null),
+    setItem: (k, v) => memory.set(k, String(v)),
+  };
+
+  assert.deepEqual(readMissionProgress(storage).completed, []);
+  assert.equal(nextOrderIndex(readMissionProgress(storage)), 0);
+
+  markMissionCompleted('A', storage);
+  assert.deepEqual(readMissionProgress(storage).completed, ['A']);
+  assert.equal(nextOrderIndex(readMissionProgress(storage)), 1);
+
+  markMissionCompleted('A', storage);
+  assert.deepEqual(readMissionProgress(storage).completed, ['A'], '重复完成不重复记录');
+
+  markMissionCompleted('Z', storage);
+  assert.deepEqual(readMissionProgress(storage).completed, ['A'], '非法 id 不写入');
+
+  markMissionCompleted('B', storage);
+  markMissionCompleted('C', storage);
+  assert.equal(nextOrderIndex(readMissionProgress(storage)), 0, '三单完成后回到 A 供重玩');
+
+  storage.setItem(MISSION_PROGRESS_KEY, '{bad json');
+  assert.deepEqual(readMissionProgress(storage).completed, [], '坏档回退为空进度');
+});

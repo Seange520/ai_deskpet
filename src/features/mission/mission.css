@@ -472,3 +472,10 @@
     transition: none;
   }
 }
+
+/* 三单进度（localStorage 持久化） */
+.mission-progress {
+  margin-left: 8px;
+  color: var(--v2-text-secondary, #5f5340);
+  font-size: 11.5px;
+}

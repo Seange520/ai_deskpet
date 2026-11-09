@@ -7,7 +7,7 @@ import { ORDERS, POINTS, STEP_LABELS, objective } from './missionData.mjs';
 import { inRange } from './mission.mjs';
 
 export default function MissionOverlay() {
-  const { mission: s, ready, dispatch, metrics, destination } = useMission();
+  const { mission: s, ready, dispatch, metrics, destination, progress } = useMission();
   const [now, setNow] = useState(Date.now()),
     [muted, mute] = useState(isMuted);
   useEffect(() => {
@@ -56,6 +56,9 @@ export default function MissionOverlay() {
         <div className="mission-heading">
           <small>
             晴光街 / FIELD COMMISSION {order.id} · {s.orderIndex + 1} OF 3
+            <span className="mission-progress" data-progress="{(progress?.completed?.length ?? 0)}/3">
+              · 已完成 {progress?.completed?.length ?? 0}/3
+            </span>
           </small>
           <h1>{order.title}</h1>
           <p>{objective(s)}</p>

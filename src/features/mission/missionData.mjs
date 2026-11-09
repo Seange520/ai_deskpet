@@ -1,4 +1,4 @@
-export const POINTS = Object.freeze([
+﻿export const POINTS = Object.freeze([
   { id: 'switch', label: '配电闸', position: [-7, 1.1, 1.1], short: '00' },
   { id: 'meter', label: '表箱', position: [-3, 1.1, 1.1], short: '01' },
   { id: 'joint', label: '接头', position: [2, 1.1, 1.1], short: '02' },
@@ -63,7 +63,7 @@ export const STEP_LABELS = Object.freeze({
 export function objective(state) {
   const order = ORDERS[state.orderIndex];
   return {
-    idle: '选择一条轨道，接下晴光街的第一单。',
+    idle: '选择一条轨道，接下这一单。',
     briefed: order.symptom,
     powered: order.live ? '到配电闸验电、记录，然后设置隔离护罩。' : '前往配电闸，断电挂牌。',
     isolated: `检查表箱、接头与灯座，找出${order.fault}。`,
