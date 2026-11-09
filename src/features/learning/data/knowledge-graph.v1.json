@@ -2003,6 +2003,35 @@
       "license": "CC-BY-4.0",
       "status": "planned",
       "priority": "P1"
+    },
+    {
+      "id": "IC-08",
+      "name": "ADC：把电压送回数字",
+      "oneLiner": "连续的世界，切成有限的格",
+      "layer": "L5",
+      "pillar": "forge",
+      "prereq": [
+        "IC-07"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons-v2/IC-08.v2.json",
+      "lessonAvailable": true,
+      "media": [
+        "card",
+        "sim"
+      ],
+      "practice": "把 1.65V/3.09V 读成 4 位码并说出量化误差",
+      "check": {
+        "type": "sim-task",
+        "task": "ADC 码值与量化误差",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "P10维修间",
+      "spoilerLevel": 5,
+      "license": "CC-BY-4.0",
+      "status": "planned",
+      "priority": "P1"
     }
   ],
   "edges": [
@@ -2325,11 +2354,16 @@
       "kind": "prereq",
       "from": "IC-06",
       "to": "IC-07"
+    },
+    {
+      "kind": "prereq",
+      "from": "IC-07",
+      "to": "IC-08"
     }
   ],
   "stats": {
-    "total": 65,
-    "edges": 64,
+    "total": 66,
+    "edges": 65,
     "gates": 1,
     "byLayer": {
       "L0": 7,
@@ -2337,14 +2371,14 @@
       "L2": 7,
       "L3": 10,
       "L4": 12,
-      "L5": 9,
+      "L5": 10,
       "L6": 6,
       "L7": 4,
       "L8": 3
     },
     "byPillar": {
       "craft": 11,
-      "forge": 20,
+      "forge": 21,
       "foundation": 6,
       "weave": 17,
       "echo": 4,
@@ -2353,11 +2387,11 @@
     },
     "byStatus": {
       "partial": 24,
-      "planned": 41
+      "planned": 42
     },
     "byPriority": {
       "P0": 29,
-      "P1": 22,
+      "P1": 23,
       "P2": 10,
       "P3": 4
     },

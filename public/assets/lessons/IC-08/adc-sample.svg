@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-label="IC-08 ADC：采样、量化与码值">
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#12262b" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="675" fill="#08161a"/>
+  <rect width="1200" height="675" fill="url(#grid)"/>
+  <text x="48" y="64" fill="#4fd1c5" font-family="Consolas, monospace" font-size="17" letter-spacing="2">THE FORGE / 检修手册 · IC-08</text>
+  <text x="48" y="108" fill="#e6f7f5" font-family="Microsoft YaHei, sans-serif" font-size="38" font-weight="700">ADC：把电压送回数字</text>
+  <line x1="48" y1="128" x2="1152" y2="128" stroke="#1d3a40" stroke-width="2"/>
+
+  <g font-family="Microsoft YaHei, sans-serif">
+    <rect x="48" y="168" width="520" height="304" rx="12" fill="#0d2328" stroke="#2b5b63"/>
+    <text x="72" y="206" fill="#8fe3d8" font-size="20">① 采样 → 量化 → 码值</text>
+    <g stroke="#4fd1c5" stroke-width="2" fill="none">
+      <path d="M96 400H150V360H200V320H250V280H300V340H350V300H400V260H450V220"/>
+    </g>
+    <g stroke="#f6c177" stroke-width="1.5" fill="none" stroke-dasharray="6 6">
+      <path d="M96 400H450"/>
+      <path d="M96 340H450"/>
+      <path d="M96 280H450"/>
+      <path d="M96 220H450"/>
+    </g>
+    <text x="96" y="438" fill="#6f8f99" font-size="13">时间 →</text>
+    <text x="72" y="466" fill="#9fb8bd" font-size="14">连续电压落在 16 级里；每一级读成同一个码。</text>
+
+    <rect x="616" y="168" width="536" height="304" rx="12" fill="#0d2328" stroke="#2b5b63"/>
+    <text x="640" y="206" fill="#8fe3d8" font-size="20">② 4 位 ADC 速查（Vref=3.3V）</text>
+    <g font-family="Consolas, monospace" font-size="16" fill="#d7ece9">
+      <text x="648" y="248">电压     码值   二进制</text>
+      <text x="648" y="284">0.00V     0     0000</text>
+      <text x="648" y="320">1.65V     8     1000</text>
+      <text x="648" y="356">3.09V    15     1111</text>
+    </g>
+    <text x="640" y="398" fill="#9fb8bd" font-size="14">1 LSB = 3.3V / 16 ≈ 0.206V</text>
+    <text x="640" y="428" fill="#f6c177" font-size="15">量化误差最多 ±1/2 LSB</text>
+    <text x="640" y="454" fill="#6f8f99" font-size="14">8 位 = 256 级，分辨率更高。</text>
+
+    <rect x="48" y="500" width="1104" height="104" rx="12" fill="#12262b" stroke="#2b5b63"/>
+    <text x="72" y="534" fill="#8fe3d8" font-size="19">③ 验收要点</text>
+    <text x="72" y="566" fill="#e6f7f5" font-family="Consolas, monospace" font-size="17">1.65V → 码 8；3.09V → 码 15；8 位 1.65V → 码 128；量化误差 ±1/2 LSB</text>
+    <text x="72" y="592" fill="#9fb8bd" font-size="14">采样率不够会混叠；参考电压不稳，码值会整体漂移。</text>
+
+    <text x="48" y="648" fill="#6f8f99" font-size="13">教学示意：ADC 输入不得超过 Vref/电源范围；实测先断电核对，再逐点加电压读码。</text>
+  </g>
+</svg>

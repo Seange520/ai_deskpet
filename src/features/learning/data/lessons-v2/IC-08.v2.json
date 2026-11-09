@@ -1,0 +1,111 @@
+{
+  "schema": "lesson.v2",
+  "lessonId": "L-IC-08-v2",
+  "kp": {
+    "id": "IC-08",
+    "name": "ADC：把电压送回数字",
+    "layer": "L5",
+    "pillar": "forge",
+    "oneLiner": "连续的世界，切成有限的格"
+  },
+  "meta": {
+    "version": "2.0.0",
+    "updatedAt": "2026-11-09",
+    "estimatedMinutes": 12,
+    "template": "mission-seven-v1",
+    "gameMount": "P10-维修间",
+    "sourceLesson": "L-IC-08",
+    "author": "SparkMate Automation"
+  },
+  "story": {
+    "act": 2,
+    "title": "专业支线 · 芯片入门",
+    "scene": "P10-维修间",
+    "npc": "贺非",
+    "setup": "传感器吐出来的是电压，芯片只认 0 和 1。ADC 站在门口，把连续的世界切成有限的格。"
+  },
+  "segments": [
+    {
+      "id": "mission",
+      "seconds": 25,
+      "narration": ["传感器给的是电压。", "芯片只认数字。", "今天的任务：把电压切成码。"],
+      "task": "读出 4 位 ADC 的码值，并说明量化误差有多大。"
+    },
+    {
+      "id": "observe",
+      "seconds": 55,
+      "narration": ["0 到 3.3 伏，分成 16 级。", "中间那级是 8。", "顶端接近 15。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/IC-08/adc-sample.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "check": {
+        "id": "obs-1",
+        "type": "choice",
+        "task": "4 位 ADC（Vref=3.3V）的 1 LSB 约是多少？",
+        "options": ["0.206V", "0.413V", "1.65V"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "learn",
+      "seconds": 85,
+      "narration": ["采样先切时间，量化再切幅度。", "落在两级之间，就近取整。", "误差最多半个 LSB。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/IC-08/adc-sample.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "term": { "text": "量化", "oneLine": "把连续电压归到最近的数字级，必然带来误差。" },
+      "check": {
+        "id": "learn-1",
+        "type": "choice",
+        "task": "采样率不够时，快速变化的信号会出现什么？",
+        "options": ["混叠（高频伪装成低频）", "更准确", "电压升高"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "do",
+      "seconds": 200,
+      "narration": ["拖到 1.65 伏，读 8。", "拖到 3.09 伏，读 15。", "再把量化误差选对。"],
+      "sim": {
+        "id": "adc-sample",
+        "version": 1,
+        "task": "调输入电压，写下两个码值，并选择量化误差范围。",
+        "hints": ["码值 = floor(Vin / Vref × 16)。", "1.65V 是一半，码值 8。", "3.09V 接近满量程，码值 15。"]
+      }
+    },
+    {
+      "id": "prove",
+      "seconds": 100,
+      "mode": "numeric",
+      "narration": ["中间电压写 8 级。", "顶端写 15 级。", "码值和读数一起留档。"],
+      "checks": [
+        { "id": "mid", "type": "measurement", "task": "1.65V 对应码值", "expected": 8, "tolerance": 0.01, "unit": "级" },
+        { "id": "top", "type": "measurement", "task": "3.09V 对应码值", "expected": 15, "tolerance": 0.01, "unit": "级" }
+      ]
+    },
+    {
+      "id": "transfer",
+      "seconds": 90,
+      "narration": ["8 位 ADC 更细。", "同一段电压，码值会变大。", "1.65 伏在 8 位里是多少？"],
+      "prompt": "8 位 ADC（Vref=3.3V）测 1.65V，码值约为？",
+      "options": ["128", "64", "255"],
+      "answerIndex": 0
+    },
+    {
+      "id": "recap",
+      "seconds": 25,
+      "narration": ["采样切时间，量化切幅度。", "位数越多，格子越细。", "ADC 是模拟进入数字世界的那道门。"],
+      "lines": ["采样切时间，量化切幅度。", "位数越多，格子越细。", "ADC 是模拟进入数字世界的那道门。"]
+    }
+  ],
+  "safety": {
+    "powerOffBeforeWiring": true,
+    "liveMeasurementBlocked": true,
+    "note": "断电接线；ADC 输入电压不得超过 Vref/电源范围；参考电压要稳；先测电源与地，再逐点给电压核对码值。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["玩家", "游戏", "网页", "第七校验", "熵", "残响", "第一编译者", "0x7F"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true
+  }
+}
