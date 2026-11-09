@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-label="IC-02 MOS 管：栅极电压控制沟道通断">
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#12262b" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="675" fill="#08161a"/>
+  <rect width="1200" height="675" fill="url(#grid)"/>
+  <text x="48" y="64" fill="#4fd1c5" font-family="Consolas, monospace" font-size="17" letter-spacing="2">THE FORGE / 检修手册 · IC-02</text>
+  <text x="48" y="108" fill="#e6f7f5" font-family="Microsoft YaHei, sans-serif" font-size="38" font-weight="700">MOS 管：电压控制的开关</text>
+  <line x1="48" y1="128" x2="1152" y2="128" stroke="#1d3a40" stroke-width="2"/>
+
+  <g font-family="Microsoft YaHei, sans-serif">
+    <rect x="48" y="168" width="536" height="304" rx="12" fill="#0d2328" stroke="#2b5b63"/>
+    <text x="72" y="206" fill="#8fe3d8" font-size="20">① Vgs &lt; Vth：截止</text>
+    <rect x="72" y="228" width="490" height="90" rx="8" fill="#1a2a33" stroke="#2b5b63"/>
+    <text x="92" y="262" fill="#9fb8bd" font-size="17">栅极电压不够，沟道没有形成</text>
+    <text x="92" y="294" fill="#f6c177" font-size="15">漏极—源极之间相当于断开</text>
+    <line x1="72" y1="338" x2="562" y2="338" stroke="#2b5b63" stroke-width="2" stroke-dasharray="6 6"/>
+    <text x="72" y="374" fill="#6f8f99" font-size="14">栅极是控制端：几乎不吃电流，只看电压差。</text>
+    <text x="72" y="410" fill="#9fb8bd" font-size="14">Vgs 低于阈值时，负载不工作，但电路不应有异常发热。</text>
+
+    <rect x="616" y="168" width="536" height="304" rx="12" fill="#0d2328" stroke="#2b5b63"/>
+    <text x="640" y="206" fill="#8fe3d8" font-size="20">② Vgs &gt; Vth：导通</text>
+    <rect x="640" y="228" width="490" height="90" rx="8" fill="#12302a" stroke="#4fd1c5" stroke-width="2"/>
+    <text x="660" y="262" fill="#e6f7f5" font-size="17">栅压过阈值，沟道形成</text>
+    <text x="660" y="294" fill="#4fd1c5" font-size="15">漏极—源极之间相当于闭合</text>
+    <line x1="640" y1="338" x2="1130" y2="338" stroke="#4fd1c5" stroke-width="2"/>
+    <text x="640" y="374" fill="#6f8f99" font-size="14">电流由负载与漏源回路决定，栅极电压只负责开门。</text>
+    <text x="640" y="410" fill="#9fb8bd" font-size="14">N-MOS 阈值约 2V；P-MOS 的栅压方向相反。</text>
+
+    <rect x="48" y="496" width="1104" height="120" rx="12" fill="#12262b" stroke="#2b5b63"/>
+    <text x="72" y="530" fill="#8fe3d8" font-size="19">③ 测量顺序：先量阈值，再扫两种栅压</text>
+    <text x="72" y="562" fill="#e6f7f5" font-family="Consolas, monospace" font-size="18">Vth ≈ 2.0V；Vgs = 0V → 截止；Vgs = 5V → 导通</text>
+    <text x="72" y="592" fill="#9fb8bd" font-size="14">栅极不可悬空，调试前先接下拉电阻；拿取 MOS 前先放静电。</text>
+
+    <text x="48" y="648" fill="#6f8f99" font-size="13">教学示意：MOS 是电压控制开关；真实测量前断电、防静电，栅极悬空会导致状态不确定。</text>
+  </g>
+</svg>

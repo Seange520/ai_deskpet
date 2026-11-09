@@ -1,0 +1,111 @@
+{
+  "schema": "lesson.v2",
+  "lessonId": "L-IC-02-v2",
+  "kp": {
+    "id": "IC-02",
+    "name": "MOS 管：电压控制的开关",
+    "layer": "L3",
+    "pillar": "forge",
+    "oneLiner": "栅压过阈值，沟道才打开"
+  },
+  "meta": {
+    "version": "2.0.0",
+    "updatedAt": "2026-11-09",
+    "estimatedMinutes": 12,
+    "template": "mission-seven-v1",
+    "gameMount": "P10-维修间",
+    "sourceLesson": "L-IC-02",
+    "author": "SparkMate Automation"
+  },
+  "story": {
+    "act": 2,
+    "title": "专业支线 · 芯片入门",
+    "scene": "P10-维修间",
+    "npc": "贺非",
+    "setup": "PN 结让电流有方向，MOS 管让电流听电压的话。它不靠电流控制，而是靠栅极上的电压开关沟道。"
+  },
+  "segments": [
+    {
+      "id": "mission",
+      "seconds": 25,
+      "narration": ["开关不一定要手按。", "加电压，也能开关。", "今天的任务：量阈值。"],
+      "task": "量出 N-MOS 的阈值电压，并判断两种栅压下的通断状态。"
+    },
+    {
+      "id": "observe",
+      "seconds": 55,
+      "narration": ["栅极是控制端。", "电压低，沟道没形成。", "电压过阈值，电流才过。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/IC-02/mos-switch.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "check": {
+        "id": "obs-1",
+        "type": "choice",
+        "task": "栅极电压低于阈值时，N-MOS 处于？",
+        "options": ["截止，开关断开", "导通，开关闭合", "一定击穿"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "learn",
+      "seconds": 85,
+      "narration": ["栅极几乎不吃电流。", "它看的是电压差 Vgs。", "过阈值，沟道才形成。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/IC-02/mos-switch.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "term": { "text": "阈值电压", "oneLine": "让沟道刚形成所需的栅源电压，记为 Vth。" },
+      "check": {
+        "id": "learn-1",
+        "type": "choice",
+        "task": "MOS 管导通后，栅极电流大约？",
+        "options": ["几乎为零", "等于漏极电流", "等于电源电流"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "do",
+      "seconds": 200,
+      "narration": ["先量阈值，再扫栅压。", "0V：截止，回路断开。", "5V：导通，灯才亮。"],
+      "sim": {
+        "id": "mos-switch",
+        "version": 1,
+        "task": "填阈值电压，判断 Vgs=0 与 Vgs=5V 两种状态。",
+        "hints": ["阈值约 2V。", "Vgs=0 时没有沟道，截止。", "Vgs=5V 超过阈值，导通。"]
+      }
+    },
+    {
+      "id": "prove",
+      "seconds": 100,
+      "mode": "numeric",
+      "narration": ["把阈值和电流写下来。", "电压用 V，电流用 mA。", "下次换管，按同一测量。"],
+      "checks": [
+        { "id": "threshold", "type": "measurement", "task": "阈值电压", "expected": 2, "tolerance": 0.2, "unit": "V" },
+        { "id": "drain", "type": "measurement", "task": "导通漏极电流", "expected": 10, "tolerance": 0.5, "unit": "mA" }
+      ]
+    },
+    {
+      "id": "transfer",
+      "seconds": 90,
+      "narration": ["换成 P-MOS，接法反了。", "它什么时候导通？", "先想栅压方向。"],
+      "prompt": "P-MOS 更常在哪一侧导通？",
+      "options": ["栅极电压低于源极时", "栅极电压高于源极时", "与栅极电压无关"],
+      "answerIndex": 0
+    },
+    {
+      "id": "recap",
+      "seconds": 25,
+      "narration": ["阈值先量。", "栅压过阈值才导通。", "栅极几乎不吃电流。"],
+      "lines": ["阈值先量。", "栅压过阈值才导通。", "栅极几乎不吃电流。"]
+    }
+  ],
+  "safety": {
+    "powerOffBeforeWiring": true,
+    "liveMeasurementBlocked": true,
+    "note": "接线前断电；MOS 栅极怕静电，拿取前先放电；栅极不可悬空，调试时下拉电阻先接。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["玩家", "游戏", "网页", "第七校验", "熵", "残响", "第一编译者", "0x7F"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true
+  }
+}
