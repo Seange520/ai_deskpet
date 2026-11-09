@@ -7,7 +7,9 @@
     "layer": "L6",
     "pillar": "craft",
     "oneLiner": "机器会伤人，联锁先装",
-    "prereq": ["K6-01"],
+    "prereq": [
+      "K6-01"
+    ],
     "storyScene": "P10-CraftWorkshop",
     "spoilerLevel": 6,
     "license": "CC-BY-4.0",
@@ -29,9 +31,24 @@
       "narration": "意匠工坊的检修门开着，机械臂却还在动。赫菲按住急停：门开着就不该有动力——哪一根线该先断？",
       "interaction": "choice",
       "choices": [
-        { "id": "a", "text": "在代码里加一句「门开就 return」", "correct": false, "feedback": "软件会卡死、会被绕过，不能作为唯一防线。" },
-        { "id": "b", "text": "把门磁串进动力回路，门开即断电，软件再补状态", "correct": true, "feedback": "对。硬件联锁兜底，软件只做提示与恢复。" },
-        { "id": "c", "text": "贴一张「开门勿动」的警告贴纸", "correct": false, "feedback": "警告不能代替联锁。" }
+        {
+          "id": "a",
+          "text": "在代码里加一句「门开就 return」",
+          "correct": false,
+          "feedback": "软件会卡死、会被绕过，不能作为唯一防线。"
+        },
+        {
+          "id": "b",
+          "text": "把门磁串进动力回路，门开即断电，软件再补状态",
+          "correct": true,
+          "feedback": "对。硬件联锁兜底，软件只做提示与恢复。"
+        },
+        {
+          "id": "c",
+          "text": "贴一张「开门勿动」的警告贴纸",
+          "correct": false,
+          "feedback": "警告不能代替联锁。"
+        }
       ]
     },
     {
@@ -44,17 +61,17 @@
           "kind": "card",
           "src": "assets/lessons/K6-03/interlock-card.svg",
           "alt": "门磁/限位/急停串入动力回路的三种联锁接法",
-          "status": "planned",
-          "license": "original",
-          "notes": "原创卡片，UI 内联"
+          "status": "ready",
+          "license": "CC-BY-4.0",
+          "notes": "T1.1 原创 SVG，静音可用"
         },
         {
-          "kind": "sim",
-          "src": "assets/lessons/K6-03/interlock-sim.json",
+          "kind": "diagram",
+          "src": "assets/lessons/K6-03/interlock-sim.svg",
           "alt": "检修门开合仿真：门开→动力 0V，复位需重新关门",
-          "status": "planned",
-          "license": "original",
-          "notes": "确定性教学模型"
+          "status": "ready",
+          "license": "CC-BY-4.0",
+          "notes": "T1.1 原创 SVG，静音可用"
         }
       ]
     },
@@ -64,9 +81,21 @@
       "durationSec": 200,
       "task": "给检修门加联锁：门开→驱动断电；门关+复位后→允许上电。",
       "steps": [
-        { "action": "inspect", "target": "door-switch", "hint": "确认门磁是常闭还是常开" },
-        { "action": "code", "target": "wire-interlock", "hint": "联锁串在动力回路，不是只写软件" },
-        { "action": "measure", "target": "drive-voltage-door-open", "hint": "门开时驱动电压应为 0V" }
+        {
+          "action": "inspect",
+          "target": "door-switch",
+          "hint": "确认门磁是常闭还是常开"
+        },
+        {
+          "action": "code",
+          "target": "wire-interlock",
+          "hint": "联锁串在动力回路，不是只写软件"
+        },
+        {
+          "action": "measure",
+          "target": "drive-voltage-door-open",
+          "hint": "门开时驱动电压应为 0V"
+        }
       ],
       "failureHints": [
         "只写软件锁：绕过界面就能继续动",
@@ -79,8 +108,22 @@
       "type": "verify",
       "durationSec": 150,
       "checks": [
-        { "id": "v_voltage", "type": "measurement", "probe": "drive_voltage_door_open", "expected": 0.0, "tolerance": 0.1, "unit": "V" },
-        { "id": "v_trip", "type": "measurement", "probe": "limit_trip_ms", "expected": 40, "tolerance": 10, "unit": "ms" }
+        {
+          "id": "v_voltage",
+          "type": "measurement",
+          "probe": "drive_voltage_door_open",
+          "expected": 0,
+          "tolerance": 0.1,
+          "unit": "V"
+        },
+        {
+          "id": "v_trip",
+          "type": "measurement",
+          "probe": "limit_trip_ms",
+          "expected": 40,
+          "tolerance": 10,
+          "unit": "ms"
+        }
       ],
       "safety": "教学仿真；真实设备联锁必须由具备资质的人员按安全标准设计与验证，断电挂牌后再检修。"
     },
@@ -90,9 +133,24 @@
       "durationSec": 150,
       "prompt": "软件判断、硬件联锁、人工巡检，三者的优先级应该怎么排？",
       "options": [
-        { "id": "a", "text": "硬件联锁兜底 > 软件判断 > 人工巡检（补充）", "correct": true, "why": "硬约束不依赖程序与注意力。" },
-        { "id": "b", "text": "软件判断 > 硬件联锁 > 人工巡检", "correct": false, "why": "软件会死机、会被绕过。" },
-        { "id": "c", "text": "人工巡检最重要，其他都是辅助", "correct": false, "why": "人的注意力不可靠，不能作为唯一防线。" }
+        {
+          "id": "a",
+          "text": "硬件联锁兜底 > 软件判断 > 人工巡检（补充）",
+          "correct": true,
+          "why": "硬约束不依赖程序与注意力。"
+        },
+        {
+          "id": "b",
+          "text": "软件判断 > 硬件联锁 > 人工巡检",
+          "correct": false,
+          "why": "软件会死机、会被绕过。"
+        },
+        {
+          "id": "c",
+          "text": "人工巡检最重要，其他都是辅助",
+          "correct": false,
+          "why": "人的注意力不可靠，不能作为唯一防线。"
+        }
       ],
       "solution": "安全先做硬约束，再做软件提示，最后用巡检补漏。"
     },
@@ -108,14 +166,39 @@
     }
   ],
   "checks": [
-    { "id": "q1", "type": "quiz", "weight": 0.45, "pass": "能设计门磁/限位/急停的联锁关系" },
-    { "id": "m1", "type": "measurement", "weight": 0.3, "pass": "门开 0V、限位断电 ≤50ms" },
-    { "id": "s1", "type": "sim-task", "weight": 0.25, "pass": "完成门开断电与复位流程" }
+    {
+      "id": "q1",
+      "type": "quiz",
+      "weight": 0.45,
+      "pass": "能设计门磁/限位/急停的联锁关系"
+    },
+    {
+      "id": "m1",
+      "type": "measurement",
+      "weight": 0.3,
+      "pass": "门开 0V、限位断电 ≤50ms"
+    },
+    {
+      "id": "s1",
+      "type": "sim-task",
+      "weight": 0.25,
+      "pass": "完成门开断电与复位流程"
+    }
   ],
   "assessment": {
-    "masteryWeights": { "hook": 0.1, "practice": 0.3, "verify": 0.3, "transfer": 0.3 },
+    "masteryWeights": {
+      "hook": 0.1,
+      "practice": 0.3,
+      "verify": 0.3,
+      "transfer": 0.3
+    },
     "passScore": 0.7,
-    "retentionDays": [1, 3, 7, 21]
+    "retentionDays": [
+      1,
+      3,
+      7,
+      21
+    ]
   },
   "storyBinding": {
     "scene": "P10-CraftWorkshop",
@@ -124,7 +207,13 @@
     "worldPhenomenon": "工坊检修门没有联锁，机械臂在门开时仍会动。"
   },
   "redLines": {
-    "forbiddenNarrationTokens": ["第七校验", "熵", "残响", "第一编译者", "网页游戏"],
+    "forbiddenNarrationTokens": [
+      "第七校验",
+      "熵",
+      "残响",
+      "第一编译者",
+      "网页游戏"
+    ],
     "aiDoesNotDecide": true,
     "noFourthWall": true,
     "noSacrificeGlorification": true

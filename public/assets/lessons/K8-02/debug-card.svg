@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675" role="img" aria-label="三步排障：复现、二分、复盘">
+<defs>
+<pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#16303f" stroke-width="1"/></pattern>
+<style>
+.zh{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif}
+.num{font-family:'JetBrains Mono',Consolas,monospace}
+@keyframes pulse{0%,100%{opacity:.35}50%{opacity:1}}
+@keyframes flow{to{stroke-dashoffset:-80}}
+</style>
+</defs>
+<rect width="1200" height="675" fill="#0b1620"/>
+<rect width="1200" height="675" fill="url(#grid)" opacity=".7"/>
+<rect x="18" y="18" width="1164" height="639" fill="none" stroke="#2a4a5e" stroke-width="2"/>
+<text class="zh" x="56" y="66" fill="#6fe3c8" font-size="19" letter-spacing="3">THE ECHO SPIRE / 检修手册 · K8-02</text>
+<text class="zh" x="56" y="110" fill="#e8eef2" font-size="34" font-weight="700">三步排障：复现、二分、复盘</text>
+<line x1="56" y1="130" x2="1144" y2="130" stroke="#2a4a5e" stroke-width="2"/>
+
+<g><rect x="56" y="170" width="420" height="420" rx="10" fill="#12242f" stroke="#2a4a5e"/>
+<text class="zh" x="76" y="200" fill="#6fe3c8" font-size="17">三步法</text><text class="zh" x="76" y="224" fill="#e8eef2" font-size="18">① 复现：写清条件与频率</text><text class="zh" x="76" y="256" fill="#e8eef2" font-size="18">② 二分：把系统切成两半，先排除一半</text><text class="zh" x="76" y="288" fill="#e8eef2" font-size="18">③ 复盘：记录证据与根因</text><text class="zh" x="76" y="320" fill="#e8eef2" font-size="18"></text><text class="zh" x="76" y="352" fill="#e8eef2" font-size="18">工具：日志、通断档、电压档、</text><text class="zh" x="76" y="384" fill="#e8eef2" font-size="18">替换法（一次只换一个变量）</text></g>
+<g>
+  <rect x="520" y="170" width="624" height="420" rx="12" fill="#12242f" stroke="#2a4a5e"/>
+  <g><rect x="560" y="220" width="250" height="100" rx="8" fill="#0e1d27" stroke="#f2c56b" stroke-width="2"/>
+<text class="zh" x="685" y="254" text-anchor="middle" fill="#f2c56b" font-size="19">复现</text>
+<text class="zh" x="685" y="282" text-anchor="middle" fill="#8aa0ad" font-size="15">条件/频率/影响</text></g>
+  <g><rect x="850" y="220" width="250" height="100" rx="8" fill="#0e1d27" stroke="#6fe3c8" stroke-width="2"/>
+<text class="zh" x="975" y="254" text-anchor="middle" fill="#6fe3c8" font-size="19">二分</text>
+<text class="zh" x="975" y="282" text-anchor="middle" fill="#8aa0ad" font-size="15">先排除一半</text></g>
+  <g><rect x="700" y="380" width="250" height="100" rx="8" fill="#0e1d27" stroke="#6fe3c8" stroke-width="2"/>
+<text class="zh" x="825" y="414" text-anchor="middle" fill="#6fe3c8" font-size="19">复盘</text>
+<text class="zh" x="825" y="442" text-anchor="middle" fill="#8aa0ad" font-size="15">根因+证据+改进</text></g>
+  <line x1="685" y1="320" x2="725" y2="380" stroke="#2a4a5e" stroke-width="2"/>
+  <line x1="850" y1="320" x2="830" y2="380" stroke="#2a4a5e" stroke-width="2"/>
+  <text class="zh" x="560" y="540" fill="#8aa0ad" font-size="16">乱猜不算调试；每次操作前先写下预期结果。</text>
+</g>
+<text class="zh" x="56" y="641" fill="#8aa0ad" font-size="16">教学示例：方法图为通用排障思路；具体故障按现场条件调整。</text>
+</svg>

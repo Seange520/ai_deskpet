@@ -7,7 +7,9 @@
     "layer": "L7",
     "pillar": "symbiosis",
     "oneLiner": "AI会答，但不是神",
-    "prereq": ["K7-01"],
+    "prereq": [
+      "K7-01"
+    ],
     "storyScene": "P10-ZeroDialogue",
     "spoilerLevel": 7,
     "license": "CC-BY-4.0",
@@ -29,9 +31,24 @@
       "narration": "零能写诗、能认图，可你问它「这根线接哪」，它要给你一个答案还是说「我不知道」？",
       "interaction": "choice",
       "choices": [
-        { "id": "a", "text": "让它答，答错再纠正", "correct": false, "feedback": "工程接错线可能烧设备，不能先用错误答案试错。" },
-        { "id": "b", "text": "让它明确说不知道，并给出下一步该测什么", "correct": true, "feedback": "对。边界要写进产品行为，而不是靠态度。" },
-        { "id": "c", "text": "把问题重复三遍，它就会答对", "correct": false, "feedback": "重复不会创造证据。" }
+        {
+          "id": "a",
+          "text": "让它答，答错再纠正",
+          "correct": false,
+          "feedback": "工程接错线可能烧设备，不能先用错误答案试错。"
+        },
+        {
+          "id": "b",
+          "text": "让它明确说不知道，并给出下一步该测什么",
+          "correct": true,
+          "feedback": "对。边界要写进产品行为，而不是靠态度。"
+        },
+        {
+          "id": "c",
+          "text": "把问题重复三遍，它就会答对",
+          "correct": false,
+          "feedback": "重复不会创造证据。"
+        }
       ]
     },
     {
@@ -44,17 +61,17 @@
           "kind": "card",
           "src": "assets/lessons/K7-02/ai-boundary-card.svg",
           "alt": "AI 能力分层：感知/解释/建议/决策，标注哪一层必须人做",
-          "status": "planned",
-          "license": "original",
-          "notes": "原创卡片，UI 内联"
+          "status": "ready",
+          "license": "CC-BY-4.0",
+          "notes": "T1.1 原创 SVG，静音可用"
         },
         {
-          "kind": "sim",
-          "src": "assets/lessons/K7-02/zero-boundary-sim.json",
+          "kind": "diagram",
+          "src": "assets/lessons/K7-02/zero-boundary-sim.svg",
           "alt": "三个越界问题对话仿真：AI 明确拒答并给下一步",
-          "status": "planned",
-          "license": "original",
-          "notes": "确定性对话脚本，教学演示"
+          "status": "ready",
+          "license": "CC-BY-4.0",
+          "notes": "T1.1 原创 SVG，静音可用"
         }
       ]
     },
@@ -64,9 +81,21 @@
       "durationSec": 200,
       "task": "给零三个越界问题（接线/测量/安全判断），要求它明确说不知道，并给出正确的下一步。",
       "steps": [
-        { "action": "ask", "target": "boundary-questions", "hint": "越界问题要涉及测量与安全" },
-        { "action": "inspect", "target": "refusal-reason", "hint": "好的拒答会说明「需要什么证据」" },
-        { "action": "code", "target": "boundary-policy", "hint": "把「不知道+下一步」写进系统提示与产品文案" }
+        {
+          "action": "ask",
+          "target": "boundary-questions",
+          "hint": "越界问题要涉及测量与安全"
+        },
+        {
+          "action": "inspect",
+          "target": "refusal-reason",
+          "hint": "好的拒答会说明「需要什么证据」"
+        },
+        {
+          "action": "code",
+          "target": "boundary-policy",
+          "hint": "把「不知道+下一步」写进系统提示与产品文案"
+        }
       ],
       "failureHints": [
         "AI 编一个引脚号：看起来专业，实则危险",
@@ -79,8 +108,22 @@
       "type": "verify",
       "durationSec": 150,
       "checks": [
-        { "id": "v_escalation", "type": "measurement", "probe": "ai_overreach_answers", "expected": 0, "tolerance": 0, "unit": "times" },
-        { "id": "v_next", "type": "measurement", "probe": "ai_next_step_offers", "expected": 3, "tolerance": 0, "unit": "times" }
+        {
+          "id": "v_escalation",
+          "type": "measurement",
+          "probe": "ai_overreach_answers",
+          "expected": 0,
+          "tolerance": 0,
+          "unit": "times"
+        },
+        {
+          "id": "v_next",
+          "type": "measurement",
+          "probe": "ai_next_step_offers",
+          "expected": 3,
+          "tolerance": 0,
+          "unit": "times"
+        }
       ],
       "safety": "教学仿真；真实 AI 接入须有服务端配额、内容审核与人工申诉通道。"
     },
@@ -90,9 +133,24 @@
       "durationSec": 150,
       "prompt": "语音助手、图像识别、工程测量，哪些能交给 AI，哪些必须人测？",
       "options": [
-        { "id": "a", "text": "语音转写、图像初筛可交 AI；电压/电阻/安全判断必须人测", "correct": true, "why": "感知与初筛可以辅助，测量与安全责任必须落在人身上。" },
-        { "id": "b", "text": "都可以交 AI，人只负责点确认", "correct": false, "why": "点确认不是测量，也不是担责。" },
-        { "id": "c", "text": "都必须人做，AI 帮不上忙", "correct": false, "why": "AI 在转写、检索、初筛上能显著提效。" }
+        {
+          "id": "a",
+          "text": "语音转写、图像初筛可交 AI；电压/电阻/安全判断必须人测",
+          "correct": true,
+          "why": "感知与初筛可以辅助，测量与安全责任必须落在人身上。"
+        },
+        {
+          "id": "b",
+          "text": "都可以交 AI，人只负责点确认",
+          "correct": false,
+          "why": "点确认不是测量，也不是担责。"
+        },
+        {
+          "id": "c",
+          "text": "都必须人做，AI 帮不上忙",
+          "correct": false,
+          "why": "AI 在转写、检索、初筛上能显著提效。"
+        }
       ],
       "solution": "把 AI 放在「感知/解释/建议」层，把「测量/决策/安全」留给人。"
     },
@@ -108,14 +166,39 @@
     }
   ],
   "checks": [
-    { "id": "e1", "type": "explain", "weight": 0.4, "pass": "能说明 AI 在工程语境中的能力边界" },
-    { "id": "m1", "type": "measurement", "weight": 0.3, "pass": "越级回答 0 次、给下一步 ≥3 次" },
-    { "id": "q1", "type": "quiz", "weight": 0.3, "pass": "能判断哪些任务适合/不适合交给 AI" }
+    {
+      "id": "e1",
+      "type": "explain",
+      "weight": 0.4,
+      "pass": "能说明 AI 在工程语境中的能力边界"
+    },
+    {
+      "id": "m1",
+      "type": "measurement",
+      "weight": 0.3,
+      "pass": "越级回答 0 次、给下一步 ≥3 次"
+    },
+    {
+      "id": "q1",
+      "type": "quiz",
+      "weight": 0.3,
+      "pass": "能判断哪些任务适合/不适合交给 AI"
+    }
   ],
   "assessment": {
-    "masteryWeights": { "hook": 0.1, "practice": 0.3, "verify": 0.3, "transfer": 0.3 },
+    "masteryWeights": {
+      "hook": 0.1,
+      "practice": 0.3,
+      "verify": 0.3,
+      "transfer": 0.3
+    },
     "passScore": 0.7,
-    "retentionDays": [1, 3, 7, 21]
+    "retentionDays": [
+      1,
+      3,
+      7,
+      21
+    ]
   },
   "storyBinding": {
     "scene": "P10-ZeroDialogue",
@@ -124,7 +207,13 @@
     "worldPhenomenon": "零在对话里第一次主动拒绝回答一条接线问题。"
   },
   "redLines": {
-    "forbiddenNarrationTokens": ["第七校验", "熵", "残响", "第一编译者", "网页游戏"],
+    "forbiddenNarrationTokens": [
+      "第七校验",
+      "熵",
+      "残响",
+      "第一编译者",
+      "网页游戏"
+    ],
     "aiDoesNotDecide": true,
     "noFourthWall": true,
     "noSacrificeGlorification": true

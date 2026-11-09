@@ -7,7 +7,10 @@
     "layer": "L6",
     "pillar": "craft",
     "oneLiner": "电感断电会反咬一口",
-    "prereq": ["K1-06", "K3-02"],
+    "prereq": [
+      "K1-06",
+      "K3-02"
+    ],
     "storyScene": "P10-Kickback",
     "spoilerLevel": 6,
     "license": "CC-BY-4.0",
@@ -29,9 +32,24 @@
       "narration": "继电器一断开，冷库控制器就重启，屏幕闪一下黑。赫菲说：不是控制器娇气，是线圈在断电那一瞬反咬了一口。",
       "interaction": "choice",
       "choices": [
-        { "id": "a", "text": "换个更大功率的控制器，扛住这一下", "correct": false, "feedback": "反峰电压可能远超器件额定，硬扛只会更贵。" },
-        { "id": "b", "text": "给线圈一条断电时的泄放路径", "correct": true, "feedback": "对。续流或吸收，把能量引到安全的地方。" },
-        { "id": "c", "text": "把继电器换成固态继电器就好", "correct": false, "feedback": "换器件不改变电感储能这一物理事实。" }
+        {
+          "id": "a",
+          "text": "换个更大功率的控制器，扛住这一下",
+          "correct": false,
+          "feedback": "反峰电压可能远超器件额定，硬扛只会更贵。"
+        },
+        {
+          "id": "b",
+          "text": "给线圈一条断电时的泄放路径",
+          "correct": true,
+          "feedback": "对。续流或吸收，把能量引到安全的地方。"
+        },
+        {
+          "id": "c",
+          "text": "把继电器换成固态继电器就好",
+          "correct": false,
+          "feedback": "换器件不改变电感储能这一物理事实。"
+        }
       ]
     },
     {
@@ -44,17 +62,17 @@
           "kind": "card",
           "src": "assets/lessons/K6-01/flyback-card.svg",
           "alt": "线圈断电反峰与续流二极管/RC 吸收两种钳位路径",
-          "status": "planned",
-          "license": "original",
-          "notes": "原创卡片，UI 内联"
+          "status": "ready",
+          "license": "CC-BY-4.0",
+          "notes": "T1.1 原创 SVG，静音可用"
         },
         {
-          "kind": "sim",
-          "src": "assets/lessons/K6-01/flyback-sim.json",
+          "kind": "diagram",
+          "src": "assets/lessons/K6-01/flyback-sim.svg",
           "alt": "M1 冷库支路仿真：断开开关观察 U1 复位与线圈峰值",
-          "status": "planned",
-          "license": "original",
-          "notes": "确定性教学模型，非真实认证曲线"
+          "status": "ready",
+          "license": "CC-BY-4.0",
+          "notes": "T1.1 原创 SVG，静音可用"
         }
       ]
     },
@@ -64,9 +82,21 @@
       "durationSec": 210,
       "task": "在冷库支路给继电器线圈补一条续流路径，连续分断 3 次观察控制器是否还复位。",
       "steps": [
-        { "action": "inspect", "target": "coil-and-driver", "hint": "先找线圈两端与驱动管脚" },
-        { "action": "code", "target": "fit-flyback", "hint": "二极管阴极接正侧，或 RC 并在线圈两端" },
-        { "action": "measure", "target": "coil-peak", "hint": "加保护后峰值应降到几十伏以内" }
+        {
+          "action": "inspect",
+          "target": "coil-and-driver",
+          "hint": "先找线圈两端与驱动管脚"
+        },
+        {
+          "action": "code",
+          "target": "fit-flyback",
+          "hint": "二极管阴极接正侧，或 RC 并在线圈两端"
+        },
+        {
+          "action": "measure",
+          "target": "coil-peak",
+          "hint": "加保护后峰值应降到几十伏以内"
+        }
       ],
       "failureHints": [
         "二极管方向反了：上电即短路，保险丝先断",
@@ -79,8 +109,22 @@
       "type": "verify",
       "durationSec": 150,
       "checks": [
-        { "id": "v_peak", "type": "measurement", "probe": "coil_peak_voltage", "expected": 24.7, "tolerance": 1.0, "unit": "V" },
-        { "id": "v_current", "type": "measurement", "probe": "motor_current", "expected": 0.8, "tolerance": 0.1, "unit": "A" }
+        {
+          "id": "v_peak",
+          "type": "measurement",
+          "probe": "coil_peak_voltage",
+          "expected": 24.7,
+          "tolerance": 1,
+          "unit": "V"
+        },
+        {
+          "id": "v_current",
+          "type": "measurement",
+          "probe": "motor_current",
+          "expected": 0.8,
+          "tolerance": 0.1,
+          "unit": "A"
+        }
       ],
       "safety": "教学仿真为确定性模型；真实电机/继电器断电前先断主电源，续流二极管注意极性与耐压。"
     },
@@ -90,9 +134,24 @@
       "durationSec": 150,
       "prompt": "继电器、有刷电机、电磁阀、LED 灯带，哪些断电时必须考虑反峰？",
       "options": [
-        { "id": "a", "text": "继电器、电机、电磁阀都要；LED 灯带不是电感负载，主要看驱动", "correct": true, "why": "前三个都有线圈，LED 灯带按驱动方式评估。" },
-        { "id": "b", "text": "只有电机会反峰，其它不用管", "correct": false, "why": "继电器与电磁阀同样有线圈。" },
-        { "id": "c", "text": "全部都要加续流二极管，包括 LED 灯带", "correct": false, "why": "续流针对电感；LED 灯带加错位置会短路驱动。" }
+        {
+          "id": "a",
+          "text": "继电器、电机、电磁阀都要；LED 灯带不是电感负载，主要看驱动",
+          "correct": true,
+          "why": "前三个都有线圈，LED 灯带按驱动方式评估。"
+        },
+        {
+          "id": "b",
+          "text": "只有电机会反峰，其它不用管",
+          "correct": false,
+          "why": "继电器与电磁阀同样有线圈。"
+        },
+        {
+          "id": "c",
+          "text": "全部都要加续流二极管，包括 LED 灯带",
+          "correct": false,
+          "why": "续流针对电感；LED 灯带加错位置会短路驱动。"
+        }
       ],
       "solution": "先问「里面有没有线圈」，再决定续流或吸收。"
     },
@@ -108,14 +167,39 @@
     }
   ],
   "checks": [
-    { "id": "s1", "type": "sim-task", "weight": 0.4, "pass": "续流路径正确且连续 3 次分断无复位" },
-    { "id": "m1", "type": "measurement", "weight": 0.35, "pass": "线圈峰值 24.7V ± 1V、电机电流 0.8A ± 0.1A" },
-    { "id": "q1", "type": "quiz", "weight": 0.25, "pass": "能判断哪些负载需要反峰保护" }
+    {
+      "id": "s1",
+      "type": "sim-task",
+      "weight": 0.4,
+      "pass": "续流路径正确且连续 3 次分断无复位"
+    },
+    {
+      "id": "m1",
+      "type": "measurement",
+      "weight": 0.35,
+      "pass": "线圈峰值 24.7V ± 1V、电机电流 0.8A ± 0.1A"
+    },
+    {
+      "id": "q1",
+      "type": "quiz",
+      "weight": 0.25,
+      "pass": "能判断哪些负载需要反峰保护"
+    }
   ],
   "assessment": {
-    "masteryWeights": { "hook": 0.1, "practice": 0.3, "verify": 0.3, "transfer": 0.3 },
+    "masteryWeights": {
+      "hook": 0.1,
+      "practice": 0.3,
+      "verify": 0.3,
+      "transfer": 0.3
+    },
     "passScore": 0.7,
-    "retentionDays": [1, 3, 7, 21]
+    "retentionDays": [
+      1,
+      3,
+      7,
+      21
+    ]
   },
   "storyBinding": {
     "scene": "P10-Kickback",
@@ -124,7 +208,13 @@
     "worldPhenomenon": "冷库压缩机每次停机，街灯都跟着眨一下。"
   },
   "redLines": {
-    "forbiddenNarrationTokens": ["第七校验", "熵", "残响", "第一编译者", "网页游戏"],
+    "forbiddenNarrationTokens": [
+      "第七校验",
+      "熵",
+      "残响",
+      "第一编译者",
+      "网页游戏"
+    ],
     "aiDoesNotDecide": true,
     "noFourthWall": true,
     "noSacrificeGlorification": true

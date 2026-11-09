@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675" role="img" aria-label="边界不是墙，是画出来的线">
+<defs>
+<pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#16303f" stroke-width="1"/></pattern>
+<style>
+.zh{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif}
+.num{font-family:'JetBrains Mono',Consolas,monospace}
+@keyframes pulse{0%,100%{opacity:.35}50%{opacity:1}}
+@keyframes flow{to{stroke-dashoffset:-80}}
+</style>
+</defs>
+<rect width="1200" height="675" fill="#0b1620"/>
+<rect width="1200" height="675" fill="url(#grid)" opacity=".7"/>
+<rect x="18" y="18" width="1164" height="639" fill="none" stroke="#2a4a5e" stroke-width="2"/>
+<text class="zh" x="56" y="66" fill="#6fe3c8" font-size="19" letter-spacing="3">THE SYMBIOSIS / 检修手册 · K7-01 · 动画</text>
+<text class="zh" x="56" y="110" fill="#e8eef2" font-size="34" font-weight="700">边界不是墙，是画出来的线</text>
+<line x1="56" y1="130" x2="1144" y2="130" stroke="#2a4a5e" stroke-width="2"/>
+
+<g>
+  <rect x="56" y="170" width="1088" height="420" rx="12" fill="#12242f" stroke="#2a4a5e"/>
+  <line x1="130" y1="470" x2="1030" y2="470" stroke="#8aa0ad" stroke-width="2"/>
+<line x1="130" y1="470" x2="130" y2="210" stroke="#8aa0ad" stroke-width="2"/>
+<text class="zh" x="1020" y="496" fill="#8aa0ad" font-size="15" text-anchor="end">特征 1</text>
+<text class="zh" x="120" y="224" fill="#8aa0ad" font-size="15" text-anchor="end">特征 2</text>
+  <line x1="300" y1="430" x2="820" y2="240" stroke="#f2c56b" stroke-width="3" stroke-dasharray="10 6"/>
+  
+    <circle cx="200" cy="400" r="10" fill="#6fe3c8" opacity=".9"/>
+    <circle cx="260" cy="360" r="10" fill="#f2c56b" opacity=".9"/>
+    <circle cx="340" cy="390" r="10" fill="#6fe3c8" opacity=".9"/>
+    <circle cx="420" cy="340" r="10" fill="#f2c56b" opacity=".9"/>
+    <circle cx="520" cy="370" r="10" fill="#6fe3c8" opacity=".9"/>
+    <circle cx="600" cy="330" r="10" fill="#f2c56b" opacity=".9"/>
+    <circle cx="700" cy="300" r="10" fill="#6fe3c8" opacity=".9"/>
+    <circle cx="780" cy="340" r="10" fill="#f2c56b" opacity=".9"/>
+    <circle cx="640" cy="260" r="10" fill="#6fe3c8" opacity=".9"/>
+    <circle cx="460" cy="250" r="10" fill="#f2c56b" opacity=".9"/>
+  <circle cx="470" cy="350" r="22" fill="none" stroke="#ff7a6b" stroke-width="2" stroke-dasharray="4 4"/>
+  <text class="zh" x="440" y="322" fill="#ff7a6b" font-size="15">边界附近：置信度低</text>
+  <text class="zh" x="86" y="530" fill="#e8eef2" font-size="17">样本越多，边界越稳；但边界附近永远有难分的样本。</text>
+</g>
+<text class="zh" x="56" y="641" fill="#8aa0ad" font-size="16">动画资产：静音可用；点与边界为教学示意。</text>
+</svg>

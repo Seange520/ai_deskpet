@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675" role="img" aria-label="五步做完，三条验收">
+<defs>
+<pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#16303f" stroke-width="1"/></pattern>
+<style>
+.zh{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif}
+.num{font-family:'JetBrains Mono',Consolas,monospace}
+@keyframes pulse{0%,100%{opacity:.35}50%{opacity:1}}
+@keyframes flow{to{stroke-dashoffset:-80}}
+</style>
+</defs>
+<rect width="1200" height="675" fill="#0b1620"/>
+<rect width="1200" height="675" fill="url(#grid)" opacity=".7"/>
+<rect x="18" y="18" width="1164" height="639" fill="none" stroke="#2a4a5e" stroke-width="2"/>
+<text class="zh" x="56" y="66" fill="#6fe3c8" font-size="19" letter-spacing="3">THE ECHO SPIRE / 检修手册 · K8-01 · 任务拆解</text>
+<text class="zh" x="56" y="110" fill="#e8eef2" font-size="34" font-weight="700">五步做完，三条验收</text>
+<line x1="56" y1="130" x2="1144" y2="130" stroke="#2a4a5e" stroke-width="2"/>
+
+<g>
+  <rect x="56" y="170" width="1088" height="420" rx="12" fill="#12242f" stroke="#2a4a5e"/>
+  
+    <rect x="90" y="250" width="170" height="110" rx="10" fill="#0e1d27" stroke="#6fe3c8"/>
+    <text class="zh" x="175" y="300" text-anchor="middle" fill="#6fe3c8" font-size="18">1 选型</text>
+    <text class="zh" x="175" y="334" text-anchor="middle" fill="#8aa0ad" font-size="14">buck 5V/2A</text>
+    <line x1="260" y1="305" x2="290" y2="305" stroke="#f2c56b" stroke-width="3"/>
+    <rect x="290" y="250" width="170" height="110" rx="10" fill="#0e1d27" stroke="#6fe3c8"/>
+    <text class="zh" x="375" y="300" text-anchor="middle" fill="#6fe3c8" font-size="18">2 线径</text>
+    <text class="zh" x="375" y="334" text-anchor="middle" fill="#8aa0ad" font-size="14">0.5mm² 走 2A</text>
+    <line x1="460" y1="305" x2="490" y2="305" stroke="#f2c56b" stroke-width="3"/>
+    <rect x="490" y="250" width="170" height="110" rx="10" fill="#0e1d27" stroke="#6fe3c8"/>
+    <text class="zh" x="575" y="300" text-anchor="middle" fill="#6fe3c8" font-size="18">3 连接</text>
+    <text class="zh" x="575" y="334" text-anchor="middle" fill="#8aa0ad" font-size="14">可拆杜邦</text>
+    <line x1="660" y1="305" x2="690" y2="305" stroke="#f2c56b" stroke-width="3"/>
+    <rect x="690" y="250" width="170" height="110" rx="10" fill="#0e1d27" stroke="#6fe3c8"/>
+    <text class="zh" x="775" y="300" text-anchor="middle" fill="#6fe3c8" font-size="18">4 保险</text>
+    <text class="zh" x="775" y="334" text-anchor="middle" fill="#8aa0ad" font-size="14">5A 快熔</text>
+    <line x1="860" y1="305" x2="890" y2="305" stroke="#f2c56b" stroke-width="3"/>
+    <rect x="890" y="250" width="170" height="110" rx="10" fill="#0e1d27" stroke="#6fe3c8"/>
+    <text class="zh" x="975" y="300" text-anchor="middle" fill="#6fe3c8" font-size="18">5 上电</text>
+    <text class="zh" x="975" y="334" text-anchor="middle" fill="#8aa0ad" font-size="14">限流+测试</text>
+    
+  <text class="zh" x="90" y="440" fill="#e8eef2" font-size="17">验收：电压 4.75–5.25V · 纹波 ≤30mV · 断电重启后可恢复</text>
+  <text class="zh" x="90" y="480" fill="#8aa0ad" font-size="16">每个任务都要有“完成证据”；没有证据的任务不算完成。</text>
+</g>
+<text class="zh" x="56" y="641" fill="#8aa0ad" font-size="16">教学示例：任务拆解以冷库支路为例；真实项目按需求调整。</text>
+</svg>
