@@ -1,0 +1,111 @@
+{
+  "schema": "lesson.v2",
+  "lessonId": "L-IC-05-v2",
+  "kp": {
+    "id": "IC-05",
+    "name": "触发器：把状态记住",
+    "layer": "L4",
+    "pillar": "forge",
+    "oneLiner": "一个比特，也能记住自己"
+  },
+  "meta": {
+    "version": "2.0.0",
+    "updatedAt": "2026-11-09",
+    "estimatedMinutes": 12,
+    "template": "mission-seven-v1",
+    "gameMount": "P10-维修间",
+    "sourceLesson": "L-IC-05",
+    "author": "SparkMate Automation"
+  },
+  "story": {
+    "act": 2,
+    "title": "专业支线 · 芯片入门",
+    "scene": "P10-维修间",
+    "npc": "贺非",
+    "setup": "组合逻辑看完输入就出结果，可它记不住昨天的故障。要让灯在松手后还亮着，需要一位会记事的门。"
+  },
+  "segments": [
+    {
+      "id": "mission",
+      "seconds": 25,
+      "narration": ["门电路算完就忘。", "要记住状态，得靠触发器。", "今天的任务：置位、复位、锁一个沿。"],
+      "task": "用置位/复位/时钟把 Q 写成 1 和 0，并说明它为什么能记住。"
+    },
+    {
+      "id": "observe",
+      "seconds": 55,
+      "narration": ["Q 只有两种状态。", "置位把它拉高。", "复位把它拉低。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/IC-05/flip-flop.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "check": {
+        "id": "obs-1",
+        "type": "choice",
+        "task": "触发器与普通门电路最大的差别是？",
+        "options": ["能记住状态", "更省电", "输入更多"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "learn",
+      "seconds": 85,
+      "narration": ["SR 锁存器：置位和复位互相锁住。", "D 触发器只在时钟沿收数。", "松开输入，Q 也不会自己掉。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/IC-05/flip-flop.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "term": { "text": "时序逻辑", "oneLine": "输出不只取决于当前输入，还取决于过去的状态。" },
+      "check": {
+        "id": "learn-1",
+        "type": "choice",
+        "task": "D 触发器在什么时候把 D 收进 Q？",
+        "options": ["时钟上升沿", "任意时刻", "D 变化时立即"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "do",
+      "seconds": 200,
+      "narration": ["先按置位，Q 变 1。", "再按复位，Q 回 0。", "D=1 打个沿，锁住 1。"],
+      "sim": {
+        "id": "flip-flop",
+        "version": 1,
+        "task": "用置位/复位/时钟操作 Q，并回答三次结果。",
+        "hints": ["置位 S：Q 被写成 1。", "复位 R：Q 被清回 0。", "时钟上升沿：把当前 D 锁进 Q。"]
+      }
+    },
+    {
+      "id": "prove",
+      "seconds": 100,
+      "mode": "numeric",
+      "narration": ["Q 高电平按 3.3 伏算。", "复位后写 0 伏。", "两个读数，都要有证据。"],
+      "checks": [
+        { "id": "set", "type": "measurement", "task": "置位后 Q 高电平", "expected": 3.3, "tolerance": 0.1, "unit": "V" },
+        { "id": "reset", "type": "measurement", "task": "复位后 Q 电平", "expected": 0, "tolerance": 0.1, "unit": "V" }
+      ]
+    },
+    {
+      "id": "transfer",
+      "seconds": 90,
+      "narration": ["两个触发器串起来。", "第一个的 Q 接第二个的 D。", "两个时钟沿之后，状态走到哪？"],
+      "prompt": "两个 D 触发器串联，第一个输入 1，打两个时钟沿后第二个的 Q 是？",
+      "options": ["1", "0", "不确定"],
+      "answerIndex": 0
+    },
+    {
+      "id": "recap",
+      "seconds": 25,
+      "narration": ["置位写 1，复位清 0。", "时钟沿锁住 D。", "状态能被记住，电路才有记忆。"],
+      "lines": ["置位写 1，复位清 0。", "时钟沿锁住 D。", "状态能被记住，电路才有记忆。"]
+    }
+  ],
+  "safety": {
+    "powerOffBeforeWiring": true,
+    "liveMeasurementBlocked": true,
+    "note": "断电接线；触发器输入不可悬空；SR 两端不可同时有效；实测先测电源与地，再按时序逐拍验证。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["玩家", "游戏", "网页", "第七校验", "熵", "残响", "第一编译者", "0x7F"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true
+  }
+}

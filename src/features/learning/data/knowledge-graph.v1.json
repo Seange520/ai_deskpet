@@ -1916,6 +1916,35 @@
       "license": "CC-BY-4.0",
       "status": "planned",
       "priority": "P1"
+    },
+    {
+      "id": "IC-05",
+      "name": "触发器：把状态记住",
+      "oneLiner": "一个比特，也能记住自己",
+      "layer": "L4",
+      "pillar": "forge",
+      "prereq": [
+        "IC-04"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons-v2/IC-05.v2.json",
+      "lessonAvailable": true,
+      "media": [
+        "card",
+        "sim"
+      ],
+      "practice": "用置位/复位/时钟沿写出 Q 的状态",
+      "check": {
+        "type": "sim-task",
+        "task": "触发器状态与时钟沿",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "P10维修间",
+      "spoilerLevel": 4,
+      "license": "CC-BY-4.0",
+      "status": "planned",
+      "priority": "P1"
     }
   ],
   "edges": [
@@ -2223,18 +2252,23 @@
       "kind": "prereq",
       "from": "IC-03",
       "to": "IC-04"
+    },
+    {
+      "kind": "prereq",
+      "from": "IC-04",
+      "to": "IC-05"
     }
   ],
   "stats": {
-    "total": 62,
-    "edges": 61,
+    "total": 63,
+    "edges": 62,
     "gates": 1,
     "byLayer": {
       "L0": 7,
       "L1": 7,
       "L2": 7,
       "L3": 10,
-      "L4": 10,
+      "L4": 11,
       "L5": 8,
       "L6": 6,
       "L7": 4,
@@ -2242,7 +2276,7 @@
     },
     "byPillar": {
       "craft": 11,
-      "forge": 17,
+      "forge": 18,
       "foundation": 6,
       "weave": 17,
       "echo": 4,
@@ -2251,11 +2285,11 @@
     },
     "byStatus": {
       "partial": 24,
-      "planned": 38
+      "planned": 39
     },
     "byPriority": {
       "P0": 29,
-      "P1": 19,
+      "P1": 20,
       "P2": 10,
       "P3": 4
     },

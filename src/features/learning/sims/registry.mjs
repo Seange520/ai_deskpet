@@ -24,6 +24,7 @@ export const registry = Object.freeze({
   'mos-switch': () => import('./MosSwitchSim.jsx'),
   'cmos-inverter': () => import('./CmosInverterSim.jsx'),
   'logic-gates': () => import('./LogicGatesSim.jsx'),
+  'flip-flop': () => import('./FlipFlopSim.jsx'),
 });
 export const simIds = Object.freeze(Object.keys(registry));
 export function getSim(id) {
