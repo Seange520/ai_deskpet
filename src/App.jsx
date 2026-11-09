@@ -1,3 +1,4 @@
+import IdentityEntry, { LazyProfilePanel } from './features/identity/IdentityEntry';
 import { createPortal } from 'react-dom';
 import useReducedMotionPreference from './lib/useReducedMotionPreference';
 import { isLowPowerDevice } from './lib/visualCapabilities';
@@ -152,11 +153,14 @@ export default function App() {
     const oldOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     const close = (e) => {
-      if (e.key === 'Escape') setModal(null);
+      if (e.key === 'Escape') {
+        if (modal === 'identity') { e.preventDefault(); e.stopPropagation(); }
+        setModal(null);
+      }
     };
-    document.addEventListener('keydown', close);
+    document.addEventListener('keydown', close, modal === 'identity');
     return () => {
-      document.removeEventListener('keydown', close);
+      document.removeEventListener('keydown', close, modal === 'identity');
       document.body.style.overflow = oldOverflow;
       if (previous?.isConnected) previous.focus();
     };
@@ -285,6 +289,7 @@ export default function App() {
             </Button>
             <QualitySettings />
             <ModalLayer active={new URLSearchParams(location.search).get('world') === 'p9'}><Button style={new URLSearchParams(location.search).get('world') === 'p9' ? {position:'fixed',left:16,top:16,zIndex:30,visibility:'visible',width:'auto',paddingInline:10} : {width:'auto',paddingInline:10}} disabled={Boolean(modal)} className="icon-btn teaching-entry" aria-label="校验之径" data-testid="teaching-entry" onClick={() => openModal('teaching')}>校验之径</Button></ModalLayer>
+            <ModalLayer active={new URLSearchParams(location.search).get('world') === 'p9'}><IdentityEntry disabled={Boolean(modal)} onClick={() => openModal('identity')} /></ModalLayer>
             {tier === 3 && !exploring && <ModalLayer active={new URLSearchParams(location.search).get('world') === 'p9'}><Button className="icon-btn" style={new URLSearchParams(location.search).get('world') === 'p9' ? {position:'fixed',right:24,top:24,zIndex:30,visibility:'visible'} : undefined} aria-label="共鸣链" data-testid="resonance-entry" onClick={() => openModal('resonance')}><GitBranch size={18}/></Button></ModalLayer>}
             <Button
               className="icon-btn"
@@ -386,16 +391,16 @@ export default function App() {
           </div>
         )}
         <AnimatePresence>
-          {modal && (<ModalLayer active={modal === 'resonance' || modal === 'teaching'}>
+          {modal && (<ModalLayer active={modal === 'resonance' || modal === 'teaching' || modal === 'identity'}>
             <motion.div
-              className="modal-backdrop" style={modal === 'resonance' || modal === 'teaching' ? {visibility:'visible',zIndex:1000} : undefined}
+              className="modal-backdrop" style={modal === 'resonance' || modal === 'teaching' || modal === 'identity' ? {visibility:'visible',zIndex:1000} : undefined}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setModal(null)}
             >
               <motion.section
-                className={`modal panel ${modal === 'materials' || modal === 'shop' ? 'materials-modal' : ''} ${modal === 'success' ? 'graduation-modal' : ''} ${modal === 'resonance' ? 'resonance-modal' : ''} ${modal === 'teaching' ? 'teaching-modal' : ''}`}
+                className={`modal panel ${modal === 'materials' || modal === 'shop' ? 'materials-modal' : ''} ${modal === 'success' ? 'graduation-modal' : ''} ${modal === 'resonance' ? 'resonance-modal' : ''} ${modal === 'teaching' ? 'teaching-modal' : ''} ${modal === 'identity' ? 'identity-modal' : ''}`}
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="modal-title"
@@ -427,7 +432,7 @@ export default function App() {
                 >
                   <X size={20} />
                 </Button>
-                {modal === 'teaching' ? (<Suspense fallback={<h2 id="modal-title">校验之径载入中</h2>}><TeachingPanel /></Suspense>) : modal === 'resonance' ? (<Suspense fallback={<h2 id="modal-title">共鸣链载入中</h2>}><ResonancePanel /></Suspense>) : modal === 'materials' || modal === 'shop' ? (
+                {modal === 'identity' ? (<Suspense fallback={<h2 id="modal-title">维护者档案载入中</h2>}><LazyProfilePanel /></Suspense>) : modal === 'teaching' ? (<Suspense fallback={<h2 id="modal-title">校验之径载入中</h2>}><TeachingPanel /></Suspense>) : modal === 'resonance' ? (<Suspense fallback={<h2 id="modal-title">共鸣链载入中</h2>}><ResonancePanel /></Suspense>) : modal === 'materials' || modal === 'shop' ? (
                   <Materials
                     key={routeId}
                     routeId={routeId}

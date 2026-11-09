@@ -1,0 +1,214 @@
+.modal.identity-modal {
+  width: min(920px, calc(100vw - 32px));
+  max-width: 920px;
+  max-height: 90dvh;
+  overflow: auto;
+  padding: 32px;
+  background: #101c2c;
+  color: #eef5ff;
+}
+.identity-panel {
+  font-size: 15px;
+  text-align: left;
+}
+.identity-panel h2 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-right: 32px;
+}
+.identity-panel p {
+  color: #c3cfdf;
+  line-height: 1.65;
+}
+.identity-panel button {
+  min-height: 40px;
+  min-width: 40px;
+  border: 1px solid #71869e;
+  border-radius: 8px;
+  background: #20344b;
+  color: #f2f7ff;
+  padding: 8px 14px;
+  cursor: pointer;
+  margin: 4px;
+}
+.identity-panel button[aria-selected='true'],
+.identity-panel button[aria-pressed='true'] {
+  background: #285b61;
+  border-color: #7de2d1;
+}
+.identity-panel :focus-visible {
+  outline: 3px solid #93ffe9;
+  outline-offset: 3px;
+}
+.identity-panel input {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  background: #0c1522;
+  color: #fff;
+  border: 1px solid #71869e;
+  border-radius: 6px;
+  padding: 8px;
+  box-sizing: border-box;
+  margin: 8px 0;
+}
+.identity-panel input[type='checkbox'] {
+  display: inline-block;
+  width: 24px;
+  min-height: 24px;
+  height: 24px;
+  margin-right: 12px;
+}
+.identity-consent {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+}
+.identity-card,
+.identity-guide {
+  border: 1px solid #536b84;
+  border-radius: 12px;
+  padding: 18px;
+  margin: 16px 0;
+}
+.identity-uid {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.identity-uid code {
+  font-size: 28px;
+  color: #95f4d9;
+  font-family: monospace;
+}
+.identity-score {
+  display: grid;
+  grid-template-columns: 40px 1fr 100px;
+  gap: 12px;
+  align-items: center;
+  margin: 12px 0;
+}
+.identity-score progress {
+  width: 100%;
+  accent-color: #66ddc3;
+}
+.identity-score-value {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.identity-panel fieldset {
+  margin: 16px 0;
+  padding: 10px;
+  border: 1px solid #71869e;
+}
+.identity-zero {
+  position: relative;
+  width: 140px;
+  height: 150px;
+  border-radius: 45px;
+  background: #e99b52;
+  margin: 40px auto 24px;
+  border: 5px solid #fff4d0;
+  box-shadow: 0 8px 30px #0007;
+  text-align: center;
+  color: #132438;
+}
+.identity-zero.palette-weave {
+  background: #69cabb;
+}
+.identity-zero.palette-echo {
+  background: #b8a5ed;
+}
+.identity-zero i {
+  position: absolute;
+  top: -30px;
+  left: 62px;
+  width: 8px;
+  height: 30px;
+  background: var(--antenna);
+  border-radius: 12px;
+}
+.identity-eyes {
+  padding-top: 40px;
+  font-size: 25px;
+}
+.identity-zero b {
+  font-size: 32px;
+}
+.identity-panel small {
+  font-size: 12px;
+}
+.identity-panel [role='status'] {
+  min-height: 26px;
+  color: #a6f5df;
+}
+@media (max-width: 600px) {
+  .modal.identity-modal {
+    width: 100vw;
+    max-width: 100vw;
+    height: 100dvh;
+    max-height: 100dvh;
+    border-radius: 0;
+    padding: calc(24px + env(safe-area-inset-top)) max(16px, env(safe-area-inset-right))
+      calc(24px + env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+    box-sizing: border-box;
+  }
+  .identity-score {
+    grid-template-columns: 32px 1fr 90px;
+    gap: 6px;
+  }
+  .identity-card {
+    padding: 12px;
+  }
+  .identity-panel h2 {
+    font-size: 22px;
+  }
+  .identity-panel [role='tablist'] {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
+
+.identity-score progress {
+  height: 10px;
+  border: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #35475e;
+}
+.identity-score progress::-webkit-progress-bar {
+  background: #35475e;
+}
+.identity-score progress::-webkit-progress-value {
+  background: #66ddc3;
+}
+.identity-panel {
+  line-height: 1.6;
+}
+.identity-panel h3 {
+  font-size: 18px;
+  font-weight: 650;
+}
+.identity-panel h2 {
+  font-size: 26px;
+  font-weight: 700;
+}
+.identity-panel button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+@media (max-width: 600px) {
+  .modal-backdrop:has(.identity-modal) {
+    padding: 0;
+  }
+  .modal.identity-modal {
+    flex-shrink: 0;
+  }
+  .identity-modal .modal-close {
+    position: absolute;
+    top: max(16px, env(safe-area-inset-top));
+    right: 16px;
+  }
+}
