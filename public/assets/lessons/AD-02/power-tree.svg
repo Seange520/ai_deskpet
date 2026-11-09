@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <rect width="1200" height="675" fill="#0b1620"/>
+  <g stroke="#1d3542" stroke-width="1">
+    <path d="M0 60H1200M0 615H1200"/>
+    <path d="M60 0V675M1140 0V675"/>
+  </g>
+  <text x="72" y="52" fill="#6fe3c8" font-size="14" letter-spacing="4">THE FORGE / 检修手册 · AD-02</text>
+  <text x="72" y="112" fill="#e8f6f2" font-size="40" font-weight="700">电源树：谁给谁供电</text>
+  <g font-family="sans-serif">
+    <rect x="110" y="190" width="220" height="110" rx="10" fill="#10222c" stroke="#f2c56b"/>
+    <text x="220" y="232" fill="#e8f6f2" font-size="20" text-anchor="middle">USB-C 5V</text>
+    <text x="220" y="266" fill="#8aa0ad" font-size="14" text-anchor="middle">5.0 V / 2 A</text>
+    <rect x="470" y="170" width="240" height="150" rx="10" fill="#10222c" stroke="#6fe3c8"/>
+    <text x="590" y="214" fill="#e8f6f2" font-size="20" text-anchor="middle">保护与稳压</text>
+    <text x="590" y="248" fill="#8aa0ad" font-size="14" text-anchor="middle">保险丝 + 3V3 LDO</text>
+    <text x="590" y="278" fill="#6fe3c8" font-size="14" text-anchor="middle">3.3 V 给逻辑</text>
+    <rect x="850" y="140" width="230" height="100" rx="10" fill="#10222c" stroke="#6fe3c8"/>
+    <text x="965" y="180" fill="#e8f6f2" font-size="18" text-anchor="middle">主控 ESP32-S3</text>
+    <text x="965" y="208" fill="#8aa0ad" font-size="13" text-anchor="middle">3V3 / 约 0.4 A</text>
+    <rect x="850" y="290" width="230" height="100" rx="10" fill="#10222c" stroke="#f2c56b"/>
+    <text x="965" y="330" fill="#e8f6f2" font-size="18" text-anchor="middle">舵机</text>
+    <text x="965" y="358" fill="#8aa0ad" font-size="13" text-anchor="middle">5V / 峰值 1 A</text>
+    <path d="M330 245H470" stroke="#f2c56b" stroke-width="3" fill="none"/>
+    <path d="M710 245H790V190H850" stroke="#6fe3c8" stroke-width="3" fill="none"/>
+    <path d="M790 245V340H850" stroke="#f2c56b" stroke-width="3" fill="none"/>
+    <text x="120" y="450" fill="#6fe3c8" font-size="18">规则：逻辑与动力分开取电，但必须共地。</text>
+    <text x="120" y="492" fill="#8aa0ad" font-size="16">舵机启动会拉低电压；主控若与它共用细线，会复位或死机。</text>
+    <text x="120" y="528" fill="#8aa0ad" font-size="16">先量电压：5V 轨 5.0±0.3V，3V3 轨 3.3±0.2V，共地电阻 &lt; 0.1Ω。</text>
+    <text x="120" y="600" fill="#f2c56b" font-size="15">教学示意：实际选型按器件手册与负载核算。</text>
+  </g>
+</svg>

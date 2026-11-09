@@ -1,0 +1,106 @@
+{
+  "schema": "lesson.v2",
+  "lessonId": "L-AD-02-v2",
+  "kp": { "id": "AD-02", "name": "主控与电源树", "layer": "L1", "pillar": "forge", "oneLiner": "逻辑与动力分开取电，但必须共地" },
+  "meta": {
+    "version": "2.0.0",
+    "updatedAt": "2026-11-09",
+    "estimatedMinutes": 11,
+    "template": "mission-seven-v1",
+    "gameMount": "P10-维修间",
+    "sourceLesson": "L-AD-02",
+    "author": "SparkMate Automation"
+  },
+  "story": {
+    "act": 1,
+    "title": "造物时刻",
+    "scene": "P10-维修间",
+    "npc": "贺非",
+    "setup": "上电前，贺非把电源树推到你面前：先想清楚谁给谁供电。"
+  },
+  "segments": [
+    {
+      "id": "mission",
+      "seconds": 25,
+      "narration": ["电从哪来，先画清楚。", "五伏降三伏，谁在供电？", "今天的任务：读懂电源树。"],
+      "task": "画出 5V/3V3 电源树，并测出两条轨电压。"
+    },
+    {
+      "id": "observe",
+      "seconds": 55,
+      "narration": ["USB-C 送来五伏。", "稳压器把它降成三点三伏。", "主控和舵机，分两条路取电。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/AD-02/power-tree.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "check": {
+        "id": "obs-1",
+        "type": "choice",
+        "task": "舵机应该接在哪条轨上？",
+        "options": ["5V 动力轨", "3V3 逻辑轨", "任意一条都行"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "learn",
+      "seconds": 85,
+      "narration": ["细线供大电流，电压会被拉低。", "主控因此复位，屏也会黑。", "所以动力与逻辑分开，但共地。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/AD-02/power-tree.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "term": { "text": "电源树", "oneLine": "从电源到各负载的供电关系图。" },
+      "check": {
+        "id": "learn-1",
+        "type": "choice",
+        "task": "舵机启动时主控复位，最可能的原因是？",
+        "options": ["共用细线导致压降", "屏幕太亮", "传感器坏了"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "do",
+      "seconds": 200,
+      "narration": ["先量总轨，再量逻辑轨。", "最后量一点地，确认共地。", "读数对，才算电源树成立。"],
+      "sim": {
+        "id": "meter",
+        "version": 1,
+        "task": "依次测量 5V 轨、3V3 轨与共地电阻，确认电源树成立。",
+        "hints": ["电压档并联测量。", "电阻档必须断电。", "共地电阻应接近零。"]
+      }
+    },
+    {
+      "id": "prove",
+      "seconds": 110,
+      "mode": "numeric",
+      "narration": ["写下三组读数。", "五伏轨允许正负零点三。", "逻辑轨误差更小。"],
+      "checks": [
+        { "id": "rail-5v", "type": "measurement", "task": "5V 轨电压", "expected": 5, "tolerance": 0.3, "unit": "V" },
+        { "id": "rail-3v3", "type": "measurement", "task": "3V3 轨电压", "expected": 3.3, "tolerance": 0.2, "unit": "V" },
+        { "id": "ground", "type": "measurement", "task": "共地电阻", "expected": 0.1, "tolerance": 0.05, "unit": "Ω" }
+      ]
+    },
+    {
+      "id": "transfer",
+      "seconds": 90,
+      "narration": ["如果舵机换成大功率呢？", "线径要不要加粗？", "地线还要不要共用？"],
+      "prompt": "换用更大功率的执行器后，最该先检查什么？",
+      "options": ["线径与供电能力是否够", "外壳颜色", "屏幕分辨率"],
+      "answerIndex": 0
+    },
+    {
+      "id": "recap",
+      "seconds": 25,
+      "narration": ["逻辑与动力分开取电。", "但必须共地。", "先量电压，再谈上电。"],
+      "lines": ["逻辑与动力分开取电。", "但必须共地。", "先量电压，再谈上电。"]
+    }
+  ],
+  "safety": {
+    "powerOffBeforeWiring": true,
+    "liveMeasurementBlocked": true,
+    "note": "电源树为教学等效模型；真实接线请断电、核对极性并确认线径。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["玩家", "游戏", "网页", "第七校验", "熵", "残响", "第一编译者", "0x7F"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true
+  }
+}

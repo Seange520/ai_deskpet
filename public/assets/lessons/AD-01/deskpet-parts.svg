@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <rect width="1200" height="675" fill="#0b1620"/>
+  <g stroke="#1d3542" stroke-width="1">
+    <path d="M0 60H1200M0 615H1200"/>
+    <path d="M60 0V675M1140 0V675"/>
+  </g>
+  <text x="72" y="52" fill="#6fe3c8" font-size="14" letter-spacing="4">THE FORGE / 检修手册 · AD-01</text>
+  <text x="72" y="112" fill="#e8f6f2" font-size="40" font-weight="700">先认清零件，再开始装</text>
+  <g font-family="sans-serif">
+    <rect x="120" y="190" width="220" height="150" rx="10" fill="#10222c" stroke="#6fe3c8"/>
+    <text x="230" y="245" fill="#e8f6f2" font-size="20" text-anchor="middle">外壳</text>
+    <text x="230" y="280" fill="#8aa0ad" font-size="14" text-anchor="middle">结构件 / 打印件</text>
+    <rect x="380" y="190" width="220" height="150" rx="10" fill="#10222c" stroke="#f2c56b"/>
+    <text x="490" y="245" fill="#e8f6f2" font-size="20" text-anchor="middle">主控</text>
+    <text x="490" y="280" fill="#8aa0ad" font-size="14" text-anchor="middle">ESP32-S3</text>
+    <rect x="640" y="190" width="220" height="150" rx="10" fill="#10222c" stroke="#6fe3c8"/>
+    <text x="750" y="245" fill="#e8f6f2" font-size="20" text-anchor="middle">屏幕</text>
+    <text x="750" y="280" fill="#8aa0ad" font-size="14" text-anchor="middle">表情 / 字幕</text>
+    <rect x="900" y="190" width="180" height="150" rx="10" fill="#10222c" stroke="#f2c56b"/>
+    <text x="990" y="245" fill="#e8f6f2" font-size="20" text-anchor="middle">执行器</text>
+    <text x="990" y="280" fill="#8aa0ad" font-size="14" text-anchor="middle">舵机 / 灯光</text>
+    <text x="120" y="420" fill="#6fe3c8" font-size="18">装配顺序：壳体 → 主控 → 电源与保护 → 屏幕 → 执行器</text>
+    <text x="120" y="462" fill="#8aa0ad" font-size="16">先断电装配；每加一个零件，检查一次间隙与固定。</text>
+    <text x="120" y="498" fill="#8aa0ad" font-size="16">屏幕与舵机不要共用一个 3V3 小电源，动力要独立且共地。</text>
+    <text x="120" y="600" fill="#f2c56b" font-size="15">教学示意：真实结构件以图纸与材料公差为准。</text>
+  </g>
+</svg>

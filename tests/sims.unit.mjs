@@ -1,4 +1,4 @@
-import test from 'node:test';
+﻿import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
 import { evaluate } from '../src/features/learning/sims/checks.mjs';
@@ -67,7 +67,7 @@ test('deterministic, no state mutation', () => {
   assert.equal(JSON.stringify(state), before);
 });
 test('registry exact four whitelist ids', () => {
-  assert.deepEqual(simIds, ['meter', 'series-voltage', 'pwm', 'ide-run', 'i2c-scan', 'mqtt-publish']);
+  assert.deepEqual(simIds, ['meter', 'series-voltage', 'pwm', 'ide-run', 'i2c-scan', 'mqtt-publish', 'pet-build']);
   assert.ok(Object.isFrozen(registry));
 });
 for (const id of ['__proto__', 'constructor', '../App', 'unknown'])
@@ -106,3 +106,4 @@ test('PWM physical relation and IDE cycle relation', () => {
   assert.equal(1000 / (2 * 250), 2);
   assert.match(sources, /1000 \/ \(2 \* delay\)/);
 });
+
