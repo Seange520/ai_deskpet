@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <rect width="1200" height="675" fill="#0b1620"/>
+  <g stroke="#1d3442" stroke-width="1" opacity="0.55">
+    <path d="M0 90H1200M0 180H1200M0 270H1200M0 360H1200M0 450H1200M0 540H1200M0 630H1200"/>
+    <path d="M80 0V675M240 0V675M400 0V675M560 0V675M720 0V675M880 0V675M1040 0V675"/>
+  </g>
+  <text x="80" y="56" fill="#6f8f99" font-family="Consolas, monospace" font-size="15" letter-spacing="3">THE ECHO SPIRE / 检修手册 · AD-18 · 毕业验收</text>
+  <text x="80" y="112" fill="#e8f4f8" font-family="'Microsoft YaHei', 'Noto Sans SC', sans-serif" font-size="34" font-weight="700">能复核，才算造物</text>
+  <path d="M80 136H1120" stroke="#2f5b68" stroke-width="1.5"/>
+
+  <g font-family="'Microsoft YaHei', 'Noto Sans SC', sans-serif">
+    <rect x="80" y="168" width="1040" height="96" rx="8" fill="#102430" stroke="#2f5b68"/>
+    <text x="104" y="204" fill="#ffd487" font-size="18" font-weight="700">18 节课的路径：造物 A 束 → 表达 E 束 → 对话 D 束 → 自立 I 束 → 项目 P 束</text>
+    <text x="104" y="236" fill="#9fb8bd" font-size="15">从壳体、主控、驱动、感知、联锁，到表情、声音、状态机、对话边界、自检离线与数据自主，最后验收。</text>
+  </g>
+
+  <g font-family="'Microsoft YaHei', 'Noto Sans SC', sans-serif">
+    <g>
+      <rect x="80" y="296" width="330" height="190" rx="8" fill="#0f1f2a" stroke="#3c6b4f"/>
+      <text x="104" y="332" fill="#8fe3a8" font-size="19" font-weight="700">① 功能实测</text>
+      <text x="104" y="366" fill="#9fb8bd" font-size="15">每个动作都有对应的测量记录</text>
+      <text x="104" y="392" fill="#9fb8bd" font-size="15">仪器档位、量程、读数、时间</text>
+      <text x="104" y="418" fill="#9fb8bd" font-size="15">失败样例也保留，不删</text>
+      <text x="104" y="452" fill="#4fd1c5" font-family="Consolas, monospace" font-size="13">MEASURED</text>
+    </g>
+    <g>
+      <rect x="435" y="296" width="330" height="190" rx="8" fill="#0f1f2a" stroke="#2f5b68"/>
+      <text x="459" y="332" fill="#7fd4ff" font-size="19" font-weight="700">② 物料与接线</text>
+      <text x="459" y="366" fill="#9fb8bd" font-size="15">物料清单含型号与数量</text>
+      <text x="459" y="392" fill="#9fb8bd" font-size="15">接线图与实物照片对得上</text>
+      <text x="459" y="418" fill="#9fb8bd" font-size="15">供电、接地、保险标注清楚</text>
+      <text x="459" y="452" fill="#4fd1c5" font-family="Consolas, monospace" font-size="13">REPRODUCIBLE</text>
+    </g>
+    <g>
+      <rect x="790" y="296" width="330" height="190" rx="8" fill="#0f1f2a" stroke="#7a6a3c"/>
+      <text x="814" y="332" fill="#ffd487" font-size="19" font-weight="700">③ 版本与变更</text>
+      <text x="814" y="366" fill="#9fb8bd" font-size="15">版本号对应可回滚的提交</text>
+      <text x="814" y="392" fill="#9fb8bd" font-size="15">每次改动有原因与验证项</text>
+      <text x="814" y="418" fill="#9fb8bd" font-size="15">已知问题单独列出</text>
+      <text x="814" y="452" fill="#4fd1c5" font-family="Consolas, monospace" font-size="13">TRACEABLE</text>
+    </g>
+  </g>
+
+  <g font-family="'Microsoft YaHei', 'Noto Sans SC', sans-serif">
+    <rect x="80" y="516" width="1040" height="58" rx="8" fill="#102430" stroke="#7a4a3c"/>
+    <text x="104" y="552" fill="#ffb08a" font-size="17" font-weight="700">判定：三类证据缺一项，不交付；能复述步骤不算通过，能让人照着重做一遍才算。</text>
+  </g>
+  <text x="80" y="626" fill="#6f8f99" font-size="14">教学示意：验收清单与证据包随毕业存档；真实项目还需安全评估与第三方复核。</text>
+</svg>

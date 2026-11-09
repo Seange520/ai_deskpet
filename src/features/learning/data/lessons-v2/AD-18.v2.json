@@ -1,0 +1,111 @@
+{
+  "schema": "lesson.v2",
+  "lessonId": "L-AD-18-v2",
+  "kp": {
+    "id": "AD-18",
+    "name": "毕业验收：把证据交出来",
+    "layer": "L8",
+    "pillar": "spire",
+    "oneLiner": "能复述，不算；能复核，才算"
+  },
+  "meta": {
+    "version": "2.0.0",
+    "updatedAt": "2026-11-09",
+    "estimatedMinutes": 12,
+    "template": "mission-seven-v1",
+    "gameMount": "P10-维修间",
+    "sourceLesson": "L-AD-18",
+    "author": "SparkMate Automation"
+  },
+  "story": {
+    "act": 1,
+    "title": "造物时刻",
+    "scene": "P10-维修间",
+    "npc": "贺非",
+    "setup": "桌宠终于装好。贺非把所有维护记录摊在桌上，问：这台东西凭什么算你造出来的？"
+  },
+  "segments": [
+    {
+      "id": "mission",
+      "seconds": 25,
+      "narration": ["装好，只是开始。", "贺非要看证据。", "今天的任务：验收。"],
+      "task": "把 18 节课的成果整理成可复核的证据，按清单完成毕业验收。"
+    },
+    {
+      "id": "observe",
+      "seconds": 55,
+      "narration": ["先说清装了什么。", "再证明它跑得对。", "最后留下能查的记录。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/AD-18/graduation-audit.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "check": {
+        "id": "obs-1",
+        "type": "choice",
+        "task": "验收时最能说明问题的是？",
+        "options": ["可复核的证据链", "口头描述", "一张成品照片"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "learn",
+      "seconds": 85,
+      "narration": ["清单、物料、证据。", "每一件都要能追溯。", "缺一项，就不算交付。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/AD-18/graduation-audit.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "term": { "text": "毕业验收", "oneLine": "按清单复核、给可复现物料、留可追溯证据。" },
+      "check": {
+        "id": "learn-1",
+        "type": "choice",
+        "task": "验收清单的三类证据是？",
+        "options": ["功能实测、物料与接线、版本与变更记录", "截图、聊天记录、感觉", "徽章、等级、排名"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "do",
+      "seconds": 200,
+      "narration": ["先勾清单。", "再想别人怎么复现。", "最后问自己带走了什么。"],
+      "sim": {
+        "id": "graduation-audit",
+        "version": 1,
+        "task": "三个验收问题各选正确做法：清单复核 / 可复现物料 / 证据与方法。",
+        "hints": ["交付前逐项对照验收清单。", "别人复现靠物料、接线图与版本号。", "带走可复用的排障步骤与证据。"]
+      }
+    },
+    {
+      "id": "prove",
+      "seconds": 100,
+      "mode": "numeric",
+      "narration": ["验收项要逐条签字。", "缺项不能算完成。", "两项都能核对。"],
+      "checks": [
+        { "id": "checked-items", "type": "measurement", "task": "复核验收项", "expected": 12, "tolerance": 0.01, "unit": "项" },
+        { "id": "missing-items", "type": "measurement", "task": "缺项数量", "expected": 0, "tolerance": 0.01, "unit": "项" }
+      ]
+    },
+    {
+      "id": "transfer",
+      "seconds": 90,
+      "narration": ["队友说：差不多就行。", "验收人不会这么想。", "先补什么？"],
+      "prompt": "队友说「差不多就行」，维护者应先补什么？",
+      "options": ["缺项的复核证据与复现步骤", "一句道歉", "再拍一张更好看的照片"],
+      "answerIndex": 0
+    },
+    {
+      "id": "recap",
+      "seconds": 25,
+      "narration": ["能复述，不算。", "能复核，才算。", "这才是造物。"],
+      "lines": ["能复述，不算。", "能复核，才算。", "这才是造物。"]
+    }
+  ],
+  "safety": {
+    "powerOffBeforeWiring": true,
+    "liveMeasurementBlocked": true,
+    "note": "验收涉电项目必须先断电；实测记录需含仪器档位与量程；交付物不得伪造数据。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["玩家", "游戏", "网页", "第七校验", "熵", "残响", "第一编译者", "0x7F"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true
+  }
+}

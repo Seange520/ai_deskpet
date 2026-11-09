@@ -1771,6 +1771,35 @@
       "license": "CC-BY-4.0",
       "status": "partial",
       "priority": "P0"
+    },
+    {
+      "id": "AD-18",
+      "name": "毕业验收：把证据交出来",
+      "oneLiner": "能复述，不算；能复核，才算",
+      "layer": "L8",
+      "pillar": "spire",
+      "prereq": [
+        "AD-17"
+      ],
+      "gatePrereq": "gate-three-pillar-basics",
+      "lessonRef": "lessons-v2/AD-18.v2.json",
+      "lessonAvailable": true,
+      "media": [
+        "card",
+        "sim"
+      ],
+      "practice": "按验收清单复核、整理可复现物料与变更证据",
+      "check": {
+        "type": "sim-task",
+        "task": "毕业验收的三类证据",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "P10维修间",
+      "spoilerLevel": 7,
+      "license": "CC-BY-4.0",
+      "status": "partial",
+      "priority": "P0"
     }
   ],
   "edges": [
@@ -2048,11 +2077,21 @@
       "from": "AD-16",
       "to": "AD-17",
       "kind": "prereq"
+    },
+    {
+      "from": "AD-17",
+      "to": "AD-18",
+      "kind": "prereq"
+    },
+    {
+      "from": "gate-three-pillar-basics",
+      "to": "AD-18",
+      "kind": "gate"
     }
   ],
   "stats": {
-    "total": 57,
-    "edges": 55,
+    "total": 58,
+    "edges": 57,
     "gates": 1,
     "byLayer": {
       "L0": 7,
@@ -2063,7 +2102,7 @@
       "L5": 8,
       "L6": 6,
       "L7": 4,
-      "L8": 2
+      "L8": 3
     },
     "byPillar": {
       "craft": 11,
@@ -2072,14 +2111,14 @@
       "weave": 17,
       "echo": 4,
       "symbiosis": 2,
-      "spire": 4
+      "spire": 5
     },
     "byStatus": {
-      "partial": 23,
+      "partial": 24,
       "planned": 34
     },
     "byPriority": {
-      "P0": 28,
+      "P0": 29,
       "P1": 15,
       "P2": 10,
       "P3": 4
