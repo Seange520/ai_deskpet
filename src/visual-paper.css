@@ -372,3 +372,39 @@
 :root[data-theme='light'] .teaching-panel h3 {
   letter-spacing: 0.01em;
 }
+
+/* 主界面：校验委托入口（R1 抢修 BETA） */
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn.mission-entry {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 18px;
+  border: 1px solid #b08a3e;
+  border-radius: 10px;
+  background: rgba(255, 252, 242, 0.72);
+  color: #2b2822;
+  font-size: 14px;
+  text-decoration: none;
+  box-shadow: 0 2px 0 rgba(74, 53, 39, 0.18);
+}
+
+.btn.mission-entry:hover {
+  background: #fffdf6;
+  border-color: #8f6b28;
+}
+
+.btn.mission-entry span {
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: #b08a3e;
+  color: #fffdf6;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+}

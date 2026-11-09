@@ -29,6 +29,8 @@ export default function StageLayer({ children }) {
   const relic = useRef(null);
   const meteor = useRef(null);
   const renderMode = new URLSearchParams(location.search).get('render');
+  // Mission owns its canvas and HUD; do not boot the main world behind it.
+  if (new URLSearchParams(location.search).get('mission') === 'r1') return children;
   if (quality.tier === 3 && ['toon', 'standard'].includes(renderMode)) {
     return (
       <RenderBoundary onFail={quality.fail}>

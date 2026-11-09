@@ -79,7 +79,16 @@ function HubOverview({ showMap }) {
   );
 }
 
+const MissionR1Root = lazy(() => import('./features/mission/MissionR1Root.jsx'));
+
 export default function App() {
+  const mission = new URLSearchParams(location.search).get('mission');
+  return mission === 'r1' ? (
+    <Suspense fallback={<p role="status">正在准备晴光街委托…</p>}><MissionR1Root /></Suspense>
+  ) : <MainApp />;
+}
+
+function MainApp() {
   const panel = useRef(null);
   const [booting, setBooting] = useState(() => shouldShowBoot());
   const hasNavigated = useRef(false);

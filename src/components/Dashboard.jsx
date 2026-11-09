@@ -126,13 +126,18 @@ export default function Dashboard({
             <br />
             不止学会电路，更要把想法变成现实。
           </p>
-          <Button
-            className="btn primary"
-            onClick={(event) => onNavigate(progress.wiring ? 'code' : 'hardware', event)}
-          >
-            {progress.wiring ? '进入代码工坊' : '进入硬件实验室'}
-            <ArrowRight size={17} />
-          </Button>
+          <div className="hero-actions">
+            <Button
+              className="btn primary"
+              onClick={(event) => onNavigate(progress.wiring ? 'code' : 'hardware', event)}
+            >
+              {progress.wiring ? '进入代码工坊' : '进入硬件实验室'}
+              <ArrowRight size={17} />
+            </Button>
+            <a className="btn mission-entry" href="/?mission=r1&quality=3">
+              校验委托 · 抢修 <span>BETA</span>
+            </a>
+          </div>
           <div className="guest-entry">
             <span>不注册，不用准备硬件。先玩一下。</span>
             <div>
