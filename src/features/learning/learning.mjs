@@ -66,6 +66,7 @@ export function freshProfile(g, now = new Date().toISOString()) {
     version: 1,
     updatedAt: now,
     kps: {},
+    diagnostic: null,
     schedule: { due: [], streakDays: 0, lastDay: null },
     settings: { reducedMotion: false, sfx: true },
     history: [],
@@ -104,6 +105,7 @@ export function restoreProfile(g, raw) {
               'numeric-choice',
               'explain',
               'code',
+              'diagnostic',
             ].includes(e.type) &&
             Number.isFinite(e.score) &&
             typeof e.at === 'string',
@@ -121,11 +123,96 @@ export function restoreProfile(g, raw) {
         ),
       },
       settings: { ...base.settings, ...p.settings },
+      diagnostic:
+        p.diagnostic && typeof p.diagnostic.path === 'string'
+          ? {
+              path: ['A', 'B', 'C'].includes(p.diagnostic.path)
+                ? p.diagnostic.path
+                : 'A',
+              score: Number.isFinite(p.diagnostic.score)
+                ? p.diagnostic.score
+                : 0,
+              total: Number.isFinite(p.diagnostic.total)
+                ? p.diagnostic.total
+                : 12,
+              at: typeof p.diagnostic.at === 'string' ? p.diagnostic.at : null,
+            }
+          : null,
       history: p.history,
     });
   } catch {
     return freshProfile(g);
   }
+}
+export const DIAGNOSTIC_PATHS = {
+  A: { label: '全量路径', oneLine: '从 L0 安全与工具重新搭一遍。' },
+  B: { label: '快速路径', oneLine: '跳过 L0/L1 已会的部分。' },
+  C: { label: '专业加速', oneLine: '正确项直接跳过，从缺的层补。' },
+};
+export function diagnosticResult(d, answers, now = new Date().toISOString()) {
+  const total = d.questions.length;
+  const hits = d.questions.filter((q) => answers?.[q.id] === q.answerIndex);
+  const score = hits.length;
+  const path = score >= 9 ? 'C' : score >= 5 ? 'B' : 'A';
+  return {
+    score,
+    total,
+    path,
+    correctKps: hits.map((q) => q.kpId),
+    at: now,
+  };
+}
+export function applyDiagnostic(g, p, d, answers, now = new Date().toISOString()) {
+  const result = diagnosticResult(d, answers, now);
+  const skippable =
+    result.path === 'A'
+      ? []
+      : d.questions
+          .filter((q) => answers?.[q.id] === q.answerIndex)
+          .filter(
+            (q) => result.path === 'C' || q.layer === 'L0' || q.layer === 'L1',
+          )
+          .map((q) => q.kpId);
+  const next = {
+    ...p,
+    updatedAt: now,
+    kps: { ...p.kps },
+    diagnostic: {
+      path: result.path,
+      score: result.score,
+      total: result.total,
+      at: now,
+    },
+    history: [
+      ...p.history,
+      {
+        type: 'diagnostic',
+        path: result.path,
+        score: result.score,
+        at: now,
+      },
+    ].slice(-200),
+  };
+  for (const id of new Set(skippable)) {
+    if (!g.kps.some((k) => k.id === id)) continue;
+    const old = next.kps[id] || {};
+    next.kps[id] = {
+      ...old,
+      mastery: 1,
+      attempts: (old.attempts || 0) + 1,
+      lastAt: now,
+      evidence: [
+        ...(old.evidence || []),
+        ...['quiz', 'measurement', 'sim-task'].map((type) => ({
+          type,
+          score: 1,
+          at: now,
+          context: { source: 'diagnostic' },
+        })),
+      ],
+    };
+  }
+  return reconcile(g, next);
 }
 export function beginLesson(g, p, id, now = new Date().toISOString()) {
   const k = g.kps.find((k) => k.id === id);

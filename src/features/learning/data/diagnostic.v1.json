@@ -1,0 +1,169 @@
+{
+  "version": 1,
+  "title": "起点诊断 · 15 分钟",
+  "estimatedMinutes": 15,
+  "note": "诊断不是考试：答对的层会跳过，答错的层按全量路径补齐。",
+  "paths": {
+    "A": {
+      "label": "全量路径",
+      "oneLine": "从 L0 安全与工具重新搭一遍。",
+      "threshold": 5
+    },
+    "B": {
+      "label": "快速路径",
+      "oneLine": "跳过 L0/L1 已会的部分，从 L2 起。",
+      "threshold": 9
+    },
+    "C": {
+      "label": "专业加速",
+      "oneLine": "正确项直接跳过，从缺的层补。",
+      "threshold": 99
+    }
+  },
+  "questions": [
+    {
+      "id": "q01",
+      "kpId": "K0-01",
+      "layer": "L0",
+      "prompt": "改线前第一件事是？",
+      "options": [
+        "断电并验电",
+        "先通电看效果",
+        "先换保险丝"
+      ],
+      "answerIndex": 0
+    },
+    {
+      "id": "q02",
+      "kpId": "K0-02",
+      "layer": "L0",
+      "prompt": "测 24V 直流电压，档位应先选？",
+      "options": [
+        "20V 档",
+        "60V 直流档",
+        "通断档"
+      ],
+      "answerIndex": 1
+    },
+    {
+      "id": "q03",
+      "kpId": "K1-01",
+      "layer": "L1",
+      "prompt": "串联回路中，电流处处？",
+      "options": [
+        "相等",
+        "越靠近电源越大",
+        "越靠近负载越小"
+      ],
+      "answerIndex": 0
+    },
+    {
+      "id": "q04",
+      "kpId": "K1-04",
+      "layer": "L1",
+      "prompt": "远端灯更暗，最可能先查？",
+      "options": [
+        "线缆与接点压降",
+        "灯珠颜色",
+        "电源品牌"
+      ],
+      "answerIndex": 0
+    },
+    {
+      "id": "q05",
+      "kpId": "K2-01",
+      "layer": "L2",
+      "prompt": "ESP32 的 GPIO 高电平通常约？",
+      "options": [
+        "3.3V",
+        "5V",
+        "12V"
+      ],
+      "answerIndex": 0
+    },
+    {
+      "id": "q06",
+      "kpId": "K2-05",
+      "layer": "L2",
+      "prompt": "与门：输入 1 和 0，输出是？",
+      "options": [
+        "0",
+        "1",
+        "不确定"
+      ],
+      "answerIndex": 0
+    },
+    {
+      "id": "q07",
+      "kpId": "K3-01",
+      "layer": "L3",
+      "prompt": "代码要跑起来，通常先经过？",
+      "options": [
+        "编译",
+        "截图",
+        "联网"
+      ],
+      "answerIndex": 0
+    },
+    {
+      "id": "q08",
+      "kpId": "K3-02",
+      "layer": "L3",
+      "prompt": "要把引脚设为输入，通常配置为？",
+      "options": [
+        "INPUT",
+        "OUTPUT",
+        "PWM"
+      ],
+      "answerIndex": 0
+    },
+    {
+      "id": "q09",
+      "kpId": "K4-02",
+      "layer": "L4",
+      "prompt": "I2C 从机靠什么被区分？",
+      "options": [
+        "唯一地址",
+        "引脚编号",
+        "数据内容"
+      ],
+      "answerIndex": 0
+    },
+    {
+      "id": "q10",
+      "kpId": "K4-04",
+      "layer": "L4",
+      "prompt": "UART 帧里，起始位之后通常是？",
+      "options": [
+        "数据位",
+        "停止位",
+        "校验和"
+      ],
+      "answerIndex": 0
+    },
+    {
+      "id": "q11",
+      "kpId": "K5-01",
+      "layer": "L5",
+      "prompt": "WiFi 连接成功后，状态通常显示？",
+      "options": [
+        "connected",
+        "busy",
+        "reset"
+      ],
+      "answerIndex": 0
+    },
+    {
+      "id": "q12",
+      "kpId": "K5-02",
+      "layer": "L5",
+      "prompt": "HTTP 200 表示？",
+      "options": [
+        "请求成功",
+        "未找到",
+        "服务器错误"
+      ],
+      "answerIndex": 0
+    }
+  ]
+}

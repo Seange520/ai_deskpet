@@ -1,11 +1,13 @@
 import { create } from 'zustand';
 import graph from './data/knowledge-graph.v1.json';
+import diagnostic from './data/diagnostic.v1.json';
 import {
   PROFILE_KEY,
   freshProfile,
   restoreProfile,
   beginLesson,
   completeLesson,
+  applyDiagnostic,
 } from './learning.mjs';
 let initial;
 try {
@@ -29,6 +31,9 @@ export const useLearningProfile = create((set, get) => ({
   },
   finish(id, result) {
     get().save(completeLesson(graph, get().profile, id, result));
+  },
+  diagnose(answers) {
+    get().save(applyDiagnostic(graph, get().profile, diagnostic, answers));
   },
   reset() {
     get().save(freshProfile(graph));

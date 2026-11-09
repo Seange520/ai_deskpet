@@ -5,6 +5,8 @@ import { STATES, recommendations } from './learning.mjs';
 import { useLearningProfile } from './learningProfileStore';
 import LessonRunner from './LessonRunner';
 import LessonRunnerV2 from './LessonRunnerV2';
+import DiagnosticPanel from './DiagnosticPanel';
+import chapters from './data/chapters.v1.json';
 import StarMap from './StarMap';
 import './teaching.css';
 const modules = import.meta.glob('./data/lessons/*.lesson.json', {
@@ -24,6 +26,7 @@ const lessonsV2 = Object.fromEntries(
 export default function TeachingPanel() {
   const s = useLearningProfile(),
     [tab, setTab] = useState('课节'),
+    [diagOpen, setDiagOpen] = useState(false),
     [current, setCurrent] = useState(null),
     [currentV2, setCurrentV2] = useState(null),
     [minutes, setMinutes] = useState(15),
@@ -96,6 +99,27 @@ export default function TeachingPanel() {
             />
           ) : (
             <>
+              <section className="teaching-card" data-diagnostic-card>
+                <h3>起点诊断</h3>
+                {s.profile.diagnostic ? (
+                  <p>
+                    已诊断：{s.profile.diagnostic.score}/{s.profile.diagnostic.total} 正确 ·
+                    路径 {s.profile.diagnostic.path} ·{' '}
+                    {new Date(s.profile.diagnostic.at).toLocaleDateString()}
+                    <button type="button" onClick={() => setDiagOpen(true)}>
+                      重新诊断
+                    </button>
+                  </p>
+                ) : (
+                  <p>
+                    12 题、约 15 分钟定起点；答对的层会跳过，不浪费你已会的时间。
+                    <button type="button" onClick={() => setDiagOpen(true)}>
+                      开始诊断
+                    </button>
+                  </p>
+                )}
+              </section>
+              {diagOpen && <DiagnosticPanel onClose={() => setDiagOpen(false)} />}
               <section className="teaching-card">
                 <h3>今日建议</h3>
                 <label>
@@ -117,6 +141,34 @@ export default function TeachingPanel() {
                     {id} · {lessons[id].kp.name}
                   </button>
                 ))}
+              </section>
+              <section className="teaching-chapters" data-teaching-chapters>
+                <h3>任务链</h3>
+                {chapters.chapters.map((ch) => {
+                  const total = ch.lessons.length;
+                  const done = ch.lessons.filter(
+                    (id) => s.profile.kps[id]?.status === 'mastered',
+                  ).length;
+                  const nextId =
+                    ch.lessons.find(
+                      (id) => s.profile.kps[id]?.status !== 'mastered',
+                    ) || ch.lessons[0];
+                  return (
+                    <article className="teaching-card" key={ch.id}>
+                      <h4>{ch.title}</h4>
+                      <p>{ch.oneLine}</p>
+                      <small>
+                        {done}/{total} 节已完成
+                      </small>
+                      <button
+                        type="button"
+                        onClick={() => start(nextId, Boolean(lessonsV2[nextId]))}
+                      >
+                        继续：{nextId} · {lessons[nextId]?.kp.name}
+                      </button>
+                    </article>
+                  );
+                })}
               </section>
               <div className="teaching-lessons">
                 {graph.kps.map((k) => (
