@@ -20,13 +20,13 @@ export const data = {
   ],
   evidenceTypes: ['sequence', 'numeric', 'choice'],
 };
-export default function IdeRunSim() {
+export default function IdeRunSim({ onComplete } = {}) {
   const [selected, setSelected] = useState([]),
     [compiled, setCompiled] = useState(false),
     [running, setRunning] = useState(false);
   const [delay, setDelay] = useState(250),
     [message, setMessage] = useState('选择白名单代码块，然后编译。');
-  const { evidence, record } = useEvidence(data);
+  const { evidence, record } = useEvidence(data, onComplete);
   function invalidate() {
     setCompiled(false);
     setRunning(false);

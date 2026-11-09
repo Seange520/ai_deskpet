@@ -268,3 +268,7 @@
   color: #8aa0ad;
 }
 
+.teaching-sim-embed { margin: 10px 0 14px; padding: 10px; border: 1px solid #486172; border-radius: 10px; background: #0c1a22; }
+.teaching-sim-hint { margin: 0 0 8px; font-size: 12px; color: #8aa0ad; letter-spacing: .04em; }
+.teaching-sim-embed .sim-card { margin: 0; }
+

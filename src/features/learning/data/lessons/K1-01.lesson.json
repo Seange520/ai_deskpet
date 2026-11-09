@@ -122,7 +122,8 @@
       "failureHints": [
         "表笔接反：指针反打，换红黑再测",
         "带电改线：联锁阻止并扣专注，先断电"
-      ]
+      ],
+      "sim": "series-voltage"
     },
     {
       "id": "verify",

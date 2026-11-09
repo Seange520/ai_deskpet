@@ -15,12 +15,12 @@ export const data = {
   ],
   evidenceTypes: ['sequence', 'numeric'],
 };
-export default function SeriesVoltageSim() {
+export default function SeriesVoltageSim({ onComplete } = {}) {
   const [wiring, setWiring] = useState([]),
     [connected, setConnected] = useState(false);
   const [point, setPoint] = useState('resistor'),
     [message, setMessage] = useState('点击节点接线，接错可清空重试。');
-  const { evidence, record } = useEvidence(data);
+  const { evidence, record } = useEvidence(data, onComplete);
   function connect() {
     const result = record({ wiring }, [data.checks[0]]);
     setConnected(result.passed);

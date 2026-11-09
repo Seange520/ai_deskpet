@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import ModeMeterSim from './ModeMeterSim';
+import SimEmbed from './sims/SimEmbed';
 import { codecheck, codeSpec } from './codecheck.mjs';
 import { lessonResult, measurementPass } from './learning.mjs';
 const titles = {
@@ -160,6 +161,38 @@ export default function LessonRunner({ lesson, onFinish, onLeave }) {
         {seg.type === 'practice' && (
           <>
             <p>{seg.task}</p>
+            {seg.sim ? (
+              <SimEmbed
+                simId={seg.sim}
+                onComplete={(ev) =>
+                  record(
+                    'practice',
+                    1,
+                    ev.map((entry) => ({
+                      type: 'sim-task',
+                      score: entry.attempts.at(-1).passed ? 1 : 0,
+                      context: { sim: seg.sim, check: entry.id, type: entry.type },
+                    })),
+                  )
+                }
+              />
+            ) : null}
+            {seg.sim ? (
+              <SimEmbed
+                simId={seg.sim}
+                onComplete={(ev) =>
+                  record(
+                    'practice',
+                    1,
+                    ev.map((entry) => ({
+                      type: 'sim-task',
+                      score: entry.attempts.at(-1).passed ? 1 : 0,
+                      context: { sim: seg.sim, check: entry.id, type: entry.type },
+                    })),
+                  )
+                }
+              />
+            ) : null}
             <p>按课节步骤排列操作计划，再进行测量。这里只做 DOM 教学演练。</p>
             {seg.steps.map((step, i) => (
               <label key={i}>

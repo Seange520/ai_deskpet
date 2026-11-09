@@ -12,10 +12,10 @@ export const data = {
   ],
   evidenceTypes: ['sequence', 'numeric'],
 };
-export default function PwmSim() {
+export default function PwmSim({ onComplete } = {}) {
   const [duties, setDuties] = useState([0, 0, 0, 0]),
     [message, setMessage] = useState('可用方向键调整滑块，每格 5%。');
-  const { evidence, record } = useEvidence(data);
+  const { evidence, record } = useEvidence(data, onComplete);
   function check() {
     const result = record({ password: duties, average: (3.3 * duties[2]) / 100 });
     setMessage(

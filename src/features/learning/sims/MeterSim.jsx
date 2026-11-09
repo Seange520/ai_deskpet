@@ -1,12 +1,20 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Gauge } from 'lucide-react';
 import { evaluate } from './checks.mjs';
 
-export function useEvidence(data) {
+export function useEvidence(data, onComplete) {
   const [evidence, setEvidence] = useState([]);
+  const doneRef = useRef(false);
   const record = (values, checks = data.checks) => {
     const result = evaluate({ values, evidence }, checks);
     setEvidence(result.evidence);
+    const complete = data.checks.every(
+      (c) => result.evidence.find((e) => e.id === c.id)?.attempts.at(-1)?.passed,
+    );
+    if (complete && !doneRef.current) {
+      doneRef.current = true;
+      onComplete?.(result.evidence, result);
+    }
     return result;
   };
   return { evidence, record };
@@ -57,11 +65,11 @@ export const data = {
   ],
   evidenceTypes: ['numeric', 'choice'],
 };
-export default function MeterSim() {
+export default function MeterSim({ onComplete } = {}) {
   const [mode, setMode] = useState('20V');
   const [target, setTarget] = useState('supply');
   const [message, setMessage] = useState('请选择被测物与档位。');
-  const { evidence, record } = useEvidence(data);
+  const { evidence, record } = useEvidence(data, onComplete);
   function measure() {
     const key = target === 'supply' ? 'voltage' : target;
     const correct =
