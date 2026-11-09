@@ -15,6 +15,16 @@ export default function MissionOverlay() {
     return () => clearInterval(timer);
   }, []);
   useEffect(() => {
+    const onKey = (event) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        location.assign('?');
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
+  useEffect(() => {
     const cues = {
       briefed: 'confirm',
       powered: 'relay',
@@ -68,6 +78,9 @@ export default function MissionOverlay() {
           <output aria-label="任务用时">
             {Math.floor(seconds / 60)}:{String(seconds % 60).padStart(2, '0')}
           </output>
+          <a className="mission-exit" href="?" title="退出委托，返回学习枢纽（Esc）">
+            退出
+          </a>
         </div>
         <button
           className="mission-mute"
