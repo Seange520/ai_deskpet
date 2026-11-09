@@ -1,0 +1,111 @@
+{
+  "schema": "lesson.v2",
+  "lessonId": "L-IC-09-v2",
+  "kp": {
+    "id": "IC-09",
+    "name": "版图：把电路画成几何",
+    "layer": "L6",
+    "pillar": "forge",
+    "oneLiner": "几何画错，电就不对了"
+  },
+  "meta": {
+    "version": "2.0.0",
+    "updatedAt": "2026-11-09",
+    "estimatedMinutes": 12,
+    "template": "mission-seven-v1",
+    "gameMount": "P10-维修间",
+    "sourceLesson": "L-IC-09",
+    "author": "SparkMate Automation"
+  },
+  "story": {
+    "act": 2,
+    "title": "专业支线 · 芯片入门",
+    "scene": "P10-维修间",
+    "npc": "贺非",
+    "setup": "原理图只说明谁连谁，版图才决定做出来能不能跑。几何先过规则，电才有机会对。"
+  },
+  "segments": [
+    {
+      "id": "mission",
+      "seconds": 25,
+      "narration": ["原理图是逻辑。", "版图是几何。", "今天的任务：让几何先过规则。"],
+      "task": "按 0.18µm 规则检查版图，并说出三条最小尺寸。"
+    },
+    {
+      "id": "observe",
+      "seconds": 55,
+      "narration": ["0.18 微米，比头发还细。", "线太细，厂里画不出来。", "间距太近，金属会短路。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/IC-09/layout-drc.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "check": {
+        "id": "obs-1",
+        "type": "choice",
+        "task": "0.18µm 工艺的最小线宽是？",
+        "options": ["0.18µm", "0.5µm", "没有限制"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "learn",
+      "seconds": 85,
+      "narration": ["规则不是建议，是工艺能力边界。", "DRC 自动查几何。", "LVS 再查连接。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/IC-09/layout-drc.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "term": { "text": "设计规则", "oneLine": "把制造能力写成几何约束：线宽、间距、包围都不能越线。" },
+      "check": {
+        "id": "learn-1",
+        "type": "choice",
+        "task": "DRC 检查的是什么？",
+        "options": ["版图几何是否违反制造规则", "代码是否报错", "音效是否正常"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "do",
+      "seconds": 200,
+      "narration": ["先拨线宽和间距。", "看哪一条 DRC 报违例。", "再把最小尺寸写下来。"],
+      "sim": {
+        "id": "layout-drc",
+        "version": 1,
+        "task": "按 0.18µm 规则检查线宽/间距/包围，再答最小线宽与两条规则判断。",
+        "hints": ["线宽 ≥ 0.18µm，间距 ≥ 0.20µm，包围 ≥ 0.05µm。", "0.12µm 的间距小于 0.20µm，违反间距规则。", "接触孔必须被金属完全包住。"]
+      }
+    },
+    {
+      "id": "prove",
+      "seconds": 100,
+      "mode": "numeric",
+      "narration": ["最小线宽写 0.18 微米。", "最小间距写 0.20 微米。", "数值和单位一起留档。"],
+      "checks": [
+        { "id": "wmin", "type": "measurement", "task": "0.18µm 工艺最小线宽", "expected": 0.18, "tolerance": 0.001, "unit": "µm" },
+        { "id": "smin", "type": "measurement", "task": "0.18µm 工艺最小间距", "expected": 0.2, "tolerance": 0.001, "unit": "µm" }
+      ]
+    },
+    {
+      "id": "transfer",
+      "seconds": 90,
+      "narration": ["两层金属要连在一起。", "版图上得放一个孔。", "孔没包好，连接就断。"],
+      "prompt": "两层金属要连在一起，版图上要画什么？",
+      "options": ["接触孔/通孔", "电阻", "电感"],
+      "answerIndex": 0
+    },
+    {
+      "id": "recap",
+      "seconds": 25,
+      "narration": ["版图是几何，规则是边界。", "DRC 查几何，LVS 查连接。", "几何先对，电才有机会对。"],
+      "lines": ["版图是几何，规则是边界。", "DRC 查几何，LVS 查连接。", "几何先对，电才有机会对。"]
+    }
+  ],
+  "safety": {
+    "powerOffBeforeWiring": true,
+    "liveMeasurementBlocked": true,
+    "note": "版图不直接带电；流片前必须 DRC/LVS 干净；工艺参数以代工厂 PDK 为准，不要照搬教学数值。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["玩家", "游戏", "网页", "第七校验", "熵", "残响", "第一编译者", "0x7F"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true
+  }
+}
