@@ -2061,6 +2061,35 @@
       "license": "CC-BY-4.0",
       "status": "planned",
       "priority": "P1"
+    },
+    {
+      "id": "IC-10",
+      "name": "工艺：一层材料的一生",
+      "oneLiner": "芯片不是画出来的，是一层一层做出来的",
+      "layer": "L6",
+      "pillar": "forge",
+      "prereq": [
+        "IC-09"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons-v2/IC-10.v2.json",
+      "lessonAvailable": true,
+      "media": [
+        "card",
+        "sim"
+      ],
+      "practice": "按循环顺序排出六道工序并说出洁净室与良率的关系",
+      "check": {
+        "type": "sim-task",
+        "task": "工艺循环与良率",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "P10维修间",
+      "spoilerLevel": 6,
+      "license": "CC-BY-4.0",
+      "status": "planned",
+      "priority": "P1"
     }
   ],
   "edges": [
@@ -2393,11 +2422,17 @@
       "kind": "prereq",
       "from": "IC-08",
       "to": "IC-09"
+    },
+    {
+      "kind": "prereq",
+      "from": "IC-09",
+      "to": "IC-10"
     }
   ],
   "stats": {
-    "total": 67,
-    "edges": 66,
+    "total": 68,
+    "edges": 67,
+    "gates": 1,
     "byLayer": {
       "L0": 7,
       "L1": 7,
@@ -2405,13 +2440,13 @@
       "L3": 10,
       "L4": 12,
       "L5": 10,
-      "L6": 7,
+      "L6": 8,
       "L7": 4,
       "L8": 3
     },
     "byPillar": {
       "craft": 11,
-      "forge": 22,
+      "forge": 23,
       "foundation": 6,
       "weave": 17,
       "echo": 4,
@@ -2420,15 +2455,14 @@
     },
     "byStatus": {
       "partial": 24,
-      "planned": 43
+      "planned": 44
     },
     "byPriority": {
       "P0": 29,
-      "P1": 24,
+      "P1": 25,
       "P2": 10,
       "P3": 4
     },
-    "gates": 1,
     "gateReferenced": true
   }
 }

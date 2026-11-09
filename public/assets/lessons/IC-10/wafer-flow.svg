@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img" aria-label="单层工艺循环：薄膜沉积、光刻、刻蚀、离子注入、退火、CMP 抛光">
+  <rect width="1200" height="675" fill="#0b1a20"/>
+  <text x="60" y="58" fill="#4fd1c5" font-family="Consolas, monospace" font-size="18" letter-spacing="3">THE FORGE / 工艺 · IC-10</text>
+  <text x="60" y="102" fill="#e8f4f2" font-family="Microsoft YaHei, sans-serif" font-size="34" font-weight="700">一层材料的一生：六道工序</text>
+  <line x1="60" y1="124" x2="1140" y2="124" stroke="#26424a" stroke-width="1"/>
+
+  <g font-family="Microsoft YaHei, sans-serif">
+    <g transform="translate(60,160)">
+      <rect width="150" height="88" rx="6" fill="#12333c" stroke="#2f5f6b"/>
+      <text x="75" y="36" fill="#cfe9e5" font-size="17" text-anchor="middle">① 薄膜沉积</text>
+      <text x="75" y="64" fill="#6f8f99" font-size="12" text-anchor="middle">先铺一层材料</text>
+    </g>
+    <text x="222" y="208" fill="#4fd1c5" font-size="18">→</text>
+    <g transform="translate(250,160)">
+      <rect width="150" height="88" rx="6" fill="#12333c" stroke="#2f5f6b"/>
+      <text x="75" y="36" fill="#cfe9e5" font-size="17" text-anchor="middle">② 光刻</text>
+      <text x="75" y="64" fill="#6f8f99" font-size="12" text-anchor="middle">掩模图形转印</text>
+    </g>
+    <text x="412" y="208" fill="#4fd1c5" font-size="18">→</text>
+    <g transform="translate(440,160)">
+      <rect width="150" height="88" rx="6" fill="#12333c" stroke="#2f5f6b"/>
+      <text x="75" y="36" fill="#cfe9e5" font-size="17" text-anchor="middle">③ 刻蚀</text>
+      <text x="75" y="64" fill="#6f8f99" font-size="12" text-anchor="middle">去掉多余材料</text>
+    </g>
+    <text x="602" y="208" fill="#4fd1c5" font-size="18">→</text>
+    <g transform="translate(630,160)">
+      <rect width="150" height="88" rx="6" fill="#12333c" stroke="#2f5f6b"/>
+      <text x="75" y="36" fill="#cfe9e5" font-size="17" text-anchor="middle">④ 离子注入</text>
+      <text x="75" y="64" fill="#6f8f99" font-size="12" text-anchor="middle">改导电类型与浓度</text>
+    </g>
+    <text x="792" y="208" fill="#4fd1c5" font-size="18">→</text>
+    <g transform="translate(820,160)">
+      <rect width="150" height="88" rx="6" fill="#12333c" stroke="#2f5f6b"/>
+      <text x="75" y="36" fill="#cfe9e5" font-size="17" text-anchor="middle">⑤ 退火</text>
+      <text x="75" y="64" fill="#6f8f99" font-size="12" text-anchor="middle">修复晶格、激活杂质</text>
+    </g>
+    <text x="982" y="208" fill="#4fd1c5" font-size="18">→</text>
+    <g transform="translate(1010,160)">
+      <rect width="130" height="88" rx="6" fill="#12333c" stroke="#2f5f6b"/>
+      <text x="65" y="36" fill="#cfe9e5" font-size="17" text-anchor="middle">⑥ CMP 抛光</text>
+      <text x="65" y="64" fill="#6f8f99" font-size="12" text-anchor="middle">磨平，换下一层</text>
+    </g>
+  </g>
+
+  <g transform="translate(60,300)">
+    <rect width="540" height="150" rx="6" fill="#0f2a33" stroke="#2f5f6b"/>
+    <text x="24" y="34" fill="#e8f4f2" font-size="18">一层循环 = 一次掩模</text>
+    <text x="24" y="66" fill="#9fb8bd" font-size="14">光刻把掩模上的图形印到光刻胶，刻蚀只拿走没被保护的部分。</text>
+    <text x="24" y="94" fill="#9fb8bd" font-size="14">掺杂层才需要离子注入；注入损伤靠退火修复。</text>
+    <text x="24" y="122" fill="#ffd487" font-size="14">掩模层数越多，工序越多，成本越高。</text>
+  </g>
+  <g transform="translate(620,300)">
+    <rect width="520" height="150" rx="6" fill="#0f2a33" stroke="#2f5f6b"/>
+    <text x="24" y="34" fill="#e8f4f2" font-size="18">洁净室与良率</text>
+    <text x="24" y="66" fill="#9fb8bd" font-size="14">一颗颗粒落在关键层上，就可能毁掉一颗芯片。</text>
+    <text x="24" y="94" fill="#9fb8bd" font-size="14">缺陷密度越高，整片晶圆的良率越低。</text>
+    <text x="24" y="122" fill="#ffd487" font-size="14">12 寸晶圆面积约为 8 寸的 2.25 倍，但一片能切更多芯片。</text>
+  </g>
+
+  <text x="60" y="520" fill="#4fd1c5" font-size="16">12 英寸与 8 英寸：直径比 1.5，面积比 1.5² = 2.25。</text>
+  <line x1="60" y1="552" x2="1140" y2="552" stroke="#1d3a42"/>
+  <text x="60" y="582" fill="#6f8f99" font-size="13">教学示意：真实产线以工厂 PDK 与工艺规范为准；仿真只讲流程，不代表任何具体工厂参数。</text>
+</svg>

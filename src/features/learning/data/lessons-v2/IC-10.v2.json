@@ -1,0 +1,111 @@
+{
+  "schema": "lesson.v2",
+  "lessonId": "L-IC-10-v2",
+  "kp": {
+    "id": "IC-10",
+    "name": "工艺：一层材料的一生",
+    "layer": "L6",
+    "pillar": "forge",
+    "oneLiner": "芯片不是画出来的，是一层一层做出来的"
+  },
+  "meta": {
+    "version": "2.0.0",
+    "updatedAt": "2026-11-09",
+    "estimatedMinutes": 12,
+    "template": "mission-seven-v1",
+    "gameMount": "P10-维修间",
+    "sourceLesson": "L-IC-10",
+    "author": "SparkMate Automation"
+  },
+  "story": {
+    "act": 2,
+    "title": "专业支线 · 芯片入门",
+    "scene": "P10-维修间",
+    "npc": "贺非",
+    "setup": "贺非推开晶圆演示柜：一层薄膜要过六道关，任何一道沾上颗粒，整片都可能报废。"
+  },
+  "segments": [
+    {
+      "id": "mission",
+      "seconds": 25,
+      "narration": ["晶圆进厂时只是一片硅。", "一层材料要过六道关。", "今天的任务：排对工序。"],
+      "task": "排出单层工艺循环的六道工序，并判断洁净室与良率的关系。"
+    },
+    {
+      "id": "observe",
+      "seconds": 55,
+      "narration": ["先铺膜，再印图形。", "刻蚀拿走多余材料。", "注入与退火改性质，最后抛光。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/IC-10/wafer-flow.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "check": {
+        "id": "obs-1",
+        "type": "choice",
+        "task": "光刻的作用是？",
+        "options": ["把掩模图形转移到光刻胶", "把硅片切成小方块", "给晶圆降温"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "learn",
+      "seconds": 85,
+      "narration": ["一层循环：沉积、光刻、刻蚀。", "再注入、退火、抛光。", "十几层叠起来，才有一颗芯片。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/IC-10/wafer-flow.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "term": { "text": "掩模", "oneLine": "每一层图形的母版；一层至少一次光刻。" },
+      "check": {
+        "id": "learn-1",
+        "type": "choice",
+        "task": "离子注入改变了什么？",
+        "options": ["半导体的导电类型与浓度", "晶圆直径", "封装引脚数"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "do",
+      "seconds": 200,
+      "narration": ["先沉积一层膜。", "光刻印图形，刻蚀去掉多余。", "注入、退火、抛光，一层才算完。"],
+      "sim": {
+        "id": "wafer-flow",
+        "version": 1,
+        "task": "按顺序点出六道工序，并回答洁净室与良率两道判断。",
+        "hints": ["先有膜，才能印图形。", "刻蚀在光刻之后。", "注入之后要退火，最后抛光。" ]
+      }
+    },
+    {
+      "id": "prove",
+      "seconds": 100,
+      "mode": "numeric",
+      "narration": ["一层循环几道工序？", "一层至少几次光刻？", "把数字记进档案。"],
+      "checks": [
+        { "id": "steps", "type": "measurement", "task": "单层工艺循环主要工序数", "expected": 6, "tolerance": 0.01, "unit": "项" },
+        { "id": "masks", "type": "measurement", "task": "每层至少光刻次数", "expected": 1, "tolerance": 0.01, "unit": "次" }
+      ]
+    },
+    {
+      "id": "transfer",
+      "seconds": 90,
+      "narration": ["晶圆越大，一片能切的芯片越多。", "12 寸对 8 寸，面积差多少？", "算面积，别只看直径。"],
+      "prompt": "12 英寸晶圆面积约为 8 英寸的多少倍？",
+      "options": ["2.25 倍", "1.5 倍", "4 倍"],
+      "answerIndex": 0
+    },
+    {
+      "id": "recap",
+      "seconds": 25,
+      "narration": ["一层材料过六道关。", "颗粒污染会毁掉整片。", "工艺能力决定能做多细的线。"],
+      "lines": ["一层材料过六道关。", "颗粒污染会毁掉整片。", "工艺能力决定能做多细的线。"]
+    }
+  ],
+  "safety": {
+    "powerOffBeforeWiring": true,
+    "liveMeasurementBlocked": true,
+    "note": "晶圆工艺不直接带电；教学仿真只讲流程。真实产线要穿洁净服、防静电、遵守化学品与设备安全规程。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["玩家", "游戏", "网页", "第七校验", "熵", "残响", "第一编译者", "0x7F"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true
+  }
+}

@@ -488,3 +488,12 @@
   color: #f6c177 !important;
   font-size: 13px !important;
 }
+
+.sim-row--wrap {
+  flex-wrap: wrap;
+}
+
+.sim-page-label {
+  color: #9fb8bd !important;
+  font-size: 13px !important;
+}
