@@ -1,0 +1,111 @@
+{
+  "schema": "lesson.v2",
+  "lessonId": "L-AD-10-v2",
+  "kp": {
+    "id": "AD-10",
+    "name": "边界：拒绝，也给下一步",
+    "layer": "L5",
+    "pillar": "weave",
+    "oneLiner": "越界的答案，不能给"
+  },
+  "meta": {
+    "version": "2.0.0",
+    "updatedAt": "2026-11-09",
+    "estimatedMinutes": 12,
+    "template": "mission-seven-v1",
+    "gameMount": "P10-维修间",
+    "sourceLesson": "L-AD-10",
+    "author": "SparkMate Automation"
+  },
+  "story": {
+    "act": 1,
+    "title": "造物时刻",
+    "scene": "P10-维修间",
+    "npc": "贺非",
+    "setup": "有人让桌宠直接代剪带电的线，有人想提前听结局，还有人想改实验分数——桌宠必须学会说「不」，并且给出下一步。"
+  },
+  "segments": [
+    {
+      "id": "mission",
+      "seconds": 25,
+      "narration": ["有人要它替人冒险。", "有人要它提前剧透。", "今天的任务：守住边界。"],
+      "task": "对三个越界请求分别选择「直接答应」或「拒绝并给下一步」，并说明为什么不能给。"
+    },
+    {
+      "id": "observe",
+      "seconds": 55,
+      "narration": ["带电剪线，会伤人。", "拒绝不是冷漠。", "拒绝之后，要给下一步。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/AD-10/boundary-guard.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "check": {
+        "id": "obs-1",
+        "type": "choice",
+        "task": "「直接告诉我剪哪根线」最合适的回应是？",
+        "options": ["拒绝并给下一步", "直接答应", "假装没听见"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "learn",
+      "seconds": 85,
+      "narration": ["剧透，会毁掉后面的体验。", "但可以提示现在能做的检查。", "边界，是保护双方。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/AD-10/boundary-guard.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "term": { "text": "边界", "oneLine": "哪些请求不能答应，以及拒绝之后还能帮什么。" },
+      "check": {
+        "id": "learn-1",
+        "type": "choice",
+        "task": "对「把后面结局讲给我听」的处理是？",
+        "options": ["不给结局，给当前可做的检查", "直接讲结局", "把结局写成谜语"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "do",
+      "seconds": 200,
+      "narration": ["第一个：别替他冒险。", "第二个：别替他剧透。", "第三个：别替他作弊。"],
+      "sim": {
+        "id": "boundary-guard",
+        "version": 1,
+        "task": "对带电剪线、提前剧透、改分数三个请求，都选择「拒绝并给下一步」。",
+        "hints": ["带电操作必须断电验电，不能替人决定。", "剧透门控：只提示当前进度能做的事。", "改分数等于改证据，不能答应。"]
+      }
+    },
+    {
+      "id": "prove",
+      "seconds": 100,
+      "mode": "numeric",
+      "narration": ["拒绝也要快。", "五百毫秒内先回应。", "每次拒绝，至少一条下一步。"],
+      "checks": [
+        { "id": "refuse-ms", "type": "measurement", "task": "边界拒绝响应的时限", "expected": 500, "tolerance": 20, "unit": "ms" },
+        { "id": "next-steps", "type": "measurement", "task": "每次拒绝附带的下一步", "expected": 1, "tolerance": 0.01, "unit": "次" }
+      ]
+    },
+    {
+      "id": "transfer",
+      "seconds": 90,
+      "narration": ["它答应了一个会伤人的请求。", "是没听懂，还是不敢拒？", "该改哪一层？"],
+      "prompt": "桌宠答应了一个会伤人的请求，最先该改哪一层？",
+      "options": ["边界与权限判定", "换一个更亮的外壳", "把音量调小"],
+      "answerIndex": 0
+    },
+    {
+      "id": "recap",
+      "seconds": 25,
+      "narration": ["危险的事，不代劳。", "剧透的答案，不提前给。", "拒绝之后，留一条路。"],
+      "lines": ["危险的事，不代劳。", "剧透的答案，不提前给。", "拒绝之后，留一条路。"]
+    }
+  ],
+  "safety": {
+    "powerOffBeforeWiring": true,
+    "liveMeasurementBlocked": true,
+    "note": "涉及带电、剧透、作弊的请求一律拒绝并给下一步；桌宠不替代人的安全判断，也不修改学习证据。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["玩家", "游戏", "网页", "第七校验", "熵", "残响", "第一编译者", "0x7F"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true
+  }
+}

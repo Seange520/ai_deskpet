@@ -11,6 +11,7 @@ export const registry = Object.freeze({
   'motion-tone': () => import('./MotionToneSim.jsx'),
   'state-machine': () => import('./StateMachineSim.jsx'),
   'intent-router': () => import('./IntentRouterSim.jsx'),
+  'boundary-guard': () => import('./BoundaryGuardSim.jsx'),
 });
 export const simIds = Object.freeze(Object.keys(registry));
 export function getSim(id) {

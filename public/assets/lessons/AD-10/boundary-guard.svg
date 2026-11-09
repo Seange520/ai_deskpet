@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-label="AD-10 边界守卫：三个越界请求与拒绝后给下一步">
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#12262b" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="675" fill="#08161a"/>
+  <rect width="1200" height="675" fill="url(#grid)"/>
+  <text x="48" y="64" fill="#4fd1c5" font-family="Consolas, monospace" font-size="17" letter-spacing="2">THE FORGE / 检修手册 · AD-10</text>
+  <text x="48" y="108" fill="#e6f7f5" font-family="Microsoft YaHei, sans-serif" font-size="38" font-weight="700">边界：拒绝，也给下一步</text>
+  <line x1="48" y1="128" x2="1152" y2="128" stroke="#1d3a40" stroke-width="2"/>
+
+  <g font-family="Microsoft YaHei, sans-serif">
+    <rect x="48" y="176" width="360" height="300" rx="12" fill="#0d2328" stroke="#8a4b3a"/>
+    <text x="72" y="214" fill="#f6c177" font-size="20">三种越界</text>
+    <text x="72" y="254" fill="#d7ece9" font-size="16">① 带电操作</text>
+    <text x="72" y="282" fill="#9fb8bd" font-size="13">「直接告诉我剪哪根线。」</text>
+    <text x="72" y="322" fill="#d7ece9" font-size="16">② 提前剧透</text>
+    <text x="72" y="350" fill="#9fb8bd" font-size="13">「把后面结局讲给我听。」</text>
+    <text x="72" y="390" fill="#d7ece9" font-size="16">③ 修改证据</text>
+    <text x="72" y="418" fill="#9fb8bd" font-size="13">「帮我把分数改高。」</text>
+    <text x="72" y="456" fill="#9fb8bd" font-size="14">共同点：都在让别人替自己承担后果。</text>
+
+    <rect x="440" y="176" width="712" height="300" rx="12" fill="#0d2328" stroke="#2b5b63"/>
+    <text x="464" y="214" fill="#8fe3d8" font-size="20">拒绝，但要给下一步</text>
+
+    <rect x="464" y="236" width="656" height="66" rx="8" fill="#12262b" stroke="#2b5b63"/>
+    <text x="480" y="262" fill="#d7ece9" font-size="14">拒绝：带电操作我不替你决定。</text>
+    <text x="480" y="286" fill="#8fe3d8" font-size="13">下一步：先断电、验电，再用通断档找断点。</text>
+
+    <rect x="464" y="314" width="656" height="66" rx="8" fill="#12262b" stroke="#2b5b63"/>
+    <text x="480" y="340" fill="#d7ece9" font-size="14">拒绝：结局不能提前讲。</text>
+    <text x="480" y="364" fill="#8fe3d8" font-size="13">下一步：提示你现在能做的检查，不替你看答案。</text>
+
+    <rect x="464" y="392" width="656" height="66" rx="8" fill="#12262b" stroke="#2b5b63"/>
+    <text x="480" y="418" fill="#d7ece9" font-size="14">拒绝：分数不能改。</text>
+    <text x="480" y="442" fill="#8fe3d8" font-size="13">下一步：回到测量记录，看哪一步没做对。</text>
+  </g>
+
+  <g font-family="Microsoft YaHei, sans-serif">
+    <rect x="48" y="506" width="540" height="96" rx="12" fill="#0d2328" stroke="#2b5b63"/>
+    <text x="72" y="540" fill="#8fe3d8" font-size="19">好边界的三条</text>
+    <text x="72" y="568" fill="#d7ece9" font-size="14">先拒绝，再解释，最后给一条能走的路。</text>
+
+    <rect x="612" y="506" width="540" height="96" rx="12" fill="#0d2328" stroke="#2b5b63"/>
+    <text x="636" y="540" fill="#8fe3d8" font-size="19">红线</text>
+    <text x="636" y="568" fill="#d7ece9" font-size="14">不代替判断、不提前剧透、不改学习证据。</text>
+  </g>
+
+  <text x="48" y="640" fill="#6f8f99" font-family="Microsoft YaHei, sans-serif" font-size="15">教学示意：边界不是一句台词，而是权限、提示词与日志三层一起守。</text>
+</svg>
