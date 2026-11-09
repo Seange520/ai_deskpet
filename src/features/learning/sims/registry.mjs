@@ -9,6 +9,7 @@ export const registry = Object.freeze({
   'power-precheck': () => import('./PowerPrecheckSim.jsx'),
   'expression-frame': () => import('./ExpressionFrameSim.jsx'),
   'motion-tone': () => import('./MotionToneSim.jsx'),
+  'state-machine': () => import('./StateMachineSim.jsx'),
 });
 export const simIds = Object.freeze(Object.keys(registry));
 export function getSim(id) {

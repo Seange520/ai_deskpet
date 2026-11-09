@@ -1,0 +1,111 @@
+{
+  "schema": "lesson.v2",
+  "lessonId": "L-AD-08-v2",
+  "kp": {
+    "id": "AD-08",
+    "name": "状态机：让桌宠自己醒来",
+    "layer": "L4",
+    "pillar": "weave",
+    "oneLiner": "先定状态，再定转移"
+  },
+  "meta": {
+    "version": "2.0.0",
+    "updatedAt": "2026-11-09",
+    "estimatedMinutes": 12,
+    "template": "mission-seven-v1",
+    "gameMount": "P10-维修间",
+    "sourceLesson": "L-AD-08",
+    "author": "SparkMate Automation"
+  },
+  "story": {
+    "act": 1,
+    "title": "造物时刻",
+    "scene": "P10-维修间",
+    "npc": "贺非",
+    "setup": "贺非把一张作息表拍在桌上：桌宠要自己待机、自己醒来、干完活自己睡。"
+  },
+  "segments": [
+    {
+      "id": "mission",
+      "seconds": 25,
+      "narration": ["醒来、干活、睡觉。", "每一步都该有规矩。", "今天的任务：画一张状态表。"],
+      "task": "把桌宠的待机、唤醒、工作、休眠串成合法状态机，并定好超时与唤醒的出口。"
+    },
+    {
+      "id": "observe",
+      "seconds": 55,
+      "narration": ["上电先到待机。", "收到唤醒才亮屏。", "跳步，会被拦下。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/AD-08/state-machine.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "check": {
+        "id": "obs-1",
+        "type": "choice",
+        "task": "桌宠上电后的第一个状态是？",
+        "options": ["待机", "工作", "休眠"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "learn",
+      "seconds": 85,
+      "narration": ["事件推动状态。", "状态只认合法出口。", "超时，也该有去处。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/AD-08/state-machine.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "term": { "text": "状态机", "oneLine": "用有限个状态和它们之间的合法转移来描述系统行为。" },
+      "check": {
+        "id": "learn-1",
+        "type": "choice",
+        "task": "工作超时后应进入？",
+        "options": ["休眠", "待机", "继续工作"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "do",
+      "seconds": 200,
+      "narration": ["先按上电。", "再唤醒、开工、收工。", "把两个出口定好。"],
+      "sim": {
+        "id": "state-machine",
+        "version": 1,
+        "task": "按合法路径把桌宠从待机带到休眠，并回答超时与唤醒两个转移条件。",
+        "hints": ["路径：待机 → 唤醒 → 工作 → 休眠。", "工作超时进休眠。", "休眠被唤醒，回到唤醒态。"]
+      }
+    },
+    {
+      "id": "prove",
+      "seconds": 100,
+      "mode": "numeric",
+      "narration": ["一拍按一百二十毫秒算。", "从待机到工作，两步。", "超时阈值三秒。"],
+      "checks": [
+        { "id": "wake-ms", "type": "measurement", "task": "从待机到工作的唤醒时长", "expected": 240, "tolerance": 10, "unit": "ms" },
+        { "id": "timeout-ms", "type": "measurement", "task": "工作超时阈值", "expected": 3000, "tolerance": 100, "unit": "ms" }
+      ]
+    },
+    {
+      "id": "transfer",
+      "seconds": 90,
+      "narration": ["卡在工作，不再动。", "是电源不够，还是事件没来？", "先看哪里？"],
+      "prompt": "桌宠停在工作状态不进入休眠，最先该查什么？",
+      "options": ["状态机日志与超时事件是否丢失", "换一个更大的电源", "把屏幕亮度调高"],
+      "answerIndex": 0
+    },
+    {
+      "id": "recap",
+      "seconds": 25,
+      "narration": ["状态要少，出口要清。", "事件推动，日志留痕。", "会休息的桌宠，才撑得久。"],
+      "lines": ["状态要少，出口要清。", "事件推动，日志留痕。", "会休息的桌宠，才撑得久。"]
+    }
+  ],
+  "safety": {
+    "powerOffBeforeWiring": true,
+    "liveMeasurementBlocked": true,
+    "note": "状态机调试在断电或低压下改代码；改完先空载试跑，确认不会卡在工作态再上负载。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["玩家", "游戏", "网页", "第七校验", "熵", "残响", "第一编译者", "0x7F"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true
+  }
+}
