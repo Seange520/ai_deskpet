@@ -1713,6 +1713,35 @@
       "license": "CC-BY-4.0",
       "status": "partial",
       "priority": "P0"
+    },
+    {
+      "id": "AD-16",
+      "name": "项目立项：先写清验收，再动手",
+      "oneLiner": "没有验收标准，就没有项目",
+      "layer": "L7",
+      "pillar": "spire",
+      "prereq": [
+        "AD-15"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons-v2/AD-16.v2.json",
+      "lessonAvailable": true,
+      "media": [
+        "card",
+        "sim"
+      ],
+      "practice": "把三条模糊需求改写成可验收指标",
+      "check": {
+        "type": "sim-task",
+        "task": "验收标准的可测性",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "P10维修间",
+      "spoilerLevel": 6,
+      "license": "CC-BY-4.0",
+      "status": "partial",
+      "priority": "P0"
     }
   ],
   "edges": [
@@ -1980,11 +2009,16 @@
       "from": "AD-14",
       "to": "AD-15",
       "kind": "prereq"
+    },
+    {
+      "from": "AD-15",
+      "to": "AD-16",
+      "kind": "prereq"
     }
   ],
   "stats": {
-    "total": 55,
-    "edges": 53,
+    "total": 56,
+    "edges": 54,
     "gates": 1,
     "byLayer": {
       "L0": 7,
@@ -1994,7 +2028,7 @@
       "L4": 8,
       "L5": 8,
       "L6": 6,
-      "L7": 2,
+      "L7": 3,
       "L8": 2
     },
     "byPillar": {
@@ -2004,14 +2038,14 @@
       "weave": 17,
       "echo": 4,
       "symbiosis": 2,
-      "spire": 2
+      "spire": 3
     },
     "byStatus": {
-      "partial": 21,
+      "partial": 22,
       "planned": 34
     },
     "byPriority": {
-      "P0": 26,
+      "P0": 27,
       "P1": 15,
       "P2": 10,
       "P3": 4

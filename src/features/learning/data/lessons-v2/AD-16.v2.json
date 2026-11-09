@@ -1,0 +1,111 @@
+{
+  "schema": "lesson.v2",
+  "lessonId": "L-AD-16-v2",
+  "kp": {
+    "id": "AD-16",
+    "name": "项目立项：先写清验收，再动手",
+    "layer": "L7",
+    "pillar": "spire",
+    "oneLiner": "没有验收标准，就没有项目"
+  },
+  "meta": {
+    "version": "2.0.0",
+    "updatedAt": "2026-11-09",
+    "estimatedMinutes": 12,
+    "template": "mission-seven-v1",
+    "gameMount": "P10-维修间",
+    "sourceLesson": "L-AD-16",
+    "author": "SparkMate Automation"
+  },
+  "story": {
+    "act": 1,
+    "title": "造物时刻",
+    "scene": "P10-维修间",
+    "npc": "贺非",
+    "setup": "贺非接到一张模糊任务单：桌宠要「反应快、省电、断电别丢进度」。三个人对它有三种理解，返工已经两次。"
+  },
+  "segments": [
+    {
+      "id": "mission",
+      "seconds": 25,
+      "narration": ["任务单，三行字。", "三个人，三种理解。", "今天的任务：写下验收。"],
+      "task": "把三条模糊需求改写成可验收指标，并说明为什么「尽量快」不能作为验收标准。"
+    },
+    {
+      "id": "observe",
+      "seconds": 55,
+      "narration": ["快，要有毫秒。", "省电，要有毫安。", "恢复，要有秒数。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/AD-16/project-brief.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "check": {
+        "id": "obs-1",
+        "type": "choice",
+        "task": "「尽量快」为什么不能当验收标准？",
+        "options": ["没数字，第三方无法复核", "打字太少", "听起来不够专业"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "learn",
+      "seconds": 85,
+      "narration": ["验收要有数。", "有范围，有场景。", "别人也能复现。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/AD-16/project-brief.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "term": { "text": "可验收标准", "oneLine": "有数值、有范围、有复现条件，谁测都一样。" },
+      "check": {
+        "id": "learn-1",
+        "type": "choice",
+        "task": "一个可验收的标准至少包含？",
+        "options": ["数值、范围与复现条件", "一句目标口号", "负责人的口头保证"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "do",
+      "seconds": 200,
+      "narration": ["快，写成 100ms。", "省电，写成 20mA。", "恢复，写成 3 秒。"],
+      "sim": {
+        "id": "project-brief",
+        "version": 1,
+        "task": "三条模糊需求各改写为可验收指标：≤100ms / ≤20mA / 3 秒内恢复。",
+        "hints": ["响应时间从触发到动作算，写上限。", "待机电流写明测试条件。", "恢复要限定断电场景与秒数。"]
+      }
+    },
+    {
+      "id": "prove",
+      "seconds": 100,
+      "mode": "numeric",
+      "narration": ["验收标准要成文。", "模糊表述要清零。", "两项都能对照。"],
+      "checks": [
+        { "id": "acceptance-items", "type": "measurement", "task": "可验收指标数", "expected": 3, "tolerance": 0.01, "unit": "项" },
+        { "id": "vague-items", "type": "measurement", "task": "模糊表述数", "expected": 0, "tolerance": 0.01, "unit": "项" }
+      ]
+    },
+    {
+      "id": "transfer",
+      "seconds": 90,
+      "narration": ["对方说：先做，做完再说。", "听着很急。", "先要什么？"],
+      "prompt": "对方说「先做，做完再说」，维护者应先要什么？",
+      "options": ["一页写清的验收标准", "先动手，边做边想", "让对方直接给答案"],
+      "answerIndex": 0
+    },
+    {
+      "id": "recap",
+      "seconds": 25,
+      "narration": ["先验收，再动手。", "有数，有范围。", "写下来，才算数。"],
+      "lines": ["先验收，再动手。", "有数，有范围。", "写下来，才算数。"]
+    }
+  ],
+  "safety": {
+    "powerOffBeforeWiring": true,
+    "liveMeasurementBlocked": true,
+    "note": "项目课不涉及带电操作；基线、验收指标与复现条件必须写进任务单，口头承诺不算验收。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["玩家", "游戏", "网页", "第七校验", "熵", "残响", "第一编译者", "0x7F"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true
+  }
+}
