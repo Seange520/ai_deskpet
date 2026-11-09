@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img" aria-label="流片成本账：掩膜、晶圆、封装、测试与良率">
+  <rect width="1200" height="675" fill="#0b1a20"/>
+  <text x="60" y="58" fill="#4fd1c5" font-family="Consolas, monospace" font-size="18" letter-spacing="3">THE WEAVE / 量产 · IC-12</text>
+  <text x="60" y="102" fill="#e8f4f2" font-family="Microsoft YaHei, sans-serif" font-size="34" font-weight="700">流片成本账：每一笔都按次算</text>
+  <line x1="60" y1="124" x2="1140" y2="124" stroke="#26424a" stroke-width="1"/>
+
+  <g font-family="Microsoft YaHei, sans-serif">
+    <g transform="translate(60,160)">
+      <rect width="240" height="120" rx="6" fill="#12333c" stroke="#2f5f6b"/>
+      <text x="20" y="36" fill="#ffd487" font-size="18">① 掩膜</text>
+      <text x="20" y="66" fill="#9fb8bd" font-size="13">按层收费，一次做全套</text>
+      <text x="20" y="92" fill="#cfe9e5" font-size="16">≈ $1.2M（28nm 教学值）</text>
+    </g>
+    <g transform="translate(330,160)">
+      <rect width="240" height="120" rx="6" fill="#12333c" stroke="#2f5f6b"/>
+      <text x="20" y="36" fill="#ffd487" font-size="18">② 晶圆</text>
+      <text x="20" y="66" fill="#9fb8bd" font-size="13">按片收费，投多少算多少</text>
+      <text x="20" y="92" fill="#cfe9e5" font-size="16">≈ $3,000 / 片</text>
+    </g>
+    <g transform="translate(600,160)">
+      <rect width="240" height="120" rx="6" fill="#12333c" stroke="#2f5f6b"/>
+      <text x="20" y="36" fill="#ffd487" font-size="18">③ 封装</text>
+      <text x="20" y="66" fill="#9fb8bd" font-size="13">按颗收费，取决于封装形式</text>
+      <text x="20" y="92" fill="#cfe9e5" font-size="16">≈ $0.3–3 / 颗</text>
+    </g>
+    <g transform="translate(870,160)">
+      <rect width="270" height="120" rx="6" fill="#12333c" stroke="#2f5f6b"/>
+      <text x="20" y="36" fill="#ffd487" font-size="18">④ 测试</text>
+      <text x="20" y="66" fill="#9fb8bd" font-size="13">按颗/按小时，拦住坏片</text>
+      <text x="20" y="92" fill="#cfe9e5" font-size="16">测试成本 ≈ 总成本 5–15%</text>
+    </g>
+  </g>
+
+  <g transform="translate(60,315)">
+    <rect width="540" height="170" rx="6" fill="#0f2a33" stroke="#2f5f6b"/>
+    <text x="24" y="34" fill="#e8f4f2" font-size="18">一笔教学账</text>
+    <text x="24" y="66" fill="#9fb8bd" font-size="14">掩膜 120 万美元 + 3000 美元/片 × 1000 片 = 420 万美元。</text>
+    <text x="24" y="94" fill="#9fb8bd" font-size="14">每片 1000 颗好片 → 总好片 100 万颗 → 单颗 ≈ 4.2 美元。</text>
+    <text x="24" y="122" fill="#ffd487" font-size="14">良率越低，每片好片越少，单颗成本越高。</text>
+    <text x="24" y="150" fill="#6f8f99" font-size="13">真实价格随工艺、产能、封装形式大幅浮动，这里只做量级演示。</text>
+  </g>
+  <g transform="translate(620,315)">
+    <rect width="520" height="170" rx="6" fill="#0f2a33" stroke="#2f5f6b"/>
+    <text x="24" y="34" fill="#e8f4f2" font-size="18">良率与测试</text>
+    <text x="24" y="66" fill="#9fb8bd" font-size="14">良率 = 通过测试的芯片 ÷ 一片上的总芯片数。</text>
+    <text x="24" y="94" fill="#9fb8bd" font-size="14">封装前不测，坏片会被封进成品，返修成本翻倍。</text>
+    <text x="24" y="122" fill="#ffd487" font-size="14">量产三件套：测试程序、分档、良率看板。</text>
+    <text x="24" y="150" fill="#6f8f99" font-size="13">教学仿真用等效模型；真实项目以晶圆厂报价与测试数据为准。</text>
+  </g>
+
+  <text x="60" y="540" fill="#4fd1c5" font-size="16">流片 = 一次真金白银的考试：设计、签核、良率、成本，四个都要过。</text>
+  <text x="60" y="576" fill="#6f8f99" font-size="13">第一次流片失败很常见：先做 MPW 拼片或 FPGA 验证，再投全片。</text>
+</svg>

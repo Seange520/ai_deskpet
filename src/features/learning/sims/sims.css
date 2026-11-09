@@ -497,3 +497,29 @@
   color: #9fb8bd !important;
   font-size: 13px !important;
 }
+
+.sim-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 8px 0;
+  color: #9fb8bd;
+  font-size: 13px;
+}
+
+.sim-field input {
+  padding: 6px 10px;
+  border: 1px solid rgba(79, 209, 197, 0.35);
+  border-radius: 8px;
+  background: rgba(6, 18, 22, 0.8);
+  color: #e8f4f2;
+  font-family: Consolas, monospace;
+  font-size: 15px;
+  max-width: 260px;
+}
+
+.sim-field input:focus {
+  outline: none;
+  border-color: #4fd1c5;
+  box-shadow: 0 0 0 2px rgba(79, 209, 197, 0.18);
+}

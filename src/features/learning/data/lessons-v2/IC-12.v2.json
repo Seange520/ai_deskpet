@@ -1,0 +1,111 @@
+{
+  "schema": "lesson.v2",
+  "lessonId": "L-IC-12-v2",
+  "kp": {
+    "id": "IC-12",
+    "name": "流片、封装与量产",
+    "layer": "L6",
+    "pillar": "weave",
+    "oneLiner": "一次流片就是一次真金白银的考试"
+  },
+  "meta": {
+    "version": "2.0.0",
+    "updatedAt": "2026-11-09",
+    "estimatedMinutes": 12,
+    "template": "mission-seven-v1",
+    "gameMount": "P10-维修间",
+    "sourceLesson": "L-IC-12",
+    "author": "SparkMate Automation"
+  },
+  "story": {
+    "act": 2,
+    "title": "专业支线 · 芯片入门",
+    "scene": "P10-维修间",
+    "npc": "贺非",
+    "setup": "贺非把一张报价单折起来：掩膜、晶圆、封装、测试，每一笔都按次算。流片之前，先把账和良率都算清。"
+  },
+  "segments": [
+    {
+      "id": "mission",
+      "seconds": 25,
+      "narration": ["流片一次，真金白银。", "掩膜、晶圆、封装、测试。", "今天的任务：把账算清。"],
+      "task": "算一笔教学流片账，并判断测试与良率的关系。"
+    },
+    {
+      "id": "observe",
+      "seconds": 55,
+      "narration": ["掩膜按层收费。", "晶圆按片收费。", "封装与测试按颗收费。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/IC-12/tapeout-cost.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "check": {
+        "id": "obs-1",
+        "type": "choice",
+        "task": "哪一项成本随金属层数增加得最明显？",
+        "options": ["掩膜成本", "封装外壳", "测试插座"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "learn",
+      "seconds": 85,
+      "narration": ["良率决定摊到每颗的成本。", "每片好片越少，单颗越贵。", "封装前测试，拦住坏片。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/IC-12/tapeout-cost.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "term": { "text": "良率", "oneLine": "一片晶圆上能正常工作、通过测试的芯片占比。" },
+      "check": {
+        "id": "learn-1",
+        "type": "choice",
+        "task": "良率下降，单颗成本会？",
+        "options": ["上升", "下降", "不变"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "do",
+      "seconds": 200,
+      "narration": ["掩膜 120 万美元。", "每片 3000 美元，投 1000 片。", "再算单颗成本。"],
+      "sim": {
+        "id": "tapeout-cost",
+        "version": 1,
+        "task": "填入掩膜、晶圆、片数与每片好片数，算出总成本与单颗成本。",
+        "hints": ["总成本 = 掩膜 + 单片价 × 片数。", "单颗 = 总成本 ÷（片数 × 每片好片数）。", "封装前测试是为了拦住坏片。"]
+      }
+    },
+    {
+      "id": "prove",
+      "seconds": 100,
+      "mode": "numeric",
+      "narration": ["总成本多少百万美元？", "单颗成本多少美元？", "把数字记进档案。"],
+      "checks": [
+        { "id": "total", "type": "measurement", "task": "总成本（百万美元）", "expected": 4.2, "tolerance": 0.01, "unit": "M$" },
+        { "id": "perDie", "type": "measurement", "task": "单颗成本（美元）", "expected": 4.2, "tolerance": 0.01, "unit": "美元" }
+      ]
+    },
+    {
+      "id": "transfer",
+      "seconds": 90,
+      "narration": ["同样的设计，想降单颗成本。", "先想清楚改哪一项。", "别只盯着晶圆单价。"],
+      "prompt": "想让单颗成本下降，最直接的组合是？",
+      "options": ["提高良率 + 增加每片好片数", "把封装厂换得更远", "跳过晶圆测试"],
+      "answerIndex": 0
+    },
+    {
+      "id": "recap",
+      "seconds": 25,
+      "narration": ["流片成本按次叠加。", "良率决定单颗成本。", "测试是封装前的最后一道闸。"],
+      "lines": ["流片成本按次叠加。", "良率决定单颗成本。", "测试是封装前的最后一道闸。"]
+    }
+  ],
+  "safety": {
+    "powerOffBeforeWiring": true,
+    "liveMeasurementBlocked": true,
+    "note": "流片与封装是产线流程，不直接带电；真实项目里签核、报价、测试程序与良率数据都要留档。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["玩家", "游戏", "网页", "第七校验", "熵", "残响", "第一编译者", "0x7F"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true
+  }
+}

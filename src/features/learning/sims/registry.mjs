@@ -31,6 +31,7 @@ export const registry = Object.freeze({
   'layout-drc': () => import('./LayoutDrcSim.jsx'),
   'wafer-flow': () => import('./WaferFlowSim.jsx'),
   'eda-pipeline': () => import('./EdaPipelineSim.jsx'),
+  'tapeout-cost': () => import('./TapeoutCostSim.jsx'),
 });
 export const simIds = Object.freeze(Object.keys(registry));
 export function getSim(id) {
