@@ -1452,6 +1452,35 @@
       "license": "CC-BY-4.0",
       "status": "partial",
       "priority": "P0"
+    },
+    {
+      "id": "AD-07",
+      "name": "动作与声音：给桌宠一个节拍",
+      "oneLiner": "动作要准，声音要跟得上拍",
+      "layer": "L4",
+      "pillar": "weave",
+      "prereq": [
+        "AD-06"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons-v2/AD-07.v2.json",
+      "lessonAvailable": true,
+      "media": [
+        "card",
+        "sim"
+      ],
+      "practice": "把脉宽与音高配对并预演节拍",
+      "check": {
+        "type": "sim-task",
+        "task": "动作与声音节拍同步",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "P10维修间",
+      "spoilerLevel": 4,
+      "license": "CC-BY-4.0",
+      "status": "partial",
+      "priority": "P0"
     }
   ],
   "edges": [
@@ -1674,18 +1703,23 @@
       "from": "AD-05",
       "to": "AD-06",
       "kind": "prereq"
+    },
+    {
+      "from": "AD-06",
+      "to": "AD-07",
+      "kind": "prereq"
     }
   ],
   "stats": {
-    "total": 46,
-    "edges": 44,
+    "total": 47,
+    "edges": 45,
     "gates": 1,
     "byLayer": {
       "L0": 7,
       "L1": 7,
       "L2": 7,
       "L3": 8,
-      "L4": 6,
+      "L4": 7,
       "L5": 4,
       "L6": 3,
       "L7": 2,
@@ -1695,17 +1729,17 @@
       "craft": 11,
       "forge": 13,
       "foundation": 6,
-      "weave": 8,
+      "weave": 9,
       "echo": 4,
       "symbiosis": 2,
       "spire": 2
     },
     "byStatus": {
-      "partial": 12,
+      "partial": 13,
       "planned": 34
     },
     "byPriority": {
-      "P0": 17,
+      "P0": 18,
       "P1": 15,
       "P2": 10,
       "P3": 4

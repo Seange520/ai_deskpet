@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-label="AD-07 舵机脉宽与蜂鸣器频率、节拍示意">
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#12262b" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="675" fill="#08161a"/>
+  <rect width="1200" height="675" fill="url(#grid)"/>
+  <text x="48" y="64" fill="#4fd1c5" font-family="Consolas, monospace" font-size="17" letter-spacing="2">THE FORGE / 检修手册 · AD-07</text>
+  <text x="48" y="108" fill="#e6f7f5" font-family="Microsoft YaHei, sans-serif" font-size="38" font-weight="700">动作与声音：给桌宠一个节拍</text>
+  <line x1="48" y1="128" x2="1152" y2="128" stroke="#1d3a40" stroke-width="2"/>
+
+  <g font-family="Microsoft YaHei, sans-serif">
+    <rect x="48" y="176" width="540" height="250" rx="12" fill="#0d2328" stroke="#2b5b63"/>
+    <text x="72" y="214" fill="#8fe3d8" font-size="20">动作通道 · 角度 → 脉宽</text>
+    <text x="72" y="244" fill="#9fb8bd" font-size="15">PWM 周期固定 20 ms；高电平宽度决定舵机角度。</text>
+
+    <g stroke="#4fd1c5" stroke-width="2" fill="none">
+      <path d="M96 306V286H126V306H196V286H286V306H356V286H506V306"/>
+    </g>
+    <text x="96" y="330" fill="#6f8f99" font-family="Consolas, monospace" font-size="12">0.5 ms</text>
+    <text x="196" y="330" fill="#6f8f99" font-family="Consolas, monospace" font-size="12">1.5 ms</text>
+    <text x="356" y="330" fill="#6f8f99" font-family="Consolas, monospace" font-size="12">2.5 ms</text>
+    <text x="96" y="356" fill="#9fb8bd" font-size="14">0°</text>
+    <text x="196" y="356" fill="#ffd487" font-size="14">90°（中位）</text>
+    <text x="386" y="356" fill="#9fb8bd" font-size="14">180°</text>
+    <text x="72" y="392" fill="#d7ece9" font-size="15">脉宽 = 0.5 + 角度 ÷ 180 × 2（ms）</text>
+
+    <rect x="612" y="176" width="540" height="250" rx="12" fill="#0d2328" stroke="#2b5b63"/>
+    <text x="636" y="214" fill="#8fe3d8" font-size="20">声音通道 · 频率 → 音高</text>
+    <text x="636" y="244" fill="#9fb8bd" font-size="15">同一时长里，频率越高，听到的音越高。</text>
+
+    <g stroke="#ffd487" stroke-width="2" fill="none">
+      <polyline points="660,320 676,300 692,320 708,300 724,320 740,300 756,320 772,300 788,320 804,300 820,320 836,300 852,320 868,300 884,320 900,300 916,320 932,300 948,320 964,300 980,320 996,300 1012,320 1028,300 1044,320 1060,300 1076,320 1092,300 1108,320"/>
+    </g>
+    <text x="660" y="356" fill="#d7ece9" font-size="15">440 Hz：每秒 440 个周期</text>
+    <text x="660" y="386" fill="#9fb8bd" font-size="14">每声 120 ms；三声之间留同样的空拍。</text>
+  </g>
+
+  <g font-family="Microsoft YaHei, sans-serif">
+    <rect x="48" y="452" width="1104" height="116" rx="12" fill="#0d2328" stroke="#2b5b63"/>
+    <text x="72" y="488" fill="#f6c177" font-size="19">节拍：三次点头 = 三声提示</text>
+    <g fill="#4fd1c5" opacity="0.9">
+      <rect x="72" y="506" width="120" height="26" rx="4"/>
+      <rect x="252" y="506" width="120" height="26" rx="4"/>
+      <rect x="432" y="506" width="120" height="26" rx="4"/>
+    </g>
+    <text x="78" y="525" fill="#04120c" font-family="Consolas, monospace" font-size="13">提示 1 · 120 ms</text>
+    <text x="258" y="525" fill="#04120c" font-family="Consolas, monospace" font-size="13">提示 2 · 120 ms</text>
+    <text x="438" y="525" fill="#04120c" font-family="Consolas, monospace" font-size="13">提示 3 · 120 ms</text>
+    <text x="580" y="525" fill="#9fb8bd" font-size="14">间隔也按 120 ms 计，动作通道跟同一拍。</text>
+  </g>
+
+  <text x="48" y="632" fill="#6f8f99" font-family="Microsoft YaHei, sans-serif" font-size="15">教学示意：舵机与蜂鸣器均为 3.3V 逻辑控制；真实接线前断电，舵机堵转会发热，先架空再上负载。</text>
+</svg>

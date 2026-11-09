@@ -8,6 +8,7 @@ export const registry = Object.freeze({
   'pet-build': () => import('./PetBuildSim.jsx'),
   'power-precheck': () => import('./PowerPrecheckSim.jsx'),
   'expression-frame': () => import('./ExpressionFrameSim.jsx'),
+  'motion-tone': () => import('./MotionToneSim.jsx'),
 });
 export const simIds = Object.freeze(Object.keys(registry));
 export function getSim(id) {

@@ -1,0 +1,111 @@
+{
+  "schema": "lesson.v2",
+  "lessonId": "L-AD-07-v2",
+  "kp": {
+    "id": "AD-07",
+    "name": "动作与声音：给桌宠一个节拍",
+    "layer": "L4",
+    "pillar": "weave",
+    "oneLiner": "动作要准，声音要跟得上拍"
+  },
+  "meta": {
+    "version": "2.0.0",
+    "updatedAt": "2026-11-09",
+    "estimatedMinutes": 12,
+    "template": "mission-seven-v1",
+    "gameMount": "P10-维修间",
+    "sourceLesson": "L-AD-07",
+    "author": "SparkMate Automation"
+  },
+  "story": {
+    "act": 1,
+    "title": "造物时刻",
+    "scene": "P10-维修间",
+    "npc": "贺非",
+    "setup": "贺非让桌宠点三次头、叫三声：动作和声音要落在同一拍上。"
+  },
+  "segments": [
+    {
+      "id": "mission",
+      "seconds": 25,
+      "narration": ["桌宠会动，也会叫。", "点头要准，提示要齐。", "今天的任务：配上节拍。"],
+      "task": "把舵机角度换成脉宽，把提示音换成频率与时长，让三次点头和三声提示同拍。"
+    },
+    {
+      "id": "observe",
+      "seconds": 55,
+      "narration": ["角度靠脉宽说话。", "中位是一点五毫秒。", "再往两边，脉宽加减。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/AD-07/gesture-tone.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "check": {
+        "id": "obs-1",
+        "type": "choice",
+        "task": "舵机转到 90° 时，控制脉宽约为？",
+        "options": ["0.5 ms", "1.5 ms", "2.5 ms"],
+        "answerIndex": 1
+      }
+    },
+    {
+      "id": "learn",
+      "seconds": 85,
+      "narration": ["声音的频率决定音高。", "时长决定一声有多长。", "节拍就是彼此等的这段。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/AD-07/gesture-tone.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "term": { "text": "脉宽", "oneLine": "PWM 一个周期里高电平持续的时间，舵机靠它认角度。" },
+      "check": {
+        "id": "learn-1",
+        "type": "choice",
+        "task": "提示音 440 Hz 表示？",
+        "options": ["每秒振动 440 次", "每声持续 440 ms", "音量是 440"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "do",
+      "seconds": 200,
+      "narration": ["先填角度，看脉宽。", "再定频率和每声长度。", "预演一次，听节拍齐不齐。"],
+      "sim": {
+        "id": "motion-tone",
+        "version": 1,
+        "task": "把 90° 舵机换算成 1.5 ms 脉宽，设定 440 Hz 提示音与每声 120 ms，并预演核对节拍。",
+        "hints": ["脉宽 = 0.5 + 角度 ÷ 180 × 2（ms）。", "标准提示音是 440 Hz。", "三声提示每声 120 ms，且与三次点头同拍。"]
+      }
+    },
+    {
+      "id": "prove",
+      "seconds": 100,
+      "mode": "numeric",
+      "narration": ["把两个数写下来。", "中位脉宽一点五毫秒。", "提示音四百四十赫兹。"],
+      "checks": [
+        { "id": "servo-pulse", "type": "measurement", "task": "90° 舵机脉宽", "expected": 1.5, "tolerance": 0.05, "unit": "ms" },
+        { "id": "tone-pitch", "type": "measurement", "task": "提示音频率", "expected": 440, "tolerance": 5, "unit": "Hz" }
+      ]
+    },
+    {
+      "id": "transfer",
+      "seconds": 90,
+      "narration": ["点头总比声音慢半拍。", "先查指令，还是先查电源？", "你会先看哪里？"],
+      "prompt": "桌宠点头总比提示音慢半拍，最先该查什么？",
+      "options": ["动作指令的发出顺序与节拍基准", "换一个更大的电源", "把屏幕亮度调高"],
+      "answerIndex": 0
+    },
+    {
+      "id": "recap",
+      "seconds": 25,
+      "narration": ["角度看脉宽。", "音高看频率，节拍看时长。", "同步，是两条通道对齐。"],
+      "lines": ["角度看脉宽。", "音高看频率，节拍看时长。", "同步，是两条通道对齐。"]
+    }
+  ],
+  "safety": {
+    "powerOffBeforeWiring": true,
+    "liveMeasurementBlocked": true,
+    "note": "舵机与蜂鸣器都按 3.3V 逻辑控制；接线前断电，舵机堵转会发热，调试时先架空再上负载。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["玩家", "游戏", "网页", "第七校验", "熵", "残响", "第一编译者", "0x7F"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true
+  }
+}
