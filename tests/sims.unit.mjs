@@ -67,7 +67,7 @@ test('deterministic, no state mutation', () => {
   assert.equal(JSON.stringify(state), before);
 });
 test('registry exact four whitelist ids', () => {
-  assert.deepEqual(simIds, ['meter', 'series-voltage', 'pwm', 'ide-run', 'i2c-scan', 'mqtt-publish', 'pet-build', 'power-precheck', 'expression-frame', 'motion-tone', 'state-machine', 'intent-router', 'boundary-guard', 'memory-recall', 'tone-response', 'self-check', 'offline-fallback', 'data-autonomy', 'project-brief']);
+  assert.deepEqual(simIds, ['meter', 'series-voltage', 'pwm', 'ide-run', 'i2c-scan', 'mqtt-publish', 'pet-build', 'power-precheck', 'expression-frame', 'motion-tone', 'state-machine', 'intent-router', 'boundary-guard', 'memory-recall', 'tone-response', 'self-check', 'offline-fallback', 'data-autonomy', 'project-brief', 'iteration-steps']);
   assert.ok(Object.isFrozen(registry));
 });
 for (const id of ['__proto__', 'constructor', '../App', 'unknown'])

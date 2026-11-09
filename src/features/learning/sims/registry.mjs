@@ -18,6 +18,7 @@ export const registry = Object.freeze({
   'offline-fallback': () => import('./OfflineFallbackSim.jsx'),
   'data-autonomy': () => import('./DataAutonomySim.jsx'),
   'project-brief': () => import('./ProjectBriefSim.jsx'),
+  'iteration-steps': () => import('./IterationStepsSim.jsx'),
 });
 export const simIds = Object.freeze(Object.keys(registry));
 export function getSim(id) {

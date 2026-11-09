@@ -1,0 +1,111 @@
+{
+  "schema": "lesson.v2",
+  "lessonId": "L-AD-17-v2",
+  "kp": {
+    "id": "AD-17",
+    "name": "迭代交付：小步改，能回滚",
+    "layer": "L7",
+    "pillar": "spire",
+    "oneLiner": "改得少，查得快"
+  },
+  "meta": {
+    "version": "2.0.0",
+    "updatedAt": "2026-11-09",
+    "estimatedMinutes": 12,
+    "template": "mission-seven-v1",
+    "gameMount": "P10-维修间",
+    "sourceLesson": "L-AD-17",
+    "author": "SparkMate Automation"
+  },
+  "story": {
+    "act": 1,
+    "title": "造物时刻",
+    "scene": "P10-维修间",
+    "npc": "贺非",
+    "setup": "桌宠试装发现五个小毛病。两种人：一种一次全改完再测，一种一次只改一处；前者的返工时间已经是后者的三倍。"
+  },
+  "segments": [
+    {
+      "id": "mission",
+      "seconds": 25,
+      "narration": ["五个小毛病。", "想一次全改完。", "今天的任务：小步交付。"],
+      "task": "对三个交付情境分别选择最稳的做法，并说明为什么「一把梭」会让问题更难定位。"
+    },
+    {
+      "id": "observe",
+      "seconds": 55,
+      "narration": ["一次改一个。", "改完先回测。", "记录写清楚。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/AD-17/iteration-steps.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "check": {
+        "id": "obs-1",
+        "type": "choice",
+        "task": "五个问题一次全改，最大风险是？",
+        "options": ["出问题时分不清是哪一处导致的", "改得太快", "代码不够长"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "learn",
+      "seconds": 85,
+      "narration": ["复现、定位、改一处。", "回归、记录、再继续。", "每一步都能退回。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/AD-17/iteration-steps.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "term": { "text": "小步交付", "oneLine": "一次只改一处，改完回归，留下可追溯的变更记录。" },
+      "check": {
+        "id": "learn-1",
+        "type": "choice",
+        "task": "小步交付的循环顺序是？",
+        "options": ["复现→定位→最小改动→回归→记录", "直接改→发版→再说", "重写→祈祷→上线"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "do",
+      "seconds": 200,
+      "narration": ["改一处，测一处。", "先回归，再交付。", "写记录，留证据。"],
+      "sim": {
+        "id": "iteration-steps",
+        "version": 1,
+        "task": "三个交付情境各选正确做法：一次只改一处 / 先回归再交付 / 留变更记录。",
+        "hints": ["一个提交对应一处改动。", "交付前跑既有用例，确认没有被带坏。", "变更记录写清改了什么、验证了什么。"]
+      }
+    },
+    {
+      "id": "prove",
+      "seconds": 100,
+      "mode": "numeric",
+      "narration": ["小步提交要成习惯。", "一把梭要绝迹。", "两项都能核对。"],
+      "checks": [
+        { "id": "small-commits", "type": "measurement", "task": "小步提交次数", "expected": 5, "tolerance": 0.01, "unit": "次" },
+        { "id": "big-bang", "type": "measurement", "task": "一次性大改次数", "expected": 0, "tolerance": 0.01, "unit": "次" }
+      ]
+    },
+    {
+      "id": "transfer",
+      "seconds": 90,
+      "narration": ["同事说：先一起改完再测。", "听起来省时间。", "先要什么？"],
+      "prompt": "同事说「先一起改完再测」，维护者应先要什么？",
+      "options": ["一次只改一处的提交计划与回归点", "听他的，先改完", "把测试全部删掉"],
+      "answerIndex": 0
+    },
+    {
+      "id": "recap",
+      "seconds": 25,
+      "narration": ["小步改，能回滚。", "先回归，再交付。", "留记录，才可查。"],
+      "lines": ["小步改，能回滚。", "先回归，再交付。", "留记录，才可查。"]
+    }
+  ],
+  "safety": {
+    "powerOffBeforeWiring": true,
+    "liveMeasurementBlocked": true,
+    "note": "交付前先备份可回滚版本；回归用例必须包含既有基线；变更记录与验证证据一起归档。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["玩家", "游戏", "网页", "第七校验", "熵", "残响", "第一编译者", "0x7F"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true
+  }
+}

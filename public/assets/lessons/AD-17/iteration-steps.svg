@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+  <rect width="1200" height="675" fill="#0b1620"/>
+  <g stroke="#1d3442" stroke-width="1" opacity="0.55">
+    <path d="M0 90H1200M0 180H1200M0 270H1200M0 360H1200M0 450H1200M0 540H1200M0 630H1200"/>
+    <path d="M80 0V675M240 0V675M400 0V675M560 0V675M720 0V675M880 0V675M1040 0V675"/>
+  </g>
+  <text x="80" y="56" fill="#6f8f99" font-family="Consolas, monospace" font-size="15" letter-spacing="3">THE ECHO SPIRE / 检修手册 · AD-17 · 迭代</text>
+  <text x="80" y="112" fill="#e8f4f8" font-family="'Microsoft YaHei', 'Noto Sans SC', sans-serif" font-size="34" font-weight="700">小步改，能回滚</text>
+  <path d="M80 136H1120" stroke="#2f5b68" stroke-width="1.5"/>
+
+  <g font-family="'Microsoft YaHei', 'Noto Sans SC', sans-serif">
+    <rect x="80" y="170" width="1040" height="120" rx="8" fill="#102430" stroke="#2f5b68"/>
+    <text x="104" y="210" fill="#ffd487" font-size="19" font-weight="700">交付循环：复现 → 定位 → 最小改动 → 回归 → 记录</text>
+    <text x="104" y="244" fill="#9fb8bd" font-size="16">一次只改一处，提交可回滚；改完立刻跑既有基线，确认没被带坏。</text>
+    <text x="104" y="270" fill="#9fb8bd" font-size="16">变更记录写清：改了什么、为什么改、验证了哪几条；证据随提交归档。</text>
+  </g>
+
+  <g font-family="'Microsoft YaHei', 'Noto Sans SC', sans-serif">
+    <g>
+      <rect x="80" y="320" width="500" height="180" rx="8" fill="#0f1f2a" stroke="#3c6b4f"/>
+      <text x="104" y="356" fill="#8fe3a8" font-size="19" font-weight="700">小步：一次一处</text>
+      <text x="104" y="390" fill="#9fb8bd" font-size="15">出问题 → 回退这一处 → 立刻定位</text>
+      <text x="104" y="416" fill="#9fb8bd" font-size="15">每次改动都带一条验证记录</text>
+      <text x="104" y="442" fill="#9fb8bd" font-size="15">回滚成本：一处</text>
+      <text x="104" y="474" fill="#4fd1c5" font-family="Consolas, monospace" font-size="13">SMALL &amp; REVERSIBLE</text>
+    </g>
+    <g>
+      <rect x="620" y="320" width="500" height="180" rx="8" fill="#102430" stroke="#7a4a3c"/>
+      <text x="644" y="356" fill="#ffb08a" font-size="19" font-weight="700">一把梭：五处一起改</text>
+      <text x="644" y="390" fill="#9fb8bd" font-size="15">出问题 → 不知道是哪一处 → 整批回退</text>
+      <text x="644" y="416" fill="#9fb8bd" font-size="15">重测全部组合，返工时间翻倍</text>
+      <text x="644" y="442" fill="#9fb8bd" font-size="15">回滚成本：五处</text>
+      <text x="644" y="474" fill="#ff9d76" font-family="Consolas, monospace" font-size="13">BIG BANG</text>
+    </g>
+  </g>
+
+  <g font-family="'Microsoft YaHei', 'Noto Sans SC', sans-serif">
+    <rect x="80" y="530" width="1040" height="50" rx="8" fill="#0f1f2a" stroke="#2f5b68"/>
+    <text x="104" y="562" fill="#9fb8bd" font-size="15">变更记录模板：提交号 · 改了什么 · 为什么 · 验证项 · 证据路径 · 回滚点</text>
+  </g>
+  <text x="80" y="626" fill="#6f8f99" font-size="14">教学示意：交付前备份可回滚版本；回归基线不通过，不交付。</text>
+</svg>
