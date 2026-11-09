@@ -39,6 +39,12 @@ SparkMate 是面向 ESP32-S3 桌宠学习的交互教学 Web 应用，也是《�
 
 ## 核心特性
 
+### R1 三渲二对比原型（待视觉与性能验收）
+
+本地打开 `/?quality=3&render=toon&boot=0`，可查看程序化晴光街、两个桌宠和地标塔；控制面板支持 Toon/PBR 对比、昼夜时间、描边和可选景深。原型默认关闭，仅在 Tier 3 与显式 `render=toon` / `render=standard` 参数同时满足时加载。使用现有 Three.js/R3F 与后处理依赖，无新增素材或依赖。
+
+运行 `npm run check:render-r1` 可生成四张 1080p 验收图和逐场景性能表；服务器地址通过 `SPARKMATE_RENDER_URL` 指定。当前环境的构建与浏览器子进程被权限限制阻断，**尚无截图、FPS 或 67 项 E2E 通过结论**，详见 [R1 验收记录](work/acceptance/render-r1/ACCEPTANCE.md)。
+
 ### 🚀 基础教学与跨页反馈
 
 - **🚀 打开即用** — 无需登录与实体硬件，浏览器内即可完成整条学习路径，可以先试一遍虚拟流程，再决定从哪条硬件路线开始。

@@ -1,0 +1,349 @@
+﻿/* 视觉 v2 · 纸张与黄铜（浅色纸张主题精细化）
+ * 目标：把 UI 从「仪器面板」推向「校验册页」：纸、墨、黄铜、手写感。
+ * 仅在 data-theme='light' 下生效；深青/紫粉主题不受影响。
+ */
+
+:root[data-theme='light'] {
+  --paper-bg: #eae1cd;
+  --paper-bg-2: #f2ead8;
+  --paper-card: #fbf6e9;
+  --paper-card-2: #f5edda;
+  --paper-line: rgba(107, 87, 50, 0.26);
+  --paper-line-strong: rgba(107, 87, 50, 0.44);
+  --paper-ink: #2b2822;
+  --paper-ink-2: #5a5140;
+  --paper-ink-3: #857a63;
+  --paper-brass: #a8792a;
+  --paper-brass-2: #c9a35c;
+  --paper-stamp: #9a3b2e;
+  --v2-text: var(--paper-ink);
+  --v2-text-secondary: var(--paper-ink-2);
+  --v2-text-muted: var(--paper-ink-3);
+  --v2-accent: #1b6b5d;
+  --v2-accent-dim: #145448;
+  --v2-gold: var(--paper-brass);
+  --v2-line: var(--paper-line);
+  --v2-line-strong: var(--paper-line-strong);
+  --v2-panel: linear-gradient(180deg, #fcf7ea 0%, #f4ebd7 100%);
+  --v2-panel-soft: linear-gradient(180deg, #fdf9ef 0%, #f6efdd 100%);
+  --v2-shadow: 0 26px 54px -34px rgba(74, 56, 26, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+/* 世界之外的页面底色：纸纹 */
+:root[data-theme='light'] body,
+:root[data-theme='light'] #root {
+  background:
+    radial-gradient(1200px 800px at 12% 0%, rgba(255, 249, 232, 0.9), transparent 60%),
+    radial-gradient(900px 700px at 92% 12%, rgba(238, 224, 198, 0.8), transparent 55%),
+    repeating-linear-gradient(0deg, rgba(120, 99, 62, 0.045) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(90deg, rgba(120, 99, 62, 0.03) 0 1px, transparent 1px 5px),
+    linear-gradient(160deg, var(--paper-bg) 0%, var(--paper-bg-2) 100%) !important;
+}
+
+/* 教学册页 */
+:root[data-theme='light'] .teaching-modal {
+  background: rgba(60, 50, 30, 0.42) !important;
+  backdrop-filter: blur(6px) saturate(0.9);
+}
+
+:root[data-theme='light'] .teaching-panel {
+  border: 1px solid var(--paper-line-strong) !important;
+  border-radius: 4px !important;
+  background:
+    radial-gradient(900px 420px at 108% -10%, rgba(201, 163, 92, 0.16), transparent 60%),
+    repeating-linear-gradient(0deg, rgba(120, 99, 62, 0.035) 0 1px, transparent 1px 5px),
+    linear-gradient(180deg, #fdf8ec 0%, #f6eedb 100%) !important;
+  box-shadow: 0 34px 70px -42px rgba(60, 44, 20, 0.6), inset 0 0 0 1px rgba(255, 255, 255, 0.55) !important;
+}
+
+:root[data-theme='light'] .teaching-panel h2,
+:root[data-theme='light'] .teaching-panel h3,
+:root[data-theme='light'] .teaching-panel .teaching-section-title {
+  font-family: 'Noto Serif SC', 'Songti SC', 'Source Han Serif SC', serif !important;
+  letter-spacing: 0.03em;
+}
+
+:root[data-theme='light'] .teaching-panel h2 {
+  border-bottom: 1px solid var(--paper-line-strong);
+  padding-bottom: 12px;
+}
+
+:root[data-theme='light'] .teaching-panel :is(.teaching-card, fieldset) {
+  background:
+    linear-gradient(180deg, rgba(255, 252, 244, 0.96), rgba(248, 240, 224, 0.92)) !important;
+  border: 1px solid var(--paper-line) !important;
+  border-radius: 3px !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+:root[data-theme='light'] .teaching-panel [role='tablist'] {
+  background: transparent !important;
+  border-bottom: 1px solid var(--paper-line-strong) !important;
+  border-radius: 0 !important;
+  padding: 0 0 10px !important;
+  gap: 6px;
+}
+
+:root[data-theme='light'] .teaching-panel [role='tablist'] button {
+  border: 1px solid transparent !important;
+  background: transparent !important;
+  color: var(--paper-ink-2) !important;
+  border-radius: 2px !important;
+  padding: 6px 14px !important;
+}
+
+:root[data-theme='light'] .teaching-panel [role='tablist'] [aria-selected='true'] {
+  background: linear-gradient(180deg, rgba(255, 251, 240, 0.95), rgba(246, 236, 214, 0.9)) !important;
+  border-color: var(--paper-line-strong) !important;
+  border-bottom: 2px solid var(--paper-brass) !important;
+  color: var(--paper-ink) !important;
+}
+
+:root[data-theme='light'] .teaching-panel button {
+  background: linear-gradient(180deg, #fffaf0, #f3e9d2) !important;
+  border: 1px solid var(--paper-line-strong) !important;
+  border-radius: 2px !important;
+  color: var(--paper-ink) !important;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) inset;
+}
+
+:root[data-theme='light'] .teaching-panel button:hover:not(:disabled) {
+  border-color: var(--paper-brass) !important;
+  background: linear-gradient(180deg, #fffdf6, #f6ead0) !important;
+}
+
+:root[data-theme='light'] .teaching-panel button:disabled {
+  color: var(--paper-ink-3) !important;
+  background: rgba(240, 232, 216, 0.55) !important;
+  border-style: dashed !important;
+}
+
+:root[data-theme='light'] .teaching-narration {
+  background:
+    repeating-linear-gradient(0deg, rgba(120, 99, 62, 0.08) 0 1px, transparent 1px 26px),
+    rgba(255, 252, 243, 0.9) !important;
+  border-left: 3px solid var(--paper-brass-2) !important;
+  border-radius: 2px !important;
+  color: var(--paper-ink) !important;
+}
+
+:root[data-theme='light'] .teaching-panel :is(select, input) {
+  background: #fffdf6 !important;
+  color: var(--paper-ink) !important;
+  border: 1px solid var(--paper-line-strong) !important;
+  border-radius: 2px !important;
+}
+
+:root[data-theme='light'] .teaching-choice {
+  background: rgba(255, 253, 246, 0.9) !important;
+  border: 1px solid var(--paper-line) !important;
+  border-radius: 2px !important;
+  color: var(--paper-ink) !important;
+}
+
+:root[data-theme='light'] .teaching-choice[aria-pressed='true'],
+:root[data-theme='light'] .teaching-choice.is-selected {
+  border-color: var(--paper-brass) !important;
+  background: linear-gradient(180deg, #fffdf5, #f7ecd2) !important;
+}
+
+/* 章节行与课节卡：册页条目 */
+:root[data-theme='light'] .teaching-chapter {
+  border-left: 3px solid var(--paper-brass) !important;
+}
+
+:root[data-theme='light'] .teaching-lesson {
+  border-left-width: 3px !important;
+}
+
+/* 星图：纸底 + 墨点 */
+:root[data-theme='light'] .teaching-map-scroll {
+  background:
+    repeating-linear-gradient(0deg, rgba(120, 99, 62, 0.06) 0 1px, transparent 1px 22px),
+    repeating-linear-gradient(90deg, rgba(120, 99, 62, 0.04) 0 1px, transparent 1px 22px),
+    linear-gradient(160deg, #fdf8ea, #f1e6cf) !important;
+  border: 1px solid var(--paper-line-strong) !important;
+  border-radius: 2px !important;
+}
+
+/* 顶栏与页脚 */
+:root[data-theme='light'] .topbar {
+  background: linear-gradient(180deg, rgba(252, 247, 235, 0.97), rgba(243, 234, 216, 0.95)) !important;
+  border-bottom: 1px solid var(--paper-line-strong) !important;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6), 0 10px 24px -22px rgba(80, 60, 30, 0.5);
+}
+
+:root[data-theme='light'] .topbar :is(button, a) {
+  color: var(--paper-ink) !important;
+}
+
+:root[data-theme='light'] .app-footer {
+  color: var(--paper-ink-2) !important;
+  border-top: 1px solid var(--paper-line) !important;
+}
+
+/* 弹层（设置/画质/档案）走同一张纸 */
+:root[data-theme='light'] :is(.quality-menu, .teaching-quiz, [role='dialog']) {
+  background: linear-gradient(180deg, #fdf8ec, #f4ead6) !important;
+  border-color: var(--paper-line-strong) !important;
+  color: var(--paper-ink) !important;
+}
+
+/* 焦点与选区 */
+:root[data-theme='light'] :focus-visible {
+  outline: 2px solid var(--paper-brass) !important;
+  outline-offset: 2px;
+}
+
+:root[data-theme='light'] ::selection {
+  background: rgba(168, 121, 42, 0.28);
+}
+
+/* 纸张主题：册页插图与运行器页脚 */
+:root[data-theme='light'] .teaching-media-asset {
+  margin: 14px 0;
+  padding: 10px;
+  background: linear-gradient(180deg, #fffdf6, #f4ead6);
+  border: 1px solid var(--paper-line-strong);
+  border-radius: 2px;
+  box-shadow: 0 14px 30px -24px rgba(74, 56, 26, 0.6);
+}
+
+:root[data-theme='light'] .teaching-media-asset img,
+:root[data-theme='light'] .teaching-media-asset svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 1px;
+}
+
+:root[data-theme='light'] .teaching-run-footer {
+  position: sticky;
+  bottom: -1px;
+  margin-top: 20px;
+  padding: 12px 4px 14px;
+  border-top: 1px solid var(--paper-line-strong);
+  background: linear-gradient(180deg, rgba(251, 246, 233, 0.6), #f7efdd 55%);
+  backdrop-filter: blur(2px);
+  z-index: 3;
+}
+
+:root[data-theme='light'] .teaching-run-head {
+  border-bottom: 1px dashed var(--paper-line-strong);
+  padding-bottom: 10px;
+  margin-bottom: 12px;
+}
+
+:root[data-theme='light'] .teaching-run-head :is(h3, h4) {
+  font-family: 'Noto Serif SC', 'Songti SC', serif;
+}
+
+/* 纸张主题：Dashboard 首屏（纸面海报） */
+:root[data-theme='light'] body:has(.page.dashboard) {
+  background: #e9dfca;
+}
+
+:root[data-theme='light'] .page.dashboard {
+  background: transparent !important;
+  color: var(--paper-ink);
+}
+
+:root[data-theme='light'] .page.dashboard .page-heading h1,
+:root[data-theme='light'] .page.dashboard .page-heading h2 {
+  color: var(--paper-ink) !important;
+  text-shadow: none !important;
+}
+
+:root[data-theme='light'] .page.dashboard .text-neon {
+  color: var(--paper-brass-strong) !important;
+  text-shadow: none !important;
+}
+
+:root[data-theme='light'] .page.dashboard .page-heading p,
+:root[data-theme='light'] .page.dashboard .eyebrow,
+:root[data-theme='light'] .page.dashboard .chapter-tag,
+:root[data-theme='light'] .page.dashboard .mini-label,
+:root[data-theme='light'] .page.dashboard .hero-meta,
+:root[data-theme='light'] .page.dashboard .guest-entry > span {
+  color: var(--paper-ink-2) !important;
+}
+
+:root[data-theme='light'] .hero-panel.hero-workbench {
+  background:
+    linear-gradient(180deg, rgba(255, 253, 246, 0.92), rgba(243, 231, 206, 0.86)),
+    radial-gradient(720px 420px at 82% 18%, rgba(168, 121, 42, 0.14), transparent 60%) !important;
+  border: 1px solid var(--paper-line-strong) !important;
+  border-radius: 3px !important;
+  box-shadow:
+    0 30px 60px -42px rgba(60, 44, 18, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7) !important;
+}
+
+:root[data-theme='light'] .hero-workbench > .hero-copy h2 {
+  color: var(--paper-ink) !important;
+  font-family: 'Noto Serif SC', 'Songti SC', serif;
+  text-shadow: none !important;
+}
+
+:root[data-theme='light'] .hero-workbench > .hero-copy p,
+:root[data-theme='light'] .hero-workbench .guest-entry {
+  color: var(--paper-ink-2) !important;
+}
+
+:root[data-theme='light'] .hero-workbench .guest-entry {
+  border-color: var(--paper-line-strong);
+}
+
+:root[data-theme='light'] .hero-workbench .btn.primary {
+  background: linear-gradient(180deg, #c99a44, #a8792a) !important;
+  border-color: #8a611e !important;
+  color: #221a0d !important;
+  box-shadow: 0 10px 22px -14px rgba(90, 62, 16, 0.8) !important;
+}
+
+:root[data-theme='light'] .hero-workbench .btn.guest-button {
+  background: #fbf6e9 !important;
+  border-color: var(--paper-line-strong) !important;
+  color: var(--paper-ink) !important;
+}
+
+:root[data-theme='light'] .hero-workbench .hero-art .orbit {
+  border-color: rgba(168, 121, 42, 0.35) !important;
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+}
+
+:root[data-theme='light'] .app-shell:has(.page.dashboard) {
+  background:
+    radial-gradient(1200px 640px at 82% -10%, rgba(201, 163, 92, 0.18), transparent 62%),
+    #e9dfca;
+}
+
+/* 纸张主题：悬浮岛导航与次要按钮 */
+:root[data-theme='light'] .island-hotspot {
+  background: rgba(251, 246, 233, 0.92) !important;
+  border-color: var(--paper-line-strong) !important;
+  color: var(--paper-ink) !important;
+  box-shadow: 0 12px 26px -20px rgba(74, 56, 26, 0.5) !important;
+}
+
+:root[data-theme='light'] .island-hotspot:hover {
+  background: #fffdf6 !important;
+  border-color: var(--paper-brass) !important;
+}
+
+:root[data-theme='light'] .space-dock {
+  color: var(--paper-ink);
+}
+
+:root[data-theme='light'] .page.dashboard .text-button,
+:root[data-theme='light'] .page.dashboard .text-button * {
+  color: var(--paper-brass-strong) !important;
+}
+
+:root[data-theme='light'] .page.dashboard .hero-meta svg,
+:root[data-theme='light'] .page.dashboard .mini-label {
+  color: var(--paper-ink-2);
+}

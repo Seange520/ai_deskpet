@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import '@fontsource-variable/inter';
 import '@fontsource-variable/jetbrains-mono';
 import '@gfazioli/react-tilt/styles.css';
@@ -14,6 +14,7 @@ import './routes.css';
 import './workshop.css';
 import './runner.css';
 import './visual-v2.css';
+import './visual-paper.css';
 import { applyTheme, readTheme } from './lib/theme.mjs';
 
 applyTheme(readTheme());
