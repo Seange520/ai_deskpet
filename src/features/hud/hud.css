@@ -1,0 +1,87 @@
+/* Q1: two side docks, independent of scene/camera and business state. */
+html[data-hud] .exploration-caption { width: 360px; max-width: calc(100vw - 24px); top: 12px; left: 12px; padding: 12px; }
+html[data-hud] .exploration-caption * { font-size: max(13px, 1em); }
+html[data-hud] .exploration-caption button { min-width: 40px; min-height: 40px; }
+html[data-hud] .street-title { top: 220px; bottom: auto; left: 12px; max-width: 360px; }
+html[data-hud] .street-title * { font-size: 13px; }
+html[data-hud] .street-title h1 { font-size: 20px; }
+html[data-hud] .street-vendor { top: 330px; bottom: auto; left: 12px; }
+html[data-hud] .street-meter { top: 64px; right: 12px; width: 360px; max-height: calc(100dvh - 80px); }
+html[data-hud] .kickback-panel { left: auto; right: 12px; top: 64px; width: 360px; max-height: calc(100dvh - 80px); }
+html[data-hud] .world-minimap { top: 12px; right: 12px; width: 180px; padding: 0; }
+html[data-hud] .world-minimap > :not(button) { display: none; }
+html[data-hud] .world-minimap button { min-height: 40px; margin: 0; }
+html[data-hud]:has(.street-meter,.kickback-panel) .world-minimap { width: 180px; }
+html[data-hud]:has([aria-modal="true"],.world-map-backdrop) .world-minimap { visibility: hidden; }
+html[data-hud] :is(.street-ui,.kickback-ui,.world-minimap) :is(button,select,summary) { min-height: 40px; min-width: 40px; font-size: 13px !important; }
+html[data-hud] :is(.street-meter,.kickback-panel) :is(small,span,p,label,summary,footer,b,kbd) { font-size: 13px; }
+html[data-hud] .street-meter-collapse { max-width: none; flex-shrink: 0; }
+html[data-hud] .street-lcd { background: #b6d3ba; color: #102d23; }
+html[data-hud] .street-lcd * { color: #102d23; }
+html[data-hud] :is(.street-meter,.kickback-panel) > header { position: sticky; top: -1px; z-index: 2; background: #142d37; padding-block: 6px; }
+.hud-capsules { position: fixed; left: 12px; top: 176px; display: flex; align-items: center; gap: 6px; z-index: 9; pointer-events: none; color: #e5eff5; font-size: 13px; }
+.hud-capsules button { min-height: 40px; min-width: 40px; padding: 8px; border: 1px solid #83b8bf; border-radius: 8px; background: #172330; color: #e5eff5; pointer-events: auto; }
+.hud-progress { display: flex; gap: 6px; padding: 8px; background: #172330; border-radius: 12px; }
+.hud-progress span { opacity: .8; }
+.hud-progress [aria-current] { opacity: 1; color: #b8ffde; }
+.hud-hint { position: fixed; bottom: 120px; left: 50%; transform: translateX(-50%); max-width: calc(100vw - 24px); background: #172330; color: #e5eff5; padding: 10px 14px; border-radius: 10px; opacity: 0; transition: opacity 180ms; pointer-events: none; }
+.hud-hint.visible { opacity: 1; }
+html[data-hud-left="true"] .street-title > :not(h1),
+html[data-hud-left="true"] .exploration-caption > :not(div) { display: none; }
+html[data-hud-left="true"] .street-title { display: none; }
+html[data-hud-right="true"] :is(.street-meter,.kickback-panel) > :not(header) { display: none; }
+html[data-hud] :is(.street-ui,.kickback-ui) { max-width: 100vw; }
+@media (max-width: 480px) {
+  html[data-hud] .exploration-caption { inset: 8px 8px auto; width: auto; max-width: none; padding: 6px; z-index: 12; }
+  html[data-hud] .exploration-caption > :not(div) { display: none; }
+  html[data-hud] .exploration-caption > div { display: flex; flex-wrap: wrap; gap: 4px; }
+  html[data-hud] .exploration-caption button { margin: 0; padding: 6px; font-size: 13px; }
+  .hud-capsules { top: 112px; left: 8px; right: 8px; flex-wrap: wrap; }
+  .hud-progress { font-size: 13px; }
+  html[data-hud] .world-minimap { top: 64px; right: 8px; width: 120px; }
+  html[data-hud] .street-title { display: none; }
+  html[data-hud] .street-vendor { top: auto; bottom: 180px; left: 8px; }
+  html[data-hud] :is(.street-meter,.kickback-panel) { left: 8px; right: 8px; top: 164px; width: auto; max-height: calc(100dvh - 180px); padding: 12px; }
+  html[data-hud] .street-meter.minimized { top: 164px; }
+  html[data-hud] :is(.street-meter,.kickback-panel) h2 { font-size: 15px; }
+  html[data-hud] :is(.street-meter,.kickback-panel) header small { display: none; }
+  html[data-hud]:has(.kickback-panel) .street-meter { display: none; }
+  html[data-hud]:has(.kickback-lesson-backdrop) :is(.street-meter,.world-minimap) { visibility: hidden; }
+  html[data-hud] :is(.kickback-lesson-backdrop,.world-map-backdrop) { padding-top: 110px; }
+  html[data-hud] .kickback-lesson { max-height: calc(100dvh - 130px); }
+}
+@media (prefers-reduced-motion: reduce) { .hud-hint { transition: none; } }
+
+
+/* Task and progress share one real container; the instrument occupies the other. */
+html[data-hud] .exploration-caption .street-title { position: static; max-width: 100%; margin-top: 10px; }
+html[data-hud] .exploration-caption .hud-capsules { position: static; margin-top: 8px; flex-wrap: wrap; }
+html[data-hud] .street-meter .street-vendor { position: static; margin-top: 8px; }
+html[data-hud]:has(.street-meter,.kickback-panel) .world-minimap { display: none; }
+html[data-hud]:has(.kickback-panel) .street-meter { display: none; }
+html[data-hud] .exploration-caption .hud-progress { padding: 4px 0; width: 100%; }
+@media (max-width: 480px) {
+ html[data-hud] .exploration-caption .hud-capsules { display: flex; margin-top: 4px; }
+ html[data-hud] .exploration-caption .street-title { display: none; }
+ html[data-hud] .exploration-caption .hud-progress { display: none; }
+ html[data-hud] .exploration-caption > div { flex-wrap: wrap; }
+ html[data-hud] :is(.street-meter,.kickback-panel) { top: 164px; }
+}
+
+html[data-hud] .exploration-caption .resonance-hud { position: static; padding: 6px 0; border: 0; background: none; font-size: 13px; max-width: 100%; }
+html[data-hud] .exploration-caption .env-entry { position: static; min-height: 40px; margin-top: 6px; font-size: 13px; }
+html[data-hud-left="true"] .exploration-caption .resonance-hud { display: none; }
+@media(max-width:480px){
+ html[data-hud] .exploration-caption .resonance-hud { display: none; }
+ html[data-hud] .exploration-caption .env-entry { display: inline-flex; margin-top: 4px; padding: 4px 8px; }
+ html[data-hud] :is(.street-meter,.kickback-panel) { top: 212px; max-height: calc(100dvh - 228px); }
+}
+@media(max-width:480px) { html[data-hud] .exploration-caption .hud-progress { display: flex; } }
+
+html[data-hud] .street-meter.minimized header h2 { font-size: 13px; }
+html[data-hud] .exploration-caption .hud-progress { display: flex; }
+html[data-hud] .exploration-caption { background: #172330; }
+html[data-hud] .exploration-caption .hud-progress > span { display: inline; }
+
+html[data-hud] .teaching-entry { left: auto !important; right: calc(100vw - 360px) !important; top: 16px !important; min-width: 40px; min-height: 40px; font-size: 13px; }
+@media(max-width:480px) { html[data-hud] .teaching-entry { right: 16px !important; } }

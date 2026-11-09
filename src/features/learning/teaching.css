@@ -1,4 +1,4 @@
-.teaching-modal {
+﻿.teaching-modal {
   width: min(1050px, calc(100vw - 24px)) !important;
   max-width: 1050px !important;
   max-height: calc(100dvh - 24px);
@@ -248,4 +248,11 @@
 }
 .teaching-panel button[aria-pressed='true'] {
   outline: 2px solid #ffce8e;
+}
+
+/* Q1: existing dialog close control remains in the visible header. */
+.teaching-panel { font-size: 13px; }
+.teaching-panel button { min-width: 40px; min-height: 40px; }
+@media(max-width:480px) {
+ .teaching-modal { padding: 16px !important; max-height: calc(100dvh - 16px); }
 }

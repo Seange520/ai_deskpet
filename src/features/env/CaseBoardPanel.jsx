@@ -34,10 +34,10 @@ export default function EnvEntry() {
   return createPortal(
     <>
       {available && !open && !blocked && (
-        <button className="env-entry" data-env-notebook onClick={() => setOpen(true)}>
+        createPortal(<button className="env-entry" data-env-notebook onClick={() => setOpen(true)}>
           <NotebookPen size={18} />
           街区笔记本 <kbd>N</kbd>
-        </button>
+        </button>, document.getElementById("hud-task") || document.body)
       )}
       {open && <CaseBoardPanel onClose={close} />}
     </>,

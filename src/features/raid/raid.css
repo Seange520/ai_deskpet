@@ -141,3 +141,10 @@
     padding: 6px;
   }
 }
+
+/* Q1: keep the exploration return strip clear on narrow screens. */
+.raid-entry, .raid-panel { font-size: 13px; }
+.raid-entry button, .raid-panel button { min-width: 40px; min-height: 40px; }
+@media(max-width:480px) {
+ .raid-entry,.raid-panel { top: 212px; right: 8px; left: 8px; width: auto; max-height: calc(100dvh - 228px); }
+}

@@ -51,24 +51,11 @@ export default function StreetOverlay() {
       <EnvEntry />
       <RaidOverlayGate />
       {s.scanner && available && <div className="street-scan-filter" aria-hidden="true" />}
-      <section className="street-title" aria-label="会呼吸的路灯任务">
-        <small>THE SEVENTH CHECKSUM / P10 · 01</small>
-        <h1>
-          会呼吸的路灯<span>熔炉外街</span>
-        </h1>
-        <p>
-          {s.completed
-            ? '城市记住了这一次修复。'
-            : near
-              ? '一盏灯的呼吸，牵动整条街的夜。'
-              : '沿东侧连桥前往硬件台地，熔炉外街就在途中。'}
-        </p>
-      </section>
       {available && (
         <>
           <section
             className={'street-meter' + (collapsed ? ' minimized' : '')}
-            aria-label="万用表检修面板"
+            id="hud-instrument" role="region" aria-label="万用表检修面板"
           >
             <header>
               <div className="street-meter-icon">
@@ -209,6 +196,10 @@ export default function StreetOverlay() {
               <span>{stages[s.stage]}</span>
             </footer>
             <small className="street-model-note">24V 仿真 · 热量 / I²t 示意模型</small>
+          <button className="street-vendor" onClick={() => dispatch({ type: 'talk' })}>
+            <MessageCircle size={16} />
+            与夜宵摊老板交谈
+          </button>
           </section>
           {PROBES.map((probe) => (
             <button
@@ -225,10 +216,6 @@ export default function StreetOverlay() {
               </span>
             </button>
           ))}
-          <button className="street-vendor" onClick={() => dispatch({ type: 'talk' })}>
-            <MessageCircle size={16} />
-            与夜宵摊老板交谈
-          </button>
           {s.stage !== 'idle' && (
             <div className={'street-hazard ' + s.stage} role="alert">
               <Flame size={20} />
@@ -268,4 +255,22 @@ export default function StreetOverlay() {
       )}
     </div>
   );
+}
+
+
+export function StreetTaskTitle() {
+ const s=useStreet(), near=inStreetRange();
+ return (<section className="street-title" aria-label="会呼吸的路灯任务">
+        <small>THE SEVENTH CHECKSUM / P10 · 01</small>
+        <h1>
+          会呼吸的路灯<span>熔炉外街</span>
+        </h1>
+        <p>
+          {s.completed
+            ? '城市记住了这一次修复。'
+            : near
+              ? '一盏灯的呼吸，牵动整条街的夜。'
+              : '沿东侧连桥前往硬件台地，熔炉外街就在途中。'}
+        </p>
+      </section>);
 }

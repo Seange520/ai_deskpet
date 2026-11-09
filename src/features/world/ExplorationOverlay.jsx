@@ -1,5 +1,6 @@
+import HudCapsule from '../hud/HudCapsule';
 import ResonanceHud from '../resonance/ResonanceHud';
-import StreetOverlay from '../street/StreetOverlay';
+import StreetOverlay, { StreetTaskTitle } from '../street/StreetOverlay';
 import { useEffect, useRef, useState } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { EcctrlJoystick, useJoystickControls } from 'ecctrl';
@@ -171,7 +172,7 @@ export default function ExplorationOverlay({ onSurface, onExit }) {
           dragging.current = null;
         }}
       />
-      <div className="exploration-caption" onClick={() => surface.current?.focus()}>
+      <div className="exploration-caption" id="hud-task" role="region" onClick={() => surface.current?.focus()}>
         <p>
           P9 · 自由探索 <strong>{fps ? '第一人称' : '第三人称'}</strong>
         </p>
@@ -202,11 +203,13 @@ export default function ExplorationOverlay({ onSurface, onExit }) {
           <button onClick={() => useWorldMap.getState().toggle()}>大地图 M</button>
           <button onClick={onExit}>返回教学 Esc</button>
         </div>
+        <HudCapsule />
+        <StreetTaskTitle />
+        <ResonanceHud />
         {lockError && <small>鼠标锁定不可用，可按住画面拖动视角。</small>}
         {blocked && <small>探索已暂停，返回窗口后继续。</small>}
       </div>
       <StreetOverlay />
-      <ResonanceHud />
       {fps && (
         <span className="exploration-reticle" aria-hidden="true">
           ＋

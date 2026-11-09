@@ -1,0 +1,27 @@
+{
+  "sampleMs": 30000.600000011924,
+  "frameCount": 2626,
+  "fpsAvg": 87.53158270164451,
+  "fpsP5": 61.34969325152964,
+  "drawCalls": 668,
+  "triangles": 1109675,
+  "domNodes": 218,
+  "hudNodes": 9,
+  "renderer": "WebKit WebGL",
+  "samplingVersion": 2,
+  "targets": {
+    "fpsAvgAtLeast55": true,
+    "fpsP5AtLeast40": true,
+    "drawCallsWithin10Pct": null,
+    "hudNodesWithin250": true
+  },
+  "at": "2026-11-08T23:56:59.893Z",
+  "viewport": {
+    "width": 1920,
+    "height": 1080
+  },
+  "errors": [],
+  "baselineComparison": null,
+  "baselineKind": "first-run",
+  "sampling": "requestAnimationFrame; sum of renderer.render per-call info across scene and postprocessing, peak frame totals over 30 seconds; DOM total at end"
+}
