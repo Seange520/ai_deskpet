@@ -3,6 +3,7 @@ import ModeMeterSim from './ModeMeterSim';
 import SimEmbed from './sims/SimEmbed';
 import { codecheck, codeSpec } from './codecheck.mjs';
 import { lessonResult, measurementPass } from './learning.mjs';
+import { createNarrator, splitNarration } from './teachingVoice.mjs';
 const titles = {
   hook: '现象与问题',
   explain: '原理可视化',
@@ -11,6 +12,53 @@ const titles = {
   transfer: '迁移挑战',
   recap: '复盘卡',
 };
+
+function NarrationBar({ text }) {
+  const [state, setState] = useState({ speaking: false, line: 0, total: 0 });
+  const narratorRef = useRef(null);
+  const lines = splitNarration(text);
+  useEffect(() => {
+    const narrator = createNarrator(typeof window === 'undefined' ? null : window);
+    narratorRef.current = narrator;
+    return () => narrator.stop();
+  }, []);
+  if (!lines.length) return null;
+  const supported = typeof window === 'undefined' ? false : Boolean(window.speechSynthesis);
+  function toggle() {
+    const narrator = narratorRef.current;
+    if (!narrator) return;
+    if (state.speaking) {
+      narrator.stop();
+      setState({ speaking: false, line: 0, total: lines.length });
+      return;
+    }
+    narrator.speak(lines, {
+      onLine: (line, total) => setState({ speaking: true, line, total }),
+      onEnd: () => setState({ speaking: false, line: 0, total: lines.length }),
+    });
+    setState((s) => ({ ...s, speaking: true, total: lines.length }));
+  }
+  return (
+    <div className="teaching-narration" data-narration>
+      <div className="teaching-narration-head">
+        <button type="button" onClick={toggle} disabled={!supported} aria-pressed={state.speaking}>
+          {state.speaking ? '停止朗读' : '朗读本段'}
+        </button>
+        <span className="teaching-narration-meta">
+          {supported ? (state.speaking ? '旁白朗读中 · ' + state.line + '/' + state.total : '旁白文本 · 可分段朗读') : '当前浏览器不支持语音朗读'}
+        </span>
+      </div>
+      <ol className={'teaching-narration-lines' + (state.speaking ? ' is-speaking' : '')}>
+        {lines.map((line, index) => (
+          <li key={index} className={state.speaking && index + 1 === state.line ? 'is-current' : ''}>
+            {line}
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}
+
 function Choice({ options, onAnswer, label }) {
   const [selected, setSelected] = useState(null);
   return (
@@ -106,6 +154,7 @@ export default function LessonRunner({ lesson, onFinish, onLeave }) {
       <fieldset disabled={paused || done} className="teaching-segment">
         <legend>{titles[seg.type]}</legend>
         {seg.narration && <p>{seg.narration}</p>}
+        {seg.type === 'explain' && seg.narration ? <NarrationBar text={seg.narration} /> : null}
         {seg.type === 'hook' && (
           <Choice
             label="先做哪个判断？"
