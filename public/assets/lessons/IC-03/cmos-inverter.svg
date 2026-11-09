@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-label="IC-03 CMOS 反相器：PMOS 与 NMOS 互补">
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#12262b" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="675" fill="#08161a"/>
+  <rect width="1200" height="675" fill="url(#grid)"/>
+  <text x="48" y="64" fill="#4fd1c5" font-family="Consolas, monospace" font-size="17" letter-spacing="2">THE FORGE / 检修手册 · IC-03</text>
+  <text x="48" y="108" fill="#e6f7f5" font-family="Microsoft YaHei, sans-serif" font-size="38" font-weight="700">CMOS 反相器：一上一下</text>
+  <line x1="48" y1="128" x2="1152" y2="128" stroke="#1d3a40" stroke-width="2"/>
+
+  <g font-family="Microsoft YaHei, sans-serif">
+    <rect x="48" y="168" width="520" height="304" rx="12" fill="#0d2328" stroke="#2b5b63"/>
+    <text x="72" y="206" fill="#8fe3d8" font-size="20">① 输入低：上管开，输出高</text>
+    <rect x="72" y="228" width="472" height="46" rx="8" fill="#12302a" stroke="#4fd1c5"/>
+    <text x="88" y="257" fill="#e6f7f5" font-size="16">PMOS：栅极低电平 → 导通</text>
+    <rect x="72" y="286" width="472" height="46" rx="8" fill="#1a2a33" stroke="#2b5b63"/>
+    <text x="88" y="315" fill="#9fb8bd" font-size="16">NMOS：栅极低电平 → 截止</text>
+    <text x="72" y="368" fill="#f6c177" font-size="17">输出被 PMOS 拉到 VDD = 3.3V</text>
+    <text x="72" y="404" fill="#6f8f99" font-size="14">上管通，下管断；电源到地的直通路径不存在。</text>
+
+    <rect x="616" y="168" width="536" height="304" rx="12" fill="#0d2328" stroke="#2b5b63"/>
+    <text x="640" y="206" fill="#8fe3d8" font-size="20">② 输入高：下管开，输出低</text>
+    <rect x="640" y="228" width="488" height="46" rx="8" fill="#1a2a33" stroke="#2b5b63"/>
+    <text x="656" y="257" fill="#9fb8bd" font-size="16">PMOS：栅极高电平 → 截止</text>
+    <rect x="640" y="286" width="488" height="46" rx="8" fill="#12302a" stroke="#4fd1c5"/>
+    <text x="656" y="315" fill="#e6f7f5" font-size="16">NMOS：栅极高电平 → 导通</text>
+    <text x="640" y="368" fill="#f6c177" font-size="17">输出被 NMOS 拉到 GND = 0V</text>
+    <text x="640" y="404" fill="#6f8f99" font-size="14">上管断，下管通；输出不会悬空。</text>
+
+    <rect x="48" y="496" width="1104" height="120" rx="12" fill="#12262b" stroke="#2b5b63"/>
+    <text x="72" y="530" fill="#8fe3d8" font-size="19">③ 读数与互补：VDD = 3.3V</text>
+    <text x="72" y="562" fill="#e6f7f5" font-family="Consolas, monospace" font-size="18">Vin=0V → Vout≈3.3V；Vin=3.3V → Vout≈0V；静态电流 ≈ 0.05mA</text>
+    <text x="72" y="592" fill="#9fb8bd" font-size="14">两管互补：任何时刻只有一只导通；这才有 CMOS 的低静态功耗。</text>
+
+    <text x="48" y="648" fill="#6f8f99" font-size="13">教学示意：反相器是数字电路的最小单元；实测先断电，输出不可短接到电源或地。</text>
+  </g>
+</svg>

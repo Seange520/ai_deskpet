@@ -1,0 +1,111 @@
+{
+  "schema": "lesson.v2",
+  "lessonId": "L-IC-03-v2",
+  "kp": {
+    "id": "IC-03",
+    "name": "CMOS 反相器：一上一下",
+    "layer": "L4",
+    "pillar": "forge",
+    "oneLiner": "两管互补，才有 0 和 1"
+  },
+  "meta": {
+    "version": "2.0.0",
+    "updatedAt": "2026-11-09",
+    "estimatedMinutes": 12,
+    "template": "mission-seven-v1",
+    "gameMount": "P10-维修间",
+    "sourceLesson": "L-IC-03",
+    "author": "SparkMate Automation"
+  },
+  "story": {
+    "act": 2,
+    "title": "专业支线 · 芯片入门",
+    "scene": "P10-维修间",
+    "npc": "贺非",
+    "setup": "一个 PMOS 在上，一个 NMOS 在下，输入一变，输出就翻转。数字世界的 0 和 1，从这个互补对开始。"
+  },
+  "segments": [
+    {
+      "id": "mission",
+      "seconds": 25,
+      "narration": ["一个上管，一个下管。", "输入一变，输出就翻。", "今天的任务：读反相器。"],
+      "task": "读出两种输入下的输出，并说明 CMOS 互补为什么省电。"
+    },
+    {
+      "id": "observe",
+      "seconds": 55,
+      "narration": ["输入低，上管开。", "输出被拉到电源。", "输入高，下管开，输出落地。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/IC-03/cmos-inverter.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "check": {
+        "id": "obs-1",
+        "type": "choice",
+        "task": "CMOS 反相器输入 0V 时，输出约为？",
+        "options": ["接近 VDD（高电平）", "接近 0V（低电平）", "悬空不确定"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "learn",
+      "seconds": 85,
+      "narration": ["上管是 PMOS，低电平开。", "下管是 NMOS，高电平开。", "互补，保证不会同时导通。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/IC-03/cmos-inverter.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "term": { "text": "CMOS", "oneLine": "互补 MOS：PMOS 与 NMOS 成对使用，一开一关。" },
+      "check": {
+        "id": "learn-1",
+        "type": "choice",
+        "task": "反相器静态时，电源到地之间为什么几乎没电流？",
+        "options": ["两管一开一关，通路断开", "电源没接上", "输出悬空"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "do",
+      "seconds": 200,
+      "narration": ["先设 VDD 3.3V。", "输入 0，输出 3.3。", "输入 3.3，输出 0。"],
+      "sim": {
+        "id": "cmos-inverter",
+        "version": 1,
+        "task": "填两种输入下的输出，并判断互补关系。",
+        "hints": ["输入 0V：PMOS 导通，输出接近 VDD。", "输入 3.3V：NMOS 导通，输出接近 0V。", "两管一开一关，静态电流几乎为零。"]
+      }
+    },
+    {
+      "id": "prove",
+      "seconds": 100,
+      "mode": "numeric",
+      "narration": ["高电平写 3.3 伏。", "静态电流很小，也要有数。", "数据和结论一起留档。"],
+      "checks": [
+        { "id": "vdd", "type": "measurement", "task": "输出高电平", "expected": 3.3, "tolerance": 0.1, "unit": "V" },
+        { "id": "idle", "type": "measurement", "task": "静态电流", "expected": 0.05, "tolerance": 0.01, "unit": "mA" }
+      ]
+    },
+    {
+      "id": "transfer",
+      "seconds": 90,
+      "narration": ["两个反相器串起来。", "输入高，最后输出什么？", "先推一遍再上电。"],
+      "prompt": "两个 CMOS 反相器串联，输入高电平时输出是？",
+      "options": ["高电平", "低电平", "随机翻转"],
+      "answerIndex": 0
+    },
+    {
+      "id": "recap",
+      "seconds": 25,
+      "narration": ["上管 PMOS，下管 NMOS。", "一开一关才省电。", "输入翻，输出跟着翻。"],
+      "lines": ["上管 PMOS，下管 NMOS。", "一开一关才省电。", "输入翻，输出跟着翻。"]
+    }
+  ],
+  "safety": {
+    "powerOffBeforeWiring": true,
+    "liveMeasurementBlocked": true,
+    "note": "断电接线；MOS 栅极怕静电；反相器输出不可直接短接到电源或地；调试先测电源与地是否短路。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["玩家", "游戏", "网页", "第七校验", "熵", "残响", "第一编译者", "0x7F"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true
+  }
+}
