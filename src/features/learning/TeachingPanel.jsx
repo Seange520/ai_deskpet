@@ -209,7 +209,12 @@ export default function TeachingPanel() {
                   const v2 = lessonsV2[k.id];
                   const meta = v1?.meta || v2?.meta;
                   return (
-                    <article className="teaching-card" key={k.id}>
+                    <article
+                      className="teaching-card"
+                      key={k.id}
+                      data-kp-layer={k.layer}
+                      data-kp-status={s.profile.kps[k.id].status}
+                    >
                       <h3>
                         {k.id} · {k.name}
                       </h3>

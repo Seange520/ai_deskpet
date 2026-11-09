@@ -1,5 +1,5 @@
 /* Visual polish v2 — 统一游戏内 UI 的材质、层级与排版。
-   目标：夜航仪器质感 + 纸感留白；不改变任何交互与数据逻辑。 */
+   批次 1：材质/层级/字体/控件；批次 2：章节行、课节色带、面板节奏。 */
 
 :root {
   --v2-ink: #071317;
@@ -49,15 +49,6 @@ html[data-hud] .exploration-caption .hud-progress [aria-current] {
   text-shadow: 0 0 12px rgba(111, 233, 212, 0.35);
 }
 
-html[data-hud] .street-title {
-  top: auto !important;
-  bottom: 84px !important;
-  left: 12px !important;
-  max-width: 360px;
-  border-left: 2px solid var(--v2-accent-dim);
-  padding-left: 12px;
-}
-
 html[data-hud] .exploration-caption .hud-hint {
   position: static !important;
   inset: auto !important;
@@ -69,6 +60,15 @@ html[data-hud] .exploration-caption .hud-hint {
   font-size: 12px;
   letter-spacing: 0.04em;
   max-width: 100%;
+}
+
+html[data-hud] .street-title {
+  top: auto !important;
+  bottom: 84px !important;
+  left: 12px !important;
+  max-width: 360px;
+  border-left: 2px solid var(--v2-accent-dim);
+  padding-left: 12px;
 }
 
 html[data-hud] .exploration-caption .street-title {
@@ -84,18 +84,14 @@ html[data-hud] .exploration-caption .street-title {
 
 html[data-hud] .exploration-caption .street-title h1 {
   margin: 4px 0 6px !important;
-}
-
-
-html[data-hud] .street-title h1 {
   font-size: 19px !important;
   font-weight: 650;
   letter-spacing: 0.04em;
   color: var(--v2-text);
 }
 
-html[data-hud] .street-title p,
-html[data-hud] .street-title small {
+html[data-hud] .exploration-caption .street-title p,
+html[data-hud] .exploration-caption .street-title small {
   color: var(--v2-text-secondary) !important;
   line-height: 1.7;
 }
@@ -176,6 +172,19 @@ html[data-hud] .teaching-entry {
   background: var(--v2-panel) !important;
   box-shadow: 0 40px 90px -40px rgba(0, 0, 0, 0.95) !important;
   padding: 26px 28px 30px !important;
+  max-height: min(88vh, 980px);
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(111, 233, 212, 0.28) transparent;
+}
+
+.teaching-panel::-webkit-scrollbar {
+  width: 8px;
+}
+
+.teaching-panel::-webkit-scrollbar-thumb {
+  background: rgba(111, 233, 212, 0.22);
+  border-radius: 999px;
 }
 
 .teaching-panel h2 {
@@ -183,6 +192,9 @@ html[data-hud] .teaching-entry {
   font-weight: 650 !important;
   letter-spacing: 0.05em;
   color: var(--v2-text);
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(126, 226, 210, 0.12);
+  margin-bottom: 14px;
 }
 
 .teaching-panel h3 {
@@ -195,6 +207,14 @@ html[data-hud] .teaching-entry {
 .teaching-panel p {
   color: var(--v2-text-secondary);
   line-height: 1.8;
+}
+
+.teaching-panel section > h3 {
+  margin: 18px 0 10px;
+}
+
+.teaching-panel section > h3:first-child {
+  margin-top: 0;
 }
 
 .teaching-panel [role='tablist'] {
@@ -258,20 +278,6 @@ html[data-hud] .teaching-entry {
   border-color: rgba(126, 226, 210, 0.26) !important;
   background: linear-gradient(180deg, rgba(28, 56, 66, 0.78), rgba(12, 27, 33, 0.78)) !important;
   transform: translateY(-1px);
-}
-
-.teaching-card button[data-start-lesson-v2],
-.teaching-card button[data-start-lesson] {
-  border-color: rgba(111, 233, 212, 0.3) !important;
-  color: var(--v2-accent) !important;
-}
-
-.teaching-chapters .teaching-card {
-  padding: 16px 18px !important;
-}
-
-.teaching-lessons {
-  gap: 12px !important;
 }
 
 .teaching-panel fieldset {
@@ -394,14 +400,174 @@ html[data-hud] .teaching-entry {
   outline-offset: 2px;
 }
 
+/* ── 章节行（批次 2）───────────────────────────────────────── */
+.teaching-chapters {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.teaching-chapters .teaching-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    'title action'
+    'line action'
+    'meta action';
+  align-items: center;
+  column-gap: 20px;
+  row-gap: 4px;
+  padding: 14px 18px 14px 20px !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.teaching-chapters .teaching-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: linear-gradient(180deg, var(--v2-accent), rgba(111, 233, 212, 0));
+  opacity: 0.75;
+}
+
+.teaching-chapters .teaching-card h4 {
+  grid-area: title;
+  margin: 0;
+  font-size: 14px;
+  letter-spacing: 0.06em;
+}
+
+.teaching-chapters .teaching-card p {
+  grid-area: line;
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--v2-text-secondary);
+}
+
+.teaching-chapters .teaching-card small {
+  grid-area: meta;
+  font-size: 11.5px;
+  letter-spacing: 0.08em;
+  color: var(--v2-text-muted);
+}
+
+.teaching-chapters .teaching-card button {
+  grid-area: action;
+  align-self: center;
+  white-space: nowrap;
+  border-color: rgba(111, 233, 212, 0.28) !important;
+  color: var(--v2-accent) !important;
+}
+
+/* ── 课节卡色带（批次 2）──────────────────────────────────── */
+.teaching-lessons {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(252px, 1fr));
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.teaching-lessons .teaching-card {
+  position: relative;
+  padding: 16px 18px 16px 22px !important;
+  border-left-width: 3px !important;
+  border-left-style: solid !important;
+}
+
+.teaching-lessons .teaching-card::after {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto auto;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle at 100% 0%, rgba(111, 233, 212, 0.12), transparent 68%);
+  pointer-events: none;
+}
+
+.teaching-lessons .teaching-card h3 {
+  font-size: 14px !important;
+  margin-bottom: 6px;
+}
+
+.teaching-lessons .teaching-card p {
+  font-size: 12.5px;
+  min-height: 2.6em;
+}
+
+.teaching-lessons .teaching-card small {
+  display: inline-block;
+  margin: 8px 0 2px;
+  padding: 2px 8px;
+  border: 1px solid rgba(126, 226, 210, 0.16);
+  border-radius: 999px;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--v2-text-muted);
+}
+
+.teaching-lessons .teaching-card button {
+  margin-top: 10px;
+  width: 100%;
+  justify-content: center;
+}
+
+.teaching-lessons .teaching-card[data-kp-layer='L0'] { border-left-color: #7fe3cf !important; }
+.teaching-lessons .teaching-card[data-kp-layer='L1'] { border-left-color: #6fc7ff !important; }
+.teaching-lessons .teaching-card[data-kp-layer='L2'] { border-left-color: #8f9dff !important; }
+.teaching-lessons .teaching-card[data-kp-layer='L3'] { border-left-color: #b58cff !important; }
+.teaching-lessons .teaching-card[data-kp-layer='L4'] { border-left-color: #ff9ecb !important; }
+.teaching-lessons .teaching-card[data-kp-layer='L5'] { border-left-color: #ffb27a !important; }
+.teaching-lessons .teaching-card[data-kp-layer='L6'] { border-left-color: #ffd479 !important; }
+.teaching-lessons .teaching-card[data-kp-layer='L7'] { border-left-color: #d3e37a !important; }
+.teaching-lessons .teaching-card[data-kp-layer='L8'] { border-left-color: #9fe6a0 !important; }
+
+.teaching-lessons .teaching-card[data-kp-status='mastered'] {
+  background: linear-gradient(180deg, rgba(30, 62, 66, 0.62), rgba(11, 27, 32, 0.62)) !important;
+}
+
+.teaching-lessons .teaching-card[data-kp-status='locked'] {
+  opacity: 0.62;
+  filter: saturate(0.7);
+}
+
+/* 今日建议：横排 */
+.teaching-panel section > label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+  color: var(--v2-text-secondary);
+  font-size: 12.5px;
+}
+
+.teaching-panel section > label select {
+  min-width: 120px;
+}
+
 /* ── 移动端收敛 ───────────────────────────────────────────── */
 @media (max-width: 480px) {
   .teaching-panel {
     padding: 18px 16px 22px !important;
     border-radius: 14px !important;
+    max-height: 92vh;
   }
 
   .teaching-panel h2 {
     font-size: 18px !important;
+  }
+
+  .teaching-chapters .teaching-card {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'title'
+      'line'
+      'meta'
+      'action';
+    row-gap: 6px;
+  }
+
+  .teaching-lessons {
+    grid-template-columns: 1fr;
   }
 }
