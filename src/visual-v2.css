@@ -799,3 +799,241 @@ html[data-hud] .teaching-entry {
     display: none;
   }
 }
+
+/* ── 星图（批次 4）───────────────────────────────────────── */
+.teaching-map-layout {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 260px;
+  gap: 18px;
+  align-items: start;
+}
+
+.teaching-map-scroll {
+  position: relative;
+  overflow: auto;
+  border: 1px solid rgba(126, 226, 210, 0.12);
+  border-radius: 14px;
+  background:
+    radial-gradient(circle at 18% 12%, rgba(111, 233, 212, 0.06), transparent 42%),
+    radial-gradient(circle at 82% 78%, rgba(143, 157, 255, 0.05), transparent 46%),
+    rgba(5, 16, 21, 0.5);
+  padding: 12px 14px;
+  max-height: 62vh;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(111, 233, 212, 0.24) transparent;
+}
+
+.teaching-map {
+  min-width: 720px;
+}
+
+.teaching-map > span:first-child,
+.teaching-map > strong {
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  color: var(--v2-text-muted);
+  text-transform: uppercase;
+}
+
+.teaching-layer {
+  border-top: 1px solid rgba(126, 226, 210, 0.08);
+  padding: 10px 0 12px;
+}
+
+.teaching-layer:first-of-type {
+  border-top: 0;
+}
+
+.teaching-layer > strong {
+  font-family: var(--v2-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--v2-accent) !important;
+  opacity: 0.9;
+}
+
+.teaching-column {
+  min-height: 44px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-content: flex-start;
+}
+
+.teaching-map button[data-star] {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  width: 54px;
+  padding: 4px 2px;
+  border: 1px solid transparent !important;
+  border-radius: 10px !important;
+  background: transparent !important;
+  color: var(--v2-text-muted) !important;
+  transition: transform 140ms ease, border-color 140ms ease, background 140ms ease;
+}
+
+.teaching-map button[data-star] svg {
+  width: 20px;
+  height: 20px;
+  filter: drop-shadow(0 0 0 transparent);
+  transition: filter 160ms ease, transform 160ms ease;
+}
+
+.teaching-map button[data-star] span {
+  font-family: var(--v2-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.02em;
+}
+
+.teaching-map button[data-star] small {
+  font-size: 9px;
+  color: var(--v2-text-muted);
+  opacity: 0.85;
+}
+
+.teaching-map button[data-star][data-state='available'] {
+  color: #7fe3cf !important;
+}
+
+.teaching-map button[data-star][data-state='partial'] {
+  color: var(--v2-gold) !important;
+}
+
+.teaching-map button[data-star][data-state='mastered'] {
+  color: #9fe6a0 !important;
+}
+
+.teaching-map button[data-star][data-state='mastered'] svg {
+  filter: drop-shadow(0 0 8px rgba(159, 230, 160, 0.55));
+}
+
+.teaching-map button[data-star][data-state='locked'] {
+  color: rgba(146, 168, 173, 0.55) !important;
+}
+
+.teaching-map button[data-star][data-state='locked'] svg {
+  transform: scale(0.82);
+}
+
+.teaching-map button[data-star]:hover {
+  background: rgba(111, 233, 212, 0.07) !important;
+  border-color: rgba(126, 226, 210, 0.18) !important;
+  transform: translateY(-1px);
+}
+
+.teaching-map button[data-star][aria-pressed='true'] {
+  border-color: rgba(111, 233, 212, 0.42) !important;
+  background: rgba(111, 233, 212, 0.1) !important;
+  box-shadow: 0 0 0 1px rgba(111, 233, 212, 0.16) inset, 0 10px 22px -16px rgba(111, 233, 212, 0.8);
+}
+
+.teaching-map-layout > .teaching-card {
+  position: sticky;
+  top: 8px;
+  padding: 16px 16px 14px !important;
+  border: 1px solid rgba(126, 226, 210, 0.16) !important;
+  border-radius: 12px !important;
+  background: var(--v2-panel-soft) !important;
+}
+
+.teaching-map-layout > .teaching-card h3 {
+  margin: 0 0 8px;
+  font-size: 15px !important;
+  line-height: 1.5;
+}
+
+.teaching-map-layout > .teaching-card p {
+  margin: 4px 0;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.teaching-map-layout > .teaching-card button {
+  margin-top: 10px;
+  width: 100%;
+}
+
+@media (max-width: 900px) {
+  .teaching-map-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .teaching-map-layout > .teaching-card {
+    position: static;
+  }
+
+  .teaching-map-scroll {
+    max-height: 52vh;
+  }
+}
+
+/* ── 任务简报：委托单样式（批次 4）────────────────────────── */
+.teaching-run[data-v2-segment='mission'] .teaching-card {
+  position: relative;
+  padding: 22px 24px 18px !important;
+  border-left: 3px solid rgba(111, 233, 212, 0.55) !important;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(111, 233, 212, 0.08), transparent 46%),
+    linear-gradient(180deg, rgba(22, 46, 54, 0.7), rgba(9, 22, 28, 0.7)) !important;
+}
+
+.teaching-run[data-v2-segment='mission'] .teaching-card::before {
+  content: '检修委托 · FIELD REQUEST';
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  font-family: var(--v2-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+  color: rgba(111, 233, 212, 0.55);
+}
+
+.teaching-run[data-v2-segment='mission'] .teaching-card > p:first-of-type {
+  font-size: 15px;
+  line-height: 1.85;
+  color: var(--v2-text);
+  max-width: 62ch;
+  margin: 6px 0 14px;
+}
+
+.teaching-run[data-v2-segment='mission'] .teaching-card > p:last-of-type {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border: 1px dashed rgba(126, 226, 210, 0.22);
+  border-radius: 10px;
+  background: rgba(111, 233, 212, 0.04);
+  color: var(--v2-text-secondary);
+  font-size: 13px;
+}
+
+.teaching-run[data-v2-segment='mission'] .teaching-card > p:last-of-type::before {
+  content: '本单目标  ';
+  color: var(--v2-accent);
+  letter-spacing: 0.08em;
+}
+
+/* 完成页 */
+.teaching-run > .teaching-card:has(h3) {
+  text-align: left;
+}
+
+/* 段导航吸底，避免长内容找不到下一步 */
+.teaching-run-footer {
+  position: sticky;
+  bottom: -2px;
+  background: linear-gradient(180deg, rgba(7, 18, 23, 0), rgba(7, 18, 23, 0.92) 42%);
+  padding-bottom: 2px;
+  z-index: 3;
+}
+
+@media (max-width: 720px) {
+  .teaching-run[data-v2-segment='mission'] .teaching-card {
+    padding: 18px 16px 14px !important;
+  }
+
+  .teaching-run[data-v2-segment='mission'] .teaching-card::before {
+    display: none;
+  }
+}

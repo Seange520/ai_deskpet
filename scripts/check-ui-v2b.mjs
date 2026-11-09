@@ -14,8 +14,28 @@ async function shot(name) {
   await page.screenshot({ path: `${out}/${name}.png` });
 }
 
+async function seed() {
+  await page.evaluate(async () => {
+    const learning = await import('/src/features/learning/learning.mjs');
+    const graph = (await import('/src/features/learning/data/knowledge-graph.v1.json')).default;
+    let p = learning.freshProfile(graph);
+    for (const id of ['K0-01', 'K0-02', 'K0-03', 'K1-01', 'K1-02', 'AD-01', 'AD-02', 'IC-01']) {
+      p = learning.beginLesson(graph, p, id);
+      p = learning.completeLesson(graph, p, id, {
+        runId: 'ui-' + id,
+        checkScore: 1,
+        transferScore: 1,
+        evidence: [{ type: 'quiz', score: 1, context: {} }],
+      });
+    }
+    localStorage.setItem(learning.PROFILE_KEY, JSON.stringify(p));
+  });
+}
+
 try {
   await page.goto(base + '/?quality=3', { waitUntil: 'domcontentloaded' });
+  await seed();
+  await page.reload({ waitUntil: 'domcontentloaded' });
   await page.waitForTimeout(500);
   await page.screenshot({ path: out + '/00-boot.png' }).catch(() => {});
 

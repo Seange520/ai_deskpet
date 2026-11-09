@@ -12,6 +12,8 @@ export default function StarMap({ profile, onStart, ids }) {
         key={k.id}
         data-star={k.id}
         data-state={profile.kps[k.id].status}
+        data-kp-layer={k.layer}
+        data-kp-pillar={k.pillar}
         aria-label={
           k.id + ' ' + k.name + ' ' + STATES[profile.kps[k.id].status]
         }
@@ -38,10 +40,10 @@ export default function StarMap({ profile, onStart, ids }) {
             <strong key={p.id}>{p.name}</strong>
           ))}
           {[...graph.layers].reverse().map((layer) => (
-            <div className="teaching-layer" key={layer.id}>
+            <div className="teaching-layer" key={layer.id} data-layer={layer.id}>
               <strong>{layer.id}</strong>
               {graph.pillars.map((p) => (
-                <div className="teaching-column" key={p.id}>
+                <div className="teaching-column" key={p.id} data-pillar={p.id}>
                   {kps
                     .filter((k) => k.layer === layer.id && k.pillar === p.id)
                     .map(star)}
