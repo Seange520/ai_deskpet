@@ -1,0 +1,111 @@
+{
+  "schema": "lesson.v2",
+  "lessonId": "L-IC-04-v2",
+  "kp": {
+    "id": "IC-04",
+    "name": "逻辑门：把判断写成电路",
+    "layer": "L4",
+    "pillar": "forge",
+    "oneLiner": "与或非，都是判断的电路"
+  },
+  "meta": {
+    "version": "2.0.0",
+    "updatedAt": "2026-11-09",
+    "estimatedMinutes": 12,
+    "template": "mission-seven-v1",
+    "gameMount": "P10-维修间",
+    "sourceLesson": "L-IC-04",
+    "author": "SparkMate Automation"
+  },
+  "story": {
+    "act": 2,
+    "title": "专业支线 · 芯片入门",
+    "scene": "P10-维修间",
+    "npc": "贺非",
+    "setup": "两个输入、一个输出，四种组合。把「如果……就……」写成门电路，判断就有了形状。"
+  },
+  "segments": [
+    {
+      "id": "mission",
+      "seconds": 25,
+      "narration": ["两个输入，一个输出。", "四种组合，都要对得上。", "今天的任务：把判断写成门。"],
+      "task": "读出 AND/NAND 的输出，并认出真值表对应的门。"
+    },
+    {
+      "id": "observe",
+      "seconds": 55,
+      "narration": ["真值表先写全。", "AND 要两个都 1。", "NAND 把它翻过来。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/IC-04/truth-table.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "check": {
+        "id": "obs-1",
+        "type": "choice",
+        "task": "A=1、B=1 时 AND 输出？",
+        "options": ["1", "0", "不确定"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "learn",
+      "seconds": 85,
+      "narration": ["OR 有一个 1 就 1。", "NOT 只取反一个输入。", "NAND 是 AND 的反相。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/IC-04/truth-table.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "term": { "text": "真值表", "oneLine": "把输入组合与输出逐行写全，才能验收电路。" },
+      "check": {
+        "id": "learn-1",
+        "type": "choice",
+        "task": "把 AND 的输出全部取反，得到哪个门？",
+        "options": ["NAND", "OR", "NOT"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "do",
+      "seconds": 200,
+      "narration": ["先拨 A=1、B=0。", "看四个门各自的灯。", "再回答两道读数。"],
+      "sim": {
+        "id": "logic-gates",
+        "version": 1,
+        "task": "用 A/B 观察四个门，答出 AND 与 NAND 的读数并认出真值表对应的门。",
+        "hints": ["AND 只有 A、B 都是 1 才输出 1。", "NAND 是 AND 的反相。", "先写全真值表，再选门。"]
+      }
+    },
+    {
+      "id": "prove",
+      "seconds": 100,
+      "mode": "numeric",
+      "narration": ["高电平按 3.3 伏算。", "NAND 输出低电平写 0。", "读数和真值表一起留档。"],
+      "checks": [
+        { "id": "and", "type": "measurement", "task": "AND 输出高电平", "expected": 3.3, "tolerance": 0.1, "unit": "V" },
+        { "id": "nand", "type": "measurement", "task": "NAND 输出低电平", "expected": 0, "tolerance": 0.1, "unit": "V" }
+      ]
+    },
+    {
+      "id": "transfer",
+      "seconds": 90,
+      "narration": ["门还能级联。", "两个门串起来，真值表会变长。", "先推演，再上电。"],
+      "prompt": "AND 与 NOT 串联，A=1、B=1 时输出是？",
+      "options": ["0", "1", "不确定"],
+      "answerIndex": 0
+    },
+    {
+      "id": "recap",
+      "seconds": 25,
+      "narration": ["真值表先写全。", "AND 全 1 才 1，NAND 是反相。", "门可以级联成更长的判断。"],
+      "lines": ["真值表先写全。", "AND 全 1 才 1，NAND 是反相。", "门可以级联成更长的判断。"]
+    }
+  ],
+  "safety": {
+    "powerOffBeforeWiring": true,
+    "liveMeasurementBlocked": true,
+    "note": "断电接线；门电路输入不可悬空；输出不可直接短接到电源或地；调试先核对电源、地与真值表。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["玩家", "游戏", "网页", "第七校验", "熵", "残响", "第一编译者", "0x7F"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true
+  }
+}

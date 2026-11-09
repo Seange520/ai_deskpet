@@ -1887,6 +1887,35 @@
       "license": "CC-BY-4.0",
       "status": "planned",
       "priority": "P1"
+    },
+    {
+      "id": "IC-04",
+      "name": "逻辑门：把判断写成电路",
+      "oneLiner": "与或非，都是判断的电路",
+      "layer": "L4",
+      "pillar": "forge",
+      "prereq": [
+        "IC-03"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons-v2/IC-04.v2.json",
+      "lessonAvailable": true,
+      "media": [
+        "card",
+        "sim"
+      ],
+      "practice": "读 AND/NAND 输出并认出真值表对应的门",
+      "check": {
+        "type": "sim-task",
+        "task": "逻辑门真值表与输出",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "P10维修间",
+      "spoilerLevel": 4,
+      "license": "CC-BY-4.0",
+      "status": "planned",
+      "priority": "P1"
     }
   ],
   "edges": [
@@ -2189,18 +2218,23 @@
       "kind": "prereq",
       "from": "IC-02",
       "to": "IC-03"
+    },
+    {
+      "kind": "prereq",
+      "from": "IC-03",
+      "to": "IC-04"
     }
   ],
   "stats": {
-    "total": 61,
-    "edges": 60,
+    "total": 62,
+    "edges": 61,
     "gates": 1,
     "byLayer": {
       "L0": 7,
       "L1": 7,
       "L2": 7,
       "L3": 10,
-      "L4": 9,
+      "L4": 10,
       "L5": 8,
       "L6": 6,
       "L7": 4,
@@ -2208,7 +2242,7 @@
     },
     "byPillar": {
       "craft": 11,
-      "forge": 16,
+      "forge": 17,
       "foundation": 6,
       "weave": 17,
       "echo": 4,
@@ -2217,11 +2251,11 @@
     },
     "byStatus": {
       "partial": 24,
-      "planned": 37
+      "planned": 38
     },
     "byPriority": {
       "P0": 29,
-      "P1": 18,
+      "P1": 19,
       "P2": 10,
       "P3": 4
     },

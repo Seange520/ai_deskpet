@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-label="IC-04 逻辑门真值表：AND/OR/NOT/NAND">
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#12262b" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="675" fill="#08161a"/>
+  <rect width="1200" height="675" fill="url(#grid)"/>
+  <text x="48" y="64" fill="#4fd1c5" font-family="Consolas, monospace" font-size="17" letter-spacing="2">THE FORGE / 检修手册 · IC-04</text>
+  <text x="48" y="108" fill="#e6f7f5" font-family="Microsoft YaHei, sans-serif" font-size="38" font-weight="700">逻辑门：把判断写成电路</text>
+  <line x1="48" y1="128" x2="1152" y2="128" stroke="#1d3a40" stroke-width="2"/>
+
+  <g font-family="Microsoft YaHei, sans-serif">
+    <rect x="48" y="168" width="520" height="300" rx="12" fill="#0d2328" stroke="#2b5b63"/>
+    <text x="72" y="206" fill="#8fe3d8" font-size="20">真值表（A、B → 输出）</text>
+    <g font-family="Consolas, monospace" font-size="17" fill="#d7ece9">
+      <text x="80" y="248" fill="#6f8f99">A B | AND OR NAND</text>
+      <text x="80" y="284">0 0 |  0   0   1</text>
+      <text x="80" y="320">0 1 |  0   1   1</text>
+      <text x="80" y="356">1 0 |  0   1   1</text>
+      <text x="80" y="392">1 1 |  1   1   0</text>
+    </g>
+    <text x="72" y="436" fill="#6f8f99" font-size="14">NOT 只取反 A：A=0→1，A=1→0。</text>
+
+    <rect x="616" y="168" width="536" height="300" rx="12" fill="#0d2328" stroke="#2b5b63"/>
+    <text x="640" y="206" fill="#8fe3d8" font-size="20">三个常用判断</text>
+    <rect x="640" y="228" width="488" height="60" rx="8" fill="#12302a" stroke="#4fd1c5"/>
+    <text x="656" y="255" fill="#e6f7f5" font-size="16">AND：两个都 1 才 1（串联开关）</text>
+    <text x="656" y="277" fill="#9fb8bd" font-size="13">例：门磁关好 + 锁舌到位，才允许上电。</text>
+    <rect x="640" y="300" width="488" height="60" rx="8" fill="#12302a" stroke="#4fd1c5"/>
+    <text x="656" y="327" fill="#e6f7f5" font-size="16">OR：有一个 1 就 1（并联开关）</text>
+    <text x="656" y="349" fill="#9fb8bd" font-size="13">例：急停按下 或 过温报警，都切断输出。</text>
+    <rect x="640" y="372" width="488" height="60" rx="8" fill="#1a2a33" stroke="#2b5b63"/>
+    <text x="656" y="399" fill="#e6f7f5" font-size="16">NAND：AND 的反相（判断再翻转）</text>
+    <text x="656" y="421" fill="#9fb8bd" font-size="13">例：两个条件同时成立时，输出低电平报警。</text>
+
+    <rect x="48" y="500" width="1104" height="104" rx="12" fill="#12262b" stroke="#2b5b63"/>
+    <text x="72" y="534" fill="#8fe3d8" font-size="19">读法与验收</text>
+    <text x="72" y="566" fill="#e6f7f5" font-family="Consolas, monospace" font-size="17">A=1,B=0 → AND=0，NAND=1；A=1,B=1 → AND=1，NAND=0</text>
+    <text x="72" y="592" fill="#9fb8bd" font-size="14">真值表写全、读数对得上，才算验收；门可以级联，先推演再上电。</text>
+
+    <text x="48" y="648" fill="#6f8f99" font-size="13">教学示意：数字门输入不可悬空；实测先断电、核对电源与地，再按真值表逐行验收。</text>
+  </g>
+</svg>
