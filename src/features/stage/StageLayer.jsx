@@ -11,6 +11,7 @@ const ExplorationOverlay = lazy(() => import('../world/ExplorationOverlay'));
 const WorldMap = lazy(() => import('../world/WorldMap'));
 const WorldPreview = lazy(() => import('../world/WorldPreview'));
 const SceneCanvas = lazy(() => import('./SceneCanvas'));
+const RenderPrototype = lazy(() => import('../render/RenderPrototype'));
 const StageContext = createContext({ ready: false });
 export const useStageLayer = () => useContext(StageContext);
 export default function StageLayer({ children }) {
@@ -27,6 +28,16 @@ export default function StageLayer({ children }) {
   const dock = useRef(null);
   const relic = useRef(null);
   const meteor = useRef(null);
+  const renderMode = new URLSearchParams(location.search).get('render');
+  if (quality.tier === 3 && ['toon', 'standard'].includes(renderMode)) {
+    return (
+      <RenderBoundary onFail={quality.fail}>
+        <Suspense fallback={<p role="status">正在准备渲染对比场景…</p>}>
+          <RenderPrototype initialMode={renderMode} />
+        </Suspense>
+      </RenderBoundary>
+    );
+  }
   return (
     <StageContext.Provider
       value={{ ready: ready && quality.tier > 0, dock, exploring: active && exploring }}

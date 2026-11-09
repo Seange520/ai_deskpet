@@ -1,0 +1,218 @@
+.render-r1 {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  color: #233e51;
+  background: #b5d6dd;
+  font-family: 'Inter Variable', 'Microsoft YaHei', sans-serif;
+}
+.render-r1-canvas {
+  position: absolute;
+  inset: 0;
+}
+.render-r1-header {
+  position: absolute;
+  top: 28px;
+  left: 36px;
+  right: 36px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  pointer-events: none;
+}
+.render-r1-header a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: inherit;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 650;
+  pointer-events: auto;
+  letter-spacing: 0.02em;
+}
+.render-r1-header b {
+  margin-left: 20px;
+}
+.render-r1-title {
+  position: absolute;
+  left: 4%;
+  top: 11%;
+  pointer-events: none;
+  text-shadow: 0 2px 18px #edf8f15c;
+}
+.render-r1-title p {
+  font-size: 12px;
+  letter-spacing: 0.28em;
+  margin: 0 0 12px;
+}
+.render-r1-title h1 {
+  font-size: clamp(27px, 3vw, 50px);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  line-height: 1.3;
+  margin: 0 0 12px;
+}
+.render-r1-title > span {
+  font-size: 10px;
+  letter-spacing: 0.36em;
+}
+.render-r1-panel {
+  position: absolute;
+  right: 30px;
+  top: 105px;
+  width: 252px;
+  padding: 22px;
+  border: 1px solid #ffffffa0;
+  border-radius: 14px;
+  background: #f5f6eadb;
+  box-shadow: 0 12px 40px #24425216;
+  backdrop-filter: blur(16px);
+  font-size: 12px;
+}
+.render-r1-panel-title {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 20px;
+}
+.render-r1-panel-title span {
+  margin-left: auto;
+  color: #6b8984;
+  font-size: 10px;
+}
+.render-r1-segment {
+  display: flex;
+  padding: 3px;
+  gap: 3px;
+  border-radius: 7px;
+  background: #203d4a0c;
+  margin-bottom: 24px;
+}
+.render-r1 button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  border: 0;
+}
+.render-r1 button:focus-visible,
+.render-r1 a:focus-visible,
+.render-r1 input:focus-visible {
+  outline: 2px solid #238b82;
+  outline-offset: 3px;
+}
+.render-r1-segment button {
+  flex: 1;
+  padding: 9px 4px;
+  background: transparent;
+  border-radius: 5px;
+  font-size: 11px;
+}
+.render-r1-segment button[aria-pressed='true'] {
+  background: #fffdf2;
+  box-shadow: 0 2px 8px #294b4810;
+}
+.render-r1-time {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.render-r1-time output {
+  font-variant-numeric: tabular-nums;
+  color: #55867f;
+}
+.render-r1 input[type='range'] {
+  width: 100%;
+  accent-color: #438c82;
+  margin: 0;
+}
+.render-r1-presets {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 0 22px;
+}
+.render-r1-presets button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 0;
+  background: none;
+  font-size: 11px;
+}
+.render-r1-check {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 15px;
+}
+.render-r1-check input {
+  accent-color: #438c82;
+}
+.render-r1-panel p {
+  font-size: 10px;
+  color: #6e8588;
+  border-top: 1px solid #264e4c18;
+  padding-top: 18px;
+  margin-top: 20px;
+}
+.render-r1-reset {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  background: transparent;
+  font-size: 10px !important;
+  color: #64817e !important;
+}
+.render-r1-footer {
+  position: absolute;
+  bottom: 25px;
+  left: 36px;
+  right: 36px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 10px;
+  letter-spacing: 0.07em;
+  pointer-events: none;
+}
+.render-r1-footer output {
+  font-variant-numeric: tabular-nums;
+}
+.render-r1[data-period='night'] .render-r1-title,
+.render-r1[data-period='night'] .render-r1-header,
+.render-r1[data-period='night'] .render-r1-footer {
+  color: #edf5e8;
+}
+@media (max-width: 700px) {
+  .render-r1-header {
+    top: 18px;
+    left: 20px;
+    right: 20px;
+  }
+  .render-r1-header > span {
+    display: none;
+  }
+  .render-r1-title {
+    top: 11%;
+    left: 20px;
+  }
+  .render-r1-panel {
+    top: auto;
+    bottom: 65px;
+    right: 14px;
+    width: 215px;
+    padding: 16px;
+  }
+  .render-r1-footer {
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    flex-wrap: wrap;
+  }
+  .render-r1-footer > span:last-child {
+    display: none;
+  }
+}
