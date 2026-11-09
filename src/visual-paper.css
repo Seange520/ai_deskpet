@@ -347,3 +347,28 @@
 :root[data-theme='light'] .page.dashboard .mini-label {
   color: var(--paper-ink-2);
 }
+
+/* 教学双审整改（2026-11-10）：小字对比度与字号，面向纸面主题 */
+:root[data-theme='light'] {
+  --v2-text-muted: #5c5344;
+  --v2-text-secondary: #453f34;
+}
+
+:root[data-theme='light'] .teaching-panel small,
+:root[data-theme='light'] .teaching-card small,
+:root[data-theme='light'] .teaching-run-head span,
+:root[data-theme='light'] .teaching-narration-meta {
+  font-size: 13px !important;
+  color: #453f34 !important;
+  line-height: 1.5 !important;
+}
+
+:root[data-theme='light'] .teaching-panel section > label {
+  color: #453f34 !important;
+  font-size: 13px !important;
+}
+
+:root[data-theme='light'] .teaching-chapters h3,
+:root[data-theme='light'] .teaching-panel h3 {
+  letter-spacing: 0.01em;
+}
