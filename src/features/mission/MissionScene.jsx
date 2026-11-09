@@ -4,7 +4,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { useMission } from './missionStore.mjs';
 import { POINTS } from './missionData.mjs';
 import { inRange } from './mission.mjs';
-import { ASSETS, WALLS, DOORS, SIGNS, PROPS, LAMPS, BENCHES, TREES, TILES, assetPath } from './sceneLayout.mjs';
+import { ASSETS, WALLS, CORNERS, DOORS, SIGNS, PROPS, LAMPS, BENCHES, TREES, TILES, assetPath } from './sceneLayout.mjs';
 
 // A 20 m facade and instanced paving. L1 on desktop, L2 on coarse/narrow screens.
 function disposeObjects(roots) {
@@ -278,7 +278,7 @@ export default function MissionScene({ maxDpr }) {
         useMission.setState({ error: `街景资产加载失败：${failure.reason.message}` });
         return;
       }
-      const [wall, lamp, bench, tree, paving, door, sign, props] = loadedRoots;
+      const [wall, lamp, bench, tree, paving, door, sign, props, corner] = loadedRoots;
       instances(wall, WALLS);
       instances(door, DOORS);
       sign.traverse((o) => {
@@ -294,6 +294,7 @@ export default function MissionScene({ maxDpr }) {
         scene.add(placed);
       });
       instances(props, PROPS);
+  instances(corner, CORNERS);
       lamp.traverse((o) => {
         if (o.isMesh && o.name.includes('LampHead')) {
           (Array.isArray(o.material) ? o.material : [o.material]).forEach((m) => {

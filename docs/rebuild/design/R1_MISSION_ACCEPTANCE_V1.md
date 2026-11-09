@@ -72,3 +72,7 @@
 - 门槛放宽：Tier2 可进抢修（手机低细节街景）；390×844 实测 45 DC / 29,674 tris / 125fps；Tier0–1 仍拦截。
 - HUD 退出：右上「退出」与 Esc 返回学习枢纽。
 - 单测 18/18、`check-r1-mission` 13/13、build ✓ 12.7s。
+## 9. 追加：A3 转角模块封住街口两端（06:40）
+
+- `sceneLayout.mjs` 新增 `CORNERS=[[10.2,-1,π],[-10.2,-1,π]]`，`MissionScene` 加载并实例化 `SM_Wall_Corner`；两端不再"断墙"。
+- 复测：`check-r1-mission` 13/13、0 error；1080p **50 DC / 38,350 tris / ~128fps**；build ✓；截图已刷新。
