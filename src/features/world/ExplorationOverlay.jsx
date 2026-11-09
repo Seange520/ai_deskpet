@@ -176,7 +176,11 @@ export default function ExplorationOverlay({ onSurface, onExit }) {
         <p>
           P9 · 自由探索 <strong>{fps ? '第一人称' : '第三人称'}</strong>
         </p>
-        <span>WASD 移动 · Shift 跑动 · 空格跳跃 · V 切换 · 鼠标拖动视角</span>
+        <span>
+          {touch
+            ? '左下摇杆移动 · 拖动画面转视角 · 右下跳跃 · 点上方按钮切换视角'
+            : 'WASD 移动 · Shift 跑动 · 空格跳跃 · V 切换 · 鼠标拖动视角'}
+        </span>
         <div>
           <button
             disabled={traveling}
