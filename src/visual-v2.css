@@ -1037,3 +1037,163 @@ html[data-hud] .teaching-entry {
     display: none;
   }
 }
+
+/* ── 主题：浅色纸张 ───────────────────────────────────────── */
+:root[data-theme='light'] {
+  --v2-text: #16232a;
+  --v2-text-secondary: #465b63;
+  --v2-text-muted: #6b8189;
+  --v2-accent: #0f8f80;
+  --v2-accent-dim: #0b6f64;
+  --v2-gold: #b0701f;
+  --v2-line: rgba(15, 143, 128, 0.22);
+  --v2-line-strong: rgba(15, 143, 128, 0.42);
+  --v2-panel: linear-gradient(180deg, rgba(252, 253, 250, 0.97), rgba(240, 245, 241, 0.97));
+  --v2-panel-soft: linear-gradient(180deg, rgba(250, 252, 249, 0.92), rgba(238, 243, 239, 0.92));
+}
+
+:root[data-theme='light'] .teaching-modal {
+  background: rgba(214, 224, 219, 0.55) !important;
+}
+
+:root[data-theme='light'] .teaching-panel {
+  border-color: rgba(15, 143, 128, 0.22) !important;
+  box-shadow: 0 30px 60px -40px rgba(20, 40, 45, 0.5) !important;
+}
+
+:root[data-theme='light'] .teaching-panel :is(h2, h3, h4, h5, p, label, small, legend) {
+  color: var(--v2-text) !important;
+}
+
+:root[data-theme='light'] .teaching-panel :is(.teaching-card, fieldset) {
+  background: rgba(255, 255, 255, 0.74) !important;
+  border-color: rgba(15, 143, 128, 0.18) !important;
+}
+
+:root[data-theme='light'] .teaching-panel button {
+  background: rgba(15, 143, 128, 0.08) !important;
+  border-color: rgba(15, 143, 128, 0.28) !important;
+  color: #0c5c53 !important;
+}
+
+:root[data-theme='light'] .teaching-panel button:disabled {
+  color: #7d938f !important;
+}
+
+:root[data-theme='light'] .teaching-panel [role='tablist'] {
+  background: rgba(15, 143, 128, 0.06) !important;
+}
+
+:root[data-theme='light'] .teaching-panel [role='tablist'] [aria-selected='true'] {
+  background: linear-gradient(160deg, rgba(15, 143, 128, 0.2), rgba(255, 255, 255, 0.7)) !important;
+  color: #0c5c53 !important;
+}
+
+:root[data-theme='light'] .teaching-narration {
+  background: rgba(255, 255, 255, 0.72) !important;
+}
+
+:root[data-theme='light'] :is(.teaching-panel select, .teaching-panel input) {
+  background: #ffffff !important;
+  color: #16232a !important;
+  border-color: rgba(15, 143, 128, 0.3) !important;
+}
+
+:root[data-theme='light'] .teaching-choice {
+  background: rgba(255, 255, 255, 0.66) !important;
+  border-color: rgba(15, 143, 128, 0.2) !important;
+}
+
+:root[data-theme='light'] .topbar {
+  background: linear-gradient(180deg, rgba(250, 252, 250, 0.97), rgba(240, 245, 241, 0.92)) !important;
+  border-bottom-color: rgba(15, 143, 128, 0.16);
+}
+
+:root[data-theme='light'] .app-footer {
+  color: #5c727a !important;
+}
+
+:root[data-theme='light'] .teaching-map-scroll {
+  background:
+    radial-gradient(circle at 18% 12%, rgba(15, 143, 128, 0.08), transparent 42%),
+    rgba(255, 255, 255, 0.55);
+}
+
+/* ── 主题：二次元紫粉 ─────────────────────────────────────── */
+:root[data-theme='anime'] {
+  --v2-text: #ffeaf4;
+  --v2-text-secondary: #e7dcff;
+  --v2-text-muted: #b9a9e0;
+  --v2-accent: #ff86bd;
+  --v2-accent-dim: #c95fa0;
+  --v2-gold: #ffc36b;
+  --v2-line: rgba(255, 134, 189, 0.26);
+  --v2-line-strong: rgba(255, 134, 189, 0.5);
+  --v2-panel: linear-gradient(180deg, rgba(46, 38, 78, 0.94), rgba(28, 24, 52, 0.94));
+  --v2-panel-soft: linear-gradient(180deg, rgba(56, 46, 92, 0.8), rgba(33, 28, 60, 0.8));
+  --v2-radius: 18px;
+  --v2-radius-sm: 14px;
+}
+
+:root[data-theme='anime'] .teaching-panel {
+  border-color: rgba(255, 134, 189, 0.35) !important;
+  background:
+    radial-gradient(circle at 85% 8%, rgba(140, 123, 255, 0.22), transparent 42%),
+    linear-gradient(180deg, rgba(44, 36, 78, 0.95), rgba(24, 20, 44, 0.95)) !important;
+}
+
+:root[data-theme='anime'] .teaching-panel :is(h2, h3, h4, h5) {
+  color: #ffeaf4 !important;
+}
+
+:root[data-theme='anime'] .teaching-panel :is(p, small, label, legend) {
+  color: #e7dcff !important;
+}
+
+:root[data-theme='anime'] .teaching-panel :is(.teaching-card, fieldset) {
+  background: linear-gradient(180deg, rgba(60, 49, 98, 0.74), rgba(30, 25, 56, 0.74)) !important;
+  border-color: rgba(255, 134, 189, 0.2) !important;
+}
+
+:root[data-theme='anime'] .teaching-panel button {
+  background: linear-gradient(160deg, rgba(255, 134, 189, 0.24), rgba(140, 123, 255, 0.16)) !important;
+  border-color: rgba(255, 134, 189, 0.35) !important;
+  color: #ffe6f2 !important;
+}
+
+:root[data-theme='anime'] .teaching-panel [role='tablist'] [aria-selected='true'] {
+  background: linear-gradient(160deg, rgba(255, 134, 189, 0.36), rgba(140, 123, 255, 0.24)) !important;
+}
+
+:root[data-theme='anime'] .teaching-narration {
+  border-left-color: var(--v2-accent) !important;
+}
+
+:root[data-theme='anime'] .teaching-panel :is(select, input) {
+  background: rgba(20, 16, 40, 0.72) !important;
+  color: #ffeaf4 !important;
+}
+
+:root[data-theme='anime'] .topbar {
+  background: linear-gradient(180deg, rgba(40, 32, 70, 0.96), rgba(26, 22, 48, 0.92)) !important;
+}
+
+:root[data-theme='anime'] .topbar .space-brand svg {
+  color: var(--v2-accent);
+}
+
+:root[data-theme='anime'] .app-footer {
+  color: #b9a9e0 !important;
+}
+
+/* 章节/课节标题统一取主题前景色（避免浅色/紫粉主题下发灰） */
+.teaching-panel .teaching-chapters .teaching-card h4,
+.teaching-panel .teaching-lessons .teaching-card h3,
+.teaching-panel .teaching-map-layout > .teaching-card h3 {
+  color: var(--v2-text) !important;
+}
+
+.teaching-panel .teaching-chapters .teaching-card p,
+.teaching-panel .teaching-lessons .teaching-card p {
+  color: var(--v2-text-secondary) !important;
+}

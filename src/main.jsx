@@ -14,6 +14,9 @@ import './routes.css';
 import './workshop.css';
 import './runner.css';
 import './visual-v2.css';
+import { applyTheme, readTheme } from './lib/theme.mjs';
+
+applyTheme(readTheme());
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

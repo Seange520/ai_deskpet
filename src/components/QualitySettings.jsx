@@ -1,7 +1,8 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { SlidersHorizontal } from 'lucide-react';
 import { useQualityTier } from '../lib/qualityTier';
 import { useQualityStore } from '../stores/useQualityStore';
+import { readTheme, saveTheme, THEMES } from '../lib/theme.mjs';
 
 const presets = [
   ['cinematic', '极致', '完整后期与电影特效'],
@@ -15,6 +16,7 @@ export default function QualitySettings() {
   const { tier, override } = useQualityTier();
   const details = useRef(null);
   const trigger = useRef(null);
+  const [theme, setTheme] = useState(() => readTheme());
   return (
     <details
       className="quality-settings"
@@ -37,6 +39,23 @@ export default function QualitySettings() {
             Tier {tier}
           </p>
         </header>
+        <fieldset>
+          <legend className="eyebrow">界面主题 · THEME</legend>
+          {THEMES.map((item) => (
+            <label className="quality-option" key={item.id}>
+              <input
+                type="radio"
+                name="sparkmate-theme"
+                checked={theme === item.id}
+                onChange={() => setTheme(saveTheme(item.id))}
+              />
+              <span>
+                {item.label}
+                <small>{item.hint}</small>
+              </span>
+            </label>
+          ))}
+        </fieldset>
         <fieldset>
           <legend className="sr-only">画质预设</legend>
           {presets.map(([id, label, help]) => (
