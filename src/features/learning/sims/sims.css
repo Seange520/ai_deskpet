@@ -1,4 +1,4 @@
-.sims-entry {
+﻿.sims-entry {
   position: fixed;
   left: 16px;
   bottom: 20px;
@@ -205,3 +205,205 @@
     background: #b1f8b2;
   }
 }
+/* UI 重制：仿真面板仪器化（S3-017） */
+.sim-card {
+  position: relative;
+  padding: 26px 24px 22px;
+  border: 1px solid #3f5d68;
+  border-radius: 14px;
+  background:
+    linear-gradient(180deg, #1a303c 0%, #10242f 38%, #0d1f29 100%);
+  box-shadow:
+    inset 0 1px 0 #ffffff14,
+    inset 0 -1px 0 #00000066,
+    0 18px 38px #0000004d;
+  overflow: hidden;
+}
+.sim-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    #ffffff05 0 1px,
+    transparent 1px 3px
+  );
+  mix-blend-mode: screen;
+}
+.sim-card::after {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 1px solid #2c4653;
+  border-radius: 10px;
+  pointer-events: none;
+}
+.sim-card h2 {
+  position: relative;
+  z-index: 1;
+  margin: 0 0 6px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #34515c;
+  color: #d9fff4;
+  letter-spacing: 0.02em;
+  text-shadow: 0 0 18px #6fe3c833;
+}
+.sim-card > p {
+  position: relative;
+  z-index: 1;
+  color: #9fc0c8;
+  border-left: 2px solid #58cfae;
+  padding-left: 10px;
+}
+.sim-card label,
+.sim-card fieldset,
+.sim-card .sim-row,
+.sim-card .sim-ide,
+.sim-card button,
+.sim-card .sim-reading,
+.sim-card .sim-progress,
+.sim-card details {
+  position: relative;
+  z-index: 1;
+}
+.sim-card select,
+.sim-card input[type='text'],
+.sim-card input[type='number'] {
+  background: #07161e;
+  border: 1px solid #3f6a72;
+  border-radius: 6px;
+  box-shadow: inset 0 2px 6px #00000099, 0 1px 0 #ffffff0d;
+  color: #e8fff8;
+  padding: 10px 12px;
+  font: 600 14px/1.3 'JetBrains Mono', Consolas, monospace;
+}
+.sim-card fieldset {
+  border: 1px solid #33525d;
+  border-radius: 10px;
+  padding: 10px 12px 12px;
+  background: #0b1e28a6;
+}
+.sim-card fieldset legend {
+  color: #7fd6bd;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+}
+.sim-card input[type='radio'] {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1px solid #5d8b92;
+  background: radial-gradient(circle at 35% 30%, #274c52, #0a1a21);
+  margin-right: 8px;
+  vertical-align: -2px;
+}
+.sim-card input[type='radio']:checked {
+  border-color: #8ff3cd;
+  background: radial-gradient(circle at 35% 30%, #b6ffe4, #35b08c 55%, #0a1a21 58%);
+  box-shadow: 0 0 10px #6fe3c899;
+}
+.sim-card button {
+  background: linear-gradient(180deg, #27414e, #152b36);
+  border: 1px solid #4c7480;
+  border-radius: 8px;
+  box-shadow:
+    0 3px 0 #08141b,
+    0 6px 14px #00000059,
+    inset 0 1px 0 #ffffff1a;
+  color: #e9fffa;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  padding: 11px 16px;
+  transition: transform 0.06s ease, box-shadow 0.06s ease;
+}
+.sim-card button:hover {
+  border-color: #79e3c2;
+}
+.sim-card button:active {
+  transform: translateY(2px);
+  box-shadow:
+    0 1px 0 #08141b,
+    0 2px 6px #00000059,
+    inset 0 1px 0 #ffffff1a;
+}
+.sim-card button[aria-pressed='true'] {
+  background: linear-gradient(180deg, #2f8a72, #1d5f4f);
+  border-color: #a2ffe0;
+  box-shadow: 0 0 16px #6fe3c859, inset 0 1px 0 #ffffff2b;
+}
+.sim-reading {
+  display: block;
+  padding: 16px 18px;
+  margin: 18px 0 4px;
+  border: 1px solid #2f5b4a;
+  border-left: 4px solid #7dffcb;
+  border-radius: 8px;
+  background:
+    radial-gradient(ellipse at 20% 0%, #123b2c88, transparent 60%),
+    #04120c;
+  color: #a8ffd8;
+  font: 600 17px/1.5 'JetBrains Mono', Consolas, monospace;
+  letter-spacing: 0.02em;
+  text-shadow: 0 0 12px #63ffb24d;
+  box-shadow: inset 0 0 24px #000000a6, 0 0 0 3px #0a1a14, 0 6px 18px #00000059;
+}
+.sim-progress {
+  color: #8fe6c9;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+}
+.sim-card details {
+  border: 1px dashed #33525d;
+  border-radius: 8px;
+  padding: 8px 12px;
+  background: #0a1a22a6;
+}
+.sim-card summary {
+  cursor: pointer;
+  color: #9fd8c6;
+  font-size: 13px;
+}
+.sim-card .sim-wave {
+  height: 26px;
+  border-radius: 6px;
+  border: 1px solid #4f7a72;
+  background: linear-gradient(
+    to right,
+    #8ff3cd var(--duty),
+    #0a1a21 var(--duty)
+  );
+  box-shadow: inset 0 2px 8px #00000099, 0 0 14px #4fd6a52e;
+}
+.sim-card .sim-channel {
+  padding: 10px 12px;
+  border: 1px solid #2c4a53;
+  border-radius: 8px;
+  background: #0a1c25;
+}
+.sim-card .sim-led {
+  box-shadow: 0 0 12px #62e8a833, inset 0 0 6px #000000a6;
+}
+.sim-card .sim-led.is-running {
+  box-shadow: 0 0 18px #a6ffb066;
+}
+.sim-nameplate {
+  margin-top: 16px;
+  padding-top: 10px;
+  border-top: 1px solid #2c4653;
+  color: #6f8f99;
+  font: 11px/1.4 'JetBrains Mono', Consolas, monospace;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+@media (max-width: 600px) {
+  .sim-card {
+    padding: 18px 14px 16px;
+  }
+  .sim-reading {
+    font-size: 15px;
+    padding: 12px 14px;
+  }
+}
+

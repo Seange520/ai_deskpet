@@ -49,6 +49,9 @@ export function SimFrame({ data, evidence, children }) {
           ? '全部通过 · 可以复盘'
           : `已通过 ${count}/${data.checks.length}，可随时重试`}
       </output>
+      <p className="sim-nameplate">
+        SIM-{data.id.toUpperCase()} · 教学等效模型 · 数值可解释、可复验
+      </p>
     </section>
   );
 }
