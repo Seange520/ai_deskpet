@@ -13,6 +13,7 @@ import './micro.css';
 import './routes.css';
 import './workshop.css';
 import './runner.css';
+import './visual-v2.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

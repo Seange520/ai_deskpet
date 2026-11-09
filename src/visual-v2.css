@@ -1,0 +1,407 @@
+/* Visual polish v2 — 统一游戏内 UI 的材质、层级与排版。
+   目标：夜航仪器质感 + 纸感留白；不改变任何交互与数据逻辑。 */
+
+:root {
+  --v2-ink: #071317;
+  --v2-panel: linear-gradient(180deg, rgba(19, 42, 50, 0.9), rgba(9, 22, 28, 0.88));
+  --v2-panel-soft: linear-gradient(180deg, rgba(23, 48, 57, 0.72), rgba(11, 25, 31, 0.72));
+  --v2-line: rgba(126, 226, 210, 0.16);
+  --v2-line-strong: rgba(126, 226, 210, 0.34);
+  --v2-accent: #6fe9d4;
+  --v2-accent-dim: #3fb9a6;
+  --v2-gold: #ffd08a;
+  --v2-text: #e8f4f1;
+  --v2-text-secondary: #a9c3c6;
+  --v2-text-muted: #7d9a9f;
+  --v2-radius: 14px;
+  --v2-radius-sm: 10px;
+  --v2-shadow: 0 24px 48px -30px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --v2-mono: 'JetBrains Mono Variable', 'JetBrains Mono', Consolas, monospace;
+}
+
+html[data-hud] .exploration-caption,
+html[data-hud] .street-meter,
+html[data-hud] .kickback-panel,
+html[data-hud] .teaching-entry,
+html[data-hud] .world-minimap,
+.hud-capsules,
+.hud-progress {
+  font-family: 'Inter Variable', 'Microsoft YaHei', sans-serif;
+  color: var(--v2-text);
+}
+
+html[data-hud] .exploration-caption {
+  border: 1px solid var(--v2-line) !important;
+  border-radius: var(--v2-radius) !important;
+  background: var(--v2-panel) !important;
+  box-shadow: var(--v2-shadow) !important;
+  backdrop-filter: blur(16px) saturate(1.15);
+  padding: 14px 16px !important;
+}
+
+html[data-hud] .exploration-caption .hud-progress > span {
+  color: var(--v2-text-muted);
+  letter-spacing: 0.08em;
+}
+
+html[data-hud] .exploration-caption .hud-progress [aria-current] {
+  color: var(--v2-accent);
+  text-shadow: 0 0 12px rgba(111, 233, 212, 0.35);
+}
+
+html[data-hud] .street-title {
+  top: auto !important;
+  bottom: 84px !important;
+  left: 12px !important;
+  max-width: 360px;
+  border-left: 2px solid var(--v2-accent-dim);
+  padding-left: 12px;
+}
+
+html[data-hud] .exploration-caption .hud-hint {
+  position: static !important;
+  inset: auto !important;
+  transform: none !important;
+  margin: 6px 0 0 !important;
+  padding: 4px 0 !important;
+  background: none !important;
+  color: var(--v2-text-secondary) !important;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  max-width: 100%;
+}
+
+html[data-hud] .exploration-caption .street-title {
+  position: static !important;
+  inset: auto !important;
+  display: block !important;
+  max-width: 100% !important;
+  margin: 12px 0 0 !important;
+  padding: 0 !important;
+  border-left: 0 !important;
+  text-shadow: none;
+}
+
+html[data-hud] .exploration-caption .street-title h1 {
+  margin: 4px 0 6px !important;
+}
+
+
+html[data-hud] .street-title h1 {
+  font-size: 19px !important;
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  color: var(--v2-text);
+}
+
+html[data-hud] .street-title p,
+html[data-hud] .street-title small {
+  color: var(--v2-text-secondary) !important;
+  line-height: 1.7;
+}
+
+html[data-hud] .street-meter,
+html[data-hud] .kickback-panel {
+  border: 1px solid var(--v2-line) !important;
+  border-radius: var(--v2-radius) !important;
+  background: var(--v2-panel) !important;
+  box-shadow: var(--v2-shadow) !important;
+  backdrop-filter: blur(16px) saturate(1.15);
+}
+
+html[data-hud] :is(.street-meter, .kickback-panel) > header {
+  background: linear-gradient(180deg, rgba(16, 37, 44, 0.98), rgba(13, 31, 38, 0.94)) !important;
+  border-bottom: 1px solid var(--v2-line) !important;
+  padding-block: 10px !important;
+}
+
+html[data-hud] :is(.street-meter, .kickback-panel) h2 {
+  font-size: 14px !important;
+  font-weight: 620;
+  letter-spacing: 0.06em;
+}
+
+html[data-hud] .street-lcd {
+  background: linear-gradient(180deg, #cfe6d2, #b8d4bc) !important;
+  border-radius: 8px;
+  box-shadow: inset 0 0 0 1px rgba(7, 30, 22, 0.25), inset 0 2px 10px rgba(7, 30, 22, 0.18);
+}
+
+html[data-hud] .street-lcd * {
+  color: #0d2b21 !important;
+  font-family: var(--v2-mono);
+}
+
+html[data-hud] .street-ui button,
+html[data-hud] .kickback-ui button,
+html[data-hud] .teaching-entry,
+.hud-capsules button {
+  border-radius: var(--v2-radius-sm) !important;
+  border: 1px solid var(--v2-line) !important;
+  background: rgba(255, 255, 255, 0.035) !important;
+  color: var(--v2-text) !important;
+  font-weight: 520;
+  letter-spacing: 0.02em;
+  transition: background 160ms ease, border-color 160ms ease, transform 160ms ease;
+}
+
+html[data-hud] .street-ui button:hover,
+html[data-hud] .kickback-ui button:hover,
+html[data-hud] .teaching-entry:hover,
+.hud-capsules button:hover {
+  border-color: var(--v2-line-strong) !important;
+  background: rgba(111, 233, 212, 0.1) !important;
+}
+
+html[data-hud] .street-ui button:active,
+html[data-hud] .kickback-ui button:active {
+  transform: translateY(1px);
+}
+
+html[data-hud] .teaching-entry {
+  padding: 10px 14px;
+  background: linear-gradient(160deg, rgba(111, 233, 212, 0.18), rgba(111, 233, 212, 0.06)) !important;
+  border-color: rgba(111, 233, 212, 0.35) !important;
+}
+
+/* ── 教学面板 ─────────────────────────────────────────────── */
+.teaching-modal {
+  background: rgba(4, 12, 16, 0.66) !important;
+  backdrop-filter: blur(6px);
+}
+
+.teaching-panel {
+  border: 1px solid var(--v2-line) !important;
+  border-radius: 18px !important;
+  background: var(--v2-panel) !important;
+  box-shadow: 0 40px 90px -40px rgba(0, 0, 0, 0.95) !important;
+  padding: 26px 28px 30px !important;
+}
+
+.teaching-panel h2 {
+  font-size: 21px !important;
+  font-weight: 650 !important;
+  letter-spacing: 0.05em;
+  color: var(--v2-text);
+}
+
+.teaching-panel h3 {
+  font-size: 14px !important;
+  font-weight: 620;
+  letter-spacing: 0.05em;
+  color: var(--v2-text);
+}
+
+.teaching-panel p {
+  color: var(--v2-text-secondary);
+  line-height: 1.8;
+}
+
+.teaching-panel [role='tablist'] {
+  gap: 6px !important;
+  padding: 4px !important;
+  border: 1px solid var(--v2-line) !important;
+  border-radius: 12px !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+  width: fit-content;
+}
+
+.teaching-panel [role='tablist'] button {
+  border: 1px solid transparent !important;
+  background: transparent !important;
+  border-radius: 8px !important;
+  padding: 8px 16px !important;
+  color: var(--v2-text-secondary) !important;
+}
+
+.teaching-panel [role='tablist'] [aria-selected='true'] {
+  background: linear-gradient(160deg, rgba(111, 233, 212, 0.22), rgba(255, 255, 255, 0.04)) !important;
+  border-color: rgba(111, 233, 212, 0.34) !important;
+  color: var(--v2-text) !important;
+  box-shadow: 0 6px 18px -12px rgba(111, 233, 212, 0.6);
+}
+
+.teaching-panel button {
+  border: 1px solid var(--v2-line) !important;
+  border-radius: var(--v2-radius-sm) !important;
+  background: rgba(255, 255, 255, 0.035) !important;
+  color: var(--v2-text) !important;
+  padding: 9px 14px;
+  transition: background 160ms ease, border-color 160ms ease, transform 160ms ease;
+}
+
+.teaching-panel button:hover:not(:disabled) {
+  border-color: var(--v2-line-strong) !important;
+  background: rgba(111, 233, 212, 0.1) !important;
+}
+
+.teaching-panel button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.teaching-panel button:disabled {
+  opacity: 0.36;
+  background: rgba(255, 255, 255, 0.02) !important;
+}
+
+.teaching-card,
+.teaching-meter,
+.teaching-media figure {
+  border: 1px solid rgba(126, 226, 210, 0.11) !important;
+  border-radius: 12px !important;
+  background: var(--v2-panel-soft) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);
+  transition: border-color 180ms ease, transform 180ms ease, background 180ms ease;
+}
+
+.teaching-card:hover {
+  border-color: rgba(126, 226, 210, 0.26) !important;
+  background: linear-gradient(180deg, rgba(28, 56, 66, 0.78), rgba(12, 27, 33, 0.78)) !important;
+  transform: translateY(-1px);
+}
+
+.teaching-card button[data-start-lesson-v2],
+.teaching-card button[data-start-lesson] {
+  border-color: rgba(111, 233, 212, 0.3) !important;
+  color: var(--v2-accent) !important;
+}
+
+.teaching-chapters .teaching-card {
+  padding: 16px 18px !important;
+}
+
+.teaching-lessons {
+  gap: 12px !important;
+}
+
+.teaching-panel fieldset {
+  border: 1px solid rgba(126, 226, 210, 0.14) !important;
+  border-radius: 12px !important;
+  background: rgba(255, 255, 255, 0.025) !important;
+  padding: 14px 16px !important;
+}
+
+.teaching-choice {
+  border: 1px solid rgba(126, 226, 210, 0.12) !important;
+  border-radius: 10px !important;
+  background: rgba(255, 255, 255, 0.02) !important;
+  padding: 10px 12px !important;
+  transition: border-color 160ms ease, background 160ms ease;
+}
+
+.teaching-choice:hover {
+  border-color: rgba(126, 226, 210, 0.3) !important;
+  background: rgba(111, 233, 212, 0.07) !important;
+}
+
+.teaching-choice:has(input:checked) {
+  border-color: rgba(111, 233, 212, 0.5) !important;
+  background: linear-gradient(160deg, rgba(111, 233, 212, 0.14), rgba(255, 255, 255, 0.02)) !important;
+}
+
+.teaching-panel progress {
+  height: 4px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.teaching-panel progress::-webkit-progress-bar {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.teaching-panel progress::-webkit-progress-value {
+  background: linear-gradient(90deg, var(--v2-accent-dim), var(--v2-accent));
+  border-radius: 999px;
+}
+
+.teaching-panel progress::-moz-progress-bar {
+  background: linear-gradient(90deg, var(--v2-accent-dim), var(--v2-accent));
+  border-radius: 999px;
+}
+
+.teaching-run-head {
+  border-bottom: 1px solid rgba(126, 226, 210, 0.12);
+  padding-bottom: 12px;
+  margin-bottom: 14px;
+}
+
+.teaching-narration {
+  border: 1px solid rgba(126, 226, 210, 0.14) !important;
+  border-left: 2px solid var(--v2-accent-dim) !important;
+  border-radius: 10px !important;
+  background: linear-gradient(180deg, rgba(20, 44, 52, 0.72), rgba(8, 20, 26, 0.72)) !important;
+}
+
+.teaching-sim-embed {
+  border: 1px solid rgba(126, 226, 210, 0.14) !important;
+  border-radius: 12px !important;
+  background: rgba(8, 20, 25, 0.6) !important;
+  padding: 14px !important;
+}
+
+.teaching-sim-hint {
+  color: var(--v2-text-muted) !important;
+  letter-spacing: 0.05em;
+}
+
+.teaching-run-footer {
+  border-top: 1px solid rgba(126, 226, 210, 0.12);
+  padding-top: 16px;
+  margin-top: 18px;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.teaching-media-asset img,
+.teaching-media-asset svg {
+  border-radius: 10px;
+  border: 1px solid rgba(126, 226, 210, 0.12);
+}
+
+/* ── 仿真组件 ─────────────────────────────────────────────── */
+.sim-card {
+  border: 1px solid rgba(126, 226, 210, 0.14) !important;
+  border-radius: 12px !important;
+  background: linear-gradient(180deg, rgba(20, 44, 52, 0.72), rgba(8, 20, 26, 0.72)) !important;
+}
+
+.sim-card h3,
+.sim-card h4 {
+  letter-spacing: 0.04em;
+}
+
+.sim-reading,
+.sim-card output {
+  font-family: var(--v2-mono);
+  letter-spacing: 0.02em;
+}
+
+.sim-card input,
+.sim-card select {
+  border: 1px solid rgba(126, 226, 210, 0.2) !important;
+  border-radius: 8px !important;
+  background: rgba(4, 14, 18, 0.72) !important;
+  color: var(--v2-text) !important;
+  font-family: var(--v2-mono);
+  padding: 8px 10px;
+}
+
+.sim-card input:focus-visible,
+.sim-card select:focus-visible {
+  outline: 2px solid rgba(111, 233, 212, 0.55);
+  outline-offset: 2px;
+}
+
+/* ── 移动端收敛 ───────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .teaching-panel {
+    padding: 18px 16px 22px !important;
+    border-radius: 14px !important;
+  }
+
+  .teaching-panel h2 {
+    font-size: 18px !important;
+  }
+}
