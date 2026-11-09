@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-label="AD-03 舵机与PWM控制信号示意">
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#12262b" stroke-width="1"/>
+    </pattern>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+      <path d="M0 0L8 4L0 8Z" fill="#4fd1c5"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="675" fill="#08161a"/>
+  <rect width="1200" height="675" fill="url(#grid)"/>
+  <text x="48" y="64" fill="#4fd1c5" font-family="Consolas, monospace" font-size="17" letter-spacing="2">THE FORGE / 检修手册 · AD-03</text>
+  <text x="48" y="108" fill="#e6f7f5" font-family="Microsoft YaHei, sans-serif" font-size="38" font-weight="700">驱动与执行器：让电变成动作</text>
+  <line x1="48" y1="128" x2="1152" y2="128" stroke="#1d3a40" stroke-width="2"/>
+
+  <rect x="48" y="168" width="330" height="200" rx="10" fill="#0d2328" stroke="#2b5b63"/>
+  <text x="72" y="204" fill="#8fe3d8" font-family="Microsoft YaHei, sans-serif" font-size="20">控制信号</text>
+  <text x="72" y="240" fill="#e6f7f5" font-family="Microsoft YaHei, sans-serif" font-size="26">PWM · 50 Hz</text>
+  <text x="72" y="278" fill="#9fb8bd" font-family="Microsoft YaHei, sans-serif" font-size="17">周期 20 ms，高电平宽度决定角度</text>
+  <text x="72" y="322" fill="#f6c177" font-family="Microsoft YaHei, sans-serif" font-size="17">1.0 ms → 0°　1.5 ms → 90°</text>
+  <text x="72" y="350" fill="#f6c177" font-family="Microsoft YaHei, sans-serif" font-size="17">2.0 ms → 180°</text>
+
+  <line x1="390" y1="268" x2="470" y2="268" stroke="#4fd1c5" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <rect x="480" y="168" width="250" height="200" rx="10" fill="#0d2328" stroke="#2b5b63"/>
+  <text x="504" y="204" fill="#8fe3d8" font-family="Microsoft YaHei, sans-serif" font-size="20">舵机内部</text>
+  <circle cx="605" cy="272" r="46" fill="#132f35" stroke="#4fd1c5" stroke-width="2"/>
+  <path d="M605 272L605 236" stroke="#f6c177" stroke-width="5" stroke-linecap="round"/>
+  <text x="504" y="348" fill="#9fb8bd" font-family="Microsoft YaHei, sans-serif" font-size="16">电机 + 减速齿轮 + 位置反馈</text>
+
+  <line x1="742" y1="268" x2="822" y2="268" stroke="#4fd1c5" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <rect x="832" y="168" width="320" height="200" rx="10" fill="#0d2328" stroke="#2b5b63"/>
+  <text x="856" y="204" fill="#8fe3d8" font-family="Microsoft YaHei, sans-serif" font-size="20">断电那一刻</text>
+  <path d="M862 300 L898 240 L934 296 L970 236 L1006 292 L1042 240 L1078 296 L1114 246" fill="none" stroke="#ff8a65" stroke-width="3"/>
+  <text x="856" y="338" fill="#ff8a65" font-family="Microsoft YaHei, sans-serif" font-size="16">电感反峰：没有续流，就冲进驱动</text>
+
+  <rect x="48" y="410" width="1104" height="186" rx="10" fill="#0a1d21" stroke="#1d3a40"/>
+  <text x="72" y="450" fill="#4fd1c5" font-family="Microsoft YaHei, sans-serif" font-size="19">课上要做的三件事</text>
+  <text x="72" y="492" fill="#d7ece9" font-family="Microsoft YaHei, sans-serif" font-size="19">① 解码 PWM：先看周期，再看高电平宽度</text>
+  <text x="72" y="528" fill="#d7ece9" font-family="Microsoft YaHei, sans-serif" font-size="19">② 对照角度：1.0 / 1.5 / 2.0 ms 各对应什么位置</text>
+  <text x="72" y="564" fill="#d7ece9" font-family="Microsoft YaHei, sans-serif" font-size="19">③ 断电测试：给电感加续流，别让反峰打穿驱动</text>
+
+  <text x="48" y="642" fill="#8aa4a8" font-family="Microsoft YaHei, sans-serif" font-size="16">教学仿真：信号与角度为等效模型；真实舵机请先断电接线、核对供电与电流。</text>
+</svg>

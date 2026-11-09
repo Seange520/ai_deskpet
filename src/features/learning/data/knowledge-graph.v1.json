@@ -1336,6 +1336,64 @@
       "license": "CC-BY-4.0",
       "status": "planned",
       "priority": "P3"
+    },
+    {
+      "id": "AD-03",
+      "name": "驱动与执行器：舵机与续流",
+      "oneLiner": "让电变成动作，也要留条退路",
+      "layer": "L2",
+      "pillar": "forge",
+      "prereq": [
+        "AD-02"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons-v2/AD-03.v2.json",
+      "lessonAvailable": true,
+      "media": [
+        "card",
+        "sim"
+      ],
+      "practice": "解码舵机 PWM 并验证续流",
+      "check": {
+        "type": "sim-task",
+        "task": "PWM 舵机信号解码",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "P10维修间",
+      "spoilerLevel": 2,
+      "license": "CC-BY-4.0",
+      "status": "partial",
+      "priority": "P0"
+    },
+    {
+      "id": "AD-04",
+      "name": "感知与总线：I2C 扫描",
+      "oneLiner": "先问地址，再读世界",
+      "layer": "L2",
+      "pillar": "weave",
+      "prereq": [
+        "AD-03"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons-v2/AD-04.v2.json",
+      "lessonAvailable": true,
+      "media": [
+        "card",
+        "sim"
+      ],
+      "practice": "扫描 I2C 地址并测上拉",
+      "check": {
+        "type": "sim-task",
+        "task": "I2C 设备地址扫描",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "P10维修间",
+      "spoilerLevel": 2,
+      "license": "CC-BY-4.0",
+      "status": "partial",
+      "priority": "P0"
     }
   ],
   "edges": [
@@ -1538,16 +1596,26 @@
       "from": "K8-01",
       "to": "K8-02",
       "kind": "prereq"
+    },
+    {
+      "from": "AD-02",
+      "to": "AD-03",
+      "kind": "prereq"
+    },
+    {
+      "from": "AD-03",
+      "to": "AD-04",
+      "kind": "prereq"
     }
   ],
   "stats": {
-    "total": 42,
-    "edges": 40,
+    "total": 44,
+    "edges": 42,
     "gates": 1,
     "byLayer": {
       "L0": 7,
       "L1": 7,
-      "L2": 5,
+      "L2": 7,
       "L3": 6,
       "L4": 6,
       "L5": 4,
@@ -1556,21 +1624,20 @@
       "L8": 2
     },
     "byPillar": {
-      "foundation": 6,
-      "forge": 12,
       "craft": 10,
-      "weave": 6,
+      "forge": 13,
+      "foundation": 6,
+      "weave": 7,
       "echo": 4,
       "symbiosis": 2,
       "spire": 2
     },
     "byStatus": {
-      "partial": 8,
-      "planned": 34,
-      "ready": 0
+      "partial": 10,
+      "planned": 34
     },
     "byPriority": {
-      "P0": 13,
+      "P0": 15,
       "P1": 15,
       "P2": 10,
       "P3": 4

@@ -1,0 +1,111 @@
+{
+  "schema": "lesson.v2",
+  "lessonId": "L-AD-03-v2",
+  "kp": {
+    "id": "AD-03",
+    "name": "驱动与执行器：舵机与续流",
+    "layer": "L2",
+    "pillar": "forge",
+    "oneLiner": "让电变成动作，也要留条退路"
+  },
+  "meta": {
+    "version": "2.0.0",
+    "updatedAt": "2026-11-09",
+    "estimatedMinutes": 11,
+    "template": "mission-seven-v1",
+    "gameMount": "P10-维修间",
+    "sourceLesson": "L-AD-03",
+    "author": "SparkMate Automation"
+  },
+  "story": {
+    "act": 1,
+    "title": "造物时刻",
+    "scene": "P10-维修间",
+    "npc": "贺非",
+    "setup": "贺非把舵机接上电：先让它动起来，再让它停得干净。"
+  },
+  "segments": [
+    {
+      "id": "mission",
+      "seconds": 25,
+      "narration": ["桌宠要动，得靠执行器。", "控制信号不对，舵机只会抖。", "今天的任务：让舵机转到位。"],
+      "task": "让舵机按 0°、90°、180° 转动，并测出控制信号的周期与高电平。"
+    },
+    {
+      "id": "observe",
+      "seconds": 55,
+      "narration": ["控制舵机的，是方波。", "周期固定，高电平变宽。", "宽度不同，角度就不同。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/AD-03/servo-drive.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "check": {
+        "id": "obs-1",
+        "type": "choice",
+        "task": "舵机的控制信号通常是什么？",
+        "options": ["PWM 方波", "稳定直流", "正弦波"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "learn",
+      "seconds": 85,
+      "narration": ["50 赫兹，就是每 20 毫秒一次。", "1.5 毫秒，正好是中位。", "电感断电会反峰，记得续流。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/AD-03/servo-drive.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "term": { "text": "PWM", "oneLine": "用高电平占一个周期的比例，表达一个连续量。" },
+      "check": {
+        "id": "learn-1",
+        "type": "choice",
+        "task": "舵机转到 180° 时，高电平通常约是多少？",
+        "options": ["2.0 毫秒", "20 毫秒", "0.5 毫秒"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "do",
+      "seconds": 200,
+      "narration": ["先读周期，再量高电平。", "四路信号里，只有一路给舵机。", "对应上角度，才算真读懂。"],
+      "sim": {
+        "id": "pwm",
+        "version": 1,
+        "task": "解码四路 PWM，找出舵机控制通道，并用 20 毫秒周期与 1.5 毫秒高电平对照角度。",
+        "hints": ["周期从上升沿到下一个上升沿。", "占空比 = 高电平 / 周期。", "先找 50 赫兹那一路，再看宽度。"]
+      }
+    },
+    {
+      "id": "prove",
+      "seconds": 100,
+      "mode": "numeric",
+      "narration": ["把两个数写下来。", "周期二十毫秒，高电平一点五毫秒。", "误差之内，说明信号对上了。"],
+      "checks": [
+        { "id": "servo-period", "type": "measurement", "task": "舵机信号周期", "expected": 20, "tolerance": 0.5, "unit": "ms" },
+        { "id": "servo-pulse", "type": "measurement", "task": "中位高电平宽度", "expected": 1.5, "tolerance": 0.1, "unit": "ms" }
+      ]
+    },
+    {
+      "id": "transfer",
+      "seconds": 90,
+      "narration": ["如果舵机被卡住呢？", "电流会先冲上去吗？", "你会先看温度还是先看信号？"],
+      "prompt": "舵机堵转时，最先该警惕的是什么？",
+      "options": ["电流上升与发热", "电压自动升高", "什么都不会变"],
+      "answerIndex": 0
+    },
+    {
+      "id": "recap",
+      "seconds": 25,
+      "narration": ["周期定节奏，宽度定角度。", "执行器也要保护。", "先测信号，再查机械。"],
+      "lines": ["周期定节奏，宽度定角度。", "执行器也要保护。", "先测信号，再查机械。"]
+    }
+  ],
+  "safety": {
+    "powerOffBeforeWiring": true,
+    "liveMeasurementBlocked": true,
+    "note": "舵机与续流为台面仿真；真实装配请断电接线、核对供电电流，并避免堵转。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["玩家", "游戏", "网页", "第七校验", "熵", "残响", "第一编译者", "0x7F"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true
+  }
+}

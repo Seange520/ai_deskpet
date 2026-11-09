@@ -1,0 +1,111 @@
+{
+  "schema": "lesson.v2",
+  "lessonId": "L-AD-04-v2",
+  "kp": {
+    "id": "AD-04",
+    "name": "感知与总线：I2C 扫描",
+    "layer": "L2",
+    "pillar": "weave",
+    "oneLiner": "先问地址，再读世界"
+  },
+  "meta": {
+    "version": "2.0.0",
+    "updatedAt": "2026-11-09",
+    "estimatedMinutes": 11,
+    "template": "mission-seven-v1",
+    "gameMount": "P10-维修间",
+    "sourceLesson": "L-AD-04",
+    "author": "SparkMate Automation"
+  },
+  "story": {
+    "act": 1,
+    "title": "造物时刻",
+    "scene": "P10-维修间",
+    "npc": "贺非",
+    "setup": "贺非递来一块传感器板：先确认总线上都有谁，再谈读到的数。"
+  },
+  "segments": [
+    {
+      "id": "mission",
+      "seconds": 25,
+      "narration": ["桌宠要感知，先接总线。", "总线上的设备，各有地址。", "今天的任务：把设备都找出来。"],
+      "task": "扫描 I2C 总线，记录每个设备的地址，并验证上拉电阻。"
+    },
+    {
+      "id": "observe",
+      "seconds": 55,
+      "narration": ["两根线：一根送时钟，一根送数据。", "空闲时都被上拉成高电平。", "谁被点名，谁才应答。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/AD-04/sensor-bus.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "check": {
+        "id": "obs-1",
+        "type": "choice",
+        "task": "I2C 总线需要几根信号线？",
+        "options": ["两根", "四根", "一根"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "learn",
+      "seconds": 85,
+      "narration": ["地址是门牌号，不能重。", "屏幕常见 0x3C，姿态 0x68。", "上拉缺失，总线会浮空。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/AD-04/sensor-bus.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "term": { "text": "上拉电阻", "oneLine": "总线空闲时把两根线拉回高电平的电阻。" },
+      "check": {
+        "id": "learn-1",
+        "type": "choice",
+        "task": "总线空闲时，SDA 与 SCL 应处于什么电平？",
+        "options": ["高电平", "低电平", "浮空"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "do",
+      "seconds": 200,
+      "narration": ["从地址表里逐个点名。", "谁应答，谁就在线上。", "地址冲突，先隔离再接回。"],
+      "sim": {
+        "id": "i2c-scan",
+        "version": 1,
+        "task": "用扫描器逐个地址查询，记录应答设备并处理一次地址冲突。",
+        "hints": ["先确认供电与共地。", "从 0x08 扫到 0x77。", "两个设备同地址时，先拔掉一个复测。"]
+      }
+    },
+    {
+      "id": "prove",
+      "seconds": 100,
+      "mode": "numeric",
+      "narration": ["把硬件条件也记下来。", "上拉四点七千欧，设备两个。", "数字对了，总线才算健康。"],
+      "checks": [
+        { "id": "pullup", "type": "measurement", "task": "SDA 上拉电阻", "expected": 4700, "tolerance": 100, "unit": "Ω" },
+        { "id": "devices", "type": "measurement", "task": "扫描到的设备数", "expected": 2, "tolerance": 0.5, "unit": "次" }
+      ]
+    },
+    {
+      "id": "transfer",
+      "seconds": 90,
+      "narration": ["如果两个设备地址一样？", "谁会先应答？", "你准备怎么隔离？"],
+      "prompt": "两个 I2C 设备地址相同时，通常会怎样？",
+      "options": ["总线冲突，读数错乱", "自动分配新地址", "传输速度变快"],
+      "answerIndex": 0
+    },
+    {
+      "id": "recap",
+      "seconds": 25,
+      "narration": ["地址先对齐，再谈数据。", "上拉是总线的地基。", "先扫描，再接线。"],
+      "lines": ["地址先对齐，再谈数据。", "上拉是总线的地基。", "先扫描，再接线。"]
+    }
+  ],
+  "safety": {
+    "powerOffBeforeWiring": true,
+    "liveMeasurementBlocked": true,
+    "note": "I2C 为台面仿真；真实接线请断电、核对 3.3V 逻辑与上拉，避免 5V 灌入总线。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["玩家", "游戏", "网页", "第七校验", "熵", "残响", "第一编译者", "0x7F"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true
+  }
+}

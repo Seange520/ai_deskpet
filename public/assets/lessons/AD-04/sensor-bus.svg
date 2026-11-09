@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-label="AD-04 I2C总线与设备地址扫描示意">
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#12262b" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="675" fill="#08161a"/>
+  <rect width="1200" height="675" fill="url(#grid)"/>
+  <text x="48" y="64" fill="#4fd1c5" font-family="Consolas, monospace" font-size="17" letter-spacing="2">THE WEAVE / 检修手册 · AD-04</text>
+  <text x="48" y="108" fill="#e6f7f5" font-family="Microsoft YaHei, sans-serif" font-size="38" font-weight="700">感知与总线：先问地址，再读世界</text>
+  <line x1="48" y1="128" x2="1152" y2="128" stroke="#1d3a40" stroke-width="2"/>
+
+  <rect x="48" y="170" width="250" height="150" rx="10" fill="#0d2328" stroke="#2b5b63"/>
+  <text x="72" y="210" fill="#8fe3d8" font-family="Microsoft YaHei, sans-serif" font-size="20">主控 ESP32</text>
+  <text x="72" y="250" fill="#d7ece9" font-family="Microsoft YaHei, sans-serif" font-size="18">SDA / SCL</text>
+  <text x="72" y="284" fill="#9fb8bd" font-family="Microsoft YaHei, sans-serif" font-size="16">3.3V 逻辑</text>
+
+  <line x1="298" y1="222" x2="1080" y2="222" stroke="#4fd1c5" stroke-width="3"/>
+  <line x1="298" y1="286" x2="1080" y2="286" stroke="#f6c177" stroke-width="3"/>
+  <text x="310" y="212" fill="#4fd1c5" font-family="Microsoft YaHei, sans-serif" font-size="16">SDA（数据）</text>
+  <text x="310" y="312" fill="#f6c177" font-family="Microsoft YaHei, sans-serif" font-size="16">SCL（时钟）</text>
+
+  <rect x="340" y="366" width="220" height="120" rx="10" fill="#0d2328" stroke="#2b5b63"/>
+  <text x="364" y="406" fill="#e6f7f5" font-family="Microsoft YaHei, sans-serif" font-size="19">OLED 屏</text>
+  <text x="364" y="440" fill="#8fe3d8" font-family="Consolas, monospace" font-size="20">0x3C</text>
+  <line x1="450" y1="366" x2="450" y2="286" stroke="#4fd1c5" stroke-width="2"/>
+  <line x1="450" y1="366" x2="450" y2="222" stroke="#4fd1c5" stroke-width="2"/>
+
+  <rect x="640" y="366" width="220" height="120" rx="10" fill="#0d2328" stroke="#2b5b63"/>
+  <text x="664" y="406" fill="#e6f7f5" font-family="Microsoft YaHei, sans-serif" font-size="19">IMU 姿态</text>
+  <text x="664" y="440" fill="#8fe3d8" font-family="Consolas, monospace" font-size="20">0x68</text>
+  <line x1="750" y1="366" x2="750" y2="286" stroke="#4fd1c5" stroke-width="2"/>
+  <line x1="750" y1="366" x2="750" y2="222" stroke="#4fd1c5" stroke-width="2"/>
+
+  <rect x="940" y="196" width="150" height="100" rx="8" fill="#132f35" stroke="#4fd1c5" stroke-dasharray="6 4"/>
+  <text x="962" y="236" fill="#8fe3d8" font-family="Microsoft YaHei, sans-serif" font-size="16">上拉电阻</text>
+  <text x="962" y="266" fill="#d7ece9" font-family="Consolas, monospace" font-size="18">4.7k ×2</text>
+
+  <rect x="48" y="530" width="1104" height="76" rx="10" fill="#0a1d21" stroke="#1d3a40"/>
+  <text x="72" y="568" fill="#4fd1c5" font-family="Microsoft YaHei, sans-serif" font-size="18">扫描思路：逐个地址发问 → 谁应答就记下谁 → 地址冲突时先隔离再排查</text>
+  <text x="72" y="594" fill="#8aa4a8" font-family="Microsoft YaHei, sans-serif" font-size="15">真实接线前请断电；上拉电阻接 3.3V，不要把 5V 直接灌进总线。</text>
+</svg>
