@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef } from 'react';
 import { useThree } from '@react-three/fiber';
-import { EffectComposer, Bloom, ToneMapping, FXAA, Vignette } from '@react-three/postprocessing';
-import { ToneMappingMode } from 'postprocessing';
+import { EffectComposer, Bloom, ToneMapping, FXAA, Vignette, Noise, HueSaturation, BrightnessContrast } from '@react-three/postprocessing';
+import { ToneMappingMode, BlendFunction } from 'postprocessing';
 import { ScreenLightingEffect } from '../stage/AdvancedStageEffects';
 import { ComposerResources } from '../stage/StageEffects';
 import ToonHighlights from '../npr/ToonHighlights';
@@ -39,6 +39,9 @@ export default function SkinEffects({ paused }) {
         radius={0.85}
       />
       <ToneMapping mode={ToneMappingMode.ACES_FILMIC} />
+      <BrightnessContrast contrast={0.07} brightness={0.005} />
+      <HueSaturation hue={0} saturation={0.09} />
+      <Noise premultiply blendFunction={BlendFunction.SOFT_LIGHT} opacity={0.028} />
       <Vignette offset={0.25} darkness={0.16} />
       <FXAA />
     </EffectComposer>

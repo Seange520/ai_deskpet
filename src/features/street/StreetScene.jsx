@@ -7,13 +7,26 @@ import { useFrame, useThree } from '@react-three/fiber';
 import { RoundedBox } from '@react-three/drei';
 import { CanvasTexture, Vector3, AdditiveBlending } from 'three';
 import ToonMaterial from '../npr/ToonMaterial';
+import { surfaceTexture } from './streetTextures';
 import useReducedMotionPreference from '../../lib/useReducedMotionPreference';
 import { useWorldMap } from '../world/navigationStore';
 import { useExploration } from '../world/explorationState';
 import { STREET, PROBES, sampleCircuit } from './circuit.mjs';
 import { useStreet } from './streetStore';
 
-function Block({ p, size, color = '#344858', metal = false, ...props }) {
+function Block({ p, size, color = '#344858', metal = false, surface, ...props }) {
+  const source = surface ? surfaceTexture(surface) : null;
+  const map = useMemo(() => {
+    if (!source) return null;
+    const texture = source.clone();
+    texture.repeat.set(
+      Math.max(1, Math.round(size[0] * 0.55)),
+      Math.max(1, Math.round(size[1] * 0.55)),
+    );
+    texture.needsUpdate = true;
+    return texture;
+  }, [source, size[0], size[1]]);
+  useEffect(() => (map ? () => map.dispose() : undefined), [map]);
   return (
     <RoundedBox
       position={p}
@@ -25,9 +38,21 @@ function Block({ p, size, color = '#344858', metal = false, ...props }) {
       {...props}
     >
       {metal ? (
-        <meshStandardMaterial color={color} metalness={0.65} roughness={0.55} />
+        <meshStandardMaterial
+          color={color}
+          metalness={0.55}
+          roughness={map ? 0.48 : 0.55}
+          map={map}
+          bumpMap={map}
+          bumpScale={0.22}
+        />
       ) : (
-        <ToonMaterial color={color} />
+        <ToonMaterial
+          color={color}
+          map={map}
+          bumpMap={map}
+          bumpScale={map ? 0.18 : 0}
+        />
       )}
     </RoundedBox>
   );
@@ -105,9 +130,10 @@ function Shop({ x, side, index }) {
         p={[x, 2.2 + index * 0.25, z]}
         size={[2.35, 4.4 + index * 0.5, 1]}
         color={colors[(index + (side > 0 ? 1 : 0)) % 3]}
+        surface={['brick', 'concrete', 'brick'][(index + (side > 0 ? 1 : 0)) % 3]}
       />
       <Block p={[x, 3.1, front]} size={[2.42, 0.14, 0.22]} color="#182a36" metal />
-      <Block p={[x, 1.03, front]} size={[1.95, 1.95, 0.08]} color="#1c2c39" />
+      <Block p={[x, 1.03, front]} size={[1.95, 1.95, 0.08]} color="#1c2c39" metal surface="ribbed" />
       {Array.from({ length: 13 }, (_, i) => (
         <Block
           key={i}
@@ -415,13 +441,14 @@ export default function StreetScene({ paused = false }) {
       ))}
       <Sign text="熔 炉 外 街" p={[5.12, 3.35, 0]} size={[2.4, 0.46]} />
       <group position={[11.15, 0, 1.13]}>
-        <Block p={[0, 0.6, 0]} size={[1.5, 1.15, 0.55]} color="#4e6968" />
+        <Block p={[0, 0.6, 0]} size={[1.5, 1.15, 0.55]} color="#4e6968" surface="wood" />
         <Block p={[0, 1.2, 0]} size={[1.65, 0.08, 0.72]} color="#bcc3ae" metal />
         <Block
           p={[0, 2.05, 0.1]}
           size={[1.8, 0.13, 0.86]}
           color="#c7835e"
           rotation={[-0.12, 0, 0]}
+          surface="canvas"
         />
         {[0, 1, 2, 3].map((i) => (
           <Block
@@ -455,9 +482,9 @@ export default function StreetScene({ paused = false }) {
           <ToonMaterial color="#f1d5aa" />
         </mesh>
       </group>
-      <Block p={[8.15, 0.95, -1.49]} size={[0.9, 0.75, 0.21]} color="#657a78" metal />
+      <Block p={[8.15, 0.95, -1.49]} size={[0.9, 0.75, 0.21]} color="#657a78" metal surface="ribbed" />
       <Sign text="G0 / 24V" p={[8.15, 1.17, -1.365]} size={[0.64, 0.18]} ink="#ffe0a2" />
-      <Block p={[10.9, 0.45, 1.49]} size={[0.95, 0.8, 0.5]} color="#6c7f81" metal />
+      <Block p={[10.9, 0.45, 1.49]} size={[0.95, 0.8, 0.5]} color="#6c7f81" metal surface="ribbed" />
       <mesh position={[10.9, 0.5, 1.19]} rotation={[Math.PI / 2, 0, 0]}>
         <torusGeometry args={[0.25, 0.025, 8, 24]} />
         <meshStandardMaterial color="#172e38" metalness={0.7} roughness={0.4} />
