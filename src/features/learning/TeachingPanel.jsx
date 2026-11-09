@@ -126,6 +126,16 @@ export default function TeachingPanel() {
             />
           ) : (
             <>
+              <section className="teaching-card mission-bridge" data-mission-bridge>
+                <h3>街上的现场课</h3>
+                <p>
+                  晴光街三单抢修：表箱保险、发烫接头、带压换灯。先测量、再动手，
+                  分数会记录你的证据与安全操作。
+                </p>
+                <a className="mission-link" href="/?mission=r1&quality=3">
+                  去抢修现场（约 15 分钟）→
+                </a>
+              </section>
               <section className="teaching-card" data-diagnostic-card>
                 <h3>起点诊断</h3>
                 {s.profile.diagnostic ? (
