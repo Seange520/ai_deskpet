@@ -41,7 +41,7 @@ export default function FirmwareGeneratorPanel() {
           25℃， 上方串口波特率请选择 115200。连接网页前先关闭 IDE 串口监视器，释放端口。
         </p>
         <div className="firmware-toolbar">
-          <span>sparkmate_telemetry.ino · 模拟数据</span>
+          <span>checksum_telemetry.ino · 模拟数据</span>
           <Button className="btn" disabled={copyStatus === 'copying'} onClick={copyFirmware}>
             <Copy size={15} aria-hidden="true" />
             {copyStatus === 'copying' ? '复制中…' : '一键复制固件代码'}

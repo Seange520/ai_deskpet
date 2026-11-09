@@ -41,7 +41,7 @@ function HubOverview({ showMap }) {
     <div className="page hub-overview">
       <div className="page-heading compact">
         <div>
-          <div className="eyebrow">00 / SPARKMATE HUB</div>
+          <div className="eyebrow">00 / CHECKSUM HUB</div>
           <h1>
             中央<span className="text-neon">枢纽</span>
           </h1>
@@ -244,11 +244,11 @@ export default function App() {
               <Button
                 className="space-brand"
                 onClick={(event) => navigate('hub', event)}
-                aria-label="SparkMate 首页"
+                aria-label="第七校验 首页"
               >
                 <Zap size={20} fill="currentColor" aria-hidden="true" />
                 <span className="space-brand-text">
-                  SparkMate
+                  第七校验
                   <small className="project-chip">{route.name}</small>
                 </span>
               </Button>
@@ -325,7 +325,7 @@ export default function App() {
             overview &&
             (projected ? (
               <div className="space-overview-caption" aria-hidden="true">
-                <span className="eyebrow">SPARKMATE / NIGHT VALLEY</span>
+                <span className="eyebrow">CHECKSUM / NIGHT VALLEY</span>
                 <p>选择一座岛，开始探索。</p>
               </div>
             ) : (
@@ -385,7 +385,7 @@ export default function App() {
           {phase === 'detail' && (
             <footer className="app-footer" data-space-hud>
               <span>
-                SPARKMATE <i>®</i> LEARN. BUILD. BEFRIEND.
+                THE SEVENTH CHECKSUM <i>®</i> LEARN. BUILD. BEFRIEND.
               </span>
               <span>从 0 到 1，让好奇发生。</span>
             </footer>

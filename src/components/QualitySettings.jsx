@@ -30,7 +30,7 @@ export default function QualitySettings() {
       </summary>
       <section className="quality-menu" aria-label="全局画质设置">
         <header>
-          <span className="eyebrow">SPARKMATE · RENDERING</span>
+          <span className="eyebrow">SEVENTH CHECKSUM · RENDERING</span>
           <h2>全局画质</h2>
           <p aria-live="polite">
             {override !== null ? 'URL 调试覆盖' : settings.manual ? '手动模式' : '自动模式'} · 当前

@@ -1,5 +1,5 @@
 // Pure front-end template: simulated telemetry, no GPIO or actuator control.
-export const ESP32_FIRMWARE = String.raw`// SparkMate ESP32 telemetry demo — simulated data, no sensor required.
+export const ESP32_FIRMWARE = String.raw`// 第七校验 ESP32 telemetry demo — simulated data, no sensor required.
 #include <Arduino.h>
 
 constexpr unsigned long SERIAL_BAUD = 115200;

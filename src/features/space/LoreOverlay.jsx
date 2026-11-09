@@ -92,7 +92,7 @@ export default function LoreOverlay({ meteor, tier }) {
           >
             ×
           </button>
-          <small>SPARKMATE · 维护网络档案</small>
+          <small>SEVENTH CHECKSUM · 维护网络档案</small>
           <h3>{message.title}</h3>
           <p role="status">{message.text}</p>
           <p className="lore-detail">{message.detail}</p>

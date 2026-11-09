@@ -87,7 +87,7 @@ export default function PetFocusView({
           >
             <header className="pet-focus-header">
               <div>
-                <span>SPARKMATE · COMPANION</span>
+                <span>SEVENTH CHECKSUM · COMPANION</span>
                 <h2 id="pet-focus-title">只和小伙伴待一会儿。</h2>
               </div>
               <Button

@@ -3,7 +3,7 @@ export const routeLessons = {
   classic: {
     title: '表情实验',
     control: '眨眼间隔',
-    tip: '经典路线先把表情控制做好，再接入声音与 AI。SparkMateDemo.h 是教学占位 API，不能直接编译。',
+    tip: '经典路线先把表情控制做好，再接入声音与 AI。ChecksumDemo.h 是教学占位 API，不能直接编译。',
     warnings: [
       {
         title: '接线警告',
@@ -138,9 +138,9 @@ void loop() {
 }
 // 浏览器假定静止倾斜 ${tilt}°，并不读取真实传感器`;
   else
-    code = `// SparkMate 表情实验 · Arduino 风格伪代码
+    code = `// 第七校验 表情实验 · Arduino 风格伪代码
 // 参数通过下方控件修改，右侧立即预览
-#include <SparkMateDemo.h>
+#include <ChecksumDemo.h>
 
 void setup() {
   pet.begin();

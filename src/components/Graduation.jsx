@@ -10,18 +10,18 @@ export default function Graduation({ routeId = 'classic', onShop, onOverview }) 
   async function share() {
     // 生成可保存的作品卡，不分享本机 localhost 地址，也不会自动发布到社交平台。
     const svg =
-      '<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800"><rect width="1200" height="800" rx="40" fill="#f6f1e7"/><rect x="32" y="32" width="1136" height="736" rx="28" fill="none" stroke="#ba9457"/><g text-anchor="middle" font-family="sans-serif" fill="#203a36"><text x="600" y="150" font-size="26">SparkMate · 我的第一次创造</text><text x="600" y="290" font-size="64">你好，桌宠创造者。</text><text x="600" y="400" font-size="28">我完成了虚拟电源接线与代码调参</text><text x="600" y="470" font-size="26">从零开始，也能让好奇发光。</text><text x="600" y="660" font-size="18">虚拟创作体验纪念 · 非学历或职业资格证明</text></g></svg>';
+      '<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800"><rect width="1200" height="800" rx="40" fill="#f6f1e7"/><rect x="32" y="32" width="1136" height="736" rx="28" fill="none" stroke="#ba9457"/><g text-anchor="middle" font-family="sans-serif" fill="#203a36"><text x="600" y="150" font-size="26">第七校验 · 我的第一次创造</text><text x="600" y="290" font-size="64">你好，桌宠创造者。</text><text x="600" y="400" font-size="28">我完成了虚拟电源接线与代码调参</text><text x="600" y="470" font-size="26">从零开始，也能让好奇发光。</text><text x="600" y="660" font-size="18">虚拟创作体验纪念 · 非学历或职业资格证明</text></g></svg>';
     const routeSvg = svg
-      .replace('SparkMate · 我的第一次创造', `SparkMate · ${route.name}`)
+      .replace('第七校验 · 我的第一次创造', `SparkMate · ${route.name}`)
       .replace(
         '我完成了虚拟电源接线与代码调参',
         `我完成了示意接线与${routeLessons[route.id].title}`,
       );
-    const file = new File([routeSvg], 'SparkMate-我的作品.svg', { type: 'image/svg+xml' });
+    const file = new File([routeSvg], '第七校验-我的作品.svg', { type: 'image/svg+xml' });
     try {
       if (navigator.canShare?.({ files: [file] }) && navigator.share) {
         await navigator.share({
-          title: '我的 SparkMate 作品',
+          title: '我的第七校验作品',
           text: '从零开始，我完成了虚拟接线与桌宠调参！',
           files: [file],
         });
@@ -44,7 +44,7 @@ export default function Graduation({ routeId = 'classic', onShop, onOverview }) 
   return (
     <>
       <div className="certificate">
-        <span className="certificate-kicker">SPARKMATE · 创作纪念</span>
+        <span className="certificate-kicker">SEVENTH CHECKSUM · 创作纪念</span>
         <Award size={52} />
         <span className="certificate-tag">{route.name} · 体验课程毕业证书</span>
         <h2 id="modal-title">你好，桌宠创造者。</h2>

@@ -71,7 +71,7 @@ export function Board({ className = '' }) {
       <rect x="94" y="276" width="52" height="38" rx="6" fill="url(#metal)" stroke="#bbc5c7" />
       <rect x="102" y="295" width="36" height="11" rx="5" fill="#142124" />
       <text x="120" y="263" textAnchor="middle" fill="#9dc8b7" fontFamily="monospace" fontSize="9">
-        SPARKMATE / DEVKIT
+        SEVENTH CHECKSUM / DEVKIT
       </text>
     </svg>
   );
@@ -137,7 +137,7 @@ export function Pet({ color = '#6EE7B7', speed = 2400, expression = 'happy', cla
         </span>
       </div>
       <div className="pet-bottom">
-        <span>sparkmate</span>
+        <span>checksum</span>
         <div className="speaker">
           •••••
           <br />

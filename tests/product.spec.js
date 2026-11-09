@@ -63,7 +63,7 @@ test('毕业证书、作品卡下载和商城转化闭环', async ({ page }) => 
   const pending = page.waitForEvent('download');
   await page.getByRole('button', { name: '分享我的作品' }).click();
   const download = await pending;
-  expect(download.suggestedFilename()).toBe('SparkMate-我的作品.svg');
+  expect(download.suggestedFilename()).toBe('第七校验-我的作品.svg');
   await expect(page.getByRole('dialog').getByRole('status')).toContainText('作品卡已下载');
   await expect(page.locator('.modal-backdrop')).toHaveCSS('opacity', '1');
   await page.screenshot({ path: 'test-results/graduation.png' });

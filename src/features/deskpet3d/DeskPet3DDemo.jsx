@@ -11,7 +11,7 @@ export default function DeskPet3DDemo() {
     <main className="stage3d-page">
       <header className="stage3d-header">
         <a href="/" className="stage3d-brand">
-          ⚡ SparkMate
+          ⚡ 第七校验
         </a>
         <span>PHASE 3 · 指令动画实验</span>
       </header>

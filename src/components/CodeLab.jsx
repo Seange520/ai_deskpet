@@ -93,7 +93,7 @@ export default function CodeLab({
         <section className="panel editor-panel">
           <div className="editor-tab">
             <span>
-              <Code2 size={16} /> sparkmate.ino <i />
+              <Code2 size={16} /> checksum.ino <i />
             </span>
             <span>Arduino 风格 · 教学伪代码</span>
           </div>
@@ -298,7 +298,7 @@ export default function CodeLab({
             )}
           </div>
           <div className="preview-caption">
-            <span>SPARKMATE / 001</span>
+            <span>SEVENTH CHECKSUM / 001</span>
             <h2>
               {routeId !== 'classic'
                 ? lesson.title

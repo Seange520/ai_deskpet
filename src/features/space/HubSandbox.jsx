@@ -174,7 +174,7 @@ export default function HubSandbox({ tier, paused, reduced }) {
       </mesh>
       <WorldLabel
         title="中央枢纽"
-        code="00 / SPARKMATE HUB"
+        code="00 / CHECKSUM HUB"
         color="#90e4f0"
         position={[0, 3.36, 0]}
       />
