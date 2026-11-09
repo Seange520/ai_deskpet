@@ -1,0 +1,195 @@
+{
+  "schema": "lesson.v2",
+  "lessonId": "L-IC-06-v2",
+  "kp": {
+    "id": "IC-06",
+    "name": "计数器：把时钟沿数出来",
+    "layer": "L4",
+    "pillar": "forge",
+    "oneLiner": "沿来一次，数加一"
+  },
+  "meta": {
+    "version": "2.0.0",
+    "updatedAt": "2026-11-09",
+    "estimatedMinutes": 12,
+    "template": "mission-seven-v1",
+    "gameMount": "P10-维修间",
+    "sourceLesson": "L-IC-06",
+    "author": "SparkMate Automation"
+  },
+  "story": {
+    "act": 2,
+    "title": "专业支线 · 芯片入门",
+    "scene": "P10-维修间",
+    "npc": "贺非",
+    "setup": "一个触发器记住一位，一串触发器就能数数。秒表、分频、地址指针，全靠它把时间变成数字。"
+  },
+  "segments": [
+    {
+      "id": "mission",
+      "seconds": 25,
+      "narration": [
+        "一个触发器记一位。",
+        "串起来，就能数时钟。",
+        "今天的任务：数三个沿，再让它回绕。"
+      ],
+      "task": "数时钟沿、复位归零，并说明 4 位计数器什么时候回绕。"
+    },
+    {
+      "id": "observe",
+      "seconds": 55,
+      "narration": [
+        "每来一个上升沿，计数加一。",
+        "数到 15 是一圈。",
+        "再一个沿，回到 0。"
+      ],
+      "media": [
+        {
+          "kind": "svg",
+          "src": "assets/lessons/IC-06/counter.svg",
+          "status": "ready",
+          "license": "CC-BY-4.0"
+        }
+      ],
+      "check": {
+        "id": "obs-1",
+        "type": "choice",
+        "task": "4 位二进制计数器最多能表示几个数？",
+        "options": [
+          "16 个（0–15）",
+          "8 个（0–7）",
+          "4 个"
+        ],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "learn",
+      "seconds": 85,
+      "narration": [
+        "计数器=触发器+组合逻辑。",
+        "低位每翻转两次，高位进一。",
+        "分频就是把沿数慢。"
+      ],
+      "media": [
+        {
+          "kind": "svg",
+          "src": "assets/lessons/IC-06/counter.svg",
+          "status": "ready",
+          "license": "CC-BY-4.0"
+        }
+      ],
+      "term": {
+        "text": "分频",
+        "oneLine": "用计数器把高频时钟变成更慢的节拍。"
+      },
+      "check": {
+        "id": "learn-1",
+        "type": "choice",
+        "task": "4 位计数器从 0 开始，打三个时钟沿后计数是？",
+        "options": [
+          "3",
+          "2",
+          "4"
+        ],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "do",
+      "seconds": 200,
+      "narration": [
+        "先打两个沿，记下读数。",
+        "按复位，看它归零。",
+        "再数到 15，看它回绕。"
+      ],
+      "sim": {
+        "id": "counter",
+        "version": 1,
+        "task": "操作计数器，回答沿数、复位与回绕三问。",
+        "hints": [
+          "每打一个时钟沿，计数加一。",
+          "复位把计数清零。",
+          "4 位数从 0 到 15，下一个沿回 0。"
+        ]
+      }
+    },
+    {
+      "id": "prove",
+      "seconds": 100,
+      "mode": "numeric",
+      "narration": [
+        "两个沿后写 2。",
+        "复位置零写 0。",
+        "读数与操作一起留档。"
+      ],
+      "checks": [
+        {
+          "id": "two",
+          "type": "measurement",
+          "task": "两个沿后的计数",
+          "expected": 2,
+          "tolerance": 0.01,
+          "unit": "次"
+        },
+        {
+          "id": "reset",
+          "type": "measurement",
+          "task": "复位后的计数",
+          "expected": 0,
+          "tolerance": 0.01,
+          "unit": "次"
+        }
+      ]
+    },
+    {
+      "id": "transfer",
+      "seconds": 90,
+      "narration": [
+        "计数器还能分频。",
+        "每来 4 个沿，输出翻一次。",
+        "输入 8 个沿，输出翻几次？"
+      ],
+      "prompt": "输入时钟 8 个沿，4 分频输出翻转几次？",
+      "options": [
+        "2 次",
+        "4 次",
+        "8 次"
+      ],
+      "answerIndex": 0
+    },
+    {
+      "id": "recap",
+      "seconds": 25,
+      "narration": [
+        "沿来一次，数加一。",
+        "复位置零，满位回绕。",
+        "计数器把时间变成数字。"
+      ],
+      "lines": [
+        "沿来一次，数加一。",
+        "复位置零，满位回绕。",
+        "计数器把时间变成数字。"
+      ]
+    }
+  ],
+  "safety": {
+    "powerOffBeforeWiring": true,
+    "liveMeasurementBlocked": true,
+    "note": "断电接线；时钟与复位输入不可悬空；计数器输出接负载前先确认扇出；实测先测电源与地，再逐沿核对。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": [
+      "玩家",
+      "游戏",
+      "网页",
+      "第七校验",
+      "熵",
+      "残响",
+      "第一编译者",
+      "0x7F"
+    ],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true
+  }
+}
