@@ -278,3 +278,171 @@
 .teaching-narration-lines { display: grid; gap: 5px; margin: 10px 0 0; padding: 0; list-style: none; }
 .teaching-narration-lines li { padding: 4px 8px; border-left: 2px solid #2c414c; border-radius: 3px; color: #c3d6dd; font-size: 13px; line-height: 1.55; }
 .teaching-narration-lines li.is-current { border-left-color: #79e8cb; background: rgba(111, 227, 200, .08); color: #eefcf7; }
+/* UI 重制 2：校验之径 · 检修终端视觉语言 */
+.teaching-panel {
+  color: #e8f4f7;
+}
+.teaching-panel::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background: repeating-linear-gradient(
+    0deg,
+    #7ed6c205 0 1px,
+    transparent 1px 3px
+  );
+}
+.teaching-panel [role='tablist'] {
+  padding: 6px;
+  gap: 6px;
+  border: 1px solid #33525d;
+  border-radius: 10px;
+  background: #0b1e28a6;
+  width: fit-content;
+}
+.teaching-panel [role='tab'] {
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: transparent;
+  color: #9dbec8;
+  min-height: 40px;
+  padding: 8px 16px;
+  letter-spacing: 0.04em;
+}
+.teaching-panel [role='tab'][aria-selected='true'] {
+  background: linear-gradient(180deg, #2f8a72, #1b5a4b);
+  border-color: #8ff3cd;
+  color: #eafff7;
+  box-shadow: 0 0 16px #6fe3c838, inset 0 1px 0 #ffffff2b;
+}
+.teaching-card {
+  position: relative;
+  padding: 18px 18px 16px;
+  background: linear-gradient(180deg, #172d38 0%, #0f222c 100%);
+  border: 1px solid #33525d;
+  border-radius: 12px;
+  box-shadow:
+    inset 0 1px 0 #ffffff0d,
+    0 10px 24px #00000038;
+}
+.teaching-card::after {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  border: 1px solid #2a4450;
+  border-radius: 8px;
+  pointer-events: none;
+}
+.teaching-lessons {
+  gap: 14px;
+}
+.teaching-lessons .teaching-card {
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+.teaching-lessons .teaching-card:hover {
+  border-color: #58cfae;
+  transform: translateY(-1px);
+}
+.teaching-segment {
+  position: relative;
+  padding: 18px 20px 16px;
+  background: linear-gradient(180deg, #162b36 0%, #0e2029 100%);
+  border: 1px solid #33525d;
+  border-radius: 12px;
+  box-shadow: inset 0 1px 0 #ffffff0d, 0 10px 24px #00000033;
+}
+.teaching-segment > legend,
+.teaching-segment h4 {
+  letter-spacing: 0.12em;
+  color: #8fe6c9;
+}
+.teaching-run-head {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #2c4653;
+}
+.teaching-meter {
+  position: relative;
+  padding: 20px;
+  border: 1px solid #3f5d68;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #1a303c 0%, #0d1f29 100%);
+  box-shadow: inset 0 -1px 0 #00000066, 0 14px 30px #00000042;
+}
+.teaching-meter::after {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 1px solid #2b4652;
+  border-radius: 10px;
+  pointer-events: none;
+}
+.teaching-meter output,
+.teaching-meter [data-meter-display] {
+  display: block;
+  padding: 14px 16px;
+  border: 1px solid #2f5b4a;
+  border-left: 4px solid #7dffcb;
+  border-radius: 8px;
+  background: radial-gradient(ellipse at 20% 0%, #123b2c88, transparent 60%), #04120c;
+  color: #a8ffd8;
+  font: 600 20px/1.4 'JetBrains Mono', Consolas, monospace;
+  letter-spacing: 0.04em;
+  text-shadow: 0 0 12px #63ffb24d;
+  box-shadow: inset 0 0 22px #000000a6, 0 0 0 3px #0a1a14;
+}
+.teaching-meter select,
+.teaching-meter input {
+  background: #07161e;
+  border: 1px solid #3f6a72;
+  border-radius: 6px;
+  color: #e8fff8;
+  box-shadow: inset 0 2px 6px #00000099;
+}
+.teaching-meter button {
+  background: linear-gradient(180deg, #27414e, #152b36);
+  border: 1px solid #4c7480;
+  border-radius: 8px;
+  box-shadow: 0 3px 0 #08141b, 0 6px 14px #00000059;
+}
+.teaching-meter button:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #08141b, 0 2px 6px #00000059;
+}
+.teaching-map {
+  border: 1px solid #2f4b57;
+  border-radius: 12px;
+  background:
+    radial-gradient(ellipse at 30% 15%, #1237474d, transparent 60%),
+    #081720;
+  box-shadow: inset 0 0 40px #00000066;
+  padding: 14px;
+}
+.teaching-map-layout .teaching-card,
+.teaching-map-layout aside.teaching-card {
+  background: linear-gradient(180deg, #142a35 0%, #0d1f28 100%);
+}
+.teaching-narration {
+  border: 1px solid #2f4b57;
+  border-left: 3px solid #7dffcb;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #0e2029, #0a181f);
+  box-shadow: inset 0 1px 0 #ffffff0d;
+}
+.teaching-narration .is-current {
+  color: #d8fff1;
+  text-shadow: 0 0 12px #63ffb240;
+}
+.teaching-sim-embed {
+  padding: 14px;
+  border: 1px dashed #3f6a72;
+  border-radius: 12px;
+  background: #0a1a22a6;
+}
+.teaching-sim-hint {
+  margin: 0 0 10px;
+  color: #8fe6c9;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+}
