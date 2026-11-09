@@ -1,4 +1,4 @@
-import { Component, Suspense, lazy } from 'react';
+﻿import { Component, Suspense, lazy } from 'react';
 import { useQualityTier } from '../../lib/qualityTier';
 import { useMission } from './missionStore.mjs';
 import MissionOverlay from './MissionOverlay.jsx';
@@ -21,14 +21,14 @@ class SceneBoundary extends Component {
 export default function MissionR1Root() {
   const { tier, maxDpr } = useQualityTier();
   const error = useMission((s) => s.error);
-  if (tier !== 3) {
+  if (tier < 2) {
     const url = new URL(location.href);
     url.searchParams.set('quality', '3');
     return (
       <main className="mission-root mission-gate">
         <section className="mission-paper">
           <h1>晴光街 · 抢修委托</h1>
-          <p>此实验场景需要 Tier 3。手机会使用较低细节的街景资产。</p>
+          <p>晴光街需要至少中等画质（Tier 2）。手机上会使用较低细节的街景。</p>
           <a href={url.href}>以 Tier 3 打开委托</a>
           <a href="?">返回学习枢纽</a>
         </section>
