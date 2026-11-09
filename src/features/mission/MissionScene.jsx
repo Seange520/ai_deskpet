@@ -141,6 +141,7 @@ export default function MissionScene({ maxDpr }) {
     let player,
       particles,
       lampMaterials = [],
+      litAt = 0,
       committedPosition;
     const loader = new GLTFLoader();
     const mobile = matchMedia('(pointer: coarse), (max-width: 767px)').matches;
@@ -219,12 +220,20 @@ export default function MissionScene({ maxDpr }) {
       }
       player.position.set(x, 0.08, z);
       const lit = mission.step === 'scored' || mission.orderIndex === 2;
-      lampMaterials.forEach((material) => {
-        material.emissiveIntensity = lit
-          ? 2
-          : mission.orderIndex === 1 && mission.step === 'powered'
-            ? 0.25 + Math.sin(now / 80) * 0.2
-            : 0.02;
+      if (lit && !litAt) litAt = now;
+      if (!lit) litAt = 0;
+      lampMaterials.forEach((material, index) => {
+        if (lit) {
+          // 合闸演出：路灯自街头向街尾逐个亮起。
+          const ramp = litAt
+            ? THREE.MathUtils.clamp((now - litAt - index * 340) / 280, 0, 1)
+            : 1;
+          material.emissiveIntensity = 0.02 + ramp * 1.98;
+        } else if (mission.orderIndex === 1 && mission.step === 'powered') {
+          material.emissiveIntensity = 0.25 + Math.sin(now / 80) * 0.2;
+        } else {
+          material.emissiveIntensity = 0.02;
+        }
       });
       POINTS.forEach((point) => {
         const marker = markers.current[point.id];

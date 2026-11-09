@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ClipboardCheck, Gauge, ShieldCheck, Wrench, Zap, Volume2, VolumeX } from 'lucide-react';
-import { isMuted, setMuted } from '../../lib/sounds';
+import { isMuted, playSound, setMuted } from '../../lib/sounds';
 import { useMission } from './missionStore.mjs';
 import { ORDERS, POINTS, STEP_LABELS, objective } from './missionData.mjs';
 import { inRange } from './mission.mjs';
@@ -14,6 +14,21 @@ export default function MissionOverlay() {
     const timer = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(timer);
   }, []);
+  useEffect(() => {
+    const cues = {
+      briefed: 'confirm',
+      powered: 'relay',
+      isolated: 'click',
+      located: 'measure',
+      repaired: 'confirm',
+      verified: 'chime',
+      scored: 'success',
+      violated: 'warning',
+      retry: 'dizzy',
+    };
+    const kind = cues[s.step];
+    if (kind) playSound(kind, muted);
+  }, [s.step, muted]);
   const order = ORDERS[s.orderIndex],
     point = POINTS.find((p) => p.id === s.selected);
   const at = (id) => s.selected === id && inRange(s.position, id);
@@ -162,6 +177,10 @@ export default function MissionOverlay() {
               ) : (
                 <p data-testid="mission-complete">三单全部完成 · 晴光街恢复照明</p>
               )}
+              <p className="mission-study">
+                对应课节：K0-02《万用表 · 先选对档》
+                <a href="/">回学习枢纽复习 →</a>
+              </p>
               <a href="?">返回学习枢纽</a>
             </>
           )}
