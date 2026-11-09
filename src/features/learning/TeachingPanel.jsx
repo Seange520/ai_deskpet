@@ -4,6 +4,7 @@ import graph from './data/knowledge-graph.v1.json';
 import { STATES, recommendations } from './learning.mjs';
 import { useLearningProfile } from './learningProfileStore';
 import LessonRunner from './LessonRunner';
+import LessonRunnerV2 from './LessonRunnerV2';
 import StarMap from './StarMap';
 import './teaching.css';
 const modules = import.meta.glob('./data/lessons/*.lesson.json', {
@@ -13,17 +14,26 @@ const modules = import.meta.glob('./data/lessons/*.lesson.json', {
 const lessons = Object.fromEntries(
   Object.values(modules).map((l) => [l.kp.id, l]),
 );
+const modulesV2 = import.meta.glob('./data/lessons-v2/*.v2.json', {
+  eager: true,
+  import: 'default',
+});
+const lessonsV2 = Object.fromEntries(
+  Object.values(modulesV2).map((l) => [l.kp.id, l]),
+);
 export default function TeachingPanel() {
   const s = useLearningProfile(),
     [tab, setTab] = useState('课节'),
     [current, setCurrent] = useState(null),
+    [currentV2, setCurrentV2] = useState(null),
     [minutes, setMinutes] = useState(15),
     [confirm, setConfirm] = useState(false),
     [serial, setSerial] = useState(0);
-  function start(id) {
+  function start(id, v2 = false) {
     if (s.profile.kps[id].status === 'locked') return;
     s.begin(id);
-    setCurrent(id);
+    if (v2) setCurrentV2(id);
+    else setCurrent(id);
     setSerial((n) => n + 1);
     setTab('课节');
   }
@@ -70,7 +80,14 @@ export default function TeachingPanel() {
         aria-labelledby={'teaching-tab-' + tab}
       >
         {tab === '课节' &&
-          (current ? (
+          (currentV2 ? (
+            <LessonRunnerV2
+              key={'v2-' + currentV2 + serial}
+              lesson={lessonsV2[currentV2]}
+              onFinish={(r) => s.finish(currentV2, r)}
+              onLeave={() => setCurrentV2(null)}
+            />
+          ) : current ? (
             <LessonRunner
               key={current + serial}
               lesson={lessons[current]}
@@ -119,6 +136,15 @@ export default function TeachingPanel() {
                     >
                       开始课节
                     </button>
+                    {lessonsV2[k.id] && (
+                      <button
+                        data-start-lesson-v2={k.id}
+                        disabled={s.profile.kps[k.id].status === 'locked'}
+                        onClick={() => start(k.id, true)}
+                      >
+                        重制版 · 任务制
+                      </button>
+                    )}
                   </article>
                 ))}
               </div>

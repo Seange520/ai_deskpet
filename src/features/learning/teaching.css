@@ -446,3 +446,30 @@
   font-size: 12px;
   letter-spacing: 0.12em;
 }
+/* 任务制 V2 运行器 */
+.teaching-run-footer {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid #2c4653;
+}
+.teaching-run [data-lesson-v2] .teaching-card + .teaching-card {
+  margin-top: 14px;
+}
+.teaching-choice {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  margin: 8px 0;
+  border: 1px solid #3f6a72;
+  border-radius: 10px;
+  background: #0b1e28a6;
+  cursor: pointer;
+}
+.teaching-choice:has(input:checked) {
+  border-color: #8ff3cd;
+  box-shadow: 0 0 14px #6fe3c836;
+}

@@ -1,0 +1,133 @@
+{
+  "schema": "lesson.v2",
+  "lessonId": "L-K1-01-v2",
+  "kp": { "id": "K1-01", "name": "欧姆定律与串联分压", "layer": "L1", "pillar": "forge", "oneLiner": "电压按电阻分蛋糕" },
+  "meta": {
+    "version": "2.0.0",
+    "updatedAt": "2026-11-09",
+    "estimatedMinutes": 10,
+    "template": "mission-seven-v1",
+    "gameMount": "P10-配电盒",
+    "sourceLesson": "L-K1-01",
+    "author": "SparkMate Automation"
+  },
+  "story": {
+    "act": 1,
+    "title": "会呼吸的路灯",
+    "scene": "P10-街口配电盒",
+    "npc": "贺非",
+    "setup": "夜宵摊的灯又闪了。摊主把万用表推给你：先看看，别猜。"
+  },
+  "segments": [
+    {
+      "id": "mission",
+      "seconds": 25,
+      "narration": [
+        "夜宵摊的灯又闪了。",
+        "摊主把表推过来：先量，别猜。",
+        "你先量哪一处？"
+      ],
+      "task": "选择第一个测量点，为整节课定目标。"
+    },
+    {
+      "id": "observe",
+      "seconds": 55,
+      "narration": [
+        "灯一闪，供电就抖一下。",
+        "串联回路里，电流只有一条路。",
+        "电压却会在元件之间分开。"
+      ],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/K1-01/series-voltage.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "check": {
+        "id": "obs-1",
+        "type": "choice",
+        "task": "串联回路里，电流在各处的关系是？",
+        "options": ["处处相等", "越靠电源越大", "越靠负载越小"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "learn",
+      "seconds": 85,
+      "narration": [
+        "串联里，电流处处相等。",
+        "电压按电阻大小分。",
+        "电阻大的一边，分走更多。"
+      ],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/K1-01/ohm-law.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "term": { "text": "分压", "oneLine": "总电压按各电阻的比例分配。" },
+      "check": {
+        "id": "learn-1",
+        "type": "choice",
+        "task": "串联中，电阻变大，它分到的电压会？",
+        "options": ["变大", "变小", "不变"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "do",
+      "seconds": 200,
+      "narration": [
+        "把回路接起来：电源、电阻、灯。",
+        "先断电再接，接完再上电。",
+        "然后按顺序量三处电压。"
+      ],
+      "sim": {
+        "id": "series-voltage",
+        "version": 1,
+        "task": "接出闭合串联回路，并测量电源、电阻、LED 三处电压。",
+        "hints": ["注意电源正负极方向。", "LED 长脚接电阻一侧。", "接线前先断开电源。"]
+      }
+    },
+    {
+      "id": "prove",
+      "seconds": 110,
+      "narration": [
+        "读数对得上，才算真修好。",
+        "电阻上大约三点一伏。",
+        "灯上大约一点九伏。"
+      ],
+      "checks": [
+        { "id": "v-resistor", "type": "measurement", "task": "测量电阻两端电压", "expected": 3.1, "tolerance": 0.2, "unit": "V" },
+        { "id": "v-led", "type": "measurement", "task": "测量 LED 两端电压", "expected": 1.9, "tolerance": 0.2, "unit": "V" },
+        { "id": "i-loop", "type": "measurement", "task": "读取回路电流", "expected": 14, "tolerance": 2, "unit": "mA" }
+      ]
+    },
+    {
+      "id": "transfer",
+      "seconds": 100,
+      "narration": [
+        "换个电源，还会算吗？",
+        "十二伏供电，电阻还是二百二。",
+        "灯会更亮，还是更暗？"
+      ],
+      "prompt": "电源改成 12V、电阻仍为 220Ω，LED 上的电压大约会？",
+      "options": ["变大", "变小", "不变"],
+      "answerIndex": 1
+    },
+    {
+      "id": "recap",
+      "seconds": 25,
+      "narration": [
+        "串联：电流同，电压分。",
+        "分压看电阻比例。",
+        "先量再改，断电再动手。"
+      ],
+      "lines": ["串联：电流同、电压分。", "分压看电阻比例。", "先量再改，断电再动手。"]
+    }
+  ],
+  "safety": {
+    "powerOffBeforeWiring": true,
+    "liveMeasurementBlocked": true,
+    "note": "本节课为 24V SELV 教学仿真；真实操作请断电并核对开发板资料。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["玩家", "游戏", "网页", "第七校验", "熵", "残响", "第一编译者", "0x7F"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true
+  }
+}

@@ -10,6 +10,7 @@
     "preview": "vite preview --host 127.0.0.1",
     "test:e2e": "playwright test",
     "test:special": "node scripts/check-space-kernel.mjs && node scripts/check-stage-quality.mjs && node scripts/check-stage-postprocessing.mjs",
+    "check:lesson-v2": "node scripts/check-lesson-v2.mjs",
     "qa": "node scripts/qa-check.mjs",
     "format": "prettier --write src tests *.js *.json *.md index.html"
   },
