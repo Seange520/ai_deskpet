@@ -1,0 +1,111 @@
+{
+  "schema": "lesson.v2",
+  "lessonId": "L-IC-01-v2",
+  "kp": {
+    "id": "IC-01",
+    "name": "PN 结：会开门的结",
+    "layer": "L3",
+    "pillar": "forge",
+    "oneLiner": "正向开门，反向关门"
+  },
+  "meta": {
+    "version": "2.0.0",
+    "updatedAt": "2026-11-09",
+    "estimatedMinutes": 12,
+    "template": "mission-seven-v1",
+    "gameMount": "P10-维修间",
+    "sourceLesson": "L-IC-01",
+    "author": "SparkMate Automation"
+  },
+  "story": {
+    "act": 2,
+    "title": "专业支线 · 芯片入门",
+    "scene": "P10-维修间",
+    "npc": "贺非",
+    "setup": "从一片 PN 结开始，电路才有方向。今天先学会让它单向开门，再给它配一个合适的限流电阻。"
+  },
+  "segments": [
+    {
+      "id": "mission",
+      "seconds": 25,
+      "narration": ["灯亮不亮，看结开不开。", "方向反了，它不导电。", "今天的任务：判断并限流。"],
+      "task": "先判断 PN 结的偏置方向，再给发光二极管算一个限流电阻。"
+    },
+    {
+      "id": "observe",
+      "seconds": 55,
+      "narration": ["P 区接正，N 区接负。", "正向偏置，电流才过。", "反过来，结变宽，门关上。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/IC-01/pn-junction.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "check": {
+        "id": "obs-1",
+        "type": "choice",
+        "task": "PN 结在反向偏置时处于什么状态？",
+        "options": ["截止，几乎没有电流", "导通，电流很大", "一定击穿"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "learn",
+      "seconds": 85,
+      "narration": ["正向压降约 0.7 伏。", "LED 约 1.8 到 2.2 伏。", "减去压降，剩下的给电阻。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/IC-01/pn-junction.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "term": { "text": "PN 结", "oneLine": "P 型接正、N 型接负时导通；反向则截止。" },
+      "check": {
+        "id": "learn-1",
+        "type": "choice",
+        "task": "LED 的长脚（阳极）应该接哪一边？",
+        "options": ["电源正极一侧", "电源负极一侧", "任意一侧都行"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "do",
+      "seconds": 200,
+      "narration": ["先看方向，再算电阻。", "5 伏减 1.9 伏，剩 3.1 伏。", "除以 10 毫安，得到 310 欧。"],
+      "sim": {
+        "id": "diode-bias",
+        "version": 1,
+        "task": "算限流电阻，判断反向偏置状态，辨认 LED 极性。",
+        "hints": ["R = (电源 - 压降) / 目标电流。", "反向偏置时 PN 结截止。", "长脚是阳极，短脚是阴极。"]
+      }
+    },
+    {
+      "id": "prove",
+      "seconds": 100,
+      "mode": "numeric",
+      "narration": ["把读数写下来。", "电阻和电流都要有单位。", "下次换灯，按同一公式。"],
+      "checks": [
+        { "id": "resistor", "type": "measurement", "task": "限流电阻", "expected": 310, "tolerance": 5, "unit": "Ω" },
+        { "id": "current", "type": "measurement", "task": "回路电流", "expected": 10, "tolerance": 0.1, "unit": "mA" }
+      ]
+    },
+    {
+      "id": "transfer",
+      "seconds": 90,
+      "narration": ["换了一颗红灯，压降 1.8 伏。", "电阻要不要跟着换？", "先算，再上电。"],
+      "prompt": "换成压降 1.8V 的红灯，仍要 10mA，限流电阻应改为？",
+      "options": ["约 320Ω", "还是 310Ω", "直接不要电阻"],
+      "answerIndex": 0
+    },
+    {
+      "id": "recap",
+      "seconds": 25,
+      "narration": ["正向开门，反向关门。", "限流电阻先算后接。", "读数留档，才可复核。"],
+      "lines": ["正向开门，反向关门。", "限流电阻先算后接。", "读数留档，才可复核。"]
+    }
+  ],
+  "safety": {
+    "powerOffBeforeWiring": true,
+    "liveMeasurementBlocked": true,
+    "note": "接线前先断电；二极管极性接反可能不亮，限流电阻不可省略；不确认电流前不长时间点亮。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["玩家", "游戏", "网页", "第七校验", "熵", "残响", "第一编译者", "0x7F"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true
+  }
+}

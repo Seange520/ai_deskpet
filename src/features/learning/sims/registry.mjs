@@ -20,6 +20,7 @@ export const registry = Object.freeze({
   'project-brief': () => import('./ProjectBriefSim.jsx'),
   'iteration-steps': () => import('./IterationStepsSim.jsx'),
   'graduation-audit': () => import('./GraduationAuditSim.jsx'),
+  'diode-bias': () => import('./DiodeBiasSim.jsx'),
 });
 export const simIds = Object.freeze(Object.keys(registry));
 export function getSim(id) {

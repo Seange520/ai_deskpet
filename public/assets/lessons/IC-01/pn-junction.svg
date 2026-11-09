@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-label="IC-01 PN 结：正向导通、反向截止与限流电阻">
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#12262b" stroke-width="1"/>
+    </pattern>
+    <marker id="arr" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0 0L10 4L0 8Z" fill="#f6c177"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="675" fill="#08161a"/>
+  <rect width="1200" height="675" fill="url(#grid)"/>
+  <text x="48" y="64" fill="#4fd1c5" font-family="Consolas, monospace" font-size="17" letter-spacing="2">THE FORGE / 检修手册 · IC-01</text>
+  <text x="48" y="108" fill="#e6f7f5" font-family="Microsoft YaHei, sans-serif" font-size="38" font-weight="700">PN 结：会开门的结</text>
+  <line x1="48" y1="128" x2="1152" y2="128" stroke="#1d3a40" stroke-width="2"/>
+
+  <g font-family="Microsoft YaHei, sans-serif">
+    <rect x="48" y="168" width="600" height="304" rx="12" fill="#0d2328" stroke="#2b5b63"/>
+    <text x="72" y="206" fill="#8fe3d8" font-size="20">① 正向偏置：P 接正，N 接负</text>
+    <rect x="72" y="228" width="220" height="96" rx="8" fill="#12302a" stroke="#4fd1c5" stroke-width="2"/>
+    <text x="150" y="270" fill="#4fd1c5" font-size="22" font-weight="700">P 区</text>
+    <text x="118" y="298" fill="#9fb8bd" font-size="13">接电源正极</text>
+    <rect x="308" y="228" width="220" height="96" rx="8" fill="#1a2a33" stroke="#2b5b63" stroke-width="2"/>
+    <text x="386" y="270" fill="#9fb8bd" font-size="22" font-weight="700">N 区</text>
+    <text x="354" y="298" fill="#9fb8bd" font-size="13">接电源负极</text>
+    <line x1="72" y1="344" x2="528" y2="344" stroke="#4fd1c5" stroke-width="2"/>
+    <line x1="72" y1="344" x2="72" y2="360" stroke="#4fd1c5" stroke-width="2"/>
+    <line x1="528" y1="344" x2="528" y2="360" stroke="#4fd1c5" stroke-width="2"/>
+    <text x="72" y="386" fill="#4fd1c5" font-size="15">结变窄，电流通过；压降约 0.7V（硅）</text>
+    <text x="72" y="414" fill="#9fb8bd" font-size="14">发光二极管正向压降更高，约 1.8–2.2V，必须串限流电阻。</text>
+
+    <rect x="672" y="168" width="480" height="304" rx="12" fill="#0d2328" stroke="#2b5b63"/>
+    <text x="696" y="206" fill="#8fe3d8" font-size="20">② 反向偏置：门关上</text>
+    <rect x="696" y="228" width="200" height="88" rx="8" fill="#1a2a33" stroke="#2b5b63" stroke-width="2"/>
+    <text x="774" y="266" fill="#9fb8bd" font-size="20" font-weight="700">P 区</text>
+    <text x="746" y="294" fill="#6f8f99" font-size="13">接电源负极</text>
+    <rect x="908" y="228" width="200" height="88" rx="8" fill="#12302a" stroke="#4fd1c5" stroke-width="2"/>
+    <text x="986" y="266" fill="#4fd1c5" font-size="20" font-weight="700">N 区</text>
+    <text x="958" y="294" fill="#9fb8bd" font-size="13">接电源正极</text>
+    <line x1="696" y1="336" x2="1108" y2="336" stroke="#2b5b63" stroke-width="2" stroke-dasharray="6 6"/>
+    <text x="696" y="372" fill="#f6c177" font-size="15">只有极小的漏电流（μA 级）</text>
+    <text x="696" y="400" fill="#9fb8bd" font-size="14">反向电压超过耐压值才会击穿，正常电路里不要让它反向。</text>
+
+    <rect x="48" y="496" width="1104" height="120" rx="12" fill="#12262b" stroke="#2b5b63"/>
+    <text x="72" y="530" fill="#8fe3d8" font-size="19">③ 限流电阻：R = (电源电压 − 正向压降) ÷ 目标电流</text>
+    <text x="72" y="562" fill="#e6f7f5" font-family="Consolas, monospace" font-size="18">例：5V − 1.9V = 3.1V；3.1V ÷ 10mA = 310Ω</text>
+    <text x="72" y="592" fill="#9fb8bd" font-size="14">LED 长脚为阳极（接正），短脚为阴极（接负）；电阻先算后接，读数再上电。</text>
+
+    <text x="48" y="648" fill="#6f8f99" font-size="13">教学示意：PN 结单向导电；真实接线前先断电，确认极性与限流电阻，避免反向击穿或过流烧灯。</text>
+  </g>
+</svg>

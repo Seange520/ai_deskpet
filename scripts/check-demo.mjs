@@ -95,13 +95,13 @@ try {
   await page.goto(base + '/?quality=0&world=p9', { waitUntil: 'domcontentloaded' });
   await openPanel();
   if ((await page.locator('[data-demo-banner]').count()) !== 0) throw new Error('正式版不应显示 Demo 横幅');
-  if ((await page.locator('.teaching-lessons article').count()) !== 58) {
-    throw new Error('正式版课节数量应为 58，实际 ' + (await page.locator('.teaching-lessons article').count()));
+  if ((await page.locator('.teaching-lessons article').count()) !== 59) {
+    throw new Error('正式版课节数量应为 59，实际 ' + (await page.locator('.teaching-lessons article').count()));
   }
   if ((await page.locator('[data-start-lesson-v2="AD-18"]').count()) !== 1) throw new Error('正式版缺少 AD-18 入口');
   if ((await page.locator('[data-start-lesson-v2="AD-06"]').count()) !== 1) throw new Error('正式版缺少 AD-06 入口');
-  if ((await page.locator('[data-teaching-chapters] article').count()) !== 3) {
-    throw new Error('正式版章节卡应为 3 章');
+  if ((await page.locator('[data-teaching-chapters] article').count()) !== 4) {
+    throw new Error('正式版章节卡应为 4 章');
   }
   const ch0Full = page.locator('[data-teaching-chapters] article', { hasText: '第零章' });
   if (!(await ch0Full.innerText()).includes('1/18 节已完成')) {
