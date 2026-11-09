@@ -1,0 +1,177 @@
+.asset-pack-entry {
+  position: relative;
+  display: inline-block;
+}
+
+.asset-pack-summary {
+  cursor: pointer;
+  list-style: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: 1px solid rgba(111, 227, 200, 0.25);
+  border-radius: 4px;
+  color: #9fd8cb;
+  font-size: 12px;
+  letter-spacing: 1px;
+  background: rgba(8, 20, 26, 0.65);
+}
+
+.asset-pack-summary::-webkit-details-marker {
+  display: none;
+}
+
+.asset-pack-summary:hover {
+  border-color: rgba(111, 227, 200, 0.6);
+  color: #d9f1ea;
+}
+
+.asset-pack-panel {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 10px);
+  z-index: 1200;
+  width: min(420px, calc(100vw - 40px));
+  padding: 18px;
+  border: 1px solid rgba(111, 227, 200, 0.35);
+  border-radius: 6px;
+  background: linear-gradient(180deg, rgba(10, 24, 32, 0.98), rgba(6, 14, 20, 0.98));
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+  color: #d9f1ea;
+}
+
+.asset-pack-eyebrow {
+  margin: 0 0 4px;
+  color: #f2c56b;
+  font-size: 10px;
+  letter-spacing: 3px;
+}
+
+.asset-pack-panel h3 {
+  margin: 0 0 6px;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.asset-pack-note {
+  margin: 0 0 12px;
+  color: #8aa0ad;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.asset-pack-status {
+  margin: 0 0 10px;
+  color: #9fd8cb;
+  font-size: 12px;
+}
+
+.asset-pack-error {
+  margin: 0 0 10px;
+  color: #ff8b7c;
+  font-size: 12px;
+}
+
+.asset-pack-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+  max-height: 260px;
+  overflow: auto;
+}
+
+.asset-pack-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid rgba(111, 227, 200, 0.16);
+  border-radius: 4px;
+  background: rgba(6, 16, 22, 0.7);
+}
+
+.asset-pack-list li strong {
+  display: block;
+  font-size: 13px;
+}
+
+.asset-pack-list li small {
+  color: #8aa0ad;
+  font-size: 11px;
+}
+
+.asset-pack-list li.is-ready {
+  border-color: rgba(111, 227, 200, 0.45);
+}
+
+.asset-pack-badge {
+  font-size: 11px;
+  color: #6fe3c8;
+  letter-spacing: 1px;
+}
+
+.asset-pack-badge.muted {
+  color: #8aa0ad;
+}
+
+.asset-pack-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border: 1px solid rgba(111, 227, 200, 0.45);
+  border-radius: 4px;
+  background: rgba(111, 227, 200, 0.08);
+  color: #9fd8cb;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.asset-pack-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.asset-pack-progress {
+  position: relative;
+  margin-top: 12px;
+  height: 22px;
+  border: 1px solid rgba(111, 227, 200, 0.35);
+  border-radius: 3px;
+  overflow: hidden;
+  background: rgba(6, 16, 22, 0.8);
+}
+
+.asset-pack-progress span {
+  position: absolute;
+  inset: 0 auto 0 0;
+  background: linear-gradient(90deg, rgba(111, 227, 200, 0.5), rgba(111, 227, 200, 0.85));
+}
+
+.asset-pack-progress small {
+  position: relative;
+  display: block;
+  padding: 3px 8px;
+  font-size: 11px;
+  color: #05110f;
+  font-weight: 600;
+}
+
+@media (max-width: 640px) {
+  .asset-pack-panel {
+    position: fixed;
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    top: auto;
+    width: auto;
+    max-height: 70vh;
+    overflow: auto;
+  }
+}

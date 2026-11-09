@@ -33,6 +33,7 @@ const TeachingPanel = lazy(() => import('./features/learning/TeachingPanel'));
 const AiEntry = import.meta.env.DEV ? lazy(() => import('./features/ai/AiEntry.jsx')) : null;
 
 const ResonancePanel = lazy(() => import('./features/resonance/ResonancePanel'));
+const AssetPackEntry = lazy(() => import('./features/settings/AssetPackEntry.jsx'));
 
 function ModalLayer({active,children}) { return active ? createPortal(children,document.body) : children; }
 
@@ -434,6 +435,8 @@ export default function App() {
               </span>
               <span>
                 从 0 到 1，让好奇发生。 <a href="./site/index.html">关于本作 / 官网</a>
+                {' · '}
+                <AssetPackEntry />
               </span>
             </footer>
           )}
