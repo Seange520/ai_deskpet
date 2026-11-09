@@ -27,3 +27,8 @@ playwright-report/
 test-results/
 QA_REPORT.md
 QA_HANDOFF_REPORT.md
+
+# Codex 资产产线原始输出与本地验收证据（交付物在 work/deliverables 外部）
+render-ab/
+work/
+
