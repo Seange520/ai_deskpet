@@ -12,7 +12,9 @@
     "test:special": "node scripts/check-space-kernel.mjs && node scripts/check-stage-quality.mjs && node scripts/check-stage-postprocessing.mjs",
     "check:lesson-v2": "node scripts/check-lesson-v2.mjs",
     "qa": "node scripts/qa-check.mjs",
-    "format": "prettier --write src tests *.js *.json *.md index.html"
+    "format": "prettier --write src tests *.js *.json *.md index.html",
+    "desktop": "electron .",
+    "desktop:package": "node scripts/build-desktop.mjs"
   },
   "dependencies": {
     "@capacitor/android": "6.2.3",
@@ -38,13 +40,16 @@
   },
   "devDependencies": {
     "@capacitor/cli": "6.2.3",
+    "@electron/packager": "^18.4.0",
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
     "@playwright/test": "^1.64.1",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.20",
+    "electron": "31.7.7",
     "postcss": "^8.5.3",
     "prettier": "^3.9.10",
     "tailwindcss": "^3.4.17",
     "vite": "^6.1.0"
-  }
+  },
+  "main": "electron/main.cjs"
 }
