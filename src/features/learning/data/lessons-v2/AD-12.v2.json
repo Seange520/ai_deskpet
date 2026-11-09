@@ -1,0 +1,111 @@
+{
+  "schema": "lesson.v2",
+  "lessonId": "L-AD-12-v2",
+  "kp": {
+    "id": "AD-12",
+    "name": "情绪回声：先接住，再处理",
+    "layer": "L5",
+    "pillar": "weave",
+    "oneLiner": "先处理感受，再处理事情"
+  },
+  "meta": {
+    "version": "2.0.0",
+    "updatedAt": "2026-11-09",
+    "estimatedMinutes": 12,
+    "template": "mission-seven-v1",
+    "gameMount": "P10-维修间",
+    "sourceLesson": "L-AD-12",
+    "author": "SparkMate Automation"
+  },
+  "story": {
+    "act": 1,
+    "title": "造物时刻",
+    "scene": "P10-维修间",
+    "npc": "贺非",
+    "setup": "同一条故障，有人急、有人怕、有人兴奋。桌宠要先接住情绪，再给事实和下一步，否则越帮越乱。"
+  },
+  "segments": [
+    {
+      "id": "mission",
+      "seconds": 25,
+      "narration": ["有人着急，有人害怕。", "有人刚把灯点亮。", "今天的任务：先接住情绪。"],
+      "task": "对烦躁、焦虑、兴奋三种时刻，分别选择「先接住情绪」「直接讲原理」或「先催进度」。"
+    },
+    {
+      "id": "observe",
+      "seconds": 55,
+      "narration": ["「烦死了，又坏了。」", "先别讲原理。", "先接住，再问事实。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/AD-12/emotion-echo.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "check": {
+        "id": "obs-1",
+        "type": "choice",
+        "task": "用户说「烦死了，又坏了」，先做什么？",
+        "options": ["先接住情绪", "马上讲原理", "先催进度"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "learn",
+      "seconds": 85,
+      "narration": ["情绪先落地。", "事实再确认。", "最后才给下一步。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/AD-12/emotion-echo.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "term": { "text": "情绪回声", "oneLine": "先回应感受，再把话题带回事实与行动。" },
+      "check": {
+        "id": "learn-1",
+        "type": "choice",
+        "task": "处理顺序应该是？",
+        "options": ["情绪 → 事实 → 下一步", "原理 → 情绪 → 数据", "进度 → 情绪 → 原理"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "do",
+      "seconds": 200,
+      "narration": ["烦躁，先安顿。", "焦虑，先保安全。", "兴奋，先一起高兴。"],
+      "sim": {
+        "id": "tone-response",
+        "version": 1,
+        "task": "对烦躁、焦虑、兴奋三个时刻，都选择「先接住情绪」。",
+        "hints": ["情绪没落地，道理听不进去。", "焦虑时先确认断电与安全。", "兴奋时先分享喜悦，再提醒复测。"]
+      }
+    },
+    {
+      "id": "prove",
+      "seconds": 100,
+      "mode": "numeric",
+      "narration": ["先停半秒，再接话。", "每句回应，先确认感受。", "再给事实和下一步。"],
+      "checks": [
+        { "id": "pause-ms", "type": "measurement", "task": "接话前的停顿", "expected": 600, "tolerance": 30, "unit": "ms" },
+        { "id": "ack-count", "type": "measurement", "task": "回应中的情绪确认", "expected": 1, "tolerance": 0.01, "unit": "次" }
+      ]
+    },
+    {
+      "id": "transfer",
+      "seconds": 90,
+      "narration": ["它越答，人越激动。", "是原理讲得不好吗？", "先查哪一层？"],
+      "prompt": "桌宠越回应，用户越激动，最先查哪一层？",
+      "options": ["情绪判断与回应策略", "把音量调小", "换一个更亮的灯"],
+      "answerIndex": 0
+    },
+    {
+      "id": "recap",
+      "seconds": 25,
+      "narration": ["情绪先落地。", "事实再确认。", "最后给下一步。"],
+      "lines": ["情绪先落地。", "事实再确认。", "最后给下一步。"]
+    }
+  ],
+  "safety": {
+    "powerOffBeforeWiring": true,
+    "liveMeasurementBlocked": true,
+    "note": "涉及情绪与安全时，先确认现场安全与人身安全，再处理问题；桌宠不替代人的判断，也不放大焦虑。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["玩家", "游戏", "网页", "第七校验", "熵", "残响", "第一编译者", "0x7F"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true
+  }
+}

@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-label="AD-12 情绪回声：烦躁、焦虑、兴奋三种时刻的回应顺序">
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#12262b" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="675" fill="#08161a"/>
+  <rect width="1200" height="675" fill="url(#grid)"/>
+  <text x="48" y="64" fill="#4fd1c5" font-family="Consolas, monospace" font-size="17" letter-spacing="2">THE FORGE / 检修手册 · AD-12</text>
+  <text x="48" y="108" fill="#e6f7f5" font-family="Microsoft YaHei, sans-serif" font-size="38" font-weight="700">情绪回声：先接住，再处理</text>
+  <line x1="48" y1="128" x2="1152" y2="128" stroke="#1d3a40" stroke-width="2"/>
+
+  <g font-family="Microsoft YaHei, sans-serif">
+    <rect x="48" y="168" width="368" height="140" rx="12" fill="#0d2328" stroke="#2b5b63"/>
+    <text x="72" y="204" fill="#f6c177" font-size="20">烦躁</text>
+    <text x="72" y="236" fill="#d7ece9" font-size="15">「烦死了，又坏了。」</text>
+    <text x="72" y="264" fill="#8fe3d8" font-size="14">先接住：「确实够烦的。」</text>
+    <text x="72" y="288" fill="#9fb8bd" font-size="13">再问：坏之前动过哪里？</text>
+
+    <rect x="48" y="332" width="368" height="140" rx="12" fill="#0d2328" stroke="#8a4b3a"/>
+    <text x="72" y="368" fill="#f6c177" font-size="20">焦虑</text>
+    <text x="72" y="400" fill="#d7ece9" font-size="15">「会不会烧掉啊？」</text>
+    <text x="72" y="428" fill="#8fe3d8" font-size="14">先保安全：断电再说。</text>
+    <text x="72" y="452" fill="#9fb8bd" font-size="13">再给可验证的检查步骤。</text>
+
+    <rect x="48" y="496" width="368" height="120" rx="12" fill="#0d2328" stroke="#2b5b63"/>
+    <text x="72" y="532" fill="#f6c177" font-size="20">兴奋</text>
+    <text x="72" y="564" fill="#d7ece9" font-size="15">「成了！你看它亮了！」</text>
+    <text x="72" y="592" fill="#8fe3d8" font-size="14">先一起高兴，再提醒复测。</text>
+
+    <rect x="456" y="168" width="696" height="304" rx="12" fill="#0d2328" stroke="#2b5b63"/>
+    <text x="480" y="206" fill="#8fe3d8" font-size="20">回应顺序：情绪 → 事实 → 下一步</text>
+
+    <rect x="480" y="228" width="648" height="70" rx="8" fill="#12262b" stroke="#2b5b63"/>
+    <text x="496" y="256" fill="#d7ece9" font-size="15">① 情绪：先复述感受，不评判。</text>
+    <text x="496" y="282" fill="#9fb8bd" font-size="13">「听起来你被它折腾得够呛。」</text>
+
+    <rect x="480" y="310" width="648" height="70" rx="8" fill="#12262b" stroke="#2b5b63"/>
+    <text x="496" y="338" fill="#d7ece9" font-size="15">② 事实：只问可验证的信息。</text>
+    <text x="496" y="364" fill="#9fb8bd" font-size="13">「断电了吗？哪颗灯在闪？」</text>
+
+    <rect x="480" y="392" width="648" height="62" rx="8" fill="#12262b" stroke="#2b5b63"/>
+    <text x="496" y="420" fill="#d7ece9" font-size="15">③ 下一步：给一条能立刻做的小动作。</text>
+    <text x="496" y="444" fill="#9fb8bd" font-size="13">「先量电源两端，读数记下来。」</text>
+
+    <rect x="456" y="500" width="336" height="116" rx="12" fill="#0d2328" stroke="#2b5b63"/>
+    <text x="480" y="534" fill="#8fe3d8" font-size="19">别做的事</text>
+    <text x="480" y="562" fill="#d7ece9" font-size="14">别否定感受，别吓唬人。</text>
+    <text x="480" y="588" fill="#d7ece9" font-size="14">别在情绪上叠加进度。</text>
+
+    <rect x="816" y="500" width="336" height="116" rx="12" fill="#0d2328" stroke="#8a4b3a"/>
+    <text x="840" y="534" fill="#f6c177" font-size="19">红线</text>
+    <text x="840" y="562" fill="#d7ece9" font-size="14">不替人做安全决定。</text>
+    <text x="840" y="588" fill="#d7ece9" font-size="14">不放大焦虑，也不假装没事。</text>
+  </g>
+
+  <text x="48" y="652" fill="#6f8f99" font-family="Microsoft YaHei, sans-serif" font-size="15">教学示意：情绪不是噪声，是当前状态下最该先处理的一条数据。</text>
+</svg>
