@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BookOpen } from 'lucide-react';
 import graph from './data/knowledge-graph.v1.json';
 import { STATES, recommendations } from './learning.mjs';
@@ -8,6 +8,18 @@ import LessonRunnerV2 from './LessonRunnerV2';
 import DiagnosticPanel from './DiagnosticPanel';
 import chapters from './data/chapters.v1.json';
 import StarMap from './StarMap';
+import {
+  DEMO_BANNER,
+  demoDisabled,
+  demoEnabled,
+  demoRequested,
+  filterDemoChapters,
+  filterDemoIds,
+  filterDemoKps,
+  isDemoLesson,
+  writeDemoFlag,
+  DEMO_LESSONS,
+} from './demoMode.mjs';
 import './teaching.css';
 const modules = import.meta.glob('./data/lessons/*.lesson.json', {
   eager: true,
@@ -24,7 +36,10 @@ const lessonsV2 = Object.fromEntries(
   Object.values(modulesV2).map((l) => [l.kp.id, l]),
 );
 export default function TeachingPanel() {
-  const s = useLearningProfile(),
+  const [demo] = useState(() =>
+      demoEnabled({ search: typeof location === 'undefined' ? '' : location.search }),
+    ),
+    s = useLearningProfile(),
     [tab, setTab] = useState('课节'),
     [diagOpen, setDiagOpen] = useState(false),
     [current, setCurrent] = useState(null),
@@ -32,7 +47,13 @@ export default function TeachingPanel() {
     [minutes, setMinutes] = useState(15),
     [confirm, setConfirm] = useState(false),
     [serial, setSerial] = useState(0);
+  useEffect(() => {
+    const search = typeof location === 'undefined' ? '' : location.search;
+    if (demoRequested(search)) writeDemoFlag(true);
+    else if (demoDisabled(search)) writeDemoFlag(false);
+  }, []);
   function start(id, v2 = false) {
+    if (demo && !isDemoLesson(id)) return;
     if (s.profile.kps[id].status === 'locked') return;
     s.begin(id);
     if (v2) setCurrentV2(id);
@@ -47,6 +68,12 @@ export default function TeachingPanel() {
         校验之径
       </h2>
       <p>先观察，留下证据，再走下一步。</p>
+      {demo && (
+        <section className="teaching-card" data-demo-banner>
+          <h3>{DEMO_BANNER.title}</h3>
+          <p>{DEMO_BANNER.body}</p>
+        </section>
+      )}
       <div role="tablist" aria-label="教学面板">
         {['课节', '星图', '档案'].map((t) => (
           <button
@@ -136,7 +163,10 @@ export default function TeachingPanel() {
                     ))}
                   </select>
                 </label>
-                {recommendations(graph, s.profile, minutes).map((id) => (
+                {filterDemoIds(
+                  recommendations(graph, s.profile, minutes),
+                  demo,
+                ).map((id) => (
                   <button key={id} onClick={() => start(id, Boolean(lessonsV2[id]))}>
                     {id} · {lessons[id]?.kp.name || lessonsV2[id]?.kp.name || id}
                   </button>
@@ -144,7 +174,7 @@ export default function TeachingPanel() {
               </section>
               <section className="teaching-chapters" data-teaching-chapters>
                 <h3>任务链</h3>
-                {chapters.chapters.map((ch) => {
+                {filterDemoChapters(chapters.chapters, demo).map((ch) => {
                   const total = ch.lessons.length;
                   const done = ch.lessons.filter(
                     (id) => s.profile.kps[id]?.status === 'mastered',
@@ -174,7 +204,7 @@ export default function TeachingPanel() {
                 })}
               </section>
               <div className="teaching-lessons">
-                {graph.kps.map((k) => {
+                {filterDemoKps(graph.kps, demo).map((k) => {
                   const v1 = lessons[k.id];
                   const v2 = lessonsV2[k.id];
                   const meta = v1?.meta || v2?.meta;
@@ -212,7 +242,13 @@ export default function TeachingPanel() {
               </div>
             </>
           ))}
-        {tab === '星图' && <StarMap profile={s.profile} onStart={start} />}
+        {tab === '星图' && (
+          <StarMap
+            profile={s.profile}
+            onStart={start}
+            ids={demo ? new Set(DEMO_LESSONS) : null}
+          />
+        )}
         {tab === '档案' && (
           <section>
             <h3>本机学习档案</h3>

@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import graph from './data/knowledge-graph.v1.json';
 import { STATES, visibleStory } from './learning.mjs';
-export default function StarMap({ profile, onStart }) {
-  const [selected, setSelected] = useState(graph.kps[0].id),
+export default function StarMap({ profile, onStart, ids }) {
+  const kps = ids ? graph.kps.filter((k) => ids.has(k.id)) : graph.kps;
+  const [selected, setSelected] = useState((kps[0] || graph.kps[0]).id),
     k = graph.kps.find((k) => k.id === selected),
     state = profile.kps[k.id].status;
   function star(k) {
@@ -41,7 +42,7 @@ export default function StarMap({ profile, onStart }) {
               <strong>{layer.id}</strong>
               {graph.pillars.map((p) => (
                 <div className="teaching-column" key={p.id}>
-                  {graph.kps
+                  {kps
                     .filter((k) => k.layer === layer.id && k.pillar === p.id)
                     .map(star)}
                 </div>
