@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+﻿import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { useMission } from './missionStore.mjs';
@@ -39,6 +39,8 @@ export default function MissionScene({ maxDpr }) {
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.05;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.domElement.setAttribute('aria-label', '晴光街三维抢修场景');
     element.prepend(renderer.domElement);
     const scene = new THREE.Scene();
@@ -46,7 +48,16 @@ export default function MissionScene({ maxDpr }) {
     scene.fog = new THREE.Fog('#cbd1bd', 35, 75);
     scene.add(new THREE.HemisphereLight('#e5edee', '#8f795b', 2));
     const sun = new THREE.DirectionalLight('#ffdab0', 3);
-    sun.position.set(4, 9, 8);
+    sun.position.set(-6, 12, 7);
+    sun.castShadow = true;
+    sun.shadow.mapSize.set(2048, 2048);
+    sun.shadow.camera.left = -24;
+    sun.shadow.camera.right = 24;
+    sun.shadow.camera.top = 18;
+    sun.shadow.camera.bottom = -18;
+    sun.shadow.camera.near = 1;
+    sun.shadow.camera.far = 60;
+    sun.shadow.bias = -0.0006;
     scene.add(sun);
     const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 250);
     const project = new THREE.Vector3();
@@ -80,6 +91,7 @@ export default function MissionScene({ maxDpr }) {
     );
     ground.rotation.x = -Math.PI / 2;
     ground.position.y = -0.055;
+    ground.receiveShadow = true;
     scene.add(ground);
     renderer.render(scene, camera);
     const keys = new Set();
@@ -148,6 +160,8 @@ export default function MissionScene({ maxDpr }) {
           instanced.setMatrixAt(i, matrix);
         });
         instanced.computeBoundingSphere();
+        instanced.castShadow = true;
+        instanced.receiveShadow = true;
         scene.add(instanced);
       });
     }

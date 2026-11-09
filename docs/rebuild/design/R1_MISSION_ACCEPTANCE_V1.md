@@ -1,4 +1,4 @@
-# R1 抢修竖切验收记录（设计端 × 客户端）
+﻿# R1 抢修竖切验收记录（设计端 × 客户端）
 
 **日期**：2026-11-10 05:05
 **范围**：`?mission=r1` 三单灰盒（Codex 任务 06）+ 主界面入口
@@ -55,3 +55,8 @@
 - 代码：`src/features/mission/`（8 文件）、`scripts/check-r1-mission.mjs`、`tests/mission-r1.unit.mjs`、入口 `src/components/Dashboard.jsx`、`src/visual-paper.css`。
 - 证据：`work/acceptance/r1-mission/`（6 截图、report.json、验收报告）＋备份 `work/deliverables/r1-mission/`。
 - 提交：见本轮 commit（README 已更新 R1 章节）。
+## 6. 追加：场景阴影与光照二轮（05:20）
+
+- `MissionScene.jsx` 启用 `renderer.shadowMap`（PCFSoft）、主光 `sun.castShadow`（2048 阴影贴图、正交范围 48×36、bias -0.0006），实例化建筑/树/长椅/铺地 `castShadow/receiveShadow`、地面 `receiveShadow`；主光位置调整为左前上方（-6,12,7），与 UI 左上光向一致。
+- 复测：`check-r1-mission` 13/13、0 error（6 张截图已刷新，阴影可见：树冠/长椅/遮阳篷/街墙投影）；17/17 mission 单测；476 全仓单测不变。
+- 剩余美术项：建筑重复立面（R1-A3 补门/转角/招牌）、合闸演出（镜头+逐灯亮+音效）、街面杂物密度。
