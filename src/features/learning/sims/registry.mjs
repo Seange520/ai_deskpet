@@ -14,6 +14,7 @@ export const registry = Object.freeze({
   'boundary-guard': () => import('./BoundaryGuardSim.jsx'),
   'memory-recall': () => import('./MemoryRecallSim.jsx'),
   'tone-response': () => import('./ToneResponseSim.jsx'),
+  'self-check': () => import('./SelfCheckSim.jsx'),
 });
 export const simIds = Object.freeze(Object.keys(registry));
 export function getSim(id) {

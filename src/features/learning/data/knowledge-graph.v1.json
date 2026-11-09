@@ -1626,6 +1626,35 @@
       "license": "CC-BY-4.0",
       "status": "partial",
       "priority": "P0"
+    },
+    {
+      "id": "AD-13",
+      "name": "自检：先怀疑自己",
+      "oneLiner": "先查自己，再怪别人",
+      "layer": "L6",
+      "pillar": "weave",
+      "prereq": [
+        "AD-12"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons-v2/AD-13.v2.json",
+      "lessonAvailable": true,
+      "media": [
+        "card",
+        "sim"
+      ],
+      "practice": "对三个症状分别选择第一个该查的位置",
+      "check": {
+        "type": "sim-task",
+        "task": "自检顺序与首查位置",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "P10维修间",
+      "spoilerLevel": 6,
+      "license": "CC-BY-4.0",
+      "status": "partial",
+      "priority": "P0"
     }
   ],
   "edges": [
@@ -1878,11 +1907,16 @@
       "from": "AD-11",
       "to": "AD-12",
       "kind": "prereq"
+    },
+    {
+      "from": "AD-12",
+      "to": "AD-13",
+      "kind": "prereq"
     }
   ],
   "stats": {
-    "total": 52,
-    "edges": 50,
+    "total": 53,
+    "edges": 51,
     "gates": 1,
     "byLayer": {
       "L0": 7,
@@ -1891,7 +1925,7 @@
       "L3": 8,
       "L4": 8,
       "L5": 8,
-      "L6": 3,
+      "L6": 4,
       "L7": 2,
       "L8": 2
     },
@@ -1899,17 +1933,17 @@
       "craft": 11,
       "forge": 13,
       "foundation": 6,
-      "weave": 14,
+      "weave": 15,
       "echo": 4,
       "symbiosis": 2,
       "spire": 2
     },
     "byStatus": {
-      "partial": 18,
+      "partial": 19,
       "planned": 34
     },
     "byPriority": {
-      "P0": 23,
+      "P0": 24,
       "P1": 15,
       "P2": 10,
       "P3": 4

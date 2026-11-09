@@ -1,0 +1,111 @@
+{
+  "schema": "lesson.v2",
+  "lessonId": "L-AD-13-v2",
+  "kp": {
+    "id": "AD-13",
+    "name": "自检：先怀疑自己",
+    "layer": "L6",
+    "pillar": "weave",
+    "oneLiner": "先查自己，再怪别人"
+  },
+  "meta": {
+    "version": "2.0.0",
+    "updatedAt": "2026-11-09",
+    "estimatedMinutes": 12,
+    "template": "mission-seven-v1",
+    "gameMount": "P10-维修间",
+    "sourceLesson": "L-AD-13",
+    "author": "SparkMate Automation"
+  },
+  "story": {
+    "act": 1,
+    "title": "造物时刻",
+    "scene": "P10-维修间",
+    "npc": "贺非",
+    "setup": "桌宠装好之后，第一次自检往往能救它一命：先查供电，再查连接，最后才怀疑设计。今天让它学会先怀疑自己。"
+  },
+  "segments": [
+    {
+      "id": "mission",
+      "seconds": 25,
+      "narration": ["第一次上电，最怕不亮。", "别急着换件。", "今天的任务：按顺序自检。"],
+      "task": "对三个现场症状分别选择第一个该查的位置，并说明为什么先查它。"
+    },
+    {
+      "id": "observe",
+      "seconds": 55,
+      "narration": ["灯不亮，风扇不转。", "先确认有没有电。", "再查线，最后才换件。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/AD-13/self-check.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "check": {
+        "id": "obs-1",
+        "type": "choice",
+        "task": "上电后灯不亮、风扇也不转，先查什么？",
+        "options": ["供电与保险", "直接换新板", "屏幕数据线"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "learn",
+      "seconds": 85,
+      "narration": ["自检也有顺序。", "先电，再线，再通信。", "最后才动功能和设计。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/AD-13/self-check.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "term": { "text": "自检顺序", "oneLine": "供电 → 连接 → 通信 → 功能，一层层排除。" },
+      "check": {
+        "id": "learn-1",
+        "type": "choice",
+        "task": "自检的正确顺序是？",
+        "options": ["供电 → 连接 → 通信 → 功能", "功能 → 供电 → 连接", "换件 → 供电 → 复盘"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "do",
+      "seconds": 200,
+      "narration": ["不亮：先查电。", "亮但没内容：查排线。", "闻到焦味：先断电。"],
+      "sim": {
+        "id": "self-check",
+        "version": 1,
+        "task": "三个症状各选第一个该查的位置：供电与保险 / 排线与接口 / 立即断电。",
+        "hints": ["不亮先确认有没有电。", "屏亮说明供电正常，信号可能没到。", "焦味意味着短路或过载，先断电。"]
+      }
+    },
+    {
+      "id": "prove",
+      "seconds": 100,
+      "mode": "numeric",
+      "narration": ["每次自检，按同一张表。", "没确认原因，不换件。", "修完，留一条记录。"],
+      "checks": [
+        { "id": "check-count", "type": "measurement", "task": "每轮自检执行的检查", "expected": 12, "tolerance": 0.01, "unit": "次" },
+        { "id": "blind-replace", "type": "measurement", "task": "未定位就换件", "expected": 0, "tolerance": 0.01, "unit": "次" }
+      ]
+    },
+    {
+      "id": "transfer",
+      "seconds": 90,
+      "narration": ["换了三块板，还是不亮。", "真的是板的问题吗？", "先回哪一步？"],
+      "prompt": "换了三块板都不亮，最先回头查什么？",
+      "options": ["供电与接线基础", "再换第四块板", "换一个更亮的灯"],
+      "answerIndex": 0
+    },
+    {
+      "id": "recap",
+      "seconds": 25,
+      "narration": ["先电，再线，再通信。", "没定位，不换件。", "修完，留记录。"],
+      "lines": ["先电，再线，再通信。", "没定位，不换件。", "修完，留记录。"]
+    }
+  ],
+  "safety": {
+    "powerOffBeforeWiring": true,
+    "liveMeasurementBlocked": true,
+    "note": "自检前先断电验电；焦味、发热、异味立即断电；不确认原因不反复上电，不盲目换件。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["玩家", "游戏", "网页", "第七校验", "熵", "残响", "第一编译者", "0x7F"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true
+  }
+}

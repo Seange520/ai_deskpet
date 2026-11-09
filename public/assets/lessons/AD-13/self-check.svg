@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-label="AD-13 自检：供电、连接、通信、功能四层排查">
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#12262b" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="675" fill="#08161a"/>
+  <rect width="1200" height="675" fill="url(#grid)"/>
+  <text x="48" y="64" fill="#4fd1c5" font-family="Consolas, monospace" font-size="17" letter-spacing="2">THE FORGE / 检修手册 · AD-13</text>
+  <text x="48" y="108" fill="#e6f7f5" font-family="Microsoft YaHei, sans-serif" font-size="38" font-weight="700">自检：先怀疑自己</text>
+  <line x1="48" y1="128" x2="1152" y2="128" stroke="#1d3a40" stroke-width="2"/>
+
+  <g font-family="Microsoft YaHei, sans-serif">
+    <rect x="48" y="168" width="520" height="304" rx="12" fill="#0d2328" stroke="#2b5b63"/>
+    <text x="72" y="206" fill="#8fe3d8" font-size="20">四层自检顺序</text>
+
+    <rect x="72" y="226" width="472" height="54" rx="8" fill="#12262b" stroke="#2b5b63"/>
+    <text x="88" y="250" fill="#f6c177" font-size="15">① 供电</text>
+    <text x="88" y="270" fill="#9fb8bd" font-size="13">电源、保险、极性、共地。</text>
+
+    <rect x="72" y="290" width="472" height="54" rx="8" fill="#12262b" stroke="#2b5b63"/>
+    <text x="88" y="314" fill="#f6c177" font-size="15">② 连接</text>
+    <text x="88" y="334" fill="#9fb8bd" font-size="13">排线方向、接口松紧、断线。</text>
+
+    <rect x="72" y="354" width="472" height="54" rx="8" fill="#12262b" stroke="#2b5b63"/>
+    <text x="88" y="378" fill="#f6c177" font-size="15">③ 通信</text>
+    <text x="88" y="398" fill="#9fb8bd" font-size="13">总线地址、波特率、握手。</text>
+
+    <rect x="72" y="418" width="472" height="40" rx="8" fill="#12262b" stroke="#2b5b63"/>
+    <text x="88" y="443" fill="#f6c177" font-size="15">④ 功能：前三层都过，才谈设计。</text>
+
+    <rect x="600" y="168" width="552" height="304" rx="12" fill="#0d2328" stroke="#8a4b3a"/>
+    <text x="624" y="206" fill="#f6c177" font-size="20">三个症状，三种首查</text>
+
+    <text x="624" y="246" fill="#d7ece9" font-size="15">① 不亮、不转 → 先查供电与保险</text>
+    <text x="624" y="272" fill="#9fb8bd" font-size="13">没电什么都别谈。</text>
+
+    <text x="624" y="312" fill="#d7ece9" font-size="15">② 屏亮但没内容 → 先查排线与接口</text>
+    <text x="624" y="338" fill="#9fb8bd" font-size="13">电到了，信号没到。</text>
+
+    <text x="624" y="378" fill="#d7ece9" font-size="15">③ 闻到焦味 → 立即断电</text>
+    <text x="624" y="404" fill="#9fb8bd" font-size="13">别复位，别再上电。</text>
+
+    <text x="624" y="444" fill="#f6c177" font-size="14">换件之前，先确认原因。</text>
+
+    <rect x="48" y="504" width="540" height="92" rx="12" fill="#0d2328" stroke="#2b5b63"/>
+    <text x="72" y="538" fill="#8fe3d8" font-size="19">自检三问</text>
+    <text x="72" y="570" fill="#d7ece9" font-size="14">电到了吗？信号到了吗？记录留了吗？</text>
+
+    <rect x="612" y="504" width="540" height="92" rx="12" fill="#0d2328" stroke="#8a4b3a"/>
+    <text x="636" y="538" fill="#f6c177" font-size="19">最贵的错误</text>
+    <text x="636" y="570" fill="#d7ece9" font-size="14">没定位就换件，换一块烧一块。</text>
+  </g>
+
+  <text x="48" y="652" fill="#6f8f99" font-family="Microsoft YaHei, sans-serif" font-size="15">教学示意：自检不是浪费时间，它把「瞎换」变成「可复盘的排除」。</text>
+</svg>
