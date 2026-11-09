@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675" role="img" aria-label="G0 与 PE：回流不是地，是电源的另一端">
+<defs>
+<pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#16303f" stroke-width="1"/></pattern>
+<style>
+.zh{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif}
+.num{font-family:'JetBrains Mono',Consolas,monospace}
+@keyframes pulse{0%,100%{opacity:.35}50%{opacity:1}}
+@keyframes flow{to{stroke-dashoffset:-80}}
+@keyframes heat{0%,100%{fill:#f2c56b}50%{fill:#ff7a6b}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+</style>
+</defs>
+<rect width="1200" height="675" fill="#0b1620"/>
+<rect width="1200" height="675" fill="url(#grid)" opacity=".7"/>
+<rect x="18" y="18" width="1164" height="639" fill="none" stroke="#2a4a5e" stroke-width="2"/>
+<text class="zh" x="56" y="66" fill="#6fe3c8" font-size="19" letter-spacing="3">THE FORGE / 检修手册 · K1-05</text>
+<text class="zh" x="56" y="110" fill="#e8eef2" font-size="34" font-weight="700">G0 与 PE：回流不是地，是电源的另一端</text>
+<line x1="56" y1="130" x2="1144" y2="130" stroke="#2a4a5e" stroke-width="2"/>
+
+<g><rect x="56" y="170" width="520" height="200" rx="10" fill="#12242f" stroke="#6fe3c8"/>
+<text class="zh" x="76" y="200" fill="#6fe3c8" font-size="17">G0（工作回流）</text><text class="zh" x="76" y="224" fill="#e8eef2" font-size="18">电源 0V 的一端</text><text class="zh" x="76" y="256" fill="#e8eef2" font-size="18">负载电流从这里回电源</text><text class="zh" x="76" y="288" fill="#e8eef2" font-size="18">有电流，就有压降</text><text class="zh" x="76" y="320" fill="#e8eef2" font-size="18">测压降可以判断接点好坏</text></g>
+<g><rect x="56" y="390" width="520" height="200" rx="10" fill="#12242f" stroke="#f2c56b"/>
+<text class="zh" x="76" y="420" fill="#6fe3c8" font-size="17">PE（保护接地）</text><text class="zh" x="76" y="444" fill="#e8eef2" font-size="18">外壳/机架的安全线</text><text class="zh" x="76" y="476" fill="#e8eef2" font-size="18">正常不流过工作电流</text><text class="zh" x="76" y="508" fill="#e8eef2" font-size="18">漏电时把危险电压引走</text><text class="zh" x="76" y="540" fill="#e8eef2" font-size="18">不能拿 PE 当工作回流用</text></g>
+<g>
+  <rect x="640" y="170" width="500" height="420" rx="12" fill="#12242f" stroke="#2a4a5e"/>
+  <text class="zh" x="666" y="204" fill="#6fe3c8" font-size="17">压差读数怎么用</text>
+  <line x1="700" y1="250" x2="1080" y2="250" stroke="#8aa0ad" stroke-width="2"/>
+  <text class="num" x="700" y="238" fill="#8aa0ad" font-size="15">0V</text>
+  <text class="num" x="1060" y="238" fill="#8aa0ad" font-size="15">0.5V</text>
+  <rect x="700" y="250" width="150" height="18" fill="#6fe3c8" opacity=".55"/>
+  <rect x="850" y="250" width="150" height="18" fill="#f2c56b" opacity=".55"/>
+  <rect x="1000" y="250" width="80" height="18" fill="#ff7a6b" opacity=".6"/>
+  <text class="zh" x="700" y="300" fill="#6fe3c8" font-size="16">≤0.1V：健康</text>
+  <text class="zh" x="850" y="300" fill="#f2c56b" font-size="16">0.1–0.5V：可疑</text>
+  <text class="zh" x="1000" y="300" fill="#ff7a6b" font-size="16">&gt;0.5V：异常</text>
+  <text class="zh" x="666" y="360" fill="#e8eef2" font-size="17">单点接地：回流只走一条路</text>
+  <text class="zh" x="666" y="396" fill="#e8eef2" font-size="17">多点接地：形成地环路，噪声和压差都来</text>
+  <text class="zh" x="666" y="452" fill="#8aa0ad" font-size="16">24V 工作支路里，G0 是 0V 回流接点，</text>
+  <text class="zh" x="666" y="482" fill="#8aa0ad" font-size="16">不是保护接地。别把两者混用。</text>
+</g>
+<text class="zh" x="56" y="641" fill="#8aa0ad" font-size="16">安全边界：真实系统接地须按规范施工，本图为 24V SELV 教学模型。</text>
+</svg>

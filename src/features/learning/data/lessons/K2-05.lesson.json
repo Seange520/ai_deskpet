@@ -7,7 +7,9 @@
     "layer": "L2",
     "pillar": "forge",
     "oneLiner": "门电路是判决书",
-    "prereq": ["K2-01"],
+    "prereq": [
+      "K2-01"
+    ],
     "storyScene": "P10-VerificationRoom",
     "spoilerLevel": 2,
     "license": "CC-BY-4.0",
@@ -29,9 +31,24 @@
       "narration": "校验室的门禁有两个检查点：温度和电流都在范围内，门才允许打开。摊主想用一根线把两个开关并在一起：随便哪个过了都放行。赫菲把线拿开：那是「或」，不是「与」。你想放进来的是什么？",
       "interaction": "choice",
       "choices": [
-        { "id": "a", "text": "用「与」门：两个条件都满足才放行", "correct": true, "feedback": "对。安全联锁要的是全部满足，不是任一个满足。" },
-        { "id": "b", "text": "用「或」门：任一条件满足就放行", "correct": false, "feedback": "任一满足就放行，会把异常也放进去。" },
-        { "id": "c", "text": "不用门，直接短接两个开关", "correct": false, "feedback": "短接等于取消检查，门形同虚设。" }
+        {
+          "id": "a",
+          "text": "用「与」门：两个条件都满足才放行",
+          "correct": true,
+          "feedback": "对。安全联锁要的是全部满足，不是任一个满足。"
+        },
+        {
+          "id": "b",
+          "text": "用「或」门：任一条件满足就放行",
+          "correct": false,
+          "feedback": "任一满足就放行，会把异常也放进去。"
+        },
+        {
+          "id": "c",
+          "text": "不用门，直接短接两个开关",
+          "correct": false,
+          "feedback": "短接等于取消检查，门形同虚设。"
+        }
       ]
     },
     {
@@ -44,17 +61,17 @@
           "kind": "card",
           "src": "assets/lessons/K2-05/logic-gates-truth-table.svg",
           "alt": "与/或/非/与非/异或五门符号与真值表",
-          "status": "planned",
-          "license": "original",
-          "notes": "原创 SVG，UI 内联"
+          "status": "ready",
+          "license": "CC-BY-4.0",
+          "notes": "T1.1 原创 SVG，静音可用"
         },
         {
-          "kind": "sim",
-          "src": "assets/lessons/K2-05/gate-sim.json",
+          "kind": "diagram",
+          "src": "assets/lessons/K2-05/gate-sim.svg",
           "alt": "DOM 门电路仿真：拨动两个输入开关，观察门符号与输出灯状态",
-          "status": "planned",
-          "license": "original",
-          "notes": "网页内 DOM 仿真，不依赖外部引擎"
+          "status": "ready",
+          "license": "CC-BY-4.0",
+          "notes": "T1.1 原创 SVG，静音可用"
         }
       ]
     },
@@ -64,11 +81,31 @@
       "durationSec": 210,
       "task": "完成 3 项任务：① 填与门、或门、异或门三张真值表 ② 给「两个都到位才上电」选门 ③ 用德摩根改写一条联锁条件。",
       "steps": [
-        { "action": "fill", "target": "truth-and", "hint": "只有 1 与 1 输出 1" },
-        { "action": "fill", "target": "truth-or", "hint": "有一个 1 就输出 1" },
-        { "action": "fill", "target": "truth-xor", "hint": "不同才为 1" },
-        { "action": "choose", "target": "interlock-gate", "hint": "全部满足才动作，用与门" },
-        { "action": "rewrite", "target": "demorgan", "hint": "非（A 且 B）= 非 A 或 非 B" }
+        {
+          "action": "fill",
+          "target": "truth-and",
+          "hint": "只有 1 与 1 输出 1"
+        },
+        {
+          "action": "fill",
+          "target": "truth-or",
+          "hint": "有一个 1 就输出 1"
+        },
+        {
+          "action": "fill",
+          "target": "truth-xor",
+          "hint": "不同才为 1"
+        },
+        {
+          "action": "choose",
+          "target": "interlock-gate",
+          "hint": "全部满足才动作，用与门"
+        },
+        {
+          "action": "rewrite",
+          "target": "demorgan",
+          "hint": "非（A 且 B）= 非 A 或 非 B"
+        }
       ],
       "failureHints": [
         "把或门当选型答案：任一满足就放行是危险逻辑",
@@ -81,8 +118,25 @@
       "type": "verify",
       "durationSec": 140,
       "checks": [
-        { "id": "v_nand", "type": "measurement", "probe": "nand_output", "expected": 0.2, "tolerance": 0.3, "unit": "V" },
-        { "id": "v_table", "type": "quiz", "ask": "与门真值表输出序列（00/01/10/11）", "expected": [0, 0, 0, 1] }
+        {
+          "id": "v_nand",
+          "type": "measurement",
+          "probe": "nand_output",
+          "expected": 0.2,
+          "tolerance": 0.3,
+          "unit": "V"
+        },
+        {
+          "id": "v_table",
+          "type": "quiz",
+          "ask": "与门真值表输出序列（00/01/10/11）",
+          "expected": [
+            0,
+            0,
+            0,
+            1
+          ]
+        }
       ],
       "safety": "逻辑实验统一用 3.3V 供电；接线前断电，门电路电源不得反接；不要在带电状态下插拔集成块。"
     },
@@ -92,9 +146,24 @@
       "durationSec": 150,
       "prompt": "要求「任意一个异常就立刻切断总电源」，下列实现最合适的是？",
       "options": [
-        { "id": "or", "text": "把异常信号用或门汇总，输出直接去切断", "correct": false, "why": "或门是「任一异常为高」，但切断逻辑极性要考虑失效安全。" },
-        { "id": "nand", "text": "用与非门：所有「正常」信号都为高时输出低，任一异常则输出高去切断", "correct": true, "why": "与非门把「全部正常」取反，天然适配失效安全切断。" },
-        { "id": "not", "text": "只用一个非门，任取一个异常信号", "correct": false, "why": "一个信号管不住多个异常源。" }
+        {
+          "id": "or",
+          "text": "把异常信号用或门汇总，输出直接去切断",
+          "correct": false,
+          "why": "或门是「任一异常为高」，但切断逻辑极性要考虑失效安全。"
+        },
+        {
+          "id": "nand",
+          "text": "用与非门：所有「正常」信号都为高时输出低，任一异常则输出高去切断",
+          "correct": true,
+          "why": "与非门把「全部正常」取反，天然适配失效安全切断。"
+        },
+        {
+          "id": "not",
+          "text": "只用一个非门，任取一个异常信号",
+          "correct": false,
+          "why": "一个信号管不住多个异常源。"
+        }
       ],
       "solution": "失效安全切断要把「全部正常」整体取反：所有正常信号相与后再取反，即与非门。任一异常变为低，输出就翻转为切断。"
     },
@@ -110,14 +179,39 @@
     }
   ],
   "checks": [
-    { "id": "q1", "type": "quiz", "weight": 0.5, "pass": "三张真值表填写正确" },
-    { "id": "q2", "type": "measurement", "weight": 0.25, "pass": "与非门输入 1/1 时输出低电平" },
-    { "id": "q3", "type": "quiz", "weight": 0.25, "pass": "联锁选门与德摩根改写正确" }
+    {
+      "id": "q1",
+      "type": "quiz",
+      "weight": 0.5,
+      "pass": "三张真值表填写正确"
+    },
+    {
+      "id": "q2",
+      "type": "measurement",
+      "weight": 0.25,
+      "pass": "与非门输入 1/1 时输出低电平"
+    },
+    {
+      "id": "q3",
+      "type": "quiz",
+      "weight": 0.25,
+      "pass": "联锁选门与德摩根改写正确"
+    }
   ],
   "assessment": {
-    "masteryWeights": { "hook": 0.1, "practice": 0.35, "verify": 0.3, "transfer": 0.25 },
+    "masteryWeights": {
+      "hook": 0.1,
+      "practice": 0.35,
+      "verify": 0.3,
+      "transfer": 0.25
+    },
     "passScore": 0.7,
-    "retentionDays": [1, 3, 7, 21]
+    "retentionDays": [
+      1,
+      3,
+      7,
+      21
+    ]
   },
   "storyBinding": {
     "scene": "P10-VerificationRoom",
@@ -126,7 +220,13 @@
     "worldPhenomenon": "校验室门禁有两个检查点，摊主想直接把两个开关并在一起。"
   },
   "redLines": {
-    "forbiddenNarrationTokens": ["第七校验", "熵", "残响", "第一编译者", "网页游戏"],
+    "forbiddenNarrationTokens": [
+      "第七校验",
+      "熵",
+      "残响",
+      "第一编译者",
+      "网页游戏"
+    ],
     "aiDoesNotDecide": true,
     "noFourthWall": true,
     "noSacrificeGlorification": true

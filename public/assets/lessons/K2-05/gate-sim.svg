@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675" role="img" aria-label="用与非门判断：输入组合 → 输出">
+<defs>
+<pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#16303f" stroke-width="1"/></pattern>
+<style>
+.zh{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif}
+.num{font-family:'JetBrains Mono',Consolas,monospace}
+@keyframes pulse{0%,100%{opacity:.35}50%{opacity:1}}
+@keyframes flow{to{stroke-dashoffset:-80}}
+@keyframes heat{0%,100%{fill:#f2c56b}50%{fill:#ff7a6b}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+</style>
+</defs>
+<rect width="1200" height="675" fill="#0b1620"/>
+<rect width="1200" height="675" fill="url(#grid)" opacity=".7"/>
+<rect x="18" y="18" width="1164" height="639" fill="none" stroke="#2a4a5e" stroke-width="2"/>
+<text class="zh" x="56" y="66" fill="#6fe3c8" font-size="19" letter-spacing="3">THE FORGE / 检修手册 · K2-05 · 校验演练</text>
+<text class="zh" x="56" y="110" fill="#e8eef2" font-size="34" font-weight="700">用与非门判断：输入组合 → 输出</text>
+<line x1="56" y1="130" x2="1144" y2="130" stroke="#2a4a5e" stroke-width="2"/>
+
+<g>
+  <rect x="56" y="170" width="520" height="420" rx="12" fill="#12242f" stroke="#2a4a5e"/>
+  <text class="zh" x="82" y="204" fill="#6fe3c8" font-size="17">接线</text>
+  <circle cx="160" cy="280" r="26" fill="#0e1d27" stroke="#f2c56b" stroke-width="3"/>
+  <text class="num" x="160" y="288" text-anchor="middle" fill="#f2c56b" font-size="18">A</text>
+  <circle cx="160" cy="420" r="26" fill="#0e1d27" stroke="#f2c56b" stroke-width="3"/>
+  <text class="num" x="160" y="428" text-anchor="middle" fill="#f2c56b" font-size="18">B</text>
+  <rect x="300" y="300" width="180" height="120" rx="10" fill="#0e1d27" stroke="#6fe3c8" stroke-width="2"/>
+  <text class="zh" x="390" y="368" text-anchor="middle" fill="#6fe3c8" font-size="20">NAND</text>
+  <line x1="186" y1="280" x2="300" y2="330" stroke="#8aa0ad" stroke-width="3"/>
+  <line x1="186" y1="420" x2="300" y2="390" stroke="#8aa0ad" stroke-width="3"/>
+  <line x1="480" y1="360" x2="520" y2="360" stroke="#8aa0ad" stroke-width="3"/>
+</g>
+<g>
+  <rect x="620" y="170" width="530" height="420" rx="12" fill="#12242f" stroke="#2a4a5e"/>
+  <text class="zh" x="646" y="204" fill="#6fe3c8" font-size="17">核对输出</text>
+  
+    <rect x="646" y="232" width="470" height="60" rx="8" fill="#0e1d27" stroke="#2a4a5e"/>
+    <text class="num" x="672" y="271" fill="#e8eef2" font-size="18">A=0 B=0</text>
+    <text class="zh" x="1090" y="271" text-anchor="end" fill="#6fe3c8" font-size="18">输出 1</text>
+    <rect x="646" y="308" width="470" height="60" rx="8" fill="#0e1d27" stroke="#2a4a5e"/>
+    <text class="num" x="672" y="347" fill="#e8eef2" font-size="18">A=0 B=1</text>
+    <text class="zh" x="1090" y="347" text-anchor="end" fill="#6fe3c8" font-size="18">输出 1</text>
+    <rect x="646" y="384" width="470" height="60" rx="8" fill="#0e1d27" stroke="#2a4a5e"/>
+    <text class="num" x="672" y="423" fill="#e8eef2" font-size="18">A=1 B=0</text>
+    <text class="zh" x="1090" y="423" text-anchor="end" fill="#6fe3c8" font-size="18">输出 1</text>
+    <rect x="646" y="460" width="470" height="60" rx="8" fill="#0e1d27" stroke="#2a4a5e"/>
+    <text class="num" x="672" y="499" fill="#e8eef2" font-size="18">A=1 B=1</text>
+    <text class="zh" x="1090" y="499" text-anchor="end" fill="#6fe3c8" font-size="18">输出 0</text>
+  <text class="zh" x="646" y="556" fill="#8aa0ad" font-size="16">与非门只有两个输入都为 1 时输出 0。</text>
+</g>
+<text class="zh" x="56" y="641" fill="#8aa0ad" font-size="16">教学仿真：输入 A/B 由练习界面提供，本图为静态原理示意。</text>
+</svg>

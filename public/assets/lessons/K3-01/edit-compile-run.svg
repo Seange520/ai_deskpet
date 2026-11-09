@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675" role="img" aria-label="第一个程序：编辑、编译、运行">
+<defs>
+<pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#16303f" stroke-width="1"/></pattern>
+<style>
+.zh{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif}
+.num{font-family:'JetBrains Mono',Consolas,monospace}
+@keyframes pulse{0%,100%{opacity:.35}50%{opacity:1}}
+@keyframes flow{to{stroke-dashoffset:-80}}
+@keyframes heat{0%,100%{fill:#f2c56b}50%{fill:#ff7a6b}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+</style>
+</defs>
+<rect width="1200" height="675" fill="#0b1620"/>
+<rect width="1200" height="675" fill="url(#grid)" opacity=".7"/>
+<rect x="18" y="18" width="1164" height="639" fill="none" stroke="#2a4a5e" stroke-width="2"/>
+<text class="zh" x="56" y="66" fill="#6fe3c8" font-size="19" letter-spacing="3">THE FORGE / 检修手册 · K3-01</text>
+<text class="zh" x="56" y="110" fill="#e8eef2" font-size="34" font-weight="700">第一个程序：编辑、编译、运行</text>
+<line x1="56" y1="130" x2="1144" y2="130" stroke="#2a4a5e" stroke-width="2"/>
+
+<g>
+  <rect x="56" y="170" width="713" height="420" rx="12" fill="#12242f" stroke="#2a4a5e"/>
+  
+    <rect x="90" y="200" width="640" height="96" rx="10" fill="#0e1d27" stroke="#2a4a5e"/>
+    <text class="zh" x="120" y="240" fill="#6fe3c8" font-size="19">① 编辑</text>
+    <text class="zh" x="250" y="240" fill="#e8eef2" font-size="18">写源文件</text>
+    <text class="zh" x="250" y="272" fill="#8aa0ad" font-size="15">hello.ino / main.c</text>
+    <rect x="90" y="320" width="640" height="96" rx="10" fill="#0e1d27" stroke="#2a4a5e"/>
+    <text class="zh" x="120" y="360" fill="#6fe3c8" font-size="19">② 编译</text>
+    <text class="zh" x="250" y="360" fill="#e8eef2" font-size="18">检查语法并生成机器码</text>
+    <text class="zh" x="250" y="392" fill="#8aa0ad" font-size="15">语法错 → 先修</text>
+    <rect x="90" y="440" width="640" height="96" rx="10" fill="#0e1d27" stroke="#2a4a5e"/>
+    <text class="zh" x="120" y="480" fill="#6fe3c8" font-size="19">③ 运行</text>
+    <text class="zh" x="250" y="480" fill="#e8eef2" font-size="18">烧录/运行，观察现象</text>
+    <text class="zh" x="250" y="512" fill="#8aa0ad" font-size="15">灯亮 / 串口打印</text>
+</g>
+<g>
+  <rect x="794" y="170" width="350" height="420" rx="12" fill="#12242f" stroke="#2a4a5e"/>
+  <text class="zh" x="820" y="204" fill="#6fe3c8" font-size="17">每一步都要有输出</text>
+  <text class="zh" x="820" y="252" fill="#e8eef2" font-size="17">编辑：保存成功</text>
+  <text class="zh" x="820" y="292" fill="#e8eef2" font-size="17">编译：Build OK，0 错误</text>
+  <text class="zh" x="820" y="332" fill="#e8eef2" font-size="17">运行：灯按预期变化</text>
+  <text class="zh" x="820" y="372" fill="#e8eef2" font-size="17">串口：打印关键变量</text>
+  <text class="zh" x="820" y="432" fill="#8aa0ad" font-size="16">看不到输出，就没有证据。</text>
+</g>
+<text class="zh" x="56" y="641" fill="#8aa0ad" font-size="16">教学示例：真实烧录流程与板卡/工具链有关，本课为虚拟运行体验。</text>
+</svg>

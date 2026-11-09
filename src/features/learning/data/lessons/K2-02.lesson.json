@@ -7,7 +7,9 @@
     "layer": "L2",
     "pillar": "forge",
     "oneLiner": "亮不亮看时间比例",
-    "prereq": ["K2-01"],
+    "prereq": [
+      "K2-01"
+    ],
     "storyScene": "P10-DimmerPuzzle",
     "spoilerLevel": 2,
     "license": "CC-BY-4.0",
@@ -29,9 +31,24 @@
       "narration": "夜宵摊的招牌灯忽明忽暗，像有人在慢慢拧旋钮。赫菲伸手把亮度调到一半：我没动它，它自己会调？摊主挠头：这灯换了新板子以后就这样。你注意到板子上那四个小灯，各亮各的，亮的时间长短不一样。",
       "interaction": "choice",
       "choices": [
-        { "id": "a", "text": "灯一直通断切换，只是快到你眼睛看不出来", "correct": true, "feedback": "对。亮度由「亮的时间占多少比例」决定，不是电压在慢慢升降。" },
-        { "id": "b", "text": "板子在偷偷降压，电压越低越暗", "correct": false, "feedback": "数字口不是可调电源；它只有通和断两种状态。" },
-        { "id": "c", "text": "灯坏了，接触不良", "correct": false, "feedback": "四个灯是同步变暗又变亮的，说明是控制信号在变。" }
+        {
+          "id": "a",
+          "text": "灯一直通断切换，只是快到你眼睛看不出来",
+          "correct": true,
+          "feedback": "对。亮度由「亮的时间占多少比例」决定，不是电压在慢慢升降。"
+        },
+        {
+          "id": "b",
+          "text": "板子在偷偷降压，电压越低越暗",
+          "correct": false,
+          "feedback": "数字口不是可调电源；它只有通和断两种状态。"
+        },
+        {
+          "id": "c",
+          "text": "灯坏了，接触不良",
+          "correct": false,
+          "feedback": "四个灯是同步变暗又变亮的，说明是控制信号在变。"
+        }
       ]
     },
     {
@@ -44,17 +61,17 @@
           "kind": "card",
           "src": "assets/lessons/K2-02/pwm-duty-cycle.svg",
           "alt": "PWM 波形图：高电平时间占周期比例与 25%/50%/75% 三档平均电压标注",
-          "status": "planned",
-          "license": "original",
-          "notes": "原创 SVG，UI 内联"
+          "status": "ready",
+          "license": "CC-BY-4.0",
+          "notes": "T1.1 原创 SVG，静音可用"
         },
         {
-          "kind": "anim",
-          "src": "assets/lessons/K2-02/duty-led-anim.json",
+          "kind": "animation",
+          "src": "assets/lessons/K2-02/duty-led-anim.svg",
           "alt": "占空比调光动画：同一周期内高电平宽度变化，右侧平均亮度跟随",
-          "status": "planned",
-          "license": "original",
-          "notes": "CSS/WebAudio 合成动画，不依赖外部素材"
+          "status": "ready",
+          "license": "CC-BY-4.0",
+          "notes": "T1.1 原创 SVG，静音可用"
         }
       ]
     },
@@ -64,11 +81,31 @@
       "durationSec": 210,
       "task": "四个通道的占空比分别是 25% / 50% / 75% / 10%。按亮度从暗到亮排序，并算出各自的平均电压（按 3.3V 输出）。",
       "steps": [
-        { "action": "rank", "target": "channel-d", "hint": "10% 最暗，平均电压最低" },
-        { "action": "rank", "target": "channel-a", "hint": "25% ≈ 0.83V" },
-        { "action": "rank", "target": "channel-b", "hint": "50% ≈ 1.65V，正好一半" },
-        { "action": "rank", "target": "channel-c", "hint": "75% ≈ 2.48V，最亮" },
-        { "action": "calculate", "target": "avg-voltage", "hint": "平均电压 = 占空比 × 3.3V" }
+        {
+          "action": "rank",
+          "target": "channel-d",
+          "hint": "10% 最暗，平均电压最低"
+        },
+        {
+          "action": "rank",
+          "target": "channel-a",
+          "hint": "25% ≈ 0.83V"
+        },
+        {
+          "action": "rank",
+          "target": "channel-b",
+          "hint": "50% ≈ 1.65V，正好一半"
+        },
+        {
+          "action": "rank",
+          "target": "channel-c",
+          "hint": "75% ≈ 2.48V，最亮"
+        },
+        {
+          "action": "calculate",
+          "target": "avg-voltage",
+          "hint": "平均电压 = 占空比 × 3.3V"
+        }
       ],
       "failureHints": [
         "把占空比当电压：占空比是无量纲比例，电压要再乘电源电压",
@@ -81,8 +118,22 @@
       "type": "verify",
       "durationSec": 145,
       "checks": [
-        { "id": "v_avg", "type": "measurement", "probe": "channel-b-avg", "expected": 1.65, "tolerance": 0.1, "unit": "V" },
-        { "id": "v_dark", "type": "measurement", "probe": "channel-d-avg", "expected": 0.33, "tolerance": 0.1, "unit": "V" }
+        {
+          "id": "v_avg",
+          "type": "measurement",
+          "probe": "channel-b-avg",
+          "expected": 1.65,
+          "tolerance": 0.1,
+          "unit": "V"
+        },
+        {
+          "id": "v_dark",
+          "type": "measurement",
+          "probe": "channel-d-avg",
+          "expected": 0.33,
+          "tolerance": 0.1,
+          "unit": "V"
+        }
       ],
       "safety": "测量前确认表笔在直流电压档；PWM 输出用万用表看到的是平均值，不要用通断档去测；接线时先断电。"
     },
@@ -92,9 +143,24 @@
       "durationSec": 150,
       "prompt": "夜里 LED 用 PWM 调暗，比串一个电阻降压更省电。为什么？",
       "options": [
-        { "id": "switch", "text": "PWM 让管子只在通/断两种状态切换，导通时压降小，几乎不发热", "correct": true, "why": "开关损耗远小于电阻上的持续 I²R 发热，所以更省电。" },
-        { "id": "voltage", "text": "PWM 把电压降下来了，所以功率当然小", "correct": false, "why": "数字口没有真正降压；它是用时间比例控制平均功率。" },
-        { "id": "same", "text": "两者一样省电，只是 PWM 看起来更高级", "correct": false, "why": "电阻会持续发热，是实打实的损耗。" }
+        {
+          "id": "switch",
+          "text": "PWM 让管子只在通/断两种状态切换，导通时压降小，几乎不发热",
+          "correct": true,
+          "why": "开关损耗远小于电阻上的持续 I²R 发热，所以更省电。"
+        },
+        {
+          "id": "voltage",
+          "text": "PWM 把电压降下来了，所以功率当然小",
+          "correct": false,
+          "why": "数字口没有真正降压；它是用时间比例控制平均功率。"
+        },
+        {
+          "id": "same",
+          "text": "两者一样省电，只是 PWM 看起来更高级",
+          "correct": false,
+          "why": "电阻会持续发热，是实打实的损耗。"
+        }
       ],
       "solution": "平均电压相同不代表损耗相同：电阻调光靠持续发热消耗能量，PWM 靠快速开关控制平均功率，开关管损耗小得多。"
     },
@@ -110,14 +176,39 @@
     }
   ],
   "checks": [
-    { "id": "q1", "type": "sim-task", "weight": 0.4, "pass": "四通道亮度排序正确，平均电压 0.83 / 1.65 / 2.48 / 0.33V 计算正确" },
-    { "id": "q2", "type": "measurement", "weight": 0.3, "pass": "50% 通道平均电压 1.65±0.1V、10% 通道 0.33±0.1V" },
-    { "id": "q3", "type": "quiz", "weight": 0.3, "pass": "解释 PWM 比串联电阻调光更省电" }
+    {
+      "id": "q1",
+      "type": "sim-task",
+      "weight": 0.4,
+      "pass": "四通道亮度排序正确，平均电压 0.83 / 1.65 / 2.48 / 0.33V 计算正确"
+    },
+    {
+      "id": "q2",
+      "type": "measurement",
+      "weight": 0.3,
+      "pass": "50% 通道平均电压 1.65±0.1V、10% 通道 0.33±0.1V"
+    },
+    {
+      "id": "q3",
+      "type": "quiz",
+      "weight": 0.3,
+      "pass": "解释 PWM 比串联电阻调光更省电"
+    }
   ],
   "assessment": {
-    "masteryWeights": { "hook": 0.1, "practice": 0.35, "verify": 0.3, "transfer": 0.25 },
+    "masteryWeights": {
+      "hook": 0.1,
+      "practice": 0.35,
+      "verify": 0.3,
+      "transfer": 0.25
+    },
     "passScore": 0.7,
-    "retentionDays": [1, 3, 7, 21]
+    "retentionDays": [
+      1,
+      3,
+      7,
+      21
+    ]
   },
   "storyBinding": {
     "scene": "P10-DimmerPuzzle",
@@ -126,7 +217,13 @@
     "worldPhenomenon": "夜宵摊招牌灯自己忽明忽暗，板子四个小灯亮的时间长短不同。"
   },
   "redLines": {
-    "forbiddenNarrationTokens": ["第七校验", "熵", "残响", "第一编译者", "网页游戏"],
+    "forbiddenNarrationTokens": [
+      "第七校验",
+      "熵",
+      "残响",
+      "第一编译者",
+      "网页游戏"
+    ],
     "aiDoesNotDecide": true,
     "noFourthWall": true,
     "noSacrificeGlorification": true

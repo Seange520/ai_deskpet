@@ -29,9 +29,24 @@
       "narration": "虚拟 IDE 的编辑区亮着，代码区却只有几行空壳。赫菲把光标停在第一行：每个维护者都从这里开始——不是先懂全部，而是先让它跑起来一次。屏幕右下角有三个按钮：校验、烧录、运行。摊主探头：哪个先按？",
       "interaction": "choice",
       "choices": [
-        { "id": "a", "text": "先校验语法，通过后再烧录到板子上运行", "correct": true, "feedback": "对。先确认代码能过编译，再让板子执行。" },
-        { "id": "b", "text": "直接按运行，报错了再改", "correct": false, "feedback": "没有经过编译的代码谈不上运行，先校验。" },
-        { "id": "c", "text": "三个一起按，总有一个能成", "correct": false, "feedback": "顺序错了只会把错误叠在一起。" }
+        {
+          "id": "a",
+          "text": "先校验语法，通过后再烧录到板子上运行",
+          "correct": true,
+          "feedback": "对。先确认代码能过编译，再让板子执行。"
+        },
+        {
+          "id": "b",
+          "text": "直接按运行，报错了再改",
+          "correct": false,
+          "feedback": "没有经过编译的代码谈不上运行，先校验。"
+        },
+        {
+          "id": "c",
+          "text": "三个一起按，总有一个能成",
+          "correct": false,
+          "feedback": "顺序错了只会把错误叠在一起。"
+        }
       ]
     },
     {
@@ -44,17 +59,17 @@
           "kind": "card",
           "src": "assets/lessons/K3-01/edit-compile-run.svg",
           "alt": "编辑—校验—烧录—运行四步流程图，标注每一步的产物与常见失败点",
-          "status": "planned",
-          "license": "original",
-          "notes": "原创 SVG，UI 内联"
+          "status": "ready",
+          "license": "CC-BY-4.0",
+          "notes": "T1.1 原创 SVG，静音可用"
         },
         {
-          "kind": "ide",
-          "src": "assets/lessons/K3-01/virtual-ide-blank.json",
+          "kind": "diagram",
+          "src": "assets/lessons/K3-01/virtual-ide-blank.svg",
           "alt": "虚拟 IDE 示例：空壳程序、校验输出面板与串口监视区",
-          "status": "planned",
-          "license": "original",
-          "notes": "网页内虚拟 IDE 数据，不依赖外部服务"
+          "status": "ready",
+          "license": "CC-BY-4.0",
+          "notes": "T1.1 原创 SVG，静音可用"
         }
       ]
     },
@@ -64,9 +79,21 @@
       "durationSec": 210,
       "task": "把下面四步按正确顺序排好：① 观察现象/串口 ② 校验 ③ 编辑代码 ④ 烧录。然后把空壳程序补成「让引脚每 500ms 翻转一次」的最小结构，并说明初始化块和循环块各放什么。",
       "steps": [
-        { "action": "order", "target": "steps-order", "hint": "先写、再校验、再烧录、最后观察" },
-        { "action": "fill", "target": "setup-loop", "hint": "初始化只执行一次，循环反复执行" },
-        { "action": "choose", "target": "pin-toggle", "hint": "翻转本质是输出高、等、输出低、等" }
+        {
+          "action": "order",
+          "target": "steps-order",
+          "hint": "先写、再校验、再烧录、最后观察"
+        },
+        {
+          "action": "fill",
+          "target": "setup-loop",
+          "hint": "初始化只执行一次，循环反复执行"
+        },
+        {
+          "action": "choose",
+          "target": "pin-toggle",
+          "hint": "翻转本质是输出高、等、输出低、等"
+        }
       ],
       "code": {
         "language": "pseudo",
@@ -103,7 +130,14 @@
       "type": "verify",
       "durationSec": 140,
       "checks": [
-        { "id": "v_run", "type": "measurement", "probe": "led-pin-high", "expected": 3.3, "tolerance": 0.2, "unit": "V" }
+        {
+          "id": "v_run",
+          "type": "measurement",
+          "probe": "led-pin-high",
+          "expected": 3.3,
+          "tolerance": 0.2,
+          "unit": "V"
+        }
       ],
       "safety": "烧录和复位前确认板子供电稳定；测量引脚电压时表笔只碰引脚与地，不要跨接电源；改动接线前断电。"
     },
@@ -113,9 +147,24 @@
       "durationSec": 150,
       "prompt": "校验显示通过，但板子上完全没反应。下一步最合理的是？",
       "options": [
-        { "id": "upload", "text": "确认烧录是否成功、板子是否复位、引脚是否真的接着灯", "correct": true, "why": "校验只保证语法；烧录、供电、接线是另外三个环节。" },
-        { "id": "rewrite", "text": "把代码全部重写一遍", "correct": false, "why": "还没定位问题，重写只会引入新变量。" },
-        { "id": "more-delay", "text": "把等待时间改成 5 秒再试试", "correct": false, "why": "现象完全没出现，先查链路上的硬环节。" }
+        {
+          "id": "upload",
+          "text": "确认烧录是否成功、板子是否复位、引脚是否真的接着灯",
+          "correct": true,
+          "why": "校验只保证语法；烧录、供电、接线是另外三个环节。"
+        },
+        {
+          "id": "rewrite",
+          "text": "把代码全部重写一遍",
+          "correct": false,
+          "why": "还没定位问题，重写只会引入新变量。"
+        },
+        {
+          "id": "more-delay",
+          "text": "把等待时间改成 5 秒再试试",
+          "correct": false,
+          "why": "现象完全没出现，先查链路上的硬环节。"
+        }
       ],
       "solution": "按链路排查：代码校验 → 烧录结果 → 板子复位/供电 → 引脚接线，每次只验证一段。"
     },
@@ -131,14 +180,39 @@
     }
   ],
   "checks": [
-    { "id": "q1", "type": "code", "weight": 0.4, "pass": "排序正确并选出含初始化/循环的正确最小结构" },
-    { "id": "q2", "type": "measurement", "weight": 0.3, "pass": "运行后 LED 引脚高电平 3.3±0.2V" },
-    { "id": "q3", "type": "quiz", "weight": 0.3, "pass": "校验通过无现象时选择查烧录/供电/接线" }
+    {
+      "id": "q1",
+      "type": "code",
+      "weight": 0.4,
+      "pass": "排序正确并选出含初始化/循环的正确最小结构"
+    },
+    {
+      "id": "q2",
+      "type": "measurement",
+      "weight": 0.3,
+      "pass": "运行后 LED 引脚高电平 3.3±0.2V"
+    },
+    {
+      "id": "q3",
+      "type": "quiz",
+      "weight": 0.3,
+      "pass": "校验通过无现象时选择查烧录/供电/接线"
+    }
   ],
   "assessment": {
-    "masteryWeights": { "hook": 0.1, "practice": 0.35, "verify": 0.3, "transfer": 0.25 },
+    "masteryWeights": {
+      "hook": 0.1,
+      "practice": 0.35,
+      "verify": 0.3,
+      "transfer": 0.25
+    },
     "passScore": 0.7,
-    "retentionDays": [1, 3, 7, 21]
+    "retentionDays": [
+      1,
+      3,
+      7,
+      21
+    ]
   },
   "storyBinding": {
     "scene": "P10-VirtualIDE",
@@ -147,7 +221,13 @@
     "worldPhenomenon": "虚拟 IDE 里的空壳程序与三个按钮：校验、烧录、运行。"
   },
   "redLines": {
-    "forbiddenNarrationTokens": ["第七校验", "熵", "残响", "第一编译者", "网页游戏"],
+    "forbiddenNarrationTokens": [
+      "第七校验",
+      "熵",
+      "残响",
+      "第一编译者",
+      "网页游戏"
+    ],
     "aiDoesNotDecide": true,
     "noFourthWall": true,
     "noSacrificeGlorification": true
