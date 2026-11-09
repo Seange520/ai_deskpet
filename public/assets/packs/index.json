@@ -1,0 +1,56 @@
+{
+  "manifestVersion": 1,
+  "app": "seventh-checksum",
+  "generatedAt": "2026-11-09T05:00:00.000Z",
+  "note": "示例资源包索引（占位哈希）。真实包由 scripts/build-asset-packs.mjs 生成后替换。",
+  "packs": [
+    {
+      "id": "act1-forge",
+      "title": "第一章 · 熔炉",
+      "version": "1.0.0",
+      "totalSize": 5242880,
+      "files": [
+        {
+          "path": "assets/lessons/act1-forge/forge-hd.png",
+          "url": "./assets/packs/act1-forge/forge-hd.png",
+          "size": 3145728,
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "path": "assets/lessons/act1-forge/street-hd.png",
+          "url": "./assets/packs/act1-forge/street-hd.png",
+          "size": 2097152,
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      ]
+    },
+    {
+      "id": "act2-weave",
+      "title": "第二章 · 织网",
+      "version": "1.0.0",
+      "totalSize": 3145728,
+      "files": [
+        {
+          "path": "assets/lessons/act2-weave/weave-hd.png",
+          "url": "./assets/packs/act2-weave/weave-hd.png",
+          "size": 3145728,
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      ]
+    },
+    {
+      "id": "audio-zh",
+      "title": "中文语音与音效包",
+      "version": "1.0.1",
+      "totalSize": 1048576,
+      "files": [
+        {
+          "path": "assets/audio/zh/boot-chime.mp3",
+          "url": "./assets/packs/audio-zh/boot-chime.mp3",
+          "size": 1048576,
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+        }
+      ]
+    }
+  ]
+}

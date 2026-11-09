@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>第七校验 · THE SEVENTH CHECKSUM</title>
+    <meta
+      name="description"
+      content="《第七校验》是工程教学与城市叙事结合的学习游戏：从电路、万用表到嵌入式与 AI 桌宠，在流明域里修好一座会呼吸的城市。"
+    />
+    <style>
+      :root {
+        --bg: #060e14;
+        --bg2: #0a1822;
+        --ink: #d9f1ea;
+        --dim: #8aa0ad;
+        --teal: #6fe3c8;
+        --amber: #f2c56b;
+        --line: rgba(111, 227, 200, 0.22);
+      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        background: radial-gradient(1200px 700px at 70% -10%, rgba(111, 227, 200, 0.12), transparent 60%),
+          radial-gradient(900px 600px at 10% 0%, rgba(90, 120, 255, 0.1), transparent 55%),
+          linear-gradient(180deg, var(--bg), var(--bg2) 60%, var(--bg));
+        color: var(--ink);
+        font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+        line-height: 1.7;
+      }
+      a { color: var(--teal); text-decoration: none; }
+      a:hover { text-decoration: underline; }
+      .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+      header {
+        position: sticky; top: 0; z-index: 5;
+        backdrop-filter: blur(12px);
+        background: rgba(6, 14, 20, 0.72);
+        border-bottom: 1px solid var(--line);
+      }
+      .nav { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 0; }
+      .brand { display: flex; align-items: center; gap: 12px; font-weight: 700; letter-spacing: 2px; }
+      .brand svg { width: 28px; height: 28px; }
+      .nav nav { display: flex; gap: 22px; font-size: 14px; color: var(--dim); }
+      .nav nav a { color: var(--dim); }
+      .btn {
+        display: inline-flex; align-items: center; gap: 10px;
+        padding: 12px 22px; border-radius: 4px; border: 1px solid var(--teal);
+        color: var(--teal); background: transparent; font-size: 15px; cursor: pointer;
+        letter-spacing: 1px; transition: background 0.2s, box-shadow 0.2s;
+      }
+      .btn:hover { background: rgba(111, 227, 200, 0.1); box-shadow: 0 0 24px rgba(111, 227, 200, 0.18); text-decoration: none; }
+      .btn.primary { background: var(--teal); color: #05110f; border-color: var(--teal); font-weight: 700; }
+      .btn.primary:hover { background: #8ff0da; }
+      .btn[aria-disabled='true'] { opacity: 0.5; cursor: not-allowed; }
+      .hero { padding: 96px 0 72px; position: relative; overflow: hidden; }
+      .hero::before {
+        content: ''; position: absolute; inset: 0;
+        background-image: linear-gradient(rgba(111, 227, 200, 0.06) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(111, 227, 200, 0.06) 1px, transparent 1px);
+        background-size: 44px 44px; mask-image: radial-gradient(70% 70% at 50% 0%, #000 30%, transparent 80%);
+        pointer-events: none;
+      }
+      .kicker { color: var(--amber); letter-spacing: 4px; font-size: 13px; }
+      h1 { font-size: clamp(38px, 7vw, 76px); line-height: 1.05; letter-spacing: 6px; margin: 14px 0 10px; }
+      .latin { color: var(--dim); letter-spacing: 5px; font-size: 13px; }
+      .lead { max-width: 720px; color: #b7cdd4; font-size: 17px; margin: 24px 0 34px; }
+      .cta { display: flex; flex-wrap: wrap; gap: 14px; }
+      .note { margin-top: 14px; color: var(--dim); font-size: 13px; }
+      .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; padding: 26px 0 60px; }
+      .card {
+        border: 1px solid var(--line); border-radius: 6px; padding: 24px;
+        background: linear-gradient(180deg, rgba(13, 30, 40, 0.9), rgba(8, 18, 26, 0.9));
+      }
+      .card h3 { margin: 0 0 8px; letter-spacing: 1px; }
+      .card p { color: var(--dim); margin: 0; font-size: 14.5px; }
+      .tag { color: var(--teal); font-size: 12px; letter-spacing: 2px; }
+      section { padding: 48px 0; border-top: 1px solid var(--line); }
+      h2 { letter-spacing: 3px; font-size: 24px; margin: 0 0 8px; }
+      .sub { color: var(--dim); margin: 0 0 26px; font-size: 14px; }
+      .rows { display: grid; gap: 12px; }
+      .row { display: grid; grid-template-columns: 120px 1fr; gap: 18px; padding: 14px 0; border-bottom: 1px dashed rgba(111, 227, 200, 0.14); font-size: 15px; }
+      .row b { color: var(--teal); font-weight: 600; letter-spacing: 1px; }
+      .row span { color: #b7cdd4; }
+      footer { padding: 44px 0 60px; color: var(--dim); font-size: 13px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; }
+      .fine { color: #6b7f8a; font-size: 12px; }
+      @media (max-width: 720px) {
+        .nav nav { display: none; }
+        .hero { padding: 64px 0 48px; }
+        h1 { letter-spacing: 3px; }
+        .row { grid-template-columns: 1fr; gap: 4px; }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="wrap nav">
+        <div class="brand">
+          <svg viewBox="0 0 40 40" aria-hidden="true">
+            <path d="M20 3 34 11v18L20 37 6 29V11z" fill="none" stroke="#6fe3c8" stroke-width="2" />
+            <path d="M20 10 27 14v12l-7 4-7-4V14z" fill="none" stroke="#6fe3c8" stroke-width="1.4" opacity=".85" />
+            <circle cx="20" cy="20" r="3" fill="#6fe3c8" />
+          </svg>
+          <span>第七校验</span>
+        </div>
+        <nav>
+          <a href="#features">玩法</a>
+          <a href="#teaching">教学</a>
+          <a href="#app">客户端</a>
+          <a href="#updates">更新</a>
+          <a href="../index.html">Web 体验</a>
+        </nav>
+        <a class="btn" href="../index.html">开始体验</a>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <section class="hero" style="border-top: 0">
+        <p class="kicker">THE SEVENTH CHECKSUM · LUMEN REACH</p>
+        <h1>第七校验</h1>
+        <p class="latin">流明域 · 修好一座会呼吸的城市</p>
+        <p class="lead">
+          一款把工程教学写进城市叙事的浏览器游戏。从第一次点亮路灯，到给桌宠装上真正的 AI——
+          你在流明域里留下的每一份读数、每一次接线，都是它醒来的一步。
+        </p>
+        <div class="cta">
+          <a class="btn primary" href="../index.html">免费开始 Web 体验 →</a>
+          <a class="btn" href="#app">安卓内测包</a>
+        </div>
+        <p class="note">无需注册、无需硬件、无需 API Key。完整第一章永久免费。</p>
+      </section>
+
+      <section id="features">
+        <h2>玩法 · 修的不是游戏，是城市</h2>
+        <p class="sub">每个谜题背后都是一条真实工程知识，每个修复都让街区重新亮起来。</p>
+        <div class="grid">
+          <div class="card">
+            <p class="tag">FIELD KIT</p>
+            <h3>万用表 · 检修视野</h3>
+            <p>六种档位、真实量程与安全联锁。先断电、再验电、然后测量——错档会烧表，带电操作会被拦下。</p>
+          </div>
+          <div class="card">
+            <p class="tag">THE FORGE</p>
+            <h3>会呼吸的路灯</h3>
+            <p>一条街的灯与压缩机共地回流。看 7 秒周期、追压降、找锈断点，把「灯不会杀人，人会」记进档案。</p>
+          </div>
+          <div class="card">
+            <p class="tag">RESONANCE</p>
+            <h3>桌宠共鸣链</h3>
+            <p>理之链与感之链共 24 个节点。你测得准，它就记得清；你乱猜，同步率会诚实地下降。</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="teaching">
+        <h2>教学 · 从 0 到能做出东西</h2>
+        <p class="sub">先诊断，再走你自己的路径；每一节课都有可复验的学习证据。</p>
+        <div class="rows">
+          <div class="row"><b>起点诊断</b><span>12 道题分成 A 全量 / B 快速 / C 专业加速三条路径，学过的知识可以跳过。</span></div>
+          <div class="row"><b>任务制课节</b><span>任务简报 → 看见现象 → 原理 → 动手仿真 → 测量证明 → 迁移 → 复盘，每节 8–12 分钟。</span></div>
+          <div class="row"><b>知识星图</b><span>七柱九层 40 个知识点，只显示「能学什么」，不剧透世界真相。</span></div>
+          <div class="row"><b>后续支线</b><span>集成电路、AI 桌宠、射频与嵌入式等专题随主线赛季逐步开放。</span></div>
+        </div>
+      </section>
+
+      <section id="app">
+        <h2>客户端 · Web 预览，App 沉浸</h2>
+        <p class="sub">Web 端是官网与轻量预览；安卓与桌面端将支持资源包下载与更高画质，内容不阉割。</p>
+        <div class="grid">
+          <div class="card">
+            <p class="tag">WEB</p>
+            <h3>浏览器直接玩</h3>
+            <p>首屏轻量加载，低端机自动降档；完整主线与教学均可体验。就是你现在打开的站点。</p>
+          </div>
+          <div class="card">
+            <p class="tag">ANDROID</p>
+            <h3>安卓内测包</h3>
+            <p>30MB 左右基础包，竖屏/横屏自适应，触屏摇杆已实测可走可看。资源包下载器开发中。</p>
+            <p style="margin-top: 10px"><a href="#updates">获取方式见更新页 ↓</a></p>
+          </div>
+          <div class="card">
+            <p class="tag">DESKTOP</p>
+            <h3>桌面完整版（规划）</h3>
+            <p>Tauri 2 封装，键鼠/手柄、更高画质与本地资源包；与 App 共享存档导出格式。</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="updates">
+        <h2>更新 · 校验周期</h2>
+        <p class="sub">按「校验周期」更新：每 6 周一个章节、一组教学包与一次城市事件。</p>
+        <div class="rows">
+          <div class="row"><b>v0.9.8 · 当前</b><span>熔炉外街、会呼吸的路灯、反峰陷阱、共鸣链、装配台、信任邀约、七盏灯案件、残响潜行、校验之径、维护者档案、任务制课节、诊断分路径。</span></div>
+          <div class="row"><b>下一步</b><span>安卓资源包下载器 · 官网下载页 · 材质与 HUD 第二批 · IC 支线首季。</span></div>
+          <div class="row"><b>后续</b><span>织网章 → 回声章 → 共生章 → 回响塔；赛季纪念铭牌与桌面完整版。</span></div>
+        </div>
+        <p class="note">
+          安卓内测包暂不公开下载：请在项目 / GitHub 仓库或维护者处获取（每版附 SHA-256）。
+        </p>
+      </section>
+    </main>
+
+    <footer class="wrap">
+      <span>© 第七校验项目组 · THE SEVENTH CHECKSUM</span>
+      <span class="fine">本地优先 · 教学仿真非真机认证 · 页面内容为开发中状态</span>
+    </footer>
+  </body>
+</html>

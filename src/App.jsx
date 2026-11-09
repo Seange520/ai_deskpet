@@ -432,7 +432,9 @@ export default function App() {
               <span>
                 THE SEVENTH CHECKSUM <i>®</i> LEARN. BUILD. BEFRIEND.
               </span>
-              <span>从 0 到 1，让好奇发生。</span>
+              <span>
+                从 0 到 1，让好奇发生。 <a href="./site/index.html">关于本作 / 官网</a>
+              </span>
             </footer>
           )}
         </main>
