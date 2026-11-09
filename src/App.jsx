@@ -28,6 +28,7 @@ import useHardwareProgress from './hooks/useHardwareProgress';
 import { getHardwareRoute } from './data/hardwareRoutes';
 
 const TeachingPanel = lazy(() => import('./features/learning/TeachingPanel'));
+const AiEntry = import.meta.env.DEV ? lazy(() => import('./features/ai/AiEntry.jsx')) : null;
 
 const ResonancePanel = lazy(() => import('./features/resonance/ResonancePanel'));
 
@@ -288,6 +289,7 @@ export default function App() {
               {muted ? <VolumeX size={18} /> : <Volume2 size={18} />}
             </Button>
             <QualitySettings />
+            {import.meta.env.DEV && tier === 3 && new URLSearchParams(location.search).get('aiTest') === '1' && new URLSearchParams(location.search).get('ai') !== '0' && <Suspense fallback={null}><AiEntry disabled={Boolean(modal)} /></Suspense>}
             <ModalLayer active={new URLSearchParams(location.search).get('world') === 'p9'}><Button style={new URLSearchParams(location.search).get('world') === 'p9' ? {position:'fixed',left:16,top:16,zIndex:30,visibility:'visible',width:'auto',paddingInline:10} : {width:'auto',paddingInline:10}} disabled={Boolean(modal)} className="icon-btn teaching-entry" aria-label="校验之径" data-testid="teaching-entry" onClick={() => openModal('teaching')}>校验之径</Button></ModalLayer>
             <ModalLayer active={new URLSearchParams(location.search).get('world') === 'p9'}><IdentityEntry disabled={Boolean(modal)} onClick={() => openModal('identity')} /></ModalLayer>
             {tier === 3 && !exploring && <ModalLayer active={new URLSearchParams(location.search).get('world') === 'p9'}><Button className="icon-btn" style={new URLSearchParams(location.search).get('world') === 'p9' ? {position:'fixed',right:24,top:24,zIndex:30,visibility:'visible'} : undefined} aria-label="共鸣链" data-testid="resonance-entry" onClick={() => openModal('resonance')}><GitBranch size={18}/></Button></ModalLayer>}

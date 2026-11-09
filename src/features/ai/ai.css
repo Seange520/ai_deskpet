@@ -1,0 +1,158 @@
+.ai-root {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  position: fixed;
+  right: 16px;
+  top: 112px;
+  z-index: 950;
+  visibility: visible;
+  color: #f1f5f9;
+  font:
+    14px/1.6 Inter,
+    sans-serif;
+}
+.ai-root button,
+.ai-root select,
+.ai-root textarea {
+  font: inherit;
+  color: inherit;
+  background: #192b38;
+  border: 1px solid #627e8c;
+  border-radius: 9px;
+  padding: 8px 12px;
+}
+.ai-root button {
+  cursor: pointer;
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.ai-root button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.ai-root :focus-visible {
+  outline: 2px solid #f8c58d;
+  outline-offset: 3px;
+}
+.ai-entry {
+  box-shadow: 0 6px 25px #0006;
+}
+.ai-panel {
+  margin-top: 10px;
+  width: 360px;
+  max-height: calc(100dvh - 180px);
+  display: flex;
+  flex-direction: column;
+  background: #101f2bf5;
+  border: 1px solid #6a8d9a;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 16px 60px #0008;
+}
+.ai-panel header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.ai-panel h2 {
+  font-size: 21px;
+  margin: 2px 0 12px;
+  color: #f8c58d;
+}
+.ai-panel small,
+.ai-note,
+.ai-panel footer {
+  color: #b9cdd8;
+}
+.ai-panel [role='tablist'] {
+  display: flex;
+  gap: 6px;
+}
+.ai-panel [role='tab'] {
+  flex: 1;
+}
+.ai-panel [aria-selected='true'] {
+  background: #315264;
+  border-color: #96d7df;
+}
+.ai-content {
+  overflow: auto;
+  padding: 10px 2px;
+  min-height: 150px;
+  overscroll-behavior: contain;
+}
+.ai-content:has(form) {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+.ai-messages {
+  overflow: auto;
+  min-height: 0;
+  flex: 1;
+}
+.ai-content form,
+.ai-note,
+.ai-clue {
+  flex-shrink: 0;
+}
+.ai-content h3 {
+  font-size: 14px;
+  color: #9ddae2;
+  margin: 12px 0 6px;
+}
+.ai-content p {
+  margin: 8px 0;
+  overflow-wrap: anywhere;
+}
+.ai-messages article {
+  border-left: 2px solid #6b9eac;
+  padding: 6px 10px;
+  margin: 10px 0;
+  background: #172d3a;
+}
+.ai-content form,
+.ai-content label {
+  display: block;
+  margin: 10px 0;
+}
+.ai-content textarea {
+  width: 100%;
+  resize: vertical;
+}
+.ai-content form button {
+  width: 100%;
+  margin-top: 6px;
+}
+.ai-clue {
+  padding: 10px;
+  background: #374234;
+  border-radius: 8px;
+}
+.ai-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.ai-panel footer {
+  border-top: 1px solid #45606f;
+  padding-top: 8px;
+  font-size: 12px;
+}
+@media (max-width: 600px) {
+  .ai-root {
+    right: 12px;
+    top: 112px;
+  }
+  .ai-panel {
+    width: min(360px, calc(100vw - 24px));
+    max-height: calc(100dvh - 180px);
+    padding: 12px;
+  }
+}
