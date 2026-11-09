@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import * as L from '../src/features/learning/learning.mjs';
 import { codecheck, codeSpec } from '../src/features/learning/codecheck.mjs';
 const g = JSON.parse(
@@ -26,7 +26,7 @@ const result = { runId: 'run', checkScore: 1, transferScore: 1, evidence };
 test('fresh independent profile schema', () => {
   const p = fresh();
   assert.equal(p.version, 1);
-  assert.equal(Object.keys(p.kps).length, 40);
+  assert.equal(Object.keys(p.kps).length, g.kps.length);
   assert.deepEqual(p.schedule, { due: [], streakDays: 0, lastDay: null });
 });
 test('only new key named', () =>
@@ -190,14 +190,23 @@ test('late single review grants one interval only', () => {
 });
 test('all code checks have a structured whitelist', () => {
   for (const k of g.kps) {
-    const l = JSON.parse(
-      readFileSync(
-        new URL(
-          '../src/features/learning/data/lessons/' + k.id + '.lesson.json',
-          import.meta.url,
-        ),
-      ),
+    const v1Url = new URL(
+      '../src/features/learning/data/lessons/' + k.id + '.lesson.json',
+      import.meta.url,
     );
+    if (!existsSync(v1Url)) {
+      assert.ok(
+        existsSync(
+          new URL(
+            '../src/features/learning/data/lessons-v2/' + k.id + '.v2.json',
+            import.meta.url,
+          ),
+        ),
+        k.id + ' 既无 v1 也无 v2 课节',
+      );
+      continue;
+    }
+    const l = JSON.parse(readFileSync(v1Url));
     if (l.checks.some((c) => c.type === 'code')) {
       const spec = codeSpec(l);
       assert.ok(spec.options.length >= 3, k.id);

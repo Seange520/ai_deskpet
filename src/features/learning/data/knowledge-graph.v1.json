@@ -135,6 +135,62 @@
   ],
   "kps": [
     {
+      "id": "AD-01",
+      "name": "桌宠壳体与装配顺序",
+      "oneLiner": "先认清零件，再开始装",
+      "layer": "L0",
+      "pillar": "craft",
+      "prereq": [],
+      "gatePrereq": null,
+      "lessonRef": "lessons-v2/AD-01.v2.json",
+      "lessonAvailable": true,
+      "media": [
+        "card",
+        "sim"
+      ],
+      "practice": "按序装配六件并确认安全",
+      "check": {
+        "type": "sim-task",
+        "task": "装配顺序与安全确认",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "P10维修间",
+      "spoilerLevel": 0,
+      "license": "CC-BY-4.0",
+      "status": "partial",
+      "priority": "P0"
+    },
+    {
+      "id": "AD-02",
+      "name": "主控与电源树",
+      "oneLiner": "逻辑与动力分开取电，但必须共地",
+      "layer": "L1",
+      "pillar": "forge",
+      "prereq": [
+        "AD-01"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons-v2/AD-02.v2.json",
+      "lessonAvailable": true,
+      "media": [
+        "card",
+        "sim"
+      ],
+      "practice": "测 5V/3V3/共地三组读数",
+      "check": {
+        "type": "measurement",
+        "task": "电源树三轨测量",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "P10维修间",
+      "spoilerLevel": 1,
+      "license": "CC-BY-4.0",
+      "status": "partial",
+      "priority": "P0"
+    },
+    {
       "id": "K0-01",
       "name": "用电安全与断电原则",
       "oneLiner": "先断电再动手，命比灯重要",
@@ -1284,6 +1340,11 @@
   ],
   "edges": [
     {
+      "from": "AD-01",
+      "to": "AD-02",
+      "kind": "prereq"
+    },
+    {
       "from": "K0-01",
       "to": "K0-02",
       "kind": "prereq"
@@ -1480,12 +1541,12 @@
     }
   ],
   "stats": {
-    "total": 40,
-    "edges": 39,
+    "total": 42,
+    "edges": 40,
     "gates": 1,
     "byLayer": {
-      "L0": 6,
-      "L1": 6,
+      "L0": 7,
+      "L1": 7,
       "L2": 5,
       "L3": 6,
       "L4": 6,
@@ -1496,20 +1557,20 @@
     },
     "byPillar": {
       "foundation": 6,
-      "forge": 11,
-      "craft": 9,
+      "forge": 12,
+      "craft": 10,
       "weave": 6,
       "echo": 4,
       "symbiosis": 2,
       "spire": 2
     },
     "byStatus": {
-      "partial": 6,
+      "partial": 8,
       "planned": 34,
       "ready": 0
     },
     "byPriority": {
-      "P0": 11,
+      "P0": 13,
       "P1": 15,
       "P2": 10,
       "P3": 4

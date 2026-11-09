@@ -164,41 +164,51 @@ export default function TeachingPanel() {
                         type="button"
                         onClick={() => start(nextId, Boolean(lessonsV2[nextId]))}
                       >
-                        继续：{nextId} · {lessons[nextId]?.kp.name}
+                        继续：{nextId} ·{' '}
+                        {lessonsV2[nextId]?.kp.name ||
+                          lessons[nextId]?.kp.name ||
+                          nextId}
                       </button>
                     </article>
                   );
                 })}
               </section>
               <div className="teaching-lessons">
-                {graph.kps.map((k) => (
-                  <article className="teaching-card" key={k.id}>
-                    <h3>
-                      {k.id} · {k.name}
-                    </h3>
-                    <p>{k.oneLiner}</p>
-                    <small>
-                      {k.layer} · {STATES[s.profile.kps[k.id].status]} ·{' '}
-                      {lessons[k.id].meta.estimatedMinutes} 分钟
-                    </small>
-                    <button
-                      data-start-lesson={k.id}
-                      disabled={s.profile.kps[k.id].status === 'locked'}
-                      onClick={() => start(k.id)}
-                    >
-                      开始课节
-                    </button>
-                    {lessonsV2[k.id] && (
-                      <button
-                        data-start-lesson-v2={k.id}
-                        disabled={s.profile.kps[k.id].status === 'locked'}
-                        onClick={() => start(k.id, true)}
-                      >
-                        重制版 · 任务制
-                      </button>
-                    )}
-                  </article>
-                ))}
+                {graph.kps.map((k) => {
+                  const v1 = lessons[k.id];
+                  const v2 = lessonsV2[k.id];
+                  const meta = v1?.meta || v2?.meta;
+                  return (
+                    <article className="teaching-card" key={k.id}>
+                      <h3>
+                        {k.id} · {k.name}
+                      </h3>
+                      <p>{k.oneLiner}</p>
+                      <small>
+                        {k.layer} · {STATES[s.profile.kps[k.id].status]}
+                        {meta ? ` · ${meta.estimatedMinutes} 分钟` : ''}
+                      </small>
+                      {v1 && (
+                        <button
+                          data-start-lesson={k.id}
+                          disabled={s.profile.kps[k.id].status === 'locked'}
+                          onClick={() => start(k.id)}
+                        >
+                          开始课节
+                        </button>
+                      )}
+                      {v2 && (
+                        <button
+                          data-start-lesson-v2={k.id}
+                          disabled={s.profile.kps[k.id].status === 'locked'}
+                          onClick={() => start(k.id, true)}
+                        >
+                          {v1 ? '重制版 · 任务制' : '开始课节 · 任务制'}
+                        </button>
+                      )}
+                    </article>
+                  );
+                })}
               </div>
             </>
           ))}

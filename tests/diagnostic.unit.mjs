@@ -102,7 +102,7 @@ test('跳过 KP 带 3 类证据，诊断结果可持久化恢复', () => {
     diagnostic,
     answersAll(),
   );
-  const kp = graph.kps[0].id;
+  const kp = diagnostic.questions[0].kpId;
   assert.ok(next.kps[kp].evidence.length >= 3);
   assert.equal(next.kps[kp].mastery, 1);
   const restored = restoreProfile(graph, JSON.stringify(next));
