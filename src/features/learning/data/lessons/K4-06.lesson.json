@@ -7,7 +7,10 @@
     "layer": "L4",
     "pillar": "weave",
     "oneLiner": "先分段，再二分",
-    "prereq": ["K4-02", "K4-03"],
+    "prereq": [
+      "K4-02",
+      "K4-03"
+    ],
     "storyScene": "P10-WeaveCase",
     "spoilerLevel": 4,
     "license": "CC-BY-4.0",
@@ -29,9 +32,24 @@
       "narration": "整条总线突然没人说话：主设备在发，八个从机一个都不应。你手里只有万用表和地址表——第一刀切在哪里？",
       "interaction": "choice",
       "choices": [
-        { "id": "a", "text": "从中间断开，先判断坏在前半段还是后半段", "correct": true, "feedback": "对。二分能把范围一步步减半。" },
-        { "id": "b", "text": "从第一个设备开始一个个拆", "correct": false, "feedback": "能找到，但多花几倍时间。" },
-        { "id": "c", "text": "先把所有设备换新再试", "correct": false, "feedback": "这不是排障，是赌博。" }
+        {
+          "id": "a",
+          "text": "从中间断开，先判断坏在前半段还是后半段",
+          "correct": true,
+          "feedback": "对。二分能把范围一步步减半。"
+        },
+        {
+          "id": "b",
+          "text": "从第一个设备开始一个个拆",
+          "correct": false,
+          "feedback": "能找到，但多花几倍时间。"
+        },
+        {
+          "id": "c",
+          "text": "先把所有设备换新再试",
+          "correct": false,
+          "feedback": "这不是排障，是赌博。"
+        }
       ]
     },
     {
@@ -44,17 +62,17 @@
           "kind": "diagram",
           "src": "assets/lessons/K4-06/bisect-bus.svg",
           "alt": "8 节点总线二分排查示意：中点断开、判断半段、继续二分",
-          "status": "planned",
-          "license": "original",
-          "notes": "原创 SVG，UI 内联"
+          "status": "ready",
+          "license": "CC-BY-4.0",
+          "notes": "T1.1 原创 SVG，静音可用"
         },
         {
-          "kind": "simulation",
-          "src": "assets/lessons/K4-06/bus-fault.json",
+          "kind": "diagram",
+          "src": "assets/lessons/K4-06/bus-fault.svg",
           "alt": "总线故障仿真：通断分段、上电测电平、定位断线节点",
-          "status": "planned",
-          "license": "original",
-          "notes": "页面内确定性仿真"
+          "status": "ready",
+          "license": "CC-BY-4.0",
+          "notes": "T1.1 原创 SVG，静音可用"
         }
       ]
     },
@@ -64,10 +82,26 @@
       "durationSec": 200,
       "task": "在案例总线上定位断线节点：断电分段→缩到单段→上电测电平→确认坏节点 ID。",
       "steps": [
-        { "action": "segment", "target": "bus-segment", "hint": "先从中间断开，不要全拆" },
-        { "action": "continuity", "target": "bus-continuity", "hint": "断电测通断，确认断在哪半" },
-        { "action": "volt", "target": "bus-idle-level", "hint": "上电测 SDA/SCL 空闲电平" },
-        { "action": "locate", "target": "bus-node", "hint": "锁定单个节点后记录编号" }
+        {
+          "action": "segment",
+          "target": "bus-segment",
+          "hint": "先从中间断开，不要全拆"
+        },
+        {
+          "action": "continuity",
+          "target": "bus-continuity",
+          "hint": "断电测通断，确认断在哪半"
+        },
+        {
+          "action": "volt",
+          "target": "bus-idle-level",
+          "hint": "上电测 SDA/SCL 空闲电平"
+        },
+        {
+          "action": "locate",
+          "target": "bus-node",
+          "hint": "锁定单个节点后记录编号"
+        }
       ],
       "failureHints": [
         "带电测通断：联锁阻止并记一次错误",
@@ -80,9 +114,30 @@
       "type": "verify",
       "durationSec": 140,
       "checks": [
-        { "id": "v_node", "type": "measurement", "probe": "bus_broken_node", "expected": "U5", "tolerance": 0, "unit": "id" },
-        { "id": "v_sda", "type": "measurement", "probe": "bus_sda_idle", "expected": 3.3, "tolerance": 0.2, "unit": "V" },
-        { "id": "v_restore", "type": "measurement", "probe": "bus_read_ok", "expected": 1, "tolerance": 0, "unit": "bool" }
+        {
+          "id": "v_node",
+          "type": "measurement",
+          "probe": "bus_broken_node",
+          "expected": "U5",
+          "tolerance": 0,
+          "unit": "id"
+        },
+        {
+          "id": "v_sda",
+          "type": "measurement",
+          "probe": "bus_sda_idle",
+          "expected": 3.3,
+          "tolerance": 0.2,
+          "unit": "V"
+        },
+        {
+          "id": "v_restore",
+          "type": "measurement",
+          "probe": "bus_read_ok",
+          "expected": 1,
+          "tolerance": 0,
+          "unit": "bool"
+        }
       ],
       "safety": "分段前必须断电，改线完成后再上电；真实总线禁止带电插拔，SDA/SCL 上拉与电平按设备手册核对。"
     },
@@ -92,9 +147,24 @@
       "durationSec": 150,
       "prompt": "8 个设备一条总线，只有 1 个节点坏。用二分法，最少需要几次「断开/合上」检查才能锁定？",
       "options": [
-        { "id": "a", "text": "3 次（8→4→2→1）", "correct": true, "why": "每次对半缩小，2³=8，所以 3 次足够。" },
-        { "id": "b", "text": "8 次，每个都要试", "correct": false, "why": "逐步拆是线性排查，不是二分。" },
-        { "id": "c", "text": "1 次，直接测中间那个", "correct": false, "why": "一次只能把范围减半，不能直接命中。" }
+        {
+          "id": "a",
+          "text": "3 次（8→4→2→1）",
+          "correct": true,
+          "why": "每次对半缩小，2³=8，所以 3 次足够。"
+        },
+        {
+          "id": "b",
+          "text": "8 次，每个都要试",
+          "correct": false,
+          "why": "逐步拆是线性排查，不是二分。"
+        },
+        {
+          "id": "c",
+          "text": "1 次，直接测中间那个",
+          "correct": false,
+          "why": "一次只能把范围减半，不能直接命中。"
+        }
       ],
       "solution": "先把 8 分 4/4，再 2/2，再 1/1，共 3 次检查即可锁定。"
     },
@@ -110,14 +180,39 @@
     }
   ],
   "checks": [
-    { "id": "s1", "type": "sim-task", "weight": 0.5, "pass": "二分路径正确并锁定断线节点" },
-    { "id": "m1", "type": "measurement", "weight": 0.25, "pass": "SDA 空闲电平 3.3V ± 0.2V、修复后总线可读" },
-    { "id": "q1", "type": "quiz", "weight": 0.25, "pass": "8 节点二分的检查次数判断正确" }
+    {
+      "id": "s1",
+      "type": "sim-task",
+      "weight": 0.5,
+      "pass": "二分路径正确并锁定断线节点"
+    },
+    {
+      "id": "m1",
+      "type": "measurement",
+      "weight": 0.25,
+      "pass": "SDA 空闲电平 3.3V ± 0.2V、修复后总线可读"
+    },
+    {
+      "id": "q1",
+      "type": "quiz",
+      "weight": 0.25,
+      "pass": "8 节点二分的检查次数判断正确"
+    }
   ],
   "assessment": {
-    "masteryWeights": { "hook": 0.1, "practice": 0.35, "verify": 0.3, "transfer": 0.25 },
+    "masteryWeights": {
+      "hook": 0.1,
+      "practice": 0.35,
+      "verify": 0.3,
+      "transfer": 0.25
+    },
     "passScore": 0.7,
-    "retentionDays": [1, 3, 7, 21]
+    "retentionDays": [
+      1,
+      3,
+      7,
+      21
+    ]
   },
   "storyBinding": {
     "scene": "P10-WeaveCase",
@@ -126,7 +221,13 @@
     "worldPhenomenon": "织网案件里整条回廊设备失联，主设备记录停在同一个时间点。"
   },
   "redLines": {
-    "forbiddenNarrationTokens": ["第七校验", "熵", "残响", "第一编译者", "网页游戏"],
+    "forbiddenNarrationTokens": [
+      "第七校验",
+      "熵",
+      "残响",
+      "第一编译者",
+      "网页游戏"
+    ],
     "aiDoesNotDecide": true,
     "noFourthWall": true,
     "noSacrificeGlorification": true

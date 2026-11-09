@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675" role="img" aria-label="串口：看不见的电平，打印成看得见的字">
+<defs>
+<pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#16303f" stroke-width="1"/></pattern>
+<style>
+.zh{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif}
+.num{font-family:'JetBrains Mono',Consolas,monospace}
+@keyframes pulse{0%,100%{opacity:.35}50%{opacity:1}}
+@keyframes flow{to{stroke-dashoffset:-80}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+@keyframes sweep{0%{transform:translateX(0)}100%{transform:translateX(640px)}}
+</style>
+</defs>
+<rect width="1200" height="675" fill="#0b1620"/>
+<rect width="1200" height="675" fill="url(#grid)" opacity=".7"/>
+<rect x="18" y="18" width="1164" height="639" fill="none" stroke="#2a4a5e" stroke-width="2"/>
+<text class="zh" x="56" y="66" fill="#6fe3c8" font-size="19" letter-spacing="3">THE FORGE / 检修手册 · K3-06</text>
+<text class="zh" x="56" y="110" fill="#e8eef2" font-size="34" font-weight="700">串口：看不见的电平，打印成看得见的字</text>
+<line x1="56" y1="130" x2="1144" y2="130" stroke="#2a4a5e" stroke-width="2"/>
+
+<g><rect x="56" y="170" width="460" height="420" rx="10" fill="#12242f" stroke="#2a4a5e"/>
+<text class="zh" x="76" y="200" fill="#6fe3c8" font-size="17">串口三件事</text><text class="zh" x="76" y="224" fill="#e8eef2" font-size="18">波特率：双方约定速度（如 115200）</text><text class="zh" x="76" y="256" fill="#e8eef2" font-size="18">数据位 / 校验位 / 停止位（8N1 常见）</text><text class="zh" x="76" y="288" fill="#e8eef2" font-size="18">打印内容：变量、状态、错误码</text><text class="zh" x="76" y="320" fill="#e8eef2" font-size="18"></text><text class="zh" x="76" y="352" fill="#e8eef2" font-size="18">先保证能打印，再打印得有意义。</text></g>
+<g>
+  <rect x="560" y="170" width="584" height="420" rx="12" fill="#12242f" stroke="#2a4a5e"/>
+  <rect x="590" y="210" width="524" height="330" rx="8" fill="#0e1d27" stroke="#2a4a5e"/>
+  <text class="num" x="616" y="258" fill="#8aa0ad" font-size="16">Serial Moniter × 115200</text>
+  <text class="num" x="616" y="306" fill="#6fe3c8" font-size="17">&gt; boot ok</text>
+  <text class="num" x="616" y="344" fill="#6fe3c8" font-size="17">&gt; state = 1</text>
+  <text class="num" x="616" y="382" fill="#f2c56b" font-size="17">&gt; V = 23.1V</text>
+  <text class="num" x="616" y="420" fill="#f2c56b" font-size="17">&gt; I = 4.02A</text>
+  <text class="num" x="616" y="458" fill="#ff7a6b" font-size="17">&gt; ERR: I2C timeout</text>
+  <text class="zh" x="616" y="514" fill="#8aa0ad" font-size="16">每一行都是证据；没有输出的“调试”只是猜。</text>
+</g>
+<text class="zh" x="56" y="641" fill="#8aa0ad" font-size="16">安全边界：串口为只读观察（115200/9600），不执行任何固件烧录。</text>
+</svg>

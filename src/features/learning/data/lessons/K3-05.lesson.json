@@ -7,7 +7,9 @@
     "layer": "L3",
     "pillar": "craft",
     "oneLiner": "时间也是参数",
-    "prereq": ["K3-04"],
+    "prereq": [
+      "K3-04"
+    ],
     "storyScene": "P10-ForgePwm",
     "spoilerLevel": 3,
     "license": "CC-BY-4.0",
@@ -29,9 +31,24 @@
       "narration": "赫菲要一盏每秒亮灭两次的灯，可你写的呼吸灯慢得像困了。频率和周期，到底是哪个参数在拖后腿？",
       "interaction": "choice",
       "choices": [
-        { "id": "a", "text": "把亮度调高，看起来就快了", "correct": false, "feedback": "亮度与快慢是两个参数，调亮不会改变周期。" },
-        { "id": "b", "text": "周期决定快慢：2Hz 就是一秒两个完整周期", "correct": true, "feedback": "对。先算周期，再写延时。" },
-        { "id": "c", "text": "多写几次延时，反正代码会自己排队", "correct": false, "feedback": "阻塞延时会把后面的任务一起拖住。" }
+        {
+          "id": "a",
+          "text": "把亮度调高，看起来就快了",
+          "correct": false,
+          "feedback": "亮度与快慢是两个参数，调亮不会改变周期。"
+        },
+        {
+          "id": "b",
+          "text": "周期决定快慢：2Hz 就是一秒两个完整周期",
+          "correct": true,
+          "feedback": "对。先算周期，再写延时。"
+        },
+        {
+          "id": "c",
+          "text": "多写几次延时，反正代码会自己排队",
+          "correct": false,
+          "feedback": "阻塞延时会把后面的任务一起拖住。"
+        }
       ]
     },
     {
@@ -44,17 +61,17 @@
           "kind": "card",
           "src": "assets/lessons/K3-05/timer-card.svg",
           "alt": "delay 阻塞与 millis 时间戳的对比卡片，标注 2Hz=0.5s 周期",
-          "status": "planned",
-          "license": "original",
-          "notes": "原创卡片，UI 内联"
+          "status": "ready",
+          "license": "CC-BY-4.0",
+          "notes": "T1.1 原创 SVG，静音可用"
         },
         {
           "kind": "animation",
-          "src": "assets/lessons/K3-05/pwm-2hz.mp4",
+          "src": "assets/lessons/K3-05/pwm-2hz.svg",
           "alt": "10 秒无旁白动画：2Hz 方波与占空比 50% 的电压波形",
-          "status": "planned",
-          "license": "original",
-          "notes": "教学模型，周期为教学口径"
+          "status": "ready",
+          "license": "CC-BY-4.0",
+          "notes": "T1.1 原创 SVG，静音可用"
         }
       ]
     },
@@ -64,9 +81,21 @@
       "durationSec": 210,
       "task": "把呼吸灯改成 2Hz、占空比 50% 的方波，并用示波器确认频率和占空比。",
       "steps": [
-        { "action": "code", "target": "blink-2hz", "hint": "周期 0.5s：亮 0.25s、灭 0.25s" },
-        { "action": "measure", "target": "pwm-frequency", "hint": "2Hz 表示一秒两个完整周期" },
-        { "action": "measure", "target": "pwm-duty", "hint": "高电平时间占整个周期的比例" }
+        {
+          "action": "code",
+          "target": "blink-2hz",
+          "hint": "周期 0.5s：亮 0.25s、灭 0.25s"
+        },
+        {
+          "action": "measure",
+          "target": "pwm-frequency",
+          "hint": "2Hz 表示一秒两个完整周期"
+        },
+        {
+          "action": "measure",
+          "target": "pwm-duty",
+          "hint": "高电平时间占整个周期的比例"
+        }
       ],
       "failureHints": [
         "把 2Hz 写成 2 秒：频率变成 0.5Hz",
@@ -79,8 +108,22 @@
       "type": "verify",
       "durationSec": 150,
       "checks": [
-        { "id": "v_freq", "type": "measurement", "probe": "pwm_frequency_hz", "expected": 2.0, "tolerance": 0.1, "unit": "Hz" },
-        { "id": "v_duty", "type": "measurement", "probe": "pwm_duty_percent", "expected": 50, "tolerance": 5, "unit": "%" }
+        {
+          "id": "v_freq",
+          "type": "measurement",
+          "probe": "pwm_frequency_hz",
+          "expected": 2,
+          "tolerance": 0.1,
+          "unit": "Hz"
+        },
+        {
+          "id": "v_duty",
+          "type": "measurement",
+          "probe": "pwm_duty_percent",
+          "expected": 50,
+          "tolerance": 5,
+          "unit": "%"
+        }
       ],
       "safety": "教学仿真由确定性定时模型给出；真实改线前先断电，示波器探头地先接好。"
     },
@@ -90,9 +133,24 @@
       "durationSec": 150,
       "prompt": "呼吸灯、蜂鸣器音调、按键去抖，分别该用阻塞延时还是时间戳判断？",
       "options": [
-        { "id": "a", "text": "呼吸灯与音调用时间戳刷新；去抖用时间戳比较", "correct": true, "why": "三者都要与其它任务并存，不能让主循环停住。" },
-        { "id": "b", "text": "三个都加 delay()，简单直接", "correct": false, "why": "阻塞延时会让按键、通信一起错过。" },
-        { "id": "c", "text": "三个都用硬件定时器中断，软件不需要参与", "correct": false, "why": "中断能做节拍，但状态与去抖逻辑仍要软件写。" }
+        {
+          "id": "a",
+          "text": "呼吸灯与音调用时间戳刷新；去抖用时间戳比较",
+          "correct": true,
+          "why": "三者都要与其它任务并存，不能让主循环停住。"
+        },
+        {
+          "id": "b",
+          "text": "三个都加 delay()，简单直接",
+          "correct": false,
+          "why": "阻塞延时会让按键、通信一起错过。"
+        },
+        {
+          "id": "c",
+          "text": "三个都用硬件定时器中断，软件不需要参与",
+          "correct": false,
+          "why": "中断能做节拍，但状态与去抖逻辑仍要软件写。"
+        }
       ],
       "solution": "凡是「还要同时做别的事」的节拍，优先时间戳或非阻塞定时。"
     },
@@ -108,14 +166,39 @@
     }
   ],
   "checks": [
-    { "id": "c1", "type": "code", "weight": 0.4, "pass": "周期 0.5s、占空比 50%、无长阻塞" },
-    { "id": "m1", "type": "measurement", "weight": 0.35, "pass": "频率 2.0Hz ± 0.1Hz、占空比 50% ± 5%" },
-    { "id": "q1", "type": "quiz", "weight": 0.25, "pass": "能由频率算出周期与高低电平时间" }
+    {
+      "id": "c1",
+      "type": "code",
+      "weight": 0.4,
+      "pass": "周期 0.5s、占空比 50%、无长阻塞"
+    },
+    {
+      "id": "m1",
+      "type": "measurement",
+      "weight": 0.35,
+      "pass": "频率 2.0Hz ± 0.1Hz、占空比 50% ± 5%"
+    },
+    {
+      "id": "q1",
+      "type": "quiz",
+      "weight": 0.25,
+      "pass": "能由频率算出周期与高低电平时间"
+    }
   ],
   "assessment": {
-    "masteryWeights": { "hook": 0.1, "practice": 0.3, "verify": 0.3, "transfer": 0.3 },
+    "masteryWeights": {
+      "hook": 0.1,
+      "practice": 0.3,
+      "verify": 0.3,
+      "transfer": 0.3
+    },
     "passScore": 0.7,
-    "retentionDays": [1, 3, 7, 21]
+    "retentionDays": [
+      1,
+      3,
+      7,
+      21
+    ]
   },
   "storyBinding": {
     "scene": "P10-ForgePwm",
@@ -124,7 +207,13 @@
     "worldPhenomenon": "熔炉外街的灯忽快忽慢，节奏像被谁调错了。"
   },
   "redLines": {
-    "forbiddenNarrationTokens": ["第七校验", "熵", "残响", "第一编译者", "网页游戏"],
+    "forbiddenNarrationTokens": [
+      "第七校验",
+      "熵",
+      "残响",
+      "第一编译者",
+      "网页游戏"
+    ],
     "aiDoesNotDecide": true,
     "noFourthWall": true,
     "noSacrificeGlorification": true

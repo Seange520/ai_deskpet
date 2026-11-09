@@ -7,7 +7,9 @@
     "layer": "L5",
     "pillar": "echo",
     "oneLiner": "联网先看状态灯",
-    "prereq": ["K3-02"],
+    "prereq": [
+      "K3-02"
+    ],
     "storyScene": "P10-EchoMarket",
     "spoilerLevel": 4,
     "license": "CC-BY-4.0",
@@ -29,9 +31,24 @@
       "narration": "回声集市的路由器就在两米外，可灯一直是红的。弥敲了敲外壳：别急着骂网络，先看它停在哪一步。",
       "interaction": "choice",
       "choices": [
-        { "id": "a", "text": "先读状态：扫描、认证、拿地址、已连接", "correct": true, "feedback": "对。状态机停在哪一步，就查哪一步。" },
-        { "id": "b", "text": "关掉再开，反复重连十次", "correct": false, "feedback": "重启不产生证据，只会把问题藏起来。" },
-        { "id": "c", "text": "直接拆开路由器改天线", "correct": false, "feedback": "射频不是这样修的。" }
+        {
+          "id": "a",
+          "text": "先读状态：扫描、认证、拿地址、已连接",
+          "correct": true,
+          "feedback": "对。状态机停在哪一步，就查哪一步。"
+        },
+        {
+          "id": "b",
+          "text": "关掉再开，反复重连十次",
+          "correct": false,
+          "feedback": "重启不产生证据，只会把问题藏起来。"
+        },
+        {
+          "id": "c",
+          "text": "直接拆开路由器改天线",
+          "correct": false,
+          "feedback": "射频不是这样修的。"
+        }
       ]
     },
     {
@@ -44,17 +61,17 @@
           "kind": "diagram",
           "src": "assets/lessons/K5-01/wifi-state-machine.svg",
           "alt": "WiFi 连接状态机：扫描、认证、DHCP、已连接与失败分支",
-          "status": "planned",
-          "license": "original",
-          "notes": "原创 SVG，UI 内联"
+          "status": "ready",
+          "license": "CC-BY-4.0",
+          "notes": "T1.1 原创 SVG，静音可用"
         },
         {
-          "kind": "simulation",
-          "src": "assets/lessons/K5-01/wifi-connect.json",
+          "kind": "diagram",
+          "src": "assets/lessons/K5-01/wifi-connect.svg",
           "alt": "联网仿真：输入 SSID/密码，观察状态与 RSSI 变化",
-          "status": "planned",
-          "license": "original",
-          "notes": "页面内确定性仿真"
+          "status": "ready",
+          "license": "CC-BY-4.0",
+          "notes": "T1.1 原创 SVG，静音可用"
         }
       ]
     },
@@ -64,10 +81,26 @@
       "durationSec": 200,
       "task": "在回声集市终端上完成一次连接：选对 SSID、输入口令、等待获取 IP、读取 RSSI，并模拟一次失败重连。",
       "steps": [
-        { "action": "scan", "target": "wifi-scan", "hint": "先确认能看到目标 SSID" },
-        { "action": "auth", "target": "wifi-auth", "hint": "加密方式要匹配 WPA2/WPA3" },
-        { "action": "dhcp", "target": "wifi-ip", "hint": "拿到 IP 才算真正连上" },
-        { "action": "rssi", "target": "wifi-rssi", "hint": "读 RSSI 并判断信号质量" }
+        {
+          "action": "scan",
+          "target": "wifi-scan",
+          "hint": "先确认能看到目标 SSID"
+        },
+        {
+          "action": "auth",
+          "target": "wifi-auth",
+          "hint": "加密方式要匹配 WPA2/WPA3"
+        },
+        {
+          "action": "dhcp",
+          "target": "wifi-ip",
+          "hint": "拿到 IP 才算真正连上"
+        },
+        {
+          "action": "rssi",
+          "target": "wifi-rssi",
+          "hint": "读 RSSI 并判断信号质量"
+        }
       ],
       "failureHints": [
         "SSID 选到 5G：设备只支持 2.4G，永远扫不到",
@@ -80,9 +113,30 @@
       "type": "verify",
       "durationSec": 140,
       "checks": [
-        { "id": "v_state", "type": "measurement", "probe": "wifi_state", "expected": "connected", "tolerance": 0, "unit": "state" },
-        { "id": "v_rssi", "type": "measurement", "probe": "wifi_rssi", "expected": -55, "tolerance": 10, "unit": "dBm" },
-        { "id": "v_ip", "type": "measurement", "probe": "wifi_ip_ok", "expected": 1, "tolerance": 0, "unit": "bool" }
+        {
+          "id": "v_state",
+          "type": "measurement",
+          "probe": "wifi_state",
+          "expected": "connected",
+          "tolerance": 0,
+          "unit": "state"
+        },
+        {
+          "id": "v_rssi",
+          "type": "measurement",
+          "probe": "wifi_rssi",
+          "expected": -55,
+          "tolerance": 10,
+          "unit": "dBm"
+        },
+        {
+          "id": "v_ip",
+          "type": "measurement",
+          "probe": "wifi_ip_ok",
+          "expected": 1,
+          "tolerance": 0,
+          "unit": "bool"
+        }
       ],
       "safety": "教学仿真不连接真实网络；真实设备配网前须确认供电与天线，禁止带电插拔模块，WiFi 口令不写入前端代码或日志。"
     },
@@ -92,9 +146,24 @@
       "durationSec": 150,
       "prompt": "设备放在贴墙角落，2.4G 信号很弱。不换路由器，给出两种改法。",
       "options": [
-        { "id": "a", "text": "把设备挪离墙角/金属，或换用更空闲的 2.4G 信道", "correct": true, "why": "位置与信道是成本最低的两刀。" },
-        { "id": "b", "text": "把发射功率调到最大就行", "correct": false, "why": "功率有上限，墙体衰减不归功率管。" },
-        { "id": "c", "text": "换成 5G 就一定更好", "correct": false, "why": "5G 穿墙更差，距离近才占优。" }
+        {
+          "id": "a",
+          "text": "把设备挪离墙角/金属，或换用更空闲的 2.4G 信道",
+          "correct": true,
+          "why": "位置与信道是成本最低的两刀。"
+        },
+        {
+          "id": "b",
+          "text": "把发射功率调到最大就行",
+          "correct": false,
+          "why": "功率有上限，墙体衰减不归功率管。"
+        },
+        {
+          "id": "c",
+          "text": "换成 5G 就一定更好",
+          "correct": false,
+          "why": "5G 穿墙更差，距离近才占优。"
+        }
       ],
       "solution": "挪位置（离地、离金属、避开墙角）或改信道；仍不够再加中继/AP。"
     },
@@ -110,14 +179,39 @@
     }
   ],
   "checks": [
-    { "id": "c1", "type": "code", "weight": 0.4, "pass": "连接流程代码正确（SSID/口令/状态读取）" },
-    { "id": "m1", "type": "measurement", "weight": 0.3, "pass": "RSSI 读数在 -55 ± 10dBm、状态为已连接" },
-    { "id": "q1", "type": "quiz", "weight": 0.3, "pass": "状态机阶段与 WPA2/WPA3 判断正确" }
+    {
+      "id": "c1",
+      "type": "code",
+      "weight": 0.4,
+      "pass": "连接流程代码正确（SSID/口令/状态读取）"
+    },
+    {
+      "id": "m1",
+      "type": "measurement",
+      "weight": 0.3,
+      "pass": "RSSI 读数在 -55 ± 10dBm、状态为已连接"
+    },
+    {
+      "id": "q1",
+      "type": "quiz",
+      "weight": 0.3,
+      "pass": "状态机阶段与 WPA2/WPA3 判断正确"
+    }
   ],
   "assessment": {
-    "masteryWeights": { "hook": 0.1, "practice": 0.35, "verify": 0.3, "transfer": 0.25 },
+    "masteryWeights": {
+      "hook": 0.1,
+      "practice": 0.35,
+      "verify": 0.3,
+      "transfer": 0.25
+    },
     "passScore": 0.7,
-    "retentionDays": [1, 3, 7, 21]
+    "retentionDays": [
+      1,
+      3,
+      7,
+      21
+    ]
   },
   "storyBinding": {
     "scene": "P10-EchoMarket",
@@ -126,7 +220,13 @@
     "worldPhenomenon": "集市的联网摊位集体掉线，状态灯闪同一种红色。"
   },
   "redLines": {
-    "forbiddenNarrationTokens": ["第七校验", "熵", "残响", "第一编译者", "网页游戏"],
+    "forbiddenNarrationTokens": [
+      "第七校验",
+      "熵",
+      "残响",
+      "第一编译者",
+      "网页游戏"
+    ],
     "aiDoesNotDecide": true,
     "noFourthWall": true,
     "noSacrificeGlorification": true

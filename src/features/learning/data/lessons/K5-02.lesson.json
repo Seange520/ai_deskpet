@@ -7,7 +7,9 @@
     "layer": "L5",
     "pillar": "echo",
     "oneLiner": "请求要有格式，数据要有结构",
-    "prereq": ["K5-01"],
+    "prereq": [
+      "K5-01"
+    ],
     "storyScene": "P10-DataExchange",
     "spoilerLevel": 4,
     "license": "CC-BY-4.0",
@@ -29,9 +31,24 @@
       "narration": "数据交换台回了一串大括号，弥让你找出「灯亮没亮、温度多少」。第一个问题：这串东西是什么格式？",
       "interaction": "choice",
       "choices": [
-        { "id": "a", "text": "先看 Content-Type 与状态码，再解析 JSON", "correct": true, "feedback": "对。先确认对方说的是什么话，再翻译。" },
-        { "id": "b", "text": "直接用逗号切字符串", "correct": false, "feedback": "嵌套结构会被切坏。" },
-        { "id": "c", "text": "把整个响应原样打印，不需要解析", "correct": false, "feedback": "不解析就拿不到值。" }
+        {
+          "id": "a",
+          "text": "先看 Content-Type 与状态码，再解析 JSON",
+          "correct": true,
+          "feedback": "对。先确认对方说的是什么话，再翻译。"
+        },
+        {
+          "id": "b",
+          "text": "直接用逗号切字符串",
+          "correct": false,
+          "feedback": "嵌套结构会被切坏。"
+        },
+        {
+          "id": "c",
+          "text": "把整个响应原样打印，不需要解析",
+          "correct": false,
+          "feedback": "不解析就拿不到值。"
+        }
       ]
     },
     {
@@ -44,17 +61,17 @@
           "kind": "diagram",
           "src": "assets/lessons/K5-02/http-json.svg",
           "alt": "HTTP 请求响应结构与 JSON 层级示意",
-          "status": "planned",
-          "license": "original",
-          "notes": "原创 SVG，UI 内联"
+          "status": "ready",
+          "license": "CC-BY-4.0",
+          "notes": "T1.1 原创 SVG，静音可用"
         },
         {
-          "kind": "simulation",
-          "src": "assets/lessons/K5-02/http-client.json",
+          "kind": "diagram",
+          "src": "assets/lessons/K5-02/http-client.svg",
           "alt": "请求仿真：构造 GET、读状态码、解析 JSON 字段",
-          "status": "planned",
-          "license": "original",
-          "notes": "页面内确定性仿真"
+          "status": "ready",
+          "license": "CC-BY-4.0",
+          "notes": "T1.1 原创 SVG，静音可用"
         }
       ]
     },
@@ -64,10 +81,26 @@
       "durationSec": 205,
       "task": "在数据交换台发一次 GET，解析 `{lamp:1,temp:24.0}`；再发一次错误路径观察 404。",
       "steps": [
-        { "action": "build", "target": "http-request", "hint": "方法、URL、头要齐全" },
-        { "action": "send", "target": "http-send", "hint": "发出去并读状态码" },
-        { "action": "parse", "target": "http-json-parse", "hint": "按层级取 lamp 与 temp" },
-        { "action": "error", "target": "http-404", "hint": "错误路径应返回 404" }
+        {
+          "action": "build",
+          "target": "http-request",
+          "hint": "方法、URL、头要齐全"
+        },
+        {
+          "action": "send",
+          "target": "http-send",
+          "hint": "发出去并读状态码"
+        },
+        {
+          "action": "parse",
+          "target": "http-json-parse",
+          "hint": "按层级取 lamp 与 temp"
+        },
+        {
+          "action": "error",
+          "target": "http-404",
+          "hint": "错误路径应返回 404"
+        }
       ],
       "failureHints": [
         "把 404 当成成功：状态码必须先判断",
@@ -80,9 +113,30 @@
       "type": "verify",
       "durationSec": 140,
       "checks": [
-        { "id": "v_code", "type": "measurement", "probe": "http_status", "expected": 200, "tolerance": 0, "unit": "status" },
-        { "id": "v_lamp", "type": "measurement", "probe": "http_lamp", "expected": 1, "tolerance": 0, "unit": "value" },
-        { "id": "v_temp", "type": "measurement", "probe": "http_temp", "expected": 24.0, "tolerance": 0.1, "unit": "°C" }
+        {
+          "id": "v_code",
+          "type": "measurement",
+          "probe": "http_status",
+          "expected": 200,
+          "tolerance": 0,
+          "unit": "status"
+        },
+        {
+          "id": "v_lamp",
+          "type": "measurement",
+          "probe": "http_lamp",
+          "expected": 1,
+          "tolerance": 0,
+          "unit": "value"
+        },
+        {
+          "id": "v_temp",
+          "type": "measurement",
+          "probe": "http_temp",
+          "expected": 24,
+          "tolerance": 0.1,
+          "unit": "°C"
+        }
       ],
       "safety": "教学仿真访问本地模拟接口；真实请求不得携带真实凭据，调试日志须脱敏，禁止把口令写进 URL。"
     },
@@ -92,9 +146,24 @@
       "durationSec": 150,
       "prompt": "响应是 `{\"a\":{\"b\":[1,2]}}`，怎么取到 2？",
       "options": [
-        { "id": "a", "text": "a.b[1]", "correct": true, "why": "先取 a，再取 b 数组第二个元素（下标从 0 起）。" },
-        { "id": "b", "text": "a.b[2]", "correct": false, "why": "数组下标从 0 开始，[2] 越界。" },
-        { "id": "c", "text": "全文匹配数字 2", "correct": false, "why": "嵌套里可能还有别的 2，不唯一。" }
+        {
+          "id": "a",
+          "text": "a.b[1]",
+          "correct": true,
+          "why": "先取 a，再取 b 数组第二个元素（下标从 0 起）。"
+        },
+        {
+          "id": "b",
+          "text": "a.b[2]",
+          "correct": false,
+          "why": "数组下标从 0 开始，[2] 越界。"
+        },
+        {
+          "id": "c",
+          "text": "全文匹配数字 2",
+          "correct": false,
+          "why": "嵌套里可能还有别的 2，不唯一。"
+        }
       ],
       "solution": "按层级 a → b → 下标 1；结构越深，越要按路径取值。"
     },
@@ -110,14 +179,39 @@
     }
   ],
   "checks": [
-    { "id": "c1", "type": "code", "weight": 0.4, "pass": "请求构造与 JSON 解析代码正确" },
-    { "id": "q1", "type": "quiz", "weight": 0.3, "pass": "状态码语义与 JSON 结构判断正确" },
-    { "id": "m1", "type": "measurement", "weight": 0.3, "pass": "状态码 200、lamp=1、temp=24.0±0.1" }
+    {
+      "id": "c1",
+      "type": "code",
+      "weight": 0.4,
+      "pass": "请求构造与 JSON 解析代码正确"
+    },
+    {
+      "id": "q1",
+      "type": "quiz",
+      "weight": 0.3,
+      "pass": "状态码语义与 JSON 结构判断正确"
+    },
+    {
+      "id": "m1",
+      "type": "measurement",
+      "weight": 0.3,
+      "pass": "状态码 200、lamp=1、temp=24.0±0.1"
+    }
   ],
   "assessment": {
-    "masteryWeights": { "hook": 0.1, "practice": 0.35, "verify": 0.3, "transfer": 0.25 },
+    "masteryWeights": {
+      "hook": 0.1,
+      "practice": 0.35,
+      "verify": 0.3,
+      "transfer": 0.25
+    },
     "passScore": 0.7,
-    "retentionDays": [1, 3, 7, 21]
+    "retentionDays": [
+      1,
+      3,
+      7,
+      21
+    ]
   },
   "storyBinding": {
     "scene": "P10-DataExchange",
@@ -126,7 +220,13 @@
     "worldPhenomenon": "数据交换台的屏幕滚动着大括号与 5xx，没人敢碰。"
   },
   "redLines": {
-    "forbiddenNarrationTokens": ["第七校验", "熵", "残响", "第一编译者", "网页游戏"],
+    "forbiddenNarrationTokens": [
+      "第七校验",
+      "熵",
+      "残响",
+      "第一编译者",
+      "网页游戏"
+    ],
     "aiDoesNotDecide": true,
     "noFourthWall": true,
     "noSacrificeGlorification": true

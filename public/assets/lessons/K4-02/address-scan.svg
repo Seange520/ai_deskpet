@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675" role="img" aria-label="逐段隔离，找出冒名者">
+<defs>
+<pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#16303f" stroke-width="1"/></pattern>
+<style>
+.zh{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif}
+.num{font-family:'JetBrains Mono',Consolas,monospace}
+@keyframes pulse{0%,100%{opacity:.35}50%{opacity:1}}
+@keyframes flow{to{stroke-dashoffset:-80}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+@keyframes sweep{0%{transform:translateX(0)}100%{transform:translateX(640px)}}
+</style>
+</defs>
+<rect width="1200" height="675" fill="#0b1620"/>
+<rect width="1200" height="675" fill="url(#grid)" opacity=".7"/>
+<rect x="18" y="18" width="1164" height="639" fill="none" stroke="#2a4a5e" stroke-width="2"/>
+<text class="zh" x="56" y="66" fill="#6fe3c8" font-size="19" letter-spacing="3">THE WEAVE / 检修手册 · K4-02 · 地址扫描</text>
+<text class="zh" x="56" y="110" fill="#e8eef2" font-size="34" font-weight="700">逐段隔离，找出冒名者</text>
+<line x1="56" y1="130" x2="1144" y2="130" stroke="#2a4a5e" stroke-width="2"/>
+
+<g>
+  <rect x="56" y="170" width="540" height="420" rx="12" fill="#12242f" stroke="#2a4a5e"/>
+  <text class="zh" x="82" y="204" fill="#6fe3c8" font-size="17">扫描结果（示例）</text>
+  
+    <rect x="82" y="232" width="480" height="58" rx="8" fill="#0e1d27" stroke="#2a4a5e"/>
+    <text class="num" x="106" y="270" fill="#6fe3c8" font-size="18">0x3C</text>
+    <text class="zh" x="200" y="270" fill="#e8eef2" font-size="17">OLED 显示屏</text>
+    <text class="zh" x="530" y="270" text-anchor="end" fill="#8aa0ad" font-size="16">OK</text>
+    <rect x="82" y="306" width="480" height="58" rx="8" fill="#0e1d27" stroke="#ff7a6b"/>
+    <text class="num" x="106" y="344" fill="#ff7a6b" font-size="18">0x3C</text>
+    <text class="zh" x="200" y="344" fill="#e8eef2" font-size="17">第二个 OLED（冲突）</text>
+    <text class="zh" x="530" y="344" text-anchor="end" fill="#ff7a6b" font-size="16">冲突</text>
+    <rect x="82" y="380" width="480" height="58" rx="8" fill="#0e1d27" stroke="#2a4a5e"/>
+    <text class="num" x="106" y="418" fill="#6fe3c8" font-size="18">0x48</text>
+    <text class="zh" x="200" y="418" fill="#e8eef2" font-size="17">温度传感器</text>
+    <text class="zh" x="530" y="418" text-anchor="end" fill="#8aa0ad" font-size="16">OK</text>
+    <rect x="82" y="454" width="480" height="58" rx="8" fill="#0e1d27" stroke="#2a4a5e"/>
+    <text class="num" x="106" y="492" fill="#6fe3c8" font-size="18">0x68</text>
+    <text class="zh" x="200" y="492" fill="#e8eef2" font-size="17">RTC 模块</text>
+    <text class="zh" x="530" y="492" text-anchor="end" fill="#8aa0ad" font-size="16">OK</text>
+</g>
+<g>
+  <rect x="630" y="170" width="514" height="420" rx="12" fill="#12242f" stroke="#2a4a5e"/>
+  <text class="zh" x="656" y="204" fill="#6fe3c8" font-size="17">隔离步骤</text>
+  <text class="zh" x="656" y="252" fill="#e8eef2" font-size="18">① 逐个断开从设备再扫描</text><text class="zh" x="656" y="308" fill="#e8eef2" font-size="18">② 断到哪个就恢复正常 → 就是它</text><text class="zh" x="656" y="364" fill="#e8eef2" font-size="18">③ 查数据手册的地址选择脚</text><text class="zh" x="656" y="420" fill="#e8eef2" font-size="18">④ 改地址或换型号</text><text class="zh" x="656" y="476" fill="#e8eef2" font-size="18">⑤ 复扫确认唯一、通信正常</text>
+  <text class="zh" x="656" y="540" fill="#8aa0ad" font-size="16">先隔离，再改代码：别用“多扫几次”掩盖冲突。</text>
+</g>
+<text class="zh" x="56" y="641" fill="#8aa0ad" font-size="16">仿真演练：地址扫描逻辑为教学模型，真实总线需上拉与匹配电平。</text>
+</svg>
