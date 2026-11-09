@@ -1,4 +1,5 @@
 import IdentityEntry, { LazyProfilePanel } from './features/identity/IdentityEntry';
+import { BootScreen, shouldShowBoot } from './features/boot/BootScreen';
 import { createPortal } from 'react-dom';
 import useReducedMotionPreference from './lib/useReducedMotionPreference';
 import { isLowPowerDevice } from './lib/visualCapabilities';
@@ -79,6 +80,7 @@ function HubOverview({ showMap }) {
 
 export default function App() {
   const panel = useRef(null);
+  const [booting, setBooting] = useState(() => shouldShowBoot());
   const hasNavigated = useRef(false);
   const focusOnArrival = useRef(null);
   const modalTrigger = useRef(null);
@@ -228,6 +230,7 @@ export default function App() {
 
   return (
     <MotionConfig reducedMotion={reduced ? 'always' : 'never'} transition={MOTION}>
+      {booting && createPortal(<BootScreen onDone={() => setBooting(false)} />, document.body)}
       {import.meta.env.DEV && tier === 3 && new URLSearchParams(location.search).get('sims') === '1' && <Suspense fallback={null}><SimDemoEntry /></Suspense>}
       <div
         className="app-shell"
