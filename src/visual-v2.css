@@ -714,3 +714,88 @@ html[data-hud] .teaching-entry {
     display: none;
   }
 }
+
+/* 移动端顶栏：单行收敛，避免两行工具条 */
+@media (max-width: 720px) {
+  .topbar {
+    flex-wrap: nowrap;
+    gap: 6px;
+    padding: 0 10px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .topbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .topbar .space-brand {
+    flex: 0 0 auto;
+    gap: 6px;
+  }
+
+  .topbar .space-brand svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .topbar .space-brand-text {
+    font-size: 13px;
+    gap: 0;
+    white-space: nowrap;
+  }
+
+  .topbar .project-chip {
+    display: none;
+  }
+
+  .topbar .space-return,
+  .topbar > button:not(.space-brand) {
+    flex: 0 0 auto;
+    padding: 6px 9px !important;
+    min-height: 30px;
+    font-size: 11.5px;
+    white-space: nowrap;
+  }
+
+  .topbar .space-return span {
+    display: none;
+  }
+
+  .topbar .space-nav {
+    flex-wrap: nowrap;
+    gap: 6px;
+  }
+
+  .teaching-panel h2 {
+    font-size: 17px !important;
+  }
+}
+
+@media (max-width: 720px) {
+  .topbar {
+    height: auto;
+    min-height: 54px;
+    padding: 8px 10px;
+    align-items: center;
+  }
+
+  .topbar > button,
+  .topbar .space-return {
+    min-height: 30px;
+    height: 30px;
+  }
+
+  .topbar .space-brand {
+    min-height: 30px;
+  }
+}
+
+@media (max-width: 720px) {
+  .topbar .quality-settings,
+  .topbar [aria-label='重置学习进度'],
+  .topbar [aria-label='开启音效'],
+  .topbar [aria-label='静音音效'] {
+    display: none;
+  }
+}
