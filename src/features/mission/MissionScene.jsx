@@ -4,7 +4,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { useMission } from './missionStore.mjs';
 import { POINTS } from './missionData.mjs';
 import { inRange } from './mission.mjs';
-import { ASSETS, WALLS, LAMPS, BENCHES, TREES, TILES, assetPath } from './sceneLayout.mjs';
+import { ASSETS, WALLS, DOORS, SIGNS, PROPS, LAMPS, BENCHES, TREES, TILES, assetPath } from './sceneLayout.mjs';
 
 // A 20 m facade and instanced paving. L1 on desktop, L2 on coarse/narrow screens.
 function disposeObjects(roots) {
@@ -269,8 +269,22 @@ export default function MissionScene({ maxDpr }) {
         useMission.setState({ error: `街景资产加载失败：${failure.reason.message}` });
         return;
       }
-      const [wall, lamp, bench, tree, paving] = loadedRoots;
+      const [wall, lamp, bench, tree, paving, door, sign, props] = loadedRoots;
       instances(wall, WALLS);
+      instances(door, DOORS);
+      sign.traverse((o) => {
+        if (!o.isMesh) return;
+        o.castShadow = true;
+        o.receiveShadow = true;
+      });
+      const signObject = sign.clone(true);
+      SIGNS.forEach(([x, y, z, rotation = 0]) => {
+        const placed = signObject.clone(true);
+        placed.position.set(x, y, z);
+        placed.rotation.y = rotation;
+        scene.add(placed);
+      });
+      instances(props, PROPS);
       lamp.traverse((o) => {
         if (o.isMesh && o.name.includes('LampHead')) {
           (Array.isArray(o.material) ? o.material : [o.material]).forEach((m) => {

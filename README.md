@@ -43,7 +43,7 @@
 
 本地运行 `npm run dev`，打开 `/?mission=r1&quality=3`。独立于教学主线的三单循环覆盖保险熔断、接头过热和 24V SELV 受保护的带压仿真。点击街上设备会自动走近；也可使用 WASD / 方向键行走、E 交互。体验轨可不做故障测量通关（最高 70 分）；校验轨需记录修复前后证据。危险操作、未复核合闸和三次失败均有重试分支。
 
-场景复用本地原创 R1-A2 GLB，Three.js 实例化组装 20m 街景，桌面 L1、移动 L2，沿用质量档位与纸面 HUD。复测命令：`node --test tests/mission-r1.unit.mjs`；启动开发服务后运行 `node scripts/check-r1-mission.mjs`（可用 `R1_BASE_URL` 指定地址）。验收结果写入 `work/acceptance/r1-mission/`。接收方复测：476 项单测通过、build ✓、E2E 67/67；`check-r1-mission` 13/13、0 console error，6 张流程截图与性能表（1080p 26 DC / 28,522 tris / 约 128fps headless、首屏 ~0.5s）已落 `work/acceptance/r1-mission/`。Roadmap：玩家试玩与双端评审（进行中）。
+场景复用本地原创 R1-A2 GLB，Three.js 实例化组装 20m 街景，桌面 L1、移动 L2，沿用质量档位与纸面 HUD。复测命令：`node --test tests/mission-r1.unit.mjs`；启动开发服务后运行 `node scripts/check-r1-mission.mjs`（可用 `R1_BASE_URL` 指定地址）。验收结果写入 `work/acceptance/r1-mission/`。接收方复测：476 项单测通过、build ✓、E2E 67/67；`check-r1-mission` 13/13、0 console error，6 张流程截图与性能表（1080p 46 DC / 33,942 tris / 约 128fps headless、首屏 ~0.5s）已落 `work/acceptance/r1-mission/`。街景已接入 R1-A3 补件（带门店铺、晴光招牌、街面杂物）。Roadmap：玩家试玩与双端评审（进行中）。
 
 ### R1 三渲二对比原型（待视觉与性能验收）
 
