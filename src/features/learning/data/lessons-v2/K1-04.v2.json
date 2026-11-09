@@ -1,0 +1,192 @@
+{
+  "schema": "lesson.v2",
+  "lessonId": "L-K1-04-v2",
+  "kp": {
+    "id": "K1-04",
+    "name": "压降线损与接触电阻",
+    "layer": "L1",
+    "pillar": "forge",
+    "oneLiner": "远端灯暗，是电压在路上丢了"
+  },
+  "meta": {
+    "version": "2.0.0",
+    "template": "mission-seven-v1",
+    "estimatedMinutes": 11,
+    "gameMount": "P10-G0回流接点"
+  },
+  "story": {
+    "act": "P10-熔炉外街",
+    "title": "会呼吸的路灯",
+    "scene": "P10-街口配电盒",
+    "npc": "贺非",
+    "setup": "远端那盏灯总比别处暗一截。摊主没让你换灯，先把万用表递了过来。"
+  },
+  "segments": [
+    {
+      "id": "mission",
+      "seconds": 25,
+      "narration": [
+        "远端那盏灯，比别处暗一截。",
+        "摊主没让换灯。",
+        "他递来万用表：先量，再动手。"
+      ],
+      "task": "先测哪里，才能找到压降？"
+    },
+    {
+      "id": "observe",
+      "seconds": 55,
+      "narration": [
+        "电流经过导线，也要交过路费。",
+        "线越细、接点越旧，交得越多。"
+      ],
+      "media": [
+        {
+          "kind": "diagram",
+          "src": "assets/lessons/K1-04/drop-segments.svg",
+          "alt": "线路压降分段示意",
+          "status": "ready"
+        }
+      ],
+      "check": {
+        "type": "choice",
+        "task": "串联回路里，压降最可疑的位置是？",
+        "options": [
+          "电源内部",
+          "线缆与接点",
+          "灯珠本身"
+        ],
+        "answerIndex": 1
+      }
+    },
+    {
+      "id": "learn",
+      "seconds": 85,
+      "narration": [
+        "线损 = 电流 × 那段电阻。",
+        "压降太大，负载就吃不饱电。"
+      ],
+      "media": [
+        {
+          "kind": "diagram",
+          "src": "assets/lessons/K1-04/drop-inspector.svg",
+          "alt": "三处电压与压降诊断",
+          "status": "ready"
+        }
+      ],
+      "term": {
+        "text": "线损",
+        "oneLine": "电流经过导线和接点时，按电阻分走的那部分电压。"
+      },
+      "check": {
+        "type": "choice",
+        "task": "接点氧化后，接触电阻会？",
+        "options": [
+          "变大",
+          "变小",
+          "不变"
+        ],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "do",
+      "seconds": 200,
+      "narration": [
+        "先接出回路，再量三处电压。",
+        "看看电压都花在哪了。"
+      ],
+      "sim": {
+        "id": "series-voltage",
+        "task": "接出串联回路，依次测量电源、电阻、LED 三处电压。",
+        "hints": [
+          "先接电源，再接电阻和 LED",
+          "最后一根线回到电源负极",
+          "测点选电压档"
+        ]
+      }
+    },
+    {
+      "id": "prove",
+      "seconds": 110,
+      "mode": "numeric",
+      "narration": [
+        "对照正常值，把三处读数记下来。",
+        "误差在容差内，证据才成立。"
+      ],
+      "checks": [
+        {
+          "id": "drop-g0",
+          "type": "measurement",
+          "task": "G0 回流接点压降",
+          "expected": 0.9,
+          "tolerance": 0.1,
+          "unit": "V"
+        },
+        {
+          "id": "contact-r",
+          "type": "measurement",
+          "task": "接点等效电阻",
+          "expected": 0.225,
+          "tolerance": 0.02,
+          "unit": "Ω"
+        },
+        {
+          "id": "load-v",
+          "type": "measurement",
+          "task": "负载端电压",
+          "expected": 23.1,
+          "tolerance": 0.2,
+          "unit": "V"
+        }
+      ]
+    },
+    {
+      "id": "transfer",
+      "seconds": 100,
+      "narration": [
+        "如果线再长一截呢？",
+        "先算，再改。"
+      ],
+      "prompt": "导线更长、更细时，压降会怎样？",
+      "options": [
+        "更大",
+        "更小",
+        "不变"
+      ],
+      "answerIndex": 0,
+      "solution": "电阻随长度增加，压降变大；改供电点或换粗线都能减小线损。"
+    },
+    {
+      "id": "recap",
+      "seconds": 25,
+      "narration": [
+        "记住这三句。",
+        "下次先测，再判断。"
+      ],
+      "lines": [
+        "压降 = 电流 × 电阻",
+        "先测两端，再算接触电阻",
+        "改供电点或换粗线，都能减小压降"
+      ]
+    }
+  ],
+  "safety": {
+    "powerOffBeforeWiring": true,
+    "liveMeasurementBlocked": true,
+    "note": "24V SELV 等效电路教学仿真：改线前必须断电，带电测量会被联锁拦下。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": [
+      "玩家",
+      "游戏",
+      "网页",
+      "第七校验",
+      "熵",
+      "残响",
+      "第一编译者",
+      "0x7F"
+    ],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true
+  }
+}

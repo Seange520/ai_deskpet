@@ -98,6 +98,59 @@ function TextCheck({ check, value, onChange }) {
   );
 }
 
+function NumericProve({ checks, onScore }) {
+  const [values, setValues] = useState({});
+  const [message, setMessage] = useState('');
+  function submit() {
+    const results = checks.map((c) => {
+      const raw = Number(values[c.id]);
+      const ok =
+        Number.isFinite(raw) && Math.abs(raw - c.expected) <= c.tolerance + 1e-9;
+      return { c, ok };
+    });
+    const score = results.filter((r) => r.ok).length / checks.length;
+    const records = results.map(({ c, ok }) => ({
+      type: 'measurement',
+      score: ok ? 1 : 0,
+      context: {
+        lesson: c.id,
+        unit: c.unit,
+        recorded: Number(values[c.id]),
+        expected: c.expected,
+      },
+    }));
+    onScore(score, records);
+    setMessage(
+      score === 1
+        ? '读数全部在容差内，证据已记录。'
+        : '有一个读数超出容差，回看测量过程再试。',
+    );
+  }
+  return (
+    <section className="teaching-card">
+      <p>按提示读取数值并记录；误差在容差内即通过。</p>
+      {checks.map((c) => (
+        <label key={c.id}>
+          {c.task}（{c.unit}）
+          <input
+            aria-label={'记录 ' + c.id}
+            data-reading={c.id}
+            value={values[c.id] ?? ''}
+            onChange={(e) => {
+              setValues((v) => ({ ...v, [c.id]: e.target.value }));
+              onScore(0, []);
+            }}
+          />
+        </label>
+      ))}
+      <button type="button" data-prove-submit onClick={submit}>
+        校验读数
+      </button>
+      <p role="status">{message}</p>
+    </section>
+  );
+}
+
 export default function LessonRunnerV2({ lesson, onFinish, onLeave }) {
   const [step, setStep] = useState(0);
   const [choices, setChoices] = useState({});
@@ -272,13 +325,20 @@ export default function LessonRunnerV2({ lesson, onFinish, onLeave }) {
       {node === 'prove' && (
         <section className="teaching-card">
           <Narration lines={seg.narration} />
-          <ModeMeterSim
-            checks={seg.checks}
-            onComplete={(score, records) => {
-              if (score === undefined) return;
-              setProve({ score, records });
-            }}
-          />
+          {seg.mode === 'numeric' ? (
+            <NumericProve
+              checks={seg.checks}
+              onScore={(score, records) => setProve({ score, records })}
+            />
+          ) : (
+            <ModeMeterSim
+              checks={seg.checks}
+              onComplete={(score, records) => {
+                if (score === undefined) return;
+                setProve({ score, records });
+              }}
+            />
+          )}
         </section>
       )}
 

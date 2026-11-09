@@ -1,0 +1,184 @@
+{
+  "schema": "lesson.v2",
+  "lessonId": "L-K1-06-v2",
+  "kp": {
+    "id": "K1-06",
+    "name": "保险丝与保护",
+    "layer": "L1",
+    "pillar": "forge",
+    "oneLiner": "保险丝是替你烧的那根线"
+  },
+  "meta": {
+    "version": "2.0.0",
+    "template": "mission-seven-v1",
+    "estimatedMinutes": 10,
+    "gameMount": "P10-熔断链"
+  },
+  "story": {
+    "act": "P10-熔炉外街",
+    "title": "会呼吸的路灯",
+    "scene": "P10-街口配电盒",
+    "npc": "贺非",
+    "setup": "压缩机一启动，整条支路就黑。摊主说：先看是哪根线替你烧的。"
+  },
+  "segments": [
+    {
+      "id": "mission",
+      "seconds": 25,
+      "narration": [
+        "压缩机一启动，整条支路就黑。",
+        "很可能，保险丝替你们挡了一刀。",
+        "换之前，先确认它断没断。"
+      ],
+      "task": "在换保险丝之前，先判断它断没断。"
+    },
+    {
+      "id": "observe",
+      "seconds": 55,
+      "narration": [
+        "正常电流走导线。",
+        "电流超标时，保险丝先熔断。"
+      ],
+      "media": [
+        {
+          "kind": "diagram",
+          "src": "assets/lessons/K1-06/fuse-margin.svg",
+          "alt": "保险丝裕量示意",
+          "status": "ready"
+        }
+      ],
+      "check": {
+        "type": "choice",
+        "task": "保险丝应该在什么时候断？",
+        "options": [
+          "过流时",
+          "过压时",
+          "过温时"
+        ],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "learn",
+      "seconds": 80,
+      "narration": [
+        "保险丝是替你烧的那根线。",
+        "它先断，压缩机才能活。"
+      ],
+      "media": [
+        {
+          "kind": "diagram",
+          "src": "assets/lessons/K1-06/short-circuit-fuse.svg",
+          "alt": "短路熔断过程",
+          "status": "ready"
+        }
+      ],
+      "term": {
+        "text": "I²t",
+        "oneLine": "电流平方乘时间：热量攒够，熔体才断。"
+      },
+      "check": {
+        "type": "choice",
+        "task": "更换保险丝时，规格应该？",
+        "options": [
+          "和原来一致",
+          "越大越保险",
+          "越小越灵敏"
+        ],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "do",
+      "seconds": 200,
+      "narration": [
+        "用通断档，先判断熔断。",
+        "再用电压档，确认电源还在。"
+      ],
+      "sim": {
+        "id": "meter",
+        "task": "用万用表判断支路保险丝是否熔断，并测量电源电压。",
+        "hints": [
+          "通断档测保险丝两端",
+          "电压档测电源",
+          "带电测电阻会被拦下"
+        ]
+      }
+    },
+    {
+      "id": "prove",
+      "seconds": 110,
+      "mode": "numeric",
+      "narration": [
+        "把两个读数记下来。",
+        "一个说明它断了，一个说明电源没坏。"
+      ],
+      "checks": [
+        {
+          "id": "fuse-r",
+          "type": "measurement",
+          "task": "熔断保险丝两端电阻",
+          "expected": 0,
+          "tolerance": 0.5,
+          "unit": "Ω"
+        },
+        {
+          "id": "supply-v",
+          "type": "measurement",
+          "task": "电源电压",
+          "expected": 24,
+          "tolerance": 0.2,
+          "unit": "V"
+        }
+      ]
+    },
+    {
+      "id": "transfer",
+      "seconds": 100,
+      "narration": [
+        "为什么不能用铜丝代替？",
+        "想一想，电流该在哪断。"
+      ],
+      "prompt": "为什么不能用铜丝短接保险丝座？",
+      "options": [
+        "电流超标时无处可断",
+        "铜丝太贵",
+        "电压会下降"
+      ],
+      "answerIndex": 0,
+      "solution": "保险丝是最后一道保险；铜丝不会断，故障电流就会毁掉后级。"
+    },
+    {
+      "id": "recap",
+      "seconds": 25,
+      "narration": [
+        "记住这三句。",
+        "下次先测，再判断。"
+      ],
+      "lines": [
+        "保险丝按额定电流选，不放大",
+        "熔断先查原因，再换同规格",
+        "绝不用铜丝或铁丝代替保险丝"
+      ]
+    }
+  ],
+  "safety": {
+    "powerOffBeforeWiring": true,
+    "liveMeasurementBlocked": true,
+    "note": "24V SELV 等效电路教学仿真：改线前必须断电，带电测量会被联锁拦下。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": [
+      "玩家",
+      "游戏",
+      "网页",
+      "第七校验",
+      "熵",
+      "残响",
+      "第一编译者",
+      "0x7F"
+    ],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true
+  }
+}

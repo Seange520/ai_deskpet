@@ -1,0 +1,184 @@
+{
+  "schema": "lesson.v2",
+  "lessonId": "L-K3-01-v2",
+  "kp": {
+    "id": "K3-01",
+    "name": "第一个程序",
+    "layer": "L3",
+    "pillar": "craft",
+    "oneLiner": "让第一行代码真的跑起来"
+  },
+  "meta": {
+    "version": "2.0.0",
+    "template": "mission-seven-v1",
+    "estimatedMinutes": 11,
+    "gameMount": "P10-虚拟IDE"
+  },
+  "story": {
+    "act": "P10-熔炉外街",
+    "title": "冷库控制器",
+    "scene": "P10-街口配电盒",
+    "npc": "贺非",
+    "setup": "冷库门禁控制器没反应。你手里只有一个空工程，先把第一行程序跑起来。"
+  },
+  "segments": [
+    {
+      "id": "mission",
+      "seconds": 25,
+      "narration": [
+        "冷库门禁控制器没反应。",
+        "你手里只有一个空工程。",
+        "先让一行代码跑起来。"
+      ],
+      "task": "先写出第一行程序，再谈控制。"
+    },
+    {
+      "id": "observe",
+      "seconds": 55,
+      "narration": [
+        "写下的代码，不会自己动。",
+        "它要先编译，再被运行。"
+      ],
+      "media": [
+        {
+          "kind": "diagram",
+          "src": "assets/lessons/K3-01/edit-compile-run.svg",
+          "alt": "编辑→编译→运行三步",
+          "status": "ready"
+        }
+      ],
+      "check": {
+        "type": "choice",
+        "task": "代码变成能跑的程序，通常要经过？",
+        "options": [
+          "编辑→编译→运行",
+          "复制→粘贴",
+          "保存→关机"
+        ],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "learn",
+      "seconds": 80,
+      "narration": [
+        "程序是按顺序执行的一串指令。",
+        "让灯闪，就是开一下、关一下。"
+      ],
+      "media": [
+        {
+          "kind": "diagram",
+          "src": "assets/lessons/K3-01/virtual-ide-blank.svg",
+          "alt": "空的虚拟 IDE",
+          "status": "ready"
+        }
+      ],
+      "term": {
+        "text": "编译",
+        "oneLine": "把写给人看的代码，翻译成机器能执行的指令。"
+      },
+      "check": {
+        "type": "choice",
+        "task": "下面哪一行最像“让灯亮”？",
+        "options": [
+          "led.on()",
+          "led.color = red",
+          "led.count()"
+        ],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "do",
+      "seconds": 200,
+      "narration": [
+        "按顺序拼出最小程序。",
+        "让串口打印一行状态。"
+      ],
+      "sim": {
+        "id": "ide-run",
+        "task": "按顺序拼出最小程序，让串口打印一次状态。",
+        "hints": [
+          "先打开串口",
+          "再让引脚输出高电平",
+          "最后打印状态行"
+        ]
+      }
+    },
+    {
+      "id": "prove",
+      "seconds": 110,
+      "mode": "numeric",
+      "narration": [
+        "把串口里的两个结果记下来。",
+        "读数要能对上期望值。"
+      ],
+      "checks": [
+        {
+          "id": "blink-hz",
+          "type": "measurement",
+          "task": "串口输出闪烁频率",
+          "expected": 2,
+          "tolerance": 0.1,
+          "unit": "Hz"
+        },
+        {
+          "id": "status-lines",
+          "type": "measurement",
+          "task": "状态行数量",
+          "expected": 3,
+          "tolerance": 0.5,
+          "unit": "次"
+        }
+      ]
+    },
+    {
+      "id": "transfer",
+      "seconds": 100,
+      "narration": [
+        "能编译，等于能跑吗？",
+        "再查一遍接线和引脚。"
+      ],
+      "prompt": "“编译通过”为什么还不等于“接线正确”？",
+      "options": [
+        "代码对但线路可能错",
+        "编译太慢",
+        "串口没打开"
+      ],
+      "answerIndex": 0,
+      "solution": "编译只检查代码语法；引脚接错、极性反了，程序照样跑，灯却不亮。"
+    },
+    {
+      "id": "recap",
+      "seconds": 25,
+      "narration": [
+        "记住这三句。",
+        "下次先测，再判断。"
+      ],
+      "lines": [
+        "编辑→编译→运行，三步一条链",
+        "引脚和对错，先看手册再接线",
+        "打印状态，是排查的第一步"
+      ]
+    }
+  ],
+  "safety": {
+    "powerOffBeforeWiring": true,
+    "liveMeasurementBlocked": true,
+    "note": "24V SELV 等效电路教学仿真：改线前必须断电，带电测量会被联锁拦下。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": [
+      "玩家",
+      "游戏",
+      "网页",
+      "第七校验",
+      "熵",
+      "残响",
+      "第一编译者",
+      "0x7F"
+    ],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true
+  }
+}
