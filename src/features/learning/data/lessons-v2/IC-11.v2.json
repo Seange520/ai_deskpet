@@ -1,0 +1,111 @@
+{
+  "schema": "lesson.v2",
+  "lessonId": "L-IC-11-v2",
+  "kp": {
+    "id": "IC-11",
+    "name": "EDA：从代码到版图",
+    "layer": "L6",
+    "pillar": "weave",
+    "oneLiner": "写完代码只是开始，后面还有一整条工具链"
+  },
+  "meta": {
+    "version": "2.0.0",
+    "updatedAt": "2026-11-09",
+    "estimatedMinutes": 12,
+    "template": "mission-seven-v1",
+    "gameMount": "P10-维修间",
+    "sourceLesson": "L-IC-11",
+    "author": "SparkMate Automation"
+  },
+  "story": {
+    "act": 2,
+    "title": "专业支线 · 芯片入门",
+    "scene": "P10-维修间",
+    "npc": "贺非",
+    "setup": "贺非把一张流程卡摊开：代码写完只算开头，综合、布局、布线、时序签核，每一步都在替芯片排雷。"
+  },
+  "segments": [
+    {
+      "id": "mission",
+      "seconds": 25,
+      "narration": ["写完 RTL 只是第一步。", "后面还有一长串工具链。", "今天的任务：排出 EDA 流程。"],
+      "task": "排出从 RTL 到流片前的六个 EDA 阶段，并判断综合产物与时序关系。"
+    },
+    {
+      "id": "observe",
+      "seconds": 55,
+      "narration": ["先仿真，再综合。", "综合把代码变成门级网表。", "布局布线之后，还要过时序签核。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/IC-11/eda-pipeline.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "check": {
+        "id": "obs-1",
+        "type": "choice",
+        "task": "布局规划决定的是？",
+        "options": ["每个单元放在芯片的哪块区域", "芯片卖多少钱", "封装用哪种引脚"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "learn",
+      "seconds": 85,
+      "narration": ["RTL 写功能，仿真验功能。", "综合给门级网表，布局布线给物理位置。", "最后时序签核：每条路径都要赶得上时钟。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/IC-11/eda-pipeline.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "term": { "text": "门级网表", "oneLine": "综合后的电路连接清单，由标准单元和连线组成。" },
+      "check": {
+        "id": "learn-1",
+        "type": "choice",
+        "task": "时序 slack 为负说明什么？",
+        "options": ["路径延迟超过时钟周期，时序不满足", "芯片面积太小", "电压太高"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "do",
+      "seconds": 200,
+      "narration": ["先写 RTL，再跑仿真。", "综合、布局、布线，一步步落地。", "最后用时序签核兜底。"],
+      "sim": {
+        "id": "eda-pipeline",
+        "version": 1,
+        "task": "按顺序点出六个 EDA 阶段，并回答综合产物与时序两道判断。",
+        "hints": ["先有 RTL 和仿真，才能综合。", "综合产物是门级网表。", "负 slack 就是赶不上时钟。"]
+      }
+    },
+    {
+      "id": "prove",
+      "seconds": 100,
+      "mode": "numeric",
+      "narration": ["整个流程几个阶段？", "周期 2.0ns，延迟 2.3ns。", "算一算 slack 是多少。"],
+      "checks": [
+        { "id": "stages", "type": "measurement", "task": "EDA 流程阶段数", "expected": 6, "tolerance": 0.01, "unit": "项" },
+        { "id": "slack", "type": "measurement", "task": "周期 2.0ns、延迟 2.3ns 时的 slack", "expected": -0.3, "tolerance": 0.01, "unit": "ns" }
+      ]
+    },
+    {
+      "id": "transfer",
+      "seconds": 90,
+      "narration": ["时序不满足怎么办？", "不是改时钟就算过。", "先想清楚改哪一层。"],
+      "prompt": "时序 slack 为负，最合理的下一步是？",
+      "options": ["回到 RTL 优化逻辑或加流水线", "把时钟频率再调高", "直接跳过时序签核"],
+      "answerIndex": 0
+    },
+    {
+      "id": "recap",
+      "seconds": 25,
+      "narration": ["EDA 流程一环扣一环。", "综合给网表，布局布线给位置。", "时序签核决定能不能按时流片。"],
+      "lines": ["EDA 流程一环扣一环。", "综合给网表，布局布线给位置。", "时序签核决定能不能按时流片。"]
+    }
+  ],
+  "safety": {
+    "powerOffBeforeWiring": true,
+    "liveMeasurementBlocked": true,
+    "note": "EDA 是软件流程，不直接带电；真实项目里要管版本、锁文件与签核记录，任何一步回退都要留痕。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["玩家", "游戏", "网页", "第七校验", "熵", "残响", "第一编译者", "0x7F"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true
+  }
+}

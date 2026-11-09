@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img" aria-label="EDA 流程：RTL 设计、功能仿真、逻辑综合、布局规划、布线、时序签核">
+  <rect width="1200" height="675" fill="#0b1a20"/>
+  <text x="60" y="58" fill="#4fd1c5" font-family="Consolas, monospace" font-size="18" letter-spacing="3">THE WEAVE / EDA · IC-11</text>
+  <text x="60" y="102" fill="#e8f4f2" font-family="Microsoft YaHei, sans-serif" font-size="34" font-weight="700">从代码到版图：六个阶段</text>
+  <line x1="60" y1="124" x2="1140" y2="124" stroke="#26424a" stroke-width="1"/>
+
+  <g font-family="Microsoft YaHei, sans-serif">
+    <g transform="translate(60,160)">
+      <rect width="150" height="88" rx="6" fill="#12333c" stroke="#2f5f6b"/>
+      <text x="75" y="36" fill="#cfe9e5" font-size="17" text-anchor="middle">① RTL 设计</text>
+      <text x="75" y="64" fill="#6f8f99" font-size="12" text-anchor="middle">用 HDL 写功能</text>
+    </g>
+    <text x="222" y="208" fill="#4fd1c5" font-size="18">→</text>
+    <g transform="translate(250,160)">
+      <rect width="150" height="88" rx="6" fill="#12333c" stroke="#2f5f6b"/>
+      <text x="75" y="36" fill="#cfe9e5" font-size="17" text-anchor="middle">② 功能仿真</text>
+      <text x="75" y="64" fill="#6f8f99" font-size="12" text-anchor="middle">先验证逻辑对不对</text>
+    </g>
+    <text x="412" y="208" fill="#4fd1c5" font-size="18">→</text>
+    <g transform="translate(440,160)">
+      <rect width="150" height="88" rx="6" fill="#12333c" stroke="#2f5f6b"/>
+      <text x="75" y="36" fill="#cfe9e5" font-size="17" text-anchor="middle">③ 逻辑综合</text>
+      <text x="75" y="64" fill="#6f8f99" font-size="12" text-anchor="middle">代码 → 门级网表</text>
+    </g>
+    <text x="602" y="208" fill="#4fd1c5" font-size="18">→</text>
+    <g transform="translate(630,160)">
+      <rect width="150" height="88" rx="6" fill="#12333c" stroke="#2f5f6b"/>
+      <text x="75" y="36" fill="#cfe9e5" font-size="17" text-anchor="middle">④ 布局规划</text>
+      <text x="75" y="64" fill="#6f8f99" font-size="12" text-anchor="middle">单元放在哪块区域</text>
+    </g>
+    <text x="792" y="208" fill="#4fd1c5" font-size="18">→</text>
+    <g transform="translate(820,160)">
+      <rect width="150" height="88" rx="6" fill="#12333c" stroke="#2f5f6b"/>
+      <text x="75" y="36" fill="#cfe9e5" font-size="17" text-anchor="middle">⑤ 布线</text>
+      <text x="75" y="64" fill="#6f8f99" font-size="12" text-anchor="middle">按网表连起来</text>
+    </g>
+    <text x="982" y="208" fill="#4fd1c5" font-size="18">→</text>
+    <g transform="translate(1010,160)">
+      <rect width="130" height="88" rx="6" fill="#12333c" stroke="#2f5f6b"/>
+      <text x="65" y="36" fill="#cfe9e5" font-size="17" text-anchor="middle">⑥ 时序签核</text>
+      <text x="65" y="64" fill="#6f8f99" font-size="12" text-anchor="middle">每条路径赶得上时钟</text>
+    </g>
+  </g>
+
+  <g transform="translate(60,300)">
+    <rect width="540" height="150" rx="6" fill="#0f2a33" stroke="#2f5f6b"/>
+    <text x="24" y="34" fill="#e8f4f2" font-size="18">综合 ≠ 版图</text>
+    <text x="24" y="66" fill="#9fb8bd" font-size="14">综合输出门级网表：由标准单元和连线组成。</text>
+    <text x="24" y="94" fill="#9fb8bd" font-size="14">布局布线才决定物理位置；版图是几何，由 DRC/LVS 把关。</text>
+    <text x="24" y="122" fill="#ffd487" font-size="14">网表对不上原理图，后面全白做。</text>
+  </g>
+  <g transform="translate(620,300)">
+    <rect width="520" height="150" rx="6" fill="#0f2a33" stroke="#2f5f6b"/>
+    <text x="24" y="34" fill="#e8f4f2" font-size="18">时序：slack = 周期 − 路径延迟</text>
+    <text x="24" y="66" fill="#9fb8bd" font-size="14">例：周期 2.0ns、路径 2.3ns → slack = −0.3ns。</text>
+    <text x="24" y="94" fill="#9fb8bd" font-size="14">slack 为负，说明这条路径赶不上时钟，时序不满足。</text>
+    <text x="24" y="122" fill="#ffd487" font-size="14">修法：回 RTL 优化、加流水线，或降频；不能跳过签核。</text>
+  </g>
+
+  <text x="60" y="520" fill="#4fd1c5" font-size="16">签核不过，就不能流片：时序、DRC、LVS 三关一起过。</text>
+  <text x="60" y="556" fill="#6f8f99" font-size="13">教学仿真用等效模型；真实 EDA 以厂商工具与 PDK 签核报告为准。</text>
+</svg>
