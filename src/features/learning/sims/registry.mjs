@@ -12,6 +12,7 @@ export const registry = Object.freeze({
   'state-machine': () => import('./StateMachineSim.jsx'),
   'intent-router': () => import('./IntentRouterSim.jsx'),
   'boundary-guard': () => import('./BoundaryGuardSim.jsx'),
+  'memory-recall': () => import('./MemoryRecallSim.jsx'),
 });
 export const simIds = Object.freeze(Object.keys(registry));
 export function getSim(id) {

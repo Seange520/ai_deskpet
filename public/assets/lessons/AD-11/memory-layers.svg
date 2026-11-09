@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-label="AD-11 记忆分层：偏好、事实、隐私与长期约定">
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#12262b" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="675" fill="#08161a"/>
+  <rect width="1200" height="675" fill="url(#grid)"/>
+  <text x="48" y="64" fill="#4fd1c5" font-family="Consolas, monospace" font-size="17" letter-spacing="2">THE FORGE / 检修手册 · AD-11</text>
+  <text x="48" y="108" fill="#e6f7f5" font-family="Microsoft YaHei, sans-serif" font-size="38" font-weight="700">记忆：只记住该记的</text>
+  <line x1="48" y1="128" x2="1152" y2="128" stroke="#1d3a40" stroke-width="2"/>
+
+  <g font-family="Microsoft YaHei, sans-serif">
+    <rect x="48" y="176" width="352" height="132" rx="12" fill="#0d2328" stroke="#2b5b63"/>
+    <text x="72" y="212" fill="#8fe3d8" font-size="20">偏好</text>
+    <text x="72" y="244" fill="#d7ece9" font-size="15">「我不吃香菜。」</text>
+    <text x="72" y="270" fill="#8fe3d8" font-size="14">→ 记住（本地）</text>
+    <text x="72" y="292" fill="#9fb8bd" font-size="13">稳定、低风险、可随时删。</text>
+
+    <rect x="424" y="176" width="352" height="132" rx="12" fill="#0d2328" stroke="#8a4b3a"/>
+    <text x="448" y="212" fill="#f6c177" font-size="20">隐私</text>
+    <text x="448" y="244" fill="#d7ece9" font-size="15">「身份证号是……」</text>
+    <text x="448" y="270" fill="#f6c177" font-size="14">→ 不记，并提醒</text>
+    <text x="448" y="292" fill="#9fb8bd" font-size="13">账号、证件、住址、钥匙。</text>
+
+    <rect x="800" y="176" width="352" height="132" rx="12" fill="#0d2328" stroke="#2b5b63"/>
+    <text x="824" y="212" fill="#8fe3d8" font-size="20">长期约定</text>
+    <text x="824" y="244" fill="#d7ece9" font-size="15">「以后都先断电再接线。」</text>
+    <text x="824" y="270" fill="#8fe3d8" font-size="14">→ 先问再记</text>
+    <text x="824" y="292" fill="#9fb8bd" font-size="13">会影响以后的行为，要确认。</text>
+
+    <rect x="48" y="336" width="1104" height="170" rx="12" fill="#0d2328" stroke="#2b5b63"/>
+    <text x="72" y="374" fill="#8fe3d8" font-size="20">记忆的四个问题</text>
+    <text x="72" y="410" fill="#d7ece9" font-size="16">① 记什么：偏好、事实、约定；不记隐私与凭据。</text>
+    <text x="72" y="442" fill="#d7ece9" font-size="16">② 记在哪：本地档案，不默认云端同步。</text>
+    <text x="72" y="474" fill="#d7ece9" font-size="16">③ 记多久：可设保留期，过期自动清。</text>
+  </g>
+
+  <g font-family="Microsoft YaHei, sans-serif">
+    <rect x="48" y="536" width="540" height="90" rx="12" fill="#0d2328" stroke="#2b5b63"/>
+    <text x="72" y="570" fill="#8fe3d8" font-size="19">好记忆的三条</text>
+    <text x="72" y="598" fill="#d7ece9" font-size="14">用户能看见、能改、能删。</text>
+
+    <rect x="612" y="536" width="540" height="90" rx="12" fill="#0d2328" stroke="#8a4b3a"/>
+    <text x="636" y="570" fill="#f6c177" font-size="19">红线</text>
+    <text x="636" y="598" fill="#d7ece9" font-size="14">不偷偷记、不跨作用域串味、不留敏感数据。</text>
+  </g>
+
+  <text x="48" y="656" fill="#6f8f99" font-family="Microsoft YaHei, sans-serif" font-size="15">教学示意：记忆不是越多越好，能解释、能撤销的记忆才可信。</text>
+</svg>

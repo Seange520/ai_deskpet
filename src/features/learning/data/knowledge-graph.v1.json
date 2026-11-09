@@ -1568,6 +1568,35 @@
       "license": "CC-BY-4.0",
       "status": "partial",
       "priority": "P0"
+    },
+    {
+      "id": "AD-11",
+      "name": "记忆：只记住该记的",
+      "oneLiner": "记住偏好，不记隐私",
+      "layer": "L5",
+      "pillar": "weave",
+      "prereq": [
+        "AD-10"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons-v2/AD-11.v2.json",
+      "lessonAvailable": true,
+      "media": [
+        "card",
+        "sim"
+      ],
+      "practice": "区分偏好、隐私与长期约定三种记忆动作",
+      "check": {
+        "type": "sim-task",
+        "task": "记忆策略判断",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "P10维修间",
+      "spoilerLevel": 5,
+      "license": "CC-BY-4.0",
+      "status": "partial",
+      "priority": "P0"
     }
   ],
   "edges": [
@@ -1810,11 +1839,16 @@
       "from": "AD-09",
       "to": "AD-10",
       "kind": "prereq"
+    },
+    {
+      "from": "AD-10",
+      "to": "AD-11",
+      "kind": "prereq"
     }
   ],
   "stats": {
-    "total": 50,
-    "edges": 48,
+    "total": 51,
+    "edges": 49,
     "gates": 1,
     "byLayer": {
       "L0": 7,
@@ -1822,7 +1856,7 @@
       "L2": 7,
       "L3": 8,
       "L4": 8,
-      "L5": 6,
+      "L5": 7,
       "L6": 3,
       "L7": 2,
       "L8": 2
@@ -1831,17 +1865,17 @@
       "craft": 11,
       "forge": 13,
       "foundation": 6,
-      "weave": 12,
+      "weave": 13,
       "echo": 4,
       "symbiosis": 2,
       "spire": 2
     },
     "byStatus": {
-      "partial": 16,
+      "partial": 17,
       "planned": 34
     },
     "byPriority": {
-      "P0": 21,
+      "P0": 22,
       "P1": 15,
       "P2": 10,
       "P3": 4

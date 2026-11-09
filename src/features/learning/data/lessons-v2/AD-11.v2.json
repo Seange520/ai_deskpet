@@ -1,0 +1,111 @@
+{
+  "schema": "lesson.v2",
+  "lessonId": "L-AD-11-v2",
+  "kp": {
+    "id": "AD-11",
+    "name": "记忆：只记住该记的",
+    "layer": "L5",
+    "pillar": "weave",
+    "oneLiner": "记住偏好，不记隐私"
+  },
+  "meta": {
+    "version": "2.0.0",
+    "updatedAt": "2026-11-09",
+    "estimatedMinutes": 12,
+    "template": "mission-seven-v1",
+    "gameMount": "P10-维修间",
+    "sourceLesson": "L-AD-11",
+    "author": "SparkMate Automation"
+  },
+  "story": {
+    "act": 1,
+    "title": "造物时刻",
+    "scene": "P10-维修间",
+    "npc": "贺非",
+    "setup": "桌宠要记住你的习惯，但隐私、账号、住址这些信息，记住就是风险。今天教它区分三种记忆动作：记住、不记并说明、先问再记。"
+  },
+  "segments": [
+    {
+      "id": "mission",
+      "seconds": 25,
+      "narration": ["它想记住你的习惯。", "但不能什么都记。", "今天的任务：分清三种记忆。"],
+      "task": "对三条请求分别选择「记住」「不记并说明」或「先问再记」，并说明理由。"
+    },
+    {
+      "id": "observe",
+      "seconds": 55,
+      "narration": ["偏好，可以记。", "身份证号，不能记。", "长期约定，先问再记。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/AD-11/memory-layers.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "check": {
+        "id": "obs-1",
+        "type": "choice",
+        "task": "桌宠收到「我的身份证号是……」时该怎么做？",
+        "options": ["不落盘并提醒", "先记住再说", "复制到云端"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "learn",
+      "seconds": 85,
+      "narration": ["记忆先分层。", "偏好、事实、隐私。", "长期约定，要开口确认。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/AD-11/memory-layers.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "term": { "text": "记忆作用域", "oneLine": "什么能记、记在哪、记多久、谁能删。" },
+      "check": {
+        "id": "learn-1",
+        "type": "choice",
+        "task": "要把一条长期偏好写入记忆前，先做什么？",
+        "options": ["先问用户确认", "直接写入", "写进公开缓存"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "do",
+      "seconds": 200,
+      "narration": ["第一条：香菜，是偏好。", "第二条：证件号，是隐私。", "第三条：约定，先确认。"],
+      "sim": {
+        "id": "memory-recall",
+        "version": 1,
+        "task": "对偏好、证件号、长期约定三条请求，分别选择记住 / 不记并说明 / 先问再记。",
+        "hints": ["偏好在本地记住即可。", "证件号不落盘，并提醒用户不要发出来。", "长期约定涉及以后的行为，先确认再记。"]
+      }
+    },
+    {
+      "id": "prove",
+      "seconds": 100,
+      "mode": "numeric",
+      "narration": ["写入前，逐条确认。", "敏感信息，零留存。", "记忆能查，也能删。"],
+      "checks": [
+        { "id": "confirm-count", "type": "measurement", "task": "长期记忆写入前的确认", "expected": 3, "tolerance": 0.01, "unit": "次" },
+        { "id": "secret-retained", "type": "measurement", "task": "敏感信息的留存", "expected": 0, "tolerance": 0.01, "unit": "次" }
+      ]
+    },
+    {
+      "id": "transfer",
+      "seconds": 90,
+      "narration": ["它把别人的偏好记住了。", "是记性太好，还是记错了人？", "该查哪一层？"],
+      "prompt": "桌宠把「别人」的偏好记到了你头上，最先查哪一层？",
+      "options": ["记忆的作用域与来源", "把记忆全删了", "换一个更安静的音效"],
+      "answerIndex": 0
+    },
+    {
+      "id": "recap",
+      "seconds": 25,
+      "narration": ["偏好可记，隐私不记。", "长期约定，先问再记。", "记忆要能查、能删、能关。"],
+      "lines": ["偏好可记，隐私不记。", "长期约定，先问再记。", "记忆要能查、能删、能关。"]
+    }
+  ],
+  "safety": {
+    "powerOffBeforeWiring": true,
+    "liveMeasurementBlocked": true,
+    "note": "记忆默认保存在本地，可查看、可清空、可关闭；不默认跨设备同步，不记录账号密码与证件号码。接线与测量相关操作仍须断电验电。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["玩家", "游戏", "网页", "第七校验", "熵", "残响", "第一编译者", "0x7F"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true
+  }
+}
