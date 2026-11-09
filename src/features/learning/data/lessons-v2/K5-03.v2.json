@@ -1,0 +1,184 @@
+{
+  "schema": "lesson.v2",
+  "lessonId": "L-K5-03-v2",
+  "kp": {
+    "id": "K5-03",
+    "name": "MQTT 主题负载 QoS",
+    "layer": "L5",
+    "pillar": "echo",
+    "oneLiner": "一次发布，谁在听谁处理"
+  },
+  "meta": {
+    "version": "2.0.0",
+    "template": "mission-seven-v1",
+    "estimatedMinutes": 10,
+    "gameMount": "P10-回声集市"
+  },
+  "story": {
+    "act": "P10-回声集市",
+    "title": "发不动的开关命令",
+    "scene": "P10-回声集市",
+    "npc": "弥",
+    "setup": "开关命令发出去了，街灯却不动。弥说：报文没错，是你把主题写错了。"
+  },
+  "segments": [
+    {
+      "id": "mission",
+      "seconds": 25,
+      "narration": [
+        "开关命令发出去了。",
+        "街灯却一动不动。",
+        "先看报文，再怀疑网络。"
+      ],
+      "task": "先核对报文，再重发。"
+    },
+    {
+      "id": "observe",
+      "seconds": 55,
+      "narration": [
+        "发布者不关心谁在听。",
+        "Broker 按主题，把报文路由出去。"
+      ],
+      "media": [
+        {
+          "kind": "diagram",
+          "src": "assets/lessons/K5-03/mqtt-topic-tree.svg",
+          "alt": "MQTT 主题树",
+          "status": "ready"
+        }
+      ],
+      "check": {
+        "type": "choice",
+        "task": "Broker 靠什么决定报文送给谁？",
+        "options": [
+          "主题匹配",
+          "IP 地址",
+          "端口号"
+        ],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "learn",
+      "seconds": 80,
+      "narration": [
+        "主题写错，订阅者永远收不到。",
+        "QoS 决定要不要重发确认。"
+      ],
+      "media": [
+        {
+          "kind": "diagram",
+          "src": "assets/lessons/K5-03/mqtt-pubsub.svg",
+          "alt": "发布订阅与 Broker",
+          "status": "ready"
+        }
+      ],
+      "term": {
+        "text": "QoS",
+        "oneLine": "发布与订阅之间，确认送达的等级。"
+      },
+      "check": {
+        "type": "choice",
+        "task": "QoS 1 大致意味着？",
+        "options": [
+          "至少送达一次",
+          "最多一次",
+          "不保证送达"
+        ],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "do",
+      "seconds": 200,
+      "narration": [
+        "选对主题和负载，再发一次。",
+        "用 QoS 1，等 Broker 回显。"
+      ],
+      "sim": {
+        "id": "mqtt-publish",
+        "task": "选对主题与负载，用 QoS 1 发布一帧开关命令。",
+        "hints": [
+          "主题要对准 lamp1/state",
+          "负载用 1 表示开",
+          "QoS 选 1"
+        ]
+      }
+    },
+    {
+      "id": "prove",
+      "seconds": 110,
+      "mode": "numeric",
+      "narration": [
+        "把报文参数记下来。",
+        "主题、负载、QoS 都要对上。"
+      ],
+      "checks": [
+        {
+          "id": "qos-level",
+          "type": "measurement",
+          "task": "QoS 等级",
+          "expected": 1,
+          "tolerance": 0.5,
+          "unit": "级"
+        },
+        {
+          "id": "retry-count",
+          "type": "measurement",
+          "task": "链路健康时的重发次数",
+          "expected": 0,
+          "tolerance": 0.5,
+          "unit": "次"
+        }
+      ]
+    },
+    {
+      "id": "transfer",
+      "seconds": 100,
+      "narration": [
+        "主题对了，为什么还要 QoS？",
+        "想一想，再回答。"
+      ],
+      "prompt": "为什么灯和控制器都用“状态”主题，而不用“命令”主题？",
+      "options": [
+        "状态主题更适合广播给多个订阅者",
+        "命令主题收费更高",
+        "状态主题更短"
+      ],
+      "answerIndex": 0,
+      "solution": "状态主题让多个订阅者同时看到最新值；命令主题通常只发给一个设备。"
+    },
+    {
+      "id": "recap",
+      "seconds": 25,
+      "narration": [
+        "记住这三句。",
+        "主题、负载、QoS，一个都不能错。"
+      ],
+      "lines": [
+        "主题决定谁收到",
+        "负载写清楚状态",
+        "QoS 按可靠性需求选"
+      ]
+    }
+  ],
+  "safety": {
+    "powerOffBeforeWiring": true,
+    "liveMeasurementBlocked": true,
+    "note": "24V SELV 等效电路教学仿真：改线前必须断电，带电测量会被联锁拦下。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": [
+      "玩家",
+      "游戏",
+      "网页",
+      "第七校验",
+      "熵",
+      "残响",
+      "第一编译者",
+      "0x7F"
+    ],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true
+  }
+}

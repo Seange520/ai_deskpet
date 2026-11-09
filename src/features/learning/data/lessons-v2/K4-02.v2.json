@@ -1,0 +1,192 @@
+{
+  "schema": "lesson.v2",
+  "lessonId": "L-K4-02-v2",
+  "kp": {
+    "id": "K4-02",
+    "name": "I2C 地址与时序",
+    "layer": "L4",
+    "pillar": "weave",
+    "oneLiner": "一条线两个地址，冲突就找冒名者"
+  },
+  "meta": {
+    "version": "2.0.0",
+    "template": "mission-seven-v1",
+    "estimatedMinutes": 11,
+    "gameMount": "P10-织网回廊"
+  },
+  "story": {
+    "act": "P10-织网回廊",
+    "title": "抢着回话的传感器",
+    "scene": "P10-织网回廊",
+    "npc": "丝",
+    "setup": "两个传感器挤在同一条 I2C 总线上，读数乱跳，像有人在抢着回话。"
+  },
+  "segments": [
+    {
+      "id": "mission",
+      "seconds": 25,
+      "narration": [
+        "两个传感器，同一条总线。",
+        "读数乱跳，像在抢话。",
+        "先扫地址，找出冒名者。"
+      ],
+      "task": "先扫地址，再怀疑数据。"
+    },
+    {
+      "id": "observe",
+      "seconds": 55,
+      "narration": [
+        "I2C 只用两根线：时钟和数据。",
+        "每个从机，靠唯一地址回话。"
+      ],
+      "media": [
+        {
+          "kind": "diagram",
+          "src": "assets/lessons/K4-02/i2c-bus.svg",
+          "alt": "I2C 两根线连接主机与从机",
+          "status": "ready"
+        }
+      ],
+      "check": {
+        "type": "choice",
+        "task": "I2C 总线上，从机靠什么被区分？",
+        "options": [
+          "唯一地址",
+          "引脚编号",
+          "数据内容"
+        ],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "learn",
+      "seconds": 80,
+      "narration": [
+        "地址冲突时，主机分不清谁在回答。",
+        "隔离冒名者，再重扫确认。"
+      ],
+      "media": [
+        {
+          "kind": "diagram",
+          "src": "assets/lessons/K4-02/address-scan.svg",
+          "alt": "地址扫描与冲突隔离",
+          "status": "ready"
+        }
+      ],
+      "term": {
+        "text": "I2C 地址",
+        "oneLine": "挂在总线上的每个从机，用自己的地址回话。"
+      },
+      "check": {
+        "type": "choice",
+        "task": "扫描出现两个相同地址，说明？",
+        "options": [
+          "两个从机地址冲突",
+          "总线电压不足",
+          "主机死机"
+        ],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "do",
+      "seconds": 200,
+      "narration": [
+        "给三个从机上电，先扫一遍。",
+        "隔离冒名者后，再扫确认。"
+      ],
+      "sim": {
+        "id": "i2c-scan",
+        "task": "给三个从机上电并扫描地址，隔离冒名者后重扫确认。",
+        "hints": [
+          "先扫描，看哪个地址有两个应答",
+          "隔离冒名设备后再扫",
+          "冲突数为 0 才算恢复"
+        ]
+      }
+    },
+    {
+      "id": "prove",
+      "seconds": 110,
+      "mode": "numeric",
+      "narration": [
+        "把扫描结论记下来。",
+        "冲突数、设备数、时钟频率，都要对上。"
+      ],
+      "checks": [
+        {
+          "id": "i2c-conflict",
+          "type": "measurement",
+          "task": "冲突地址数量",
+          "expected": 0,
+          "tolerance": 0.5,
+          "unit": "次"
+        },
+        {
+          "id": "i2c-devices",
+          "type": "measurement",
+          "task": "总线上从机数量",
+          "expected": 2,
+          "tolerance": 0.5,
+          "unit": "次"
+        },
+        {
+          "id": "scl-hz",
+          "type": "measurement",
+          "task": "SCL 时钟频率",
+          "expected": 100000,
+          "tolerance": 5000,
+          "unit": "Hz"
+        }
+      ]
+    },
+    {
+      "id": "transfer",
+      "seconds": 100,
+      "narration": [
+        "为什么冲突会让数据变乱？",
+        "先想清楚，再隔离。"
+      ],
+      "prompt": "地址冲突时，数据为什么会乱？",
+      "options": [
+        "两个设备同时驱动数据线",
+        "地址越大越慢",
+        "时钟停摆了"
+      ],
+      "answerIndex": 0,
+      "solution": "I2C 是开漏总线，同地址两个设备同时应答，数据线电平被互相拉扯，主机读到乱码。"
+    },
+    {
+      "id": "recap",
+      "seconds": 25,
+      "narration": [
+        "记住这三句。",
+        "地址冲突先隔离，再重扫。"
+      ],
+      "lines": [
+        "扫描地址，先看有没有两个应答",
+        "隔离冒名者，再扫确认冲突归零",
+        "时钟频率要符合从机手册"
+      ]
+    }
+  ],
+  "safety": {
+    "powerOffBeforeWiring": true,
+    "liveMeasurementBlocked": true,
+    "note": "24V SELV 等效电路教学仿真：改线前必须断电，带电测量会被联锁拦下。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": [
+      "玩家",
+      "游戏",
+      "网页",
+      "第七校验",
+      "熵",
+      "残响",
+      "第一编译者",
+      "0x7F"
+    ],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true
+  }
+}
