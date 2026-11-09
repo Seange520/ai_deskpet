@@ -137,8 +137,8 @@ export default function TeachingPanel() {
                   </select>
                 </label>
                 {recommendations(graph, s.profile, minutes).map((id) => (
-                  <button key={id} onClick={() => start(id)}>
-                    {id} · {lessons[id].kp.name}
+                  <button key={id} onClick={() => start(id, Boolean(lessonsV2[id]))}>
+                    {id} · {lessons[id]?.kp.name || lessonsV2[id]?.kp.name || id}
                   </button>
                 ))}
               </section>
