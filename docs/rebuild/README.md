@@ -22,7 +22,17 @@
 2. `LEGACY_AUDIT_AND_REBUILD_PLAN_V1.md` —— 旧东西哪些留、哪些扔、要多少工作量。
 3. `UI_WIREFRAME_SPEC_V1.md` —— 新界面长什么样、键位与面板。
 4. `WORLD_REBUILD_PLAN_V1.md` —— 大地图、区域、48 节课怎么搬进世界。
-5. `NOVEL_PLAN_V1.md` / `GAME_LICENSE_ROADMAP_V1.md` —— 小说与版号。
+5. `STORY_BIBLE_V1.md` + `script/S00_PROLOGUE_SCRIPT_V1.md` —— 主线七章与序章可玩脚本。
+6. `NOVEL_PLAN_V1.md` / `GAME_LICENSE_ROADMAP_V1.md` —— 小说与版号。
+
+### 工程附件
+
+- `R1_RENDER_SPEC_V1.md` —— 三渲二管线、性能预算、验收。
+- `R4_MIGRATION_WORKSHEET_V1.md` —— 36 节 v2 课节逐项迁移清单与分批。
+- `LESSON_MAPPING_V1.md` —— 课节 → 区域映射表（自动生成）。
+- `ASSET_SOURCES_V1.md` —— CC0/外包/授权合规清单。
+- `CODEX_DISPATCH_CHECKLIST_V1.md` —— 派活与验收手册。
+- `CANON_DECISIONS_V1.md` —— 正典与工程待拍板（A1–A11 + B1–B4）。
 
 深度研究见 `work/handoff/design-pivot/GENSHIN_DESIGN_BIBLE_V1.md`（86,885 字）与 `TOP50_GAMES_ANALYSIS_V1.md`（109,870 字）。
 
