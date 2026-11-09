@@ -7,6 +7,7 @@ export const registry = Object.freeze({
   'mqtt-publish': () => import('./MqttPublishSim.jsx'),
   'pet-build': () => import('./PetBuildSim.jsx'),
   'power-precheck': () => import('./PowerPrecheckSim.jsx'),
+  'expression-frame': () => import('./ExpressionFrameSim.jsx'),
 });
 export const simIds = Object.freeze(Object.keys(registry));
 export function getSim(id) {

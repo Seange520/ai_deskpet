@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-label="AD-06 帧缓冲：128×64 单色屏的页、行与字节示意">
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#12262b" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="675" fill="#08161a"/>
+  <rect width="1200" height="675" fill="url(#grid)"/>
+  <text x="48" y="64" fill="#4fd1c5" font-family="Consolas, monospace" font-size="17" letter-spacing="2">THE FORGE / 检修手册 · AD-06</text>
+  <text x="48" y="108" fill="#e6f7f5" font-family="Microsoft YaHei, sans-serif" font-size="38" font-weight="700">屏幕与表情：帧缓冲里的眼神</text>
+  <line x1="48" y1="128" x2="1152" y2="128" stroke="#1d3a40" stroke-width="2"/>
+
+  <g font-family="Microsoft YaHei, sans-serif">
+    <rect x="60" y="180" width="520" height="260" rx="8" fill="#04120c" stroke="#2b5b63"/>
+    <text x="60" y="166" fill="#8fe3d8" font-size="16">128 × 64 单色屏（放大示意 · 8 页）</text>
+
+    <g stroke="#1f3f45" stroke-width="1">
+      <line x1="60" y1="212.5" x2="580" y2="212.5"/>
+      <line x1="60" y1="245" x2="580" y2="245"/>
+      <line x1="60" y1="277.5" x2="580" y2="277.5"/>
+      <line x1="60" y1="310" x2="580" y2="310"/>
+      <line x1="60" y1="342.5" x2="580" y2="342.5"/>
+      <line x1="60" y1="375" x2="580" y2="375"/>
+      <line x1="60" y1="407.5" x2="580" y2="407.5"/>
+      <line x1="60" y1="440" x2="580" y2="440"/>
+    </g>
+    <rect x="60" y="342.5" width="520" height="32.5" fill="#4fd1c5" opacity="0.16"/>
+    <text x="72" y="365" fill="#4fd1c5" font-family="Consolas, monospace" font-size="14">第 5 页 · y = 40..47</text>
+
+    <g stroke="#1f3f45" stroke-width="1">
+      <line x1="92.5" y1="180" x2="92.5" y2="440"/>
+      <line x1="125" y1="180" x2="125" y2="440"/>
+      <line x1="157.5" y1="180" x2="157.5" y2="440"/>
+      <line x1="190" y1="180" x2="190" y2="440"/>
+      <line x1="222.5" y1="180" x2="222.5" y2="440"/>
+      <line x1="255" y1="180" x2="255" y2="440"/>
+      <line x1="287.5" y1="180" x2="287.5" y2="440"/>
+      <line x1="320" y1="180" x2="320" y2="440"/>
+      <line x1="352.5" y1="180" x2="352.5" y2="440"/>
+      <line x1="385" y1="180" x2="385" y2="440"/>
+      <line x1="417.5" y1="180" x2="417.5" y2="440"/>
+      <line x1="450" y1="180" x2="450" y2="440"/>
+      <line x1="482.5" y1="180" x2="482.5" y2="440"/>
+      <line x1="515" y1="180" x2="515" y2="440"/>
+      <line x1="547.5" y1="180" x2="547.5" y2="440"/>
+    </g>
+
+    <g fill="#7dffcb">
+      <rect x="428" y="346.5" width="4" height="4"/>
+      <rect x="448" y="346.5" width="4" height="4"/>
+      <rect x="444" y="350.5" width="4" height="4"/>
+      <rect x="440" y="354.5" width="4" height="4"/>
+      <rect x="436" y="354.5" width="4" height="4"/>
+      <rect x="432" y="358.5" width="4" height="4"/>
+      <rect x="448" y="358.5" width="4" height="4"/>
+      <rect x="436" y="362.5" width="4" height="4"/>
+      <rect x="444" y="362.5" width="4" height="4"/>
+    </g>
+    <text x="420" y="390" fill="#4fd1c5" font-family="Consolas, monospace" font-size="12">8×8 图块</text>
+  </g>
+
+  <g font-family="Microsoft YaHei, sans-serif">
+    <rect x="620" y="176" width="532" height="112" rx="12" fill="#0d2328" stroke="#2b5b63"/>
+    <text x="644" y="212" fill="#4fd1c5" font-family="Consolas, monospace" font-size="15">01 / 显存总大小</text>
+    <text x="644" y="248" fill="#e6f7f5" font-size="22">128 × 64 ÷ 8 = 1024 B</text>
+    <text x="644" y="274" fill="#9fb8bd" font-size="14">单色每个像素 1 bit，八个像素拼成一个字节。</text>
+
+    <rect x="620" y="304" width="532" height="112" rx="12" fill="#0d2328" stroke="#2b5b63"/>
+    <text x="644" y="340" fill="#4fd1c5" font-family="Consolas, monospace" font-size="15">02 / 眼睛在第几页</text>
+    <text x="644" y="376" fill="#e6f7f5" font-size="22">页号 = y ÷ 8 → 40 ÷ 8 = 5</text>
+    <text x="644" y="402" fill="#9fb8bd" font-size="14">页号从 0 开始数；每页正好 8 行像素。</text>
+
+    <rect x="620" y="432" width="532" height="112" rx="12" fill="#0d2328" stroke="#2b5b63"/>
+    <text x="644" y="468" fill="#4fd1c5" font-family="Consolas, monospace" font-size="15">03 / 一行占多少字节</text>
+    <text x="644" y="504" fill="#e6f7f5" font-size="22">128 ÷ 8 = 16 B / 行</text>
+    <text x="644" y="530" fill="#9fb8bd" font-size="14">一页 8 行 → 128 B；整块 8 页 → 1024 B。</text>
+  </g>
+
+  <rect x="48" y="470" width="532" height="98" rx="12" fill="#0d2328" stroke="#2b5b63"/>
+  <text x="72" y="506" fill="#f6c177" font-family="Microsoft YaHei, sans-serif" font-size="19">改脸 = 改字节</text>
+  <text x="72" y="538" fill="#d7ece9" font-family="Microsoft YaHei, sans-serif" font-size="15">先定位页，再定位行，最后改这一行里的 bit。</text>
+  <text x="72" y="560" fill="#9fb8bd" font-family="Microsoft YaHei, sans-serif" font-size="15">帧缓冲改完，下一次刷新才会出现在屏上。</text>
+
+  <text x="48" y="632" fill="#6f8f99" font-family="Microsoft YaHei, sans-serif" font-size="15">教学示意：屏幕为 3.3V 逻辑器件；真实接线前断电，注意 FPC 排线方向与静电。</text>
+</svg>

@@ -1,4 +1,4 @@
-﻿.sims-entry {
+.sims-entry {
   position: fixed;
   left: 16px;
   bottom: 20px;
@@ -396,6 +396,33 @@
   font: 11px/1.4 'JetBrains Mono', Consolas, monospace;
   letter-spacing: 0.16em;
   text-transform: uppercase;
+}
+.sim-page {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  min-height: 34px;
+  border: 1px solid #2f5b4a;
+  border-radius: 6px;
+  color: #8fe6c9;
+  font: 600 13px/1 'JetBrains Mono', Consolas, monospace;
+  background: #0a1a21;
+}
+.sim-page[data-active='true'] {
+  border-color: #a2ffe0;
+  color: #eafff6;
+  box-shadow: 0 0 12px #6fe3c859;
+}
+.sim-glyph {
+  display: block;
+  margin: 12px 0;
+  color: #7dffcb;
+  background: #04120c;
+  border: 1px solid #2f5b4a;
+  border-radius: 8px;
+  padding: 6px;
+  image-rendering: pixelated;
 }
 @media (max-width: 600px) {
   .sim-card {

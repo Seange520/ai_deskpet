@@ -1,0 +1,111 @@
+{
+  "schema": "lesson.v2",
+  "lessonId": "L-AD-06-v2",
+  "kp": {
+    "id": "AD-06",
+    "name": "屏幕与表情：帧缓冲里的眼神",
+    "layer": "L3",
+    "pillar": "weave",
+    "oneLiner": "一张脸，只是一块会改字节的屏"
+  },
+  "meta": {
+    "version": "2.0.0",
+    "updatedAt": "2026-11-09",
+    "estimatedMinutes": 12,
+    "template": "mission-seven-v1",
+    "gameMount": "P10-维修间",
+    "sourceLesson": "L-AD-06",
+    "author": "SparkMate Automation"
+  },
+  "story": {
+    "act": 1,
+    "title": "造物时刻",
+    "scene": "P10-维修间",
+    "npc": "贺非",
+    "setup": "贺非把桌宠屏幕点亮：先让它有一只眼睛，再让它学会看你。"
+  },
+  "segments": [
+    {
+      "id": "mission",
+      "seconds": 25,
+      "narration": ["屏亮了，还没有脸。", "一只眼睛，八行字节。", "今天的任务：把眼神写进去。"],
+      "task": "算清屏幕显存，找到眼睛所在的页，把一帧表情写进帧缓冲。"
+    },
+    {
+      "id": "observe",
+      "seconds": 55,
+      "narration": ["单色屏按页切开。", "每页八行，页号从零起。", "改脸，就是改这些字节。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/AD-06/oled-framebuffer.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "check": {
+        "id": "obs-1",
+        "type": "choice",
+        "task": "页寻址里，一页包含几行？",
+        "options": ["8 行", "16 行", "64 行"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "learn",
+      "seconds": 85,
+      "narration": ["屏幕不认识眼睛。", "它只认识帧缓冲里的位。", "你改一位，它就眨一下。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/AD-06/oled-framebuffer.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "term": { "text": "帧缓冲", "oneLine": "屏幕要显示的整幅图像，在内存里按位排好的一份拷贝。" },
+      "check": {
+        "id": "learn-1",
+        "type": "choice",
+        "task": "让桌宠眨眼，本质上是？",
+        "options": ["连续改写几帧的眼睛字节", "换一块更大的屏幕", "把电源电压调低"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "do",
+      "seconds": 200,
+      "narration": ["先算整块屏多少字节。", "再找眼睛落在第几页。", "最后算一行占多少字节。"],
+      "sim": {
+        "id": "expression-frame",
+        "version": 1,
+        "task": "算出 128×64 单色屏的帧缓冲大小，把 y=40 的眼睛定位到正确的页，并算出每页每行占多少字节。",
+        "hints": ["显存 = 宽 × 高 ÷ 8，单色每像素 1 bit。", "页号 = y ÷ 8，从 0 开始数。", "每行字节数 = 宽 ÷ 8。"]
+      }
+    },
+    {
+      "id": "prove",
+      "seconds": 100,
+      "mode": "numeric",
+      "narration": ["把两个数写下来。", "整块显存一千零二十四字节。", "每行十六字节。"],
+      "checks": [
+        { "id": "frame-buffer", "type": "measurement", "task": "整块屏幕帧缓冲", "expected": 1024, "tolerance": 1, "unit": "B" },
+        { "id": "row-bytes", "type": "measurement", "task": "每行字节数", "expected": 16, "tolerance": 1, "unit": "B" }
+      ]
+    },
+    {
+      "id": "transfer",
+      "seconds": 90,
+      "narration": ["屏幕忽然花屏。", "先怀疑接线，还是怀疑数据？", "你会先看哪一处？"],
+      "prompt": "桌宠屏幕花屏，最先该检查什么？",
+      "options": ["排线方向与帧缓冲写入范围", "主机电源品牌", "把刷新率调到最高"],
+      "answerIndex": 0
+    },
+    {
+      "id": "recap",
+      "seconds": 25,
+      "narration": ["屏幕只认字节。", "页、行、位，一层层对齐。", "眼神是你写进去的。"],
+      "lines": ["屏幕只认字节。", "页、行、位，一层层对齐。", "眼神是你写进去的。"]
+    }
+  ],
+  "safety": {
+    "powerOffBeforeWiring": true,
+    "liveMeasurementBlocked": true,
+    "note": "屏幕为 3.3V 逻辑器件；接线前断电，注意 FPC 排线方向与静电，热插拔可能损坏驱动。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["玩家", "游戏", "网页", "第七校验", "熵", "残响", "第一编译者", "0x7F"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true
+  }
+}

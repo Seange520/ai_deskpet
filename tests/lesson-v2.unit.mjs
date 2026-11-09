@@ -7,7 +7,7 @@ const dir = new URL('../src/features/learning/data/lessons-v2/', import.meta.url
 const files = readdirSync(dir).filter((name) => name.endsWith('.v2.json')).sort();
 const ORDER = ['mission', 'observe', 'learn', 'do', 'prove', 'transfer', 'recap'];
 const RED = ['玩家', '游戏', '网页', '第七校验', '熵', '残响', '第一编译者', '0x7F'];
-const UNITS = ['V', 'mA', 'Ω', 'MΩ', 'Hz', 'ms', '次', 's', '°C', '级'];
+const UNITS = ['V', 'mA', 'Ω', 'MΩ', 'B', 'Hz', 'ms', '次', 's', '°C', '级'];
 
 assert.ok(files.length >= 4, `至少 4 节 V2 课：${files.join(', ')}`);
 

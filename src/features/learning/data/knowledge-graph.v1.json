@@ -1423,6 +1423,35 @@
       "license": "CC-BY-4.0",
       "status": "partial",
       "priority": "P0"
+    },
+    {
+      "id": "AD-06",
+      "name": "屏幕与表情：帧缓冲里的眼神",
+      "oneLiner": "一张脸，只是一块会改字节的屏",
+      "layer": "L3",
+      "pillar": "weave",
+      "prereq": [
+        "AD-05"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons-v2/AD-06.v2.json",
+      "lessonAvailable": true,
+      "media": [
+        "card",
+        "sim"
+      ],
+      "practice": "算清屏幕显存并把表情定位到正确的页",
+      "check": {
+        "type": "sim-task",
+        "task": "帧缓冲与表情页定位",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "P10维修间",
+      "spoilerLevel": 3,
+      "license": "CC-BY-4.0",
+      "status": "partial",
+      "priority": "P0"
     }
   ],
   "edges": [
@@ -1640,17 +1669,22 @@
       "from": "AD-04",
       "to": "AD-05",
       "kind": "prereq"
+    },
+    {
+      "from": "AD-05",
+      "to": "AD-06",
+      "kind": "prereq"
     }
   ],
   "stats": {
-    "total": 45,
-    "edges": 43,
+    "total": 46,
+    "edges": 44,
     "gates": 1,
     "byLayer": {
       "L0": 7,
       "L1": 7,
       "L2": 7,
-      "L3": 7,
+      "L3": 8,
       "L4": 6,
       "L5": 4,
       "L6": 3,
@@ -1661,17 +1695,17 @@
       "craft": 11,
       "forge": 13,
       "foundation": 6,
-      "weave": 7,
+      "weave": 8,
       "echo": 4,
       "symbiosis": 2,
       "spire": 2
     },
     "byStatus": {
-      "partial": 11,
+      "partial": 12,
       "planned": 34
     },
     "byPriority": {
-      "P0": 16,
+      "P0": 17,
       "P1": 15,
       "P2": 10,
       "P3": 4
