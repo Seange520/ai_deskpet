@@ -27,6 +27,7 @@ import Graduation from './components/Graduation';
 import useHardwareProgress from './hooks/useHardwareProgress';
 import { getHardwareRoute } from './data/hardwareRoutes';
 
+const SimDemoEntry = import.meta.env.DEV ? lazy(() => import('./features/learning/sims/SimDemoEntry.jsx')) : null;
 const TeachingPanel = lazy(() => import('./features/learning/TeachingPanel'));
 const AiEntry = import.meta.env.DEV ? lazy(() => import('./features/ai/AiEntry.jsx')) : null;
 
@@ -227,6 +228,7 @@ export default function App() {
 
   return (
     <MotionConfig reducedMotion={reduced ? 'always' : 'never'} transition={MOTION}>
+      {import.meta.env.DEV && tier === 3 && new URLSearchParams(location.search).get('sims') === '1' && <Suspense fallback={null}><SimDemoEntry /></Suspense>}
       <div
         className="app-shell"
         data-low-power={isLowPowerDevice()}

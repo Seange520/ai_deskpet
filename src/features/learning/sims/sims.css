@@ -1,0 +1,207 @@
+.sims-entry {
+  position: fixed;
+  left: 16px;
+  bottom: 20px;
+  z-index: 1001;
+  background: #183d49;
+  color: #e3fcf4;
+  padding: 12px;
+  border: 1px solid #7ce2c5;
+  border-radius: 12px;
+  visibility: visible;
+}
+.sims-dialog {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: min(960px, calc(100% - 24px));
+  max-height: calc(100dvh - 24px);
+  padding: 24px;
+  background: #101e2b;
+  color: #e5f3f3;
+  border: 1px solid #568b91;
+  border-radius: 20px;
+  overflow: auto;
+  box-sizing: border-box;
+}
+.sims-dialog::backdrop {
+  background: #020b15dd;
+}
+.sims-demo {
+  font:
+    15px/1.6 Inter,
+    system-ui,
+    sans-serif;
+  min-width: 0;
+}
+.sims-demo h1 {
+  font-size: 26px;
+}
+.sims-demo h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 21px;
+}
+.sims-demo h3 {
+  font-size: 15px;
+}
+.sims-demo p {
+  color: #b5cbd2;
+  margin: 10px 0;
+}
+.sims-demo nav,
+.sim-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0;
+}
+.sims-demo button,
+.sims-close {
+  padding: 9px 12px;
+  border: 1px solid #60848b;
+  border-radius: 9px;
+  background: #203849;
+  color: #ecffff;
+  cursor: pointer;
+  min-height: 42px;
+}
+.sims-demo button[aria-pressed='true'] {
+  background: #245e59;
+  border-color: #83ebc5;
+}
+.sims-demo button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.sims-dialog :focus-visible,
+.sims-entry:focus-visible {
+  outline: 3px solid #ffd487;
+  outline-offset: 3px;
+}
+.sim-card {
+  padding: 20px;
+  background: #142b37;
+  border: 1px solid #365662;
+  border-radius: 16px;
+}
+.sim-card label {
+  display: block;
+  margin: 8px 0;
+}
+.sim-card select {
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  padding: 9px;
+  background: #0b202d;
+  color: #e6f8ff;
+  border: 1px solid #60848b;
+  border-radius: 8px;
+}
+.sim-card fieldset {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  border: 1px solid #426574;
+  margin: 14px 0;
+  padding: 8px 14px;
+}
+.sim-card input[type='radio'] {
+  accent-color: #86e8c9;
+  margin-right: 7px;
+}
+.sim-reading {
+  display: block;
+  padding: 14px;
+  border-left: 3px solid #86e8c9;
+  background: #0c202c;
+  margin: 16px 0;
+  min-height: 60px;
+  overflow-wrap: anywhere;
+}
+.sim-progress {
+  display: block;
+  margin-top: 12px;
+  color: #a2f1d3;
+}
+.sim-card details {
+  font-size: 13px;
+}
+.sim-channel input {
+  display: block;
+  width: 100%;
+  accent-color: #86e8c9;
+}
+.sim-wave {
+  display: block;
+  height: 20px;
+  border: 1px solid #82dbd5;
+  background: linear-gradient(to right, #82dbd5 var(--duty), #132d3a var(--duty));
+  margin: 5px 0 12px;
+}
+.sim-ide {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr 1fr;
+  gap: 16px;
+}
+.sim-ide > div {
+  min-width: 0;
+}
+.sim-ide button {
+  display: block;
+  margin: 6px 0;
+}
+.sim-ide pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 12px;
+  background: #0a1d29;
+  padding: 10px;
+}
+.sim-wire {
+  overflow-wrap: anywhere;
+}
+.sim-led {
+  display: block;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #25463a;
+}
+.sim-led.is-running {
+  animation: sim-blink var(--period) steps(1, end) infinite;
+}
+@keyframes sim-blink {
+  0%,
+  100% {
+    background: #b1f8b2;
+  }
+  50% {
+    background: #25463a;
+  }
+}
+@media (max-width: 600px) {
+  .sims-dialog {
+    padding: 14px;
+  }
+  .sim-card {
+    padding: 12px;
+  }
+  .sim-ide {
+    grid-template-columns: 1fr;
+  }
+  .sims-demo h1 {
+    font-size: 23px;
+  }
+  .sims-demo nav button {
+    font-size: 13px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sim-led.is-running {
+    animation: none;
+    background: #b1f8b2;
+  }
+}
