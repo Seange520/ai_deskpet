@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675" role="img" aria-label="U = I × R：让看不见的电流显形">
+<defs>
+<pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#16303f" stroke-width="1"/></pattern>
+<linearGradient id="glow" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6fe3c8" stop-opacity=".18"/><stop offset="1" stop-color="#12242f" stop-opacity="0"/></linearGradient>
+<style>
+.zh{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif}
+.num{font-family:'JetBrains Mono',Consolas,monospace}
+@keyframes pulse{0%,100%{opacity:.35}50%{opacity:1}}
+@keyframes flow{to{stroke-dashoffset:-80}}
+@keyframes handmove{0%,100%{transform:translate(0,0)}50%{transform:translate(18px,-6px)}}
+@keyframes heat{0%,100%{fill:#f2c56b}50%{fill:#ff7a6b}}
+@keyframes spike{0%{stroke-dashoffset:900}100%{stroke-dashoffset:0}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.15}}
+</style>
+</defs>
+<rect width="1200" height="675" fill="#0b1620"/>
+<rect width="1200" height="675" fill="url(#grid)" opacity=".7"/>
+<rect x="18" y="18" width="1164" height="639" fill="none" stroke="#2a4a5e" stroke-width="2"/>
+<text class="zh" x="56" y="66" fill="#6fe3c8" font-size="19" letter-spacing="3">THE FORGE / 检修手册 · K1-01 · 动画</text>
+<text class="zh" x="56" y="110" fill="#e8eef2" font-size="34" font-weight="700">U = I × R：让看不见的电流显形</text>
+<line x1="56" y1="130" x2="1144" y2="130" stroke="#2a4a5e" stroke-width="2"/>
+<g>
+  <path d="M170 300 H 470 M470 300 H 470 V 430 M470 430 H 170 V 300" fill="none" stroke="#2a4a5e" stroke-width="4"/>
+  <g style="animation:flow 1.4s linear infinite"><path d="M190 300 H 450 V 430 H 190 V 300" fill="none" stroke="#6fe3c8" stroke-width="3" stroke-dasharray="8 18"/></g>
+  <circle cx="170" cy="300" r="10" fill="#f2c56b"/>
+  <rect x="470" y="360" width="120" height="60" rx="8" fill="#12242f" stroke="#2a4a5e"/>
+  <text class="zh" x="530" y="397" text-anchor="middle" fill="#e8eef2" font-size="17">LED</text>
+  <text class="num" x="720" y="250" fill="#6fe3c8" font-size="26">I = 14 mA</text>
+  <g style="animation:pulse 2.2s ease-in-out infinite">
+    <rect x="760" y="300" width="330" height="34" rx="6" fill="#f2c56b" opacity=".85"/>
+  </g>
+  <text class="zh" x="760" y="290" fill="#f2c56b" font-size="17">3.1V 落在电阻上</text>
+  <rect x="760" y="360" width="200" height="34" rx="6" fill="#6fe3c8" opacity=".85"/>
+  <text class="zh" x="760" y="350" fill="#6fe3c8" font-size="17">1.9V 落在 LED 上</text>
+  <text class="zh" x="760" y="470" fill="#e8eef2" font-size="19">串联总电压 = 各段压降之和</text>
+  <text class="num" x="760" y="505" fill="#8aa0ad" font-size="17">5.0V ≈ 3.1V + 1.9V</text>
+  </g>
+<text class="zh" x="56" y="641" fill="#8aa0ad" font-size="16">字幕：电压是“分掉”的，电流是“一起流”的。</text>
+</svg>

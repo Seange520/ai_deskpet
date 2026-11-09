@@ -122,24 +122,39 @@ export default function LessonRunner({ lesson, onFinish, onLeave }) {
         )}
         {seg.type === 'explain' && (
           <div className="teaching-media">
-            {seg.media.map((m) => (
-              <figure key={m.src}>
-                <svg viewBox="0 0 240 64" aria-hidden="true">
-                  <path
-                    d="M15 32H75L90 15 110 49 130 15 150 49 165 32H225"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="3"
-                  />
-                  <circle cx="15" cy="32" r="5" />
-                  <circle cx="225" cy="32" r="5" />
-                </svg>
-                <figcaption>
-                  {m.alt}
-                  <small>媒体规划说明 · 当前使用文字与内联示意</small>
-                </figcaption>
-              </figure>
-            ))}
+            {seg.media.map((m) =>
+              m.status === 'ready' && /\.svg$/i.test(m.src) ? (
+                <figure key={m.src} className="teaching-media-asset">
+                  <img src={'/' + m.src} alt={m.alt} loading="lazy" />
+                  <figcaption>
+                    {m.alt}
+                    <small>
+                      原创资产 ·{' '}
+                      {m.kind === 'animation'
+                        ? '内嵌动画（静音可用，含字幕文本）'
+                        : '教学示意图'}
+                    </small>
+                  </figcaption>
+                </figure>
+              ) : (
+                <figure key={m.src}>
+                  <svg viewBox="0 0 240 64" aria-hidden="true">
+                    <path
+                      d="M15 32H75L90 15 110 49 130 15 150 49 165 32H225"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                    />
+                    <circle cx="15" cy="32" r="5" />
+                    <circle cx="225" cy="32" r="5" />
+                  </svg>
+                  <figcaption>
+                    {m.alt}
+                    <small>媒体规划说明 · 当前使用文字与内联示意</small>
+                  </figcaption>
+                </figure>
+              ),
+            )}
           </div>
         )}
         {seg.type === 'practice' && (

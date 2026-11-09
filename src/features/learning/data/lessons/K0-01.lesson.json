@@ -29,9 +29,24 @@
       "narration": "夜宵摊的灯又闪了。老板卷起袖子，伸手就要去够配电盒。赫菲一把按住他的手腕：先别碰。问题不是灯，是你还没断电。",
       "interaction": "choice",
       "choices": [
-        { "id": "a", "text": "先断电，再验电，确认没电才动手", "correct": true, "feedback": "对。手碰之前，先用表确认。" },
-        { "id": "b", "text": "带电扶一下灯座，动作快就没事", "correct": false, "feedback": "快不是理由。带电操作是事故最常见的入口。" },
-        { "id": "c", "text": "换一个更亮的灯泡就能撑过今晚", "correct": false, "feedback": "灯闪可能是供电问题，换灯泡解决不了根因。" }
+        {
+          "id": "a",
+          "text": "先断电，再验电，确认没电才动手",
+          "correct": true,
+          "feedback": "对。手碰之前，先用表确认。"
+        },
+        {
+          "id": "b",
+          "text": "带电扶一下灯座，动作快就没事",
+          "correct": false,
+          "feedback": "快不是理由。带电操作是事故最常见的入口。"
+        },
+        {
+          "id": "c",
+          "text": "换一个更亮的灯泡就能撑过今晚",
+          "correct": false,
+          "feedback": "灯闪可能是供电问题，换灯泡解决不了根因。"
+        }
       ]
     },
     {
@@ -44,17 +59,17 @@
           "kind": "diagram",
           "src": "assets/lessons/K0-01/power-off-five-steps.svg",
           "alt": "断电五步：断电、验电、放电、隔离挂牌、复测",
-          "status": "planned",
+          "status": "ready",
           "license": "original",
-          "notes": "原创 SVG，UI 内联"
+          "notes": "原创 SVG，UI 内联，可交互高亮"
         },
         {
           "kind": "animation",
-          "src": "assets/lessons/K0-01/verify-before-touch.mp4",
+          "src": "assets/lessons/K0-01/verify-before-touch.svg",
           "alt": "24 秒无旁白动画：先接好表笔再碰端子，读数 0.0 伏后才动手，含字幕",
-          "status": "planned",
+          "status": "ready",
           "license": "original",
-          "notes": "需配 SRT 字幕与静音回退图"
+          "notes": "原创内嵌 SVG 动画（CSS/SMIL），自带字幕文本，静音可用"
         }
       ]
     },
@@ -64,12 +79,36 @@
       "durationSec": 200,
       "task": "给 6 个维修情景选择正确动作，并把断电五步排成顺序：⚠ 断电 → 验电 → 放电 → 隔离挂牌 → 复测。",
       "steps": [
-        { "action": "order", "target": "five-steps", "hint": "先断电源，最后才复测" },
-        { "action": "choose", "target": "wet-hand-box", "hint": "湿手不要碰任何金属" },
-        { "action": "choose", "target": "metal-ladder", "hint": "换绝缘梯并有人监护" },
-        { "action": "choose", "target": "capacitor", "hint": "断电后电容仍可能带电" },
-        { "action": "choose", "target": "single-hand", "hint": "单手操作，减少回路" },
-        { "action": "choose", "target": "label-lock", "hint": "挂牌防止别人合闸" }
+        {
+          "action": "order",
+          "target": "five-steps",
+          "hint": "先断电源，最后才复测"
+        },
+        {
+          "action": "choose",
+          "target": "wet-hand-box",
+          "hint": "湿手不要碰任何金属"
+        },
+        {
+          "action": "choose",
+          "target": "metal-ladder",
+          "hint": "换绝缘梯并有人监护"
+        },
+        {
+          "action": "choose",
+          "target": "capacitor",
+          "hint": "断电后电容仍可能带电"
+        },
+        {
+          "action": "choose",
+          "target": "single-hand",
+          "hint": "单手操作，减少回路"
+        },
+        {
+          "action": "choose",
+          "target": "label-lock",
+          "hint": "挂牌防止别人合闸"
+        }
       ],
       "failureHints": [
         "顺序错：把「断电」放在第一位，复测放最后",
@@ -82,8 +121,26 @@
       "type": "verify",
       "durationSec": 150,
       "checks": [
-        { "id": "v_box", "type": "measurement", "probe": "box_terminal", "expected": 0, "tolerance": 0.5, "unit": "V" },
-        { "id": "c_order", "type": "quiz", "ask": "断电五步顺序", "expected": ["power-off", "verify", "discharge", "isolate", "recheck"] }
+        {
+          "id": "v_box",
+          "type": "measurement",
+          "probe": "box_terminal",
+          "expected": 0,
+          "tolerance": 0.5,
+          "unit": "V"
+        },
+        {
+          "id": "c_order",
+          "type": "quiz",
+          "ask": "断电五步顺序",
+          "expected": [
+            "power-off",
+            "verify",
+            "discharge",
+            "isolate",
+            "recheck"
+          ]
+        }
       ],
       "safety": "未验电不得进入下一步；验电必须用电压档，表笔先接好再碰端子；带电时禁止切换电阻/二极管档。"
     },
@@ -93,9 +150,24 @@
       "durationSec": 150,
       "prompt": "一台设备已断电，但电容两端还显示 12 伏。下一步应该先做什么？",
       "options": [
-        { "id": "touch", "text": "直接用手摸，12 伏不电人", "correct": false, "why": "电容可能瞬间放电，手碰是危险动作。" },
-        { "id": "discharge", "text": "先放电，再复测到接近 0 伏", "correct": true, "why": "断电不等于没电，放电并复测才是安全状态。" },
-        { "id": "ignore", "text": "不管它，先拆下一颗螺丝", "correct": false, "why": "拆螺丝也可能形成回路。" }
+        {
+          "id": "touch",
+          "text": "直接用手摸，12 伏不电人",
+          "correct": false,
+          "why": "电容可能瞬间放电，手碰是危险动作。"
+        },
+        {
+          "id": "discharge",
+          "text": "先放电，再复测到接近 0 伏",
+          "correct": true,
+          "why": "断电不等于没电，放电并复测才是安全状态。"
+        },
+        {
+          "id": "ignore",
+          "text": "不管它，先拆下一颗螺丝",
+          "correct": false,
+          "why": "拆螺丝也可能形成回路。"
+        }
       ],
       "solution": "断电后先放电（按设备规程用放电电阻/放电棒），再用电压档复测，读数接近 0 伏才允许触碰。"
     },
@@ -111,15 +183,45 @@
     }
   ],
   "checks": [
-    { "id": "q1", "type": "quiz", "weight": 0.25, "pass": "断电五步顺序正确" },
-    { "id": "q2", "type": "sim-task", "weight": 0.25, "pass": "6 个安全情景全部选择正确" },
-    { "id": "q3", "type": "measurement", "weight": 0.3, "pass": "验电读数 0 ± 0.5 伏" },
-    { "id": "q4", "type": "numeric-choice", "weight": 0.2, "pass": "电容场景选择放电并复测" }
+    {
+      "id": "q1",
+      "type": "quiz",
+      "weight": 0.25,
+      "pass": "断电五步顺序正确"
+    },
+    {
+      "id": "q2",
+      "type": "sim-task",
+      "weight": 0.25,
+      "pass": "6 个安全情景全部选择正确"
+    },
+    {
+      "id": "q3",
+      "type": "measurement",
+      "weight": 0.3,
+      "pass": "验电读数 0 ± 0.5 伏"
+    },
+    {
+      "id": "q4",
+      "type": "numeric-choice",
+      "weight": 0.2,
+      "pass": "电容场景选择放电并复测"
+    }
   ],
   "assessment": {
-    "masteryWeights": { "hook": 0.1, "practice": 0.3, "verify": 0.3, "transfer": 0.3 },
+    "masteryWeights": {
+      "hook": 0.1,
+      "practice": 0.3,
+      "verify": 0.3,
+      "transfer": 0.3
+    },
     "passScore": 0.7,
-    "retentionDays": [1, 3, 7, 21]
+    "retentionDays": [
+      1,
+      3,
+      7,
+      21
+    ]
   },
   "storyBinding": {
     "scene": "P10-MaintenanceRoom",
@@ -128,7 +230,13 @@
     "worldPhenomenon": "生意最好的夜里，老板想徒手去够闪灯的配电盒。"
   },
   "redLines": {
-    "forbiddenNarrationTokens": ["第七校验", "熵", "残响", "第一编译者", "网页游戏"],
+    "forbiddenNarrationTokens": [
+      "第七校验",
+      "熵",
+      "残响",
+      "第一编译者",
+      "网页游戏"
+    ],
     "aiDoesNotDecide": true,
     "noFourthWall": true,
     "noSacrificeGlorification": true

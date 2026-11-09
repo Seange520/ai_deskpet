@@ -7,7 +7,10 @@
     "layer": "L1",
     "pillar": "forge",
     "oneLiner": "电压会按电阻分蛋糕",
-    "prereq": ["K0-02", "K0-04"],
+    "prereq": [
+      "K0-02",
+      "K0-04"
+    ],
     "storyScene": "P10-Street-DistributionBox",
     "spoilerLevel": 1,
     "license": "CC-BY-4.0",
@@ -29,9 +32,24 @@
       "narration": "熔炉外街的灯又闪了。摊主说，昨晚新换的灯带烧了两颗，同样的五伏，为什么有的灯亮、有的灯烧？赫菲把万用表推过来：先量，别猜。",
       "interaction": "choice",
       "choices": [
-        { "id": "a", "text": "先量电源和灯两端电压，再判断", "correct": true, "feedback": "对。先获得证据，再下结论。" },
-        { "id": "b", "text": "直接换一个更大的电源", "correct": false, "feedback": "电压更高只会更危险，先量。" },
-        { "id": "c", "text": "把电阻拿掉，让灯更亮", "correct": false, "feedback": "去掉限流，电流会超过额定值，灯会烧。" }
+        {
+          "id": "a",
+          "text": "先量电源和灯两端电压，再判断",
+          "correct": true,
+          "feedback": "对。先获得证据，再下结论。"
+        },
+        {
+          "id": "b",
+          "text": "直接换一个更大的电源",
+          "correct": false,
+          "feedback": "电压更高只会更危险，先量。"
+        },
+        {
+          "id": "c",
+          "text": "把电阻拿掉，让灯更亮",
+          "correct": false,
+          "feedback": "去掉限流，电流会超过额定值，灯会烧。"
+        }
       ]
     },
     {
@@ -44,17 +62,17 @@
           "kind": "diagram",
           "src": "assets/lessons/K1-01/series-voltage.svg",
           "alt": "五伏电源、220 欧电阻与 LED 串联，标注三处电压值",
-          "status": "planned",
+          "status": "ready",
           "license": "original",
-          "notes": "原创 SVG，UI 内联，不引入外部素材"
+          "notes": "原创 SVG，UI 内联，可交互高亮"
         },
         {
           "kind": "animation",
-          "src": "assets/lessons/K1-01/ohm-law.mp4",
+          "src": "assets/lessons/K1-01/ohm-law.svg",
           "alt": "电压按电阻比例分配的 20 秒无 narrated 动画，含字幕",
-          "status": "planned",
+          "status": "ready",
           "license": "original",
-          "notes": "需配 SRT 字幕与静音回退图"
+          "notes": "原创内嵌 SVG 动画（CSS/SMIL），自带字幕文本，静音可用"
         }
       ]
     },
@@ -64,13 +82,42 @@
       "durationSec": 210,
       "task": "在 P10 街区的配电盒教学面板上，搭出 5V → 220Ω → LED → 回流 的串联回路，再用电压档依次测量电源、电阻、LED 两端电压。",
       "steps": [
-        { "action": "place", "target": "power-5v", "hint": "电源先断开" },
-        { "action": "place", "target": "resistor-220", "hint": "注意色环：红红棕" },
-        { "action": "place", "target": "led-red", "hint": "长脚接电阻一侧" },
-        { "action": "wire", "target": "series-loop", "hint": "回流接回电源负极" },
-        { "action": "probe", "target": "V_supply", "mode": "voltage", "hint": "先选 20V 档" },
-        { "action": "probe", "target": "V_resistor", "mode": "voltage" },
-        { "action": "probe", "target": "V_led", "mode": "voltage" }
+        {
+          "action": "place",
+          "target": "power-5v",
+          "hint": "电源先断开"
+        },
+        {
+          "action": "place",
+          "target": "resistor-220",
+          "hint": "注意色环：红红棕"
+        },
+        {
+          "action": "place",
+          "target": "led-red",
+          "hint": "长脚接电阻一侧"
+        },
+        {
+          "action": "wire",
+          "target": "series-loop",
+          "hint": "回流接回电源负极"
+        },
+        {
+          "action": "probe",
+          "target": "V_supply",
+          "mode": "voltage",
+          "hint": "先选 20V 档"
+        },
+        {
+          "action": "probe",
+          "target": "V_resistor",
+          "mode": "voltage"
+        },
+        {
+          "action": "probe",
+          "target": "V_led",
+          "mode": "voltage"
+        }
       ],
       "failureHints": [
         "表笔接反：指针反打，换红黑再测",
@@ -82,10 +129,38 @@
       "type": "verify",
       "durationSec": 150,
       "checks": [
-        { "id": "v_supply", "type": "measurement", "probe": "V_supply", "expected": 5.02, "tolerance": 0.1, "unit": "V" },
-        { "id": "v_resistor", "type": "measurement", "probe": "V_resistor", "expected": 3.08, "tolerance": 0.1, "unit": "V" },
-        { "id": "v_led", "type": "measurement", "probe": "V_led", "expected": 1.92, "tolerance": 0.1, "unit": "V" },
-        { "id": "c_current", "type": "computed", "formula": "V_resistor / 220", "expected": 0.014, "tolerance": 0.001, "unit": "A" }
+        {
+          "id": "v_supply",
+          "type": "measurement",
+          "probe": "V_supply",
+          "expected": 5.02,
+          "tolerance": 0.1,
+          "unit": "V"
+        },
+        {
+          "id": "v_resistor",
+          "type": "measurement",
+          "probe": "V_resistor",
+          "expected": 3.08,
+          "tolerance": 0.1,
+          "unit": "V"
+        },
+        {
+          "id": "v_led",
+          "type": "measurement",
+          "probe": "V_led",
+          "expected": 1.92,
+          "tolerance": 0.1,
+          "unit": "V"
+        },
+        {
+          "id": "c_current",
+          "type": "computed",
+          "formula": "V_resistor / 220",
+          "expected": 0.014,
+          "tolerance": 0.001,
+          "unit": "A"
+        }
       ],
       "safety": "带电改线或带电切换电阻/二极管档 → 联锁阻止并记一次错误；正确做法是先断电再改线。"
     },
@@ -95,9 +170,24 @@
       "durationSec": 165,
       "prompt": "把电源换成 9V，仍用同一颗 LED（正向压降约 1.9V，额定 20mA）。下列限流电阻哪个能保证电流不超过 20mA？",
       "options": [
-        { "id": "220", "text": "220Ω", "correct": false, "why": "(9−1.9)/220 ≈ 32mA，超额定，灯会烧。" },
-        { "id": "330", "text": "330Ω", "correct": false, "why": "(9−1.9)/330 ≈ 21.5mA，仍略超 20mA。" },
-        { "id": "390", "text": "390Ω", "correct": true, "why": "(9−1.9)/390 ≈ 18.2mA，低于额定且亮度仍够。" }
+        {
+          "id": "220",
+          "text": "220Ω",
+          "correct": false,
+          "why": "(9−1.9)/220 ≈ 32mA，超额定，灯会烧。"
+        },
+        {
+          "id": "330",
+          "text": "330Ω",
+          "correct": false,
+          "why": "(9−1.9)/330 ≈ 21.5mA，仍略超 20mA。"
+        },
+        {
+          "id": "390",
+          "text": "390Ω",
+          "correct": true,
+          "why": "(9−1.9)/390 ≈ 18.2mA，低于额定且亮度仍够。"
+        }
       ],
       "solution": "所需最小电阻 = 7.1V ÷ 0.02A = 355Ω，取标准值 390Ω，实际电流约 18.2mA。"
     },
@@ -113,15 +203,45 @@
     }
   ],
   "checks": [
-    { "id": "hook-safety", "type": "quiz", "weight": 0.1, "pass": "选择先测量" },
-    { "id": "sim-measure", "type": "sim-task", "weight": 0.25, "pass": "三处电压与计算电流全部在容差内" },
-    { "id": "verify-ohm", "type": "measurement", "weight": 0.4, "pass": "四项测量/计算通过" },
-    { "id": "transfer-9v", "type": "numeric-choice", "weight": 0.25, "pass": "选择 390Ω 并阅读解释" }
+    {
+      "id": "hook-safety",
+      "type": "quiz",
+      "weight": 0.1,
+      "pass": "选择先测量"
+    },
+    {
+      "id": "sim-measure",
+      "type": "sim-task",
+      "weight": 0.25,
+      "pass": "三处电压与计算电流全部在容差内"
+    },
+    {
+      "id": "verify-ohm",
+      "type": "measurement",
+      "weight": 0.4,
+      "pass": "四项测量/计算通过"
+    },
+    {
+      "id": "transfer-9v",
+      "type": "numeric-choice",
+      "weight": 0.25,
+      "pass": "选择 390Ω 并阅读解释"
+    }
   ],
   "assessment": {
-    "masteryWeights": { "hook": 0.1, "practice": 0.25, "verify": 0.4, "transfer": 0.25 },
+    "masteryWeights": {
+      "hook": 0.1,
+      "practice": 0.25,
+      "verify": 0.4,
+      "transfer": 0.25
+    },
     "passScore": 0.7,
-    "retentionDays": [1, 3, 7, 21]
+    "retentionDays": [
+      1,
+      3,
+      7,
+      21
+    ]
   },
   "storyBinding": {
     "scene": "P10-Street-DistributionBox",
@@ -130,7 +250,13 @@
     "worldPhenomenon": "灯带连烧两颗，摊主以为是灯的问题，其实电源与限流匹配错了。"
   },
   "redLines": {
-    "forbiddenNarrationTokens": ["第七校验", "熵", "残响", "第一编译者", "网页游戏"],
+    "forbiddenNarrationTokens": [
+      "第七校验",
+      "熵",
+      "残响",
+      "第一编译者",
+      "网页游戏"
+    ],
     "aiDoesNotDecide": true,
     "noFourthWall": true,
     "noSacrificeGlorification": true

@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675" role="img" aria-label="一块表，三种问法">
+<defs>
+<pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#16303f" stroke-width="1"/></pattern>
+<linearGradient id="glow" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6fe3c8" stop-opacity=".18"/><stop offset="1" stop-color="#12242f" stop-opacity="0"/></linearGradient>
+<style>
+.zh{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif}
+.num{font-family:'JetBrains Mono',Consolas,monospace}
+@keyframes pulse{0%,100%{opacity:.35}50%{opacity:1}}
+@keyframes flow{to{stroke-dashoffset:-80}}
+@keyframes handmove{0%,100%{transform:translate(0,0)}50%{transform:translate(18px,-6px)}}
+@keyframes heat{0%,100%{fill:#f2c56b}50%{fill:#ff7a6b}}
+@keyframes spike{0%{stroke-dashoffset:900}100%{stroke-dashoffset:0}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.15}}
+</style>
+</defs>
+<rect width="1200" height="675" fill="#0b1620"/>
+<rect width="1200" height="675" fill="url(#grid)" opacity=".7"/>
+<rect x="18" y="18" width="1164" height="639" fill="none" stroke="#2a4a5e" stroke-width="2"/>
+<text class="zh" x="56" y="66" fill="#6fe3c8" font-size="19" letter-spacing="3">THE FORGE / 检修手册 · K0-02 · 动画</text>
+<text class="zh" x="56" y="110" fill="#e8eef2" font-size="34" font-weight="700">一块表，三种问法</text>
+<line x1="56" y1="130" x2="1144" y2="130" stroke="#2a4a5e" stroke-width="2"/>
+<g>
+  <g style="animation:pulse 3s ease-in-out 0s infinite"><rect x="60" y="180" width="350" height="360" rx="12" fill="#12242f" stroke="#2a4a5e"/>
+    <text class="zh" x="84" y="222" fill="#6fe3c8" font-size="20">电压</text>
+    <rect x="84" y="248" width="300" height="90" rx="8" fill="#162b2f" stroke="#2a4a5e"/>
+    <text class="num" x="234" y="302" text-anchor="middle" fill="#6fe3c8" font-size="38">24.0</text>
+    <text class="num" x="356" y="298" text-anchor="end" fill="#6fe3c8" font-size="16">V</text>
+    <text class="zh" x="84" y="390" fill="#e8eef2" font-size="17">并联在两端</text>
+    <rect x="84" y="420" width="300" height="70" rx="6" fill="none" stroke="#2a4a5e" stroke-dasharray="5 6"/>
+    <text class="zh" x="234" y="463" text-anchor="middle" fill="#8aa0ad" font-size="15">表笔位置示意图</text></g><g style="animation:pulse 3s ease-in-out 0.9s infinite"><rect x="440" y="180" width="350" height="360" rx="12" fill="#12242f" stroke="#2a4a5e"/>
+    <text class="zh" x="464" y="222" fill="#6fe3c8" font-size="20">通断</text>
+    <rect x="464" y="248" width="300" height="90" rx="8" fill="#162b2f" stroke="#2a4a5e"/>
+    <text class="num" x="614" y="302" text-anchor="middle" fill="#6fe3c8" font-size="38">0.02</text>
+    <text class="num" x="736" y="298" text-anchor="end" fill="#6fe3c8" font-size="16">Ω</text>
+    <text class="zh" x="464" y="390" fill="#e8eef2" font-size="17">断线不响</text>
+    <rect x="464" y="420" width="300" height="70" rx="6" fill="none" stroke="#2a4a5e" stroke-dasharray="5 6"/>
+    <text class="zh" x="614" y="463" text-anchor="middle" fill="#8aa0ad" font-size="15">表笔位置示意图</text></g><g style="animation:pulse 3s ease-in-out 1.8s infinite"><rect x="820" y="180" width="350" height="360" rx="12" fill="#12242f" stroke="#2a4a5e"/>
+    <text class="zh" x="844" y="222" fill="#6fe3c8" font-size="20">电阻</text>
+    <rect x="844" y="248" width="300" height="90" rx="8" fill="#162b2f" stroke="#2a4a5e"/>
+    <text class="num" x="994" y="302" text-anchor="middle" fill="#6fe3c8" font-size="38">219.6</text>
+    <text class="num" x="1116" y="298" text-anchor="end" fill="#6fe3c8" font-size="16">Ω</text>
+    <text class="zh" x="844" y="390" fill="#e8eef2" font-size="17">先断电再测</text>
+    <rect x="844" y="420" width="300" height="70" rx="6" fill="none" stroke="#2a4a5e" stroke-dasharray="5 6"/>
+    <text class="zh" x="994" y="463" text-anchor="middle" fill="#8aa0ad" font-size="15">表笔位置示意图</text></g>
+  </g>
+<text class="zh" x="56" y="641" fill="#8aa0ad" font-size="16">同一个问题可以换一种问法，但每次都要回到“正确档位 + 正确接法”。</text>
+</svg>

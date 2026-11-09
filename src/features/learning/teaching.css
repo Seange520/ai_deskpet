@@ -256,3 +256,15 @@
 @media(max-width:480px) {
  .teaching-modal { padding: 16px !important; max-height: calc(100dvh - 16px); }
 }
+.teaching-media figure.teaching-media-asset img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid #486172;
+  border-radius: 10px;
+  background: #0b1620;
+}
+.teaching-media figure.teaching-media-asset figcaption small {
+  color: #8aa0ad;
+}
+
