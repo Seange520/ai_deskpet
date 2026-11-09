@@ -1,0 +1,111 @@
+{
+  "schema": "lesson.v2",
+  "lessonId": "L-AD-09-v2",
+  "kp": {
+    "id": "AD-09",
+    "name": "对话：先听懂意图",
+    "layer": "L5",
+    "pillar": "weave",
+    "oneLiner": "先分类，再回答"
+  },
+  "meta": {
+    "version": "2.0.0",
+    "updatedAt": "2026-11-09",
+    "estimatedMinutes": 12,
+    "template": "mission-seven-v1",
+    "gameMount": "P10-维修间",
+    "sourceLesson": "L-AD-09",
+    "author": "SparkMate Automation"
+  },
+  "story": {
+    "act": 1,
+    "title": "造物时刻",
+    "scene": "P10-维修间",
+    "npc": "贺非",
+    "setup": "贺非对着桌宠说了三句话，它一句都没接对：话里有命令，也有问题，还有一句根本没说清。"
+  },
+  "segments": [
+    {
+      "id": "mission",
+      "seconds": 25,
+      "narration": ["它听见了字，没听懂事。", "命令、问题、还是没说清？", "今天的任务：先分类。"],
+      "task": "把三句话分别判成命令、提问或需要澄清，再决定桌宠该怎么接。"
+    },
+    {
+      "id": "observe",
+      "seconds": 55,
+      "narration": ["调灯，是动词在要结果。", "问为什么，是在要解释。", "都要先分清，才谈回答。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/AD-09/intent-router.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "check": {
+        "id": "obs-1",
+        "type": "choice",
+        "task": "「把灯调暗一点」属于哪类意图？",
+        "options": ["命令", "提问", "闲聊"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "learn",
+      "seconds": 85,
+      "narration": ["指代不清时，直接猜最危险。", "先问一句，把范围收窄。", "澄清不是笨，是稳。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/AD-09/intent-router.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "term": { "text": "意图", "oneLine": "一句话想让你做的事：执行、解释，还是先确认对象。" },
+      "check": {
+        "id": "learn-1",
+        "type": "choice",
+        "task": "「就那个，弄一下」最稳妥的处理是？",
+        "options": ["先反问澄清指代", "自己猜一个对象", "当没听见"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "do",
+      "seconds": 200,
+      "narration": ["第一句要执行。", "第二句要解释。", "第三句，先问清。"],
+      "sim": {
+        "id": "intent-router",
+        "version": 1,
+        "task": "把三句话分别标成命令、提问或先反问澄清，并校验路由。",
+        "hints": ["「把灯调暗」是命令，回答应是执行或确认。", "「为什么闪」是提问，回答应是可验证的解释。", "「就那个」指代不清，先反问。"]
+      }
+    },
+    {
+      "id": "prove",
+      "seconds": 100,
+      "mode": "numeric",
+      "narration": ["响应别超过八百毫秒。", "澄清只反问一次。", "问太多，人会烦。"],
+      "checks": [
+        { "id": "reply-ms", "type": "measurement", "task": "意图路由响应时限", "expected": 800, "tolerance": 20, "unit": "ms" },
+        { "id": "clarify-times", "type": "measurement", "task": "一次澄清最多反问轮次", "expected": 1, "tolerance": 0.01, "unit": "次" }
+      ]
+    },
+    {
+      "id": "transfer",
+      "seconds": 90,
+      "narration": ["它答得不对。", "是没听懂，还是没听清？", "先查哪一层？"],
+      "prompt": "桌宠总是答非所问，最先该查什么？",
+      "options": ["意图分类是否出错", "电源功率够不够", "屏幕分辨率高不高"],
+      "answerIndex": 0
+    },
+    {
+      "id": "recap",
+      "seconds": 25,
+      "narration": ["命令要执行。", "提问要给可验证的解释。", "没说清，先反问。"],
+      "lines": ["命令要执行。", "提问要给可验证的解释。", "没说清，先反问。"]
+    }
+  ],
+  "safety": {
+    "powerOffBeforeWiring": true,
+    "liveMeasurementBlocked": true,
+    "note": "语音模块涉及隐私：麦克风权限按需开启，音频默认本地处理，不上传云端，不保存原始录音。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["玩家", "游戏", "网页", "第七校验", "熵", "残响", "第一编译者", "0x7F"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true
+  }
+}

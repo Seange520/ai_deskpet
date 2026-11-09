@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-label="AD-09 对话意图路由：命令、提问与澄清">
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#12262b" stroke-width="1"/>
+    </pattern>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="#4fd1c5"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="675" fill="#08161a"/>
+  <rect width="1200" height="675" fill="url(#grid)"/>
+  <text x="48" y="64" fill="#4fd1c5" font-family="Consolas, monospace" font-size="17" letter-spacing="2">THE FORGE / 检修手册 · AD-09</text>
+  <text x="48" y="108" fill="#e6f7f5" font-family="Microsoft YaHei, sans-serif" font-size="38" font-weight="700">对话：先听懂意图</text>
+  <line x1="48" y1="128" x2="1152" y2="128" stroke="#1d3a40" stroke-width="2"/>
+
+  <g font-family="Microsoft YaHei, sans-serif">
+    <rect x="48" y="176" width="360" height="250" rx="12" fill="#0d2328" stroke="#2b5b63"/>
+    <text x="72" y="214" fill="#8fe3d8" font-size="20">路由四步</text>
+    <text x="72" y="252" fill="#d7ece9" font-size="16">① 收下这句话（文字/语音）</text>
+    <text x="72" y="286" fill="#d7ece9" font-size="16">② 判断意图：命令 / 提问 / 澄清</text>
+    <text x="72" y="320" fill="#d7ece9" font-size="16">③ 抽取对象与参数</text>
+    <text x="72" y="354" fill="#d7ece9" font-size="16">④ 按意图选择动作或回答</text>
+    <text x="72" y="396" fill="#9fb8bd" font-size="14">顺序错了，后面全错。</text>
+
+    <rect x="440" y="176" width="712" height="250" rx="12" fill="#0d2328" stroke="#2b5b63"/>
+    <text x="464" y="214" fill="#8fe3d8" font-size="20">三句话，三种接法</text>
+
+    <rect x="464" y="238" width="200" height="72" rx="8" fill="#12262b" stroke="#2b5b63"/>
+    <text x="480" y="268" fill="#ffd487" font-size="15">「把灯调暗一点」</text>
+    <text x="480" y="294" fill="#8fe3d8" font-size="13">命令 → 执行/确认</text>
+
+    <rect x="688" y="238" width="200" height="72" rx="8" fill="#12262b" stroke="#2b5b63"/>
+    <text x="704" y="268" fill="#ffd487" font-size="15">「这盏灯为什么闪？」</text>
+    <text x="704" y="294" fill="#8fe3d8" font-size="13">提问 → 可验证解释</text>
+
+    <rect x="912" y="238" width="200" height="72" rx="8" fill="#12262b" stroke="#8a4b3a"/>
+    <text x="928" y="268" fill="#ffd487" font-size="15">「就那个，弄一下」</text>
+    <text x="928" y="294" fill="#f6c177" font-size="13">指代不清 → 先反问</text>
+
+    <text x="464" y="356" fill="#9fb8bd" font-size="14">命令看结果，提问看证据，澄清看对象——别把三种混成一种。</text>
+    <text x="464" y="386" fill="#9fb8bd" font-size="14">一次只反问一轮：问太多，人就不想说了。</text>
+  </g>
+
+  <g font-family="Microsoft YaHei, sans-serif">
+    <rect x="48" y="470" width="540" height="120" rx="12" fill="#0d2328" stroke="#2b5b63"/>
+    <text x="72" y="506" fill="#8fe3d8" font-size="19">答错的常见原因</text>
+    <text x="72" y="538" fill="#d7ece9" font-size="15">意图判错 → 该执行时在解释。</text>
+    <text x="72" y="566" fill="#9fb8bd" font-size="14">先修意图层，再看措辞；别一上来换模型。</text>
+
+    <rect x="612" y="470" width="540" height="120" rx="12" fill="#0d2328" stroke="#2b5b63"/>
+    <text x="636" y="506" fill="#8fe3d8" font-size="19">隐私边界</text>
+    <text x="636" y="538" fill="#d7ece9" font-size="15">音频默认本地处理，不保存原始录音。</text>
+    <text x="636" y="566" fill="#9fb8bd" font-size="14">麦克风权限按需申请，不用就关。</text>
+  </g>
+
+  <text x="48" y="632" fill="#6f8f99" font-family="Microsoft YaHei, sans-serif" font-size="15">教学示意：意图分类是规则与统计的混合，规则先行、模型兜底，便于解释与复验。</text>
+</svg>
