@@ -7,7 +7,9 @@
     "layer": "L0",
     "pillar": "foundation",
     "oneLiner": "资料不会骗你，引脚图会",
-    "prereq": ["K0-04"],
+    "prereq": [
+      "K0-04"
+    ],
     "storyScene": "VirtualLibrary",
     "spoilerLevel": 0,
     "license": "CC-BY-4.0",
@@ -29,9 +31,24 @@
       "narration": "工坊的资料柜里摊着一块开发板。摊主想直接把它接到继电器上：反正都是电，接上就能用。赫菲把板子翻过来：先找到它的引脚图。哪只脚是 3V3，哪只脚是 5V，哪只脚根本不能碰，图上都有。",
       "interaction": "choice",
       "choices": [
-        { "id": "a", "text": "先查数据手册的引脚定义和额定值，再接线", "correct": true, "feedback": "对。先看额定值，再看引脚，最后查典型电路。" },
-        { "id": "b", "text": "凭感觉试，能亮就说明接对了", "correct": false, "feedback": "能亮不代表电压电流在安全范围内。" },
-        { "id": "c", "text": "问旁边的人，不用看资料", "correct": false, "feedback": "别人的经验可能适用于别的板子，资料才对得上型号。" }
+        {
+          "id": "a",
+          "text": "先查数据手册的引脚定义和额定值，再接线",
+          "correct": true,
+          "feedback": "对。先看额定值，再看引脚，最后查典型电路。"
+        },
+        {
+          "id": "b",
+          "text": "凭感觉试，能亮就说明接对了",
+          "correct": false,
+          "feedback": "能亮不代表电压电流在安全范围内。"
+        },
+        {
+          "id": "c",
+          "text": "问旁边的人，不用看资料",
+          "correct": false,
+          "feedback": "别人的经验可能适用于别的板子，资料才对得上型号。"
+        }
       ]
     },
     {
@@ -41,20 +58,20 @@
       "narration": "数据手册通常分成四块：绝对最大额定值告诉你什么绝对不能超；引脚定义告诉你每个脚是电源、地还是输入输出；电气特性给出工作电压、电流和电平范围；典型应用电路给出别人验证过的接法。开发板上印的字叫丝印，丝印上的编号和芯片手册里的 GPIO 编号不一定是同一个；物理脚位从板子的一角开始数，方向也常印在板边。查资料的正确顺序是：先看额定值，确认能不能接；再看引脚，确认接哪只脚；最后看典型电路，确认怎么接。手册里的数字是设计边界，不是建议值，散热、供电、负载都会让边界变窄。",
       "media": [
         {
-          "kind": "card",
+          "kind": "diagram",
           "src": "assets/lessons/K0-05/pinout-map.svg",
-          "alt": "开发板引脚图：3V3、GND、5V、GPIO4 位置与丝印编号对照",
-          "status": "planned",
-          "license": "original",
-          "notes": "原创 SVG，UI 内联；板型为教学示意"
+          "alt": "ESP32-S3 开发板引脚示意：3V3/5V/GND 与 GPIO；丝印不等于 GPIO 编号",
+          "status": "ready",
+          "license": "CC-BY-4.0",
+          "notes": "T1.1 原创 SVG，静音可用"
         },
         {
-          "kind": "pdf",
-          "src": "assets/lessons/K0-05/datasheet-reading.pdf",
-          "alt": "数据手册阅读卡：绝对最大额定值、引脚定义、电气特性、典型应用四块导读",
-          "status": "planned",
-          "license": "original",
-          "notes": "教学整理，非厂商原文；可下载"
+          "kind": "diagram",
+          "src": "assets/lessons/K0-05/datasheet-reading.svg",
+          "alt": "读数据手册三步：绝对最大额定、电气特性、引脚定义",
+          "status": "ready",
+          "license": "CC-BY-4.0",
+          "notes": "T1.1 原创 SVG，静音可用"
         }
       ]
     },
@@ -64,11 +81,31 @@
       "durationSec": 210,
       "task": "对照引脚图完成 4 个任务：① 找出 3V3 脚 ② 找出 GND 脚 ③ 找出 GPIO4 脚 ④ 找到 5V 脚。再查任务单：GPIO4 能不能直接驱动 5V 继电器？",
       "steps": [
-        { "action": "locate", "target": "pin-3v3", "hint": "电源类引脚通常单独成组" },
-        { "action": "locate", "target": "pin-gnd", "hint": "地脚可能不止一个，都能用" },
-        { "action": "locate", "target": "pin-gpio4", "hint": "按丝印编号与 GPIO 编号对照" },
-        { "action": "locate", "target": "pin-5v", "hint": "5V 脚由板载稳压或外部供电决定" },
-        { "action": "answer", "target": "relay-drive-check", "hint": "先看继电器线圈电流与 GPIO 驱动能力" }
+        {
+          "action": "locate",
+          "target": "pin-3v3",
+          "hint": "电源类引脚通常单独成组"
+        },
+        {
+          "action": "locate",
+          "target": "pin-gnd",
+          "hint": "地脚可能不止一个，都能用"
+        },
+        {
+          "action": "locate",
+          "target": "pin-gpio4",
+          "hint": "按丝印编号与 GPIO 编号对照"
+        },
+        {
+          "action": "locate",
+          "target": "pin-5v",
+          "hint": "5V 脚由板载稳压或外部供电决定"
+        },
+        {
+          "action": "answer",
+          "target": "relay-drive-check",
+          "hint": "先看继电器线圈电流与 GPIO 驱动能力"
+        }
       ],
       "failureHints": [
         "把丝印编号当成 GPIO 编号：引脚功能会找错",
@@ -81,9 +118,30 @@
       "type": "verify",
       "durationSec": 150,
       "checks": [
-        { "id": "v_3v3", "type": "measurement", "probe": "pin_3v3_voltage", "expected": 3.3, "tolerance": 0.2, "unit": "V" },
-        { "id": "v_gnd", "type": "measurement", "probe": "pin_gnd_continuity", "expected": 0, "tolerance": 0.5, "unit": "Ω" },
-        { "id": "v_rating", "type": "quiz", "ask": "GPIO4 能否直接驱动 5V 继电器", "expected": ["no"] }
+        {
+          "id": "v_3v3",
+          "type": "measurement",
+          "probe": "pin_3v3_voltage",
+          "expected": 3.3,
+          "tolerance": 0.2,
+          "unit": "V"
+        },
+        {
+          "id": "v_gnd",
+          "type": "measurement",
+          "probe": "pin_gnd_continuity",
+          "expected": 0,
+          "tolerance": 0.5,
+          "unit": "Ω"
+        },
+        {
+          "id": "v_rating",
+          "type": "quiz",
+          "ask": "GPIO4 能否直接驱动 5V 继电器",
+          "expected": [
+            "no"
+          ]
+        }
       ],
       "safety": "查资料与测量前先断电；不得按手册额定值长期满载运行；GPIO 不能直接承担继电器线圈电流，必须用驱动或电平匹配。"
     },
@@ -93,9 +151,24 @@
       "durationSec": 150,
       "prompt": "换一块同系列但引脚更多的开发板，你要找「能接 5V 电源」的脚。正确做法是？",
       "options": [
-        { "id": "same-position", "text": "按旧板子上的物理位置直接接过去", "correct": false, "why": "不同型号的物理位置和功能可能不同。" },
-        { "id": "datasheet", "text": "查新型号的数据手册与引脚图，确认电源脚和额定值", "correct": true, "why": "型号变了，资料也要跟着换。" },
-        { "id": "guess", "text": "挨个用万用表试，3.3V 那个就是电源", "correct": false, "why": "试错可能把引脚或外设弄坏。" }
+        {
+          "id": "same-position",
+          "text": "按旧板子上的物理位置直接接过去",
+          "correct": false,
+          "why": "不同型号的物理位置和功能可能不同。"
+        },
+        {
+          "id": "datasheet",
+          "text": "查新型号的数据手册与引脚图，确认电源脚和额定值",
+          "correct": true,
+          "why": "型号变了，资料也要跟着换。"
+        },
+        {
+          "id": "guess",
+          "text": "挨个用万用表试，3.3V 那个就是电源",
+          "correct": false,
+          "why": "试错可能把引脚或外设弄坏。"
+        }
       ],
       "solution": "换型号先换资料：看新型号手册里的引脚定义、电源范围和绝对最大额定值，再对照板边丝印确认物理位置，最后按典型电路接线。"
     },
@@ -111,14 +184,39 @@
     }
   ],
   "checks": [
-    { "id": "q1", "type": "quiz", "weight": 0.35, "pass": "4 个引脚定位全部正确" },
-    { "id": "q2", "type": "measurement", "weight": 0.3, "pass": "3V3 与 GND 测量正确" },
-    { "id": "q3", "type": "explain", "weight": 0.35, "pass": "能说明 GPIO4 不能直接驱动继电器" }
+    {
+      "id": "q1",
+      "type": "quiz",
+      "weight": 0.35,
+      "pass": "4 个引脚定位全部正确"
+    },
+    {
+      "id": "q2",
+      "type": "measurement",
+      "weight": 0.3,
+      "pass": "3V3 与 GND 测量正确"
+    },
+    {
+      "id": "q3",
+      "type": "explain",
+      "weight": 0.35,
+      "pass": "能说明 GPIO4 不能直接驱动继电器"
+    }
   ],
   "assessment": {
-    "masteryWeights": { "hook": 0.1, "practice": 0.35, "verify": 0.3, "transfer": 0.25 },
+    "masteryWeights": {
+      "hook": 0.1,
+      "practice": 0.35,
+      "verify": 0.3,
+      "transfer": 0.25
+    },
     "passScore": 0.7,
-    "retentionDays": [1, 3, 7, 21]
+    "retentionDays": [
+      1,
+      3,
+      7,
+      21
+    ]
   },
   "storyBinding": {
     "scene": "VirtualLibrary",
@@ -127,7 +225,13 @@
     "worldPhenomenon": "摊主想把开发板直接接继电器，却没看引脚定义。"
   },
   "redLines": {
-    "forbiddenNarrationTokens": ["第七校验", "熵", "残响", "第一编译者", "网页游戏"],
+    "forbiddenNarrationTokens": [
+      "第七校验",
+      "熵",
+      "残响",
+      "第一编译者",
+      "网页游戏"
+    ],
     "aiDoesNotDecide": true,
     "noFourthWall": true,
     "noSacrificeGlorification": true

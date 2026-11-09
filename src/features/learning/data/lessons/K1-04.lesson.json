@@ -66,12 +66,12 @@
           "notes": "原创 SVG，UI 内联，可交互高亮"
         },
         {
-          "kind": "sim",
-          "src": "assets/lessons/K1-04/drop-inspector.html",
-          "alt": "可交互压降排查模拟：移动表笔测各接点，结果实时显示",
-          "status": "planned",
-          "license": "original",
-          "notes": "复用 P10 配电盒面板组件与电压档逻辑，只做教学简化"
+          "kind": "diagram",
+          "src": "assets/lessons/K1-04/drop-inspector.svg",
+          "alt": "压降诊断：24.0V 供电经线损后 23.1V，再接负载 0.9V → 接点电阻约 0.225Ω",
+          "status": "ready",
+          "license": "CC-BY-4.0",
+          "notes": "T1.1 原创 SVG，静音可用"
         }
       ]
     },

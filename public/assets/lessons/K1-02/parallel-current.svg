@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675" role="img" aria-label="并联：电压相同，电流分家">
+<defs>
+<pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#16303f" stroke-width="1"/></pattern>
+<style>
+.zh{font-family:'Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif}
+.num{font-family:'JetBrains Mono',Consolas,monospace}
+@keyframes pulse{0%,100%{opacity:.35}50%{opacity:1}}
+@keyframes flow{to{stroke-dashoffset:-80}}
+</style>
+</defs>
+<rect width="1200" height="675" fill="#0b1620"/>
+<rect width="1200" height="675" fill="url(#grid)" opacity=".7"/>
+<rect x="18" y="18" width="1164" height="639" fill="none" stroke="#2a4a5e" stroke-width="2"/>
+<text class="zh" x="56" y="66" fill="#6fe3c8" font-size="19" letter-spacing="3">THE FORGE / 检修手册 · K1-02</text>
+<text class="zh" x="56" y="110" fill="#e8eef2" font-size="34" font-weight="700">并联：电压相同，电流分家</text>
+<line x1="56" y1="130" x2="1144" y2="130" stroke="#2a4a5e" stroke-width="2"/>
+
+<g>
+  <rect x="56" y="170" width="1088" height="420" rx="12" fill="#12242f" stroke="#2a4a5e"/>
+  <g><rect x="90" y="330" width="160" height="90" rx="8" fill="#0e1d27" stroke="#f2c56b" stroke-width="2"/>
+<text class="zh" x="170" y="364" text-anchor="middle" fill="#f2c56b" font-size="19">24V 电源</text>
+<text class="zh" x="170" y="392" text-anchor="middle" fill="#8aa0ad" font-size="15">SELV</text></g>
+  <g><rect x="360" y="220" width="220" height="110" rx="8" fill="#0e1d27" stroke="#6fe3c8" stroke-width="2"/>
+<text class="zh" x="470" y="254" text-anchor="middle" fill="#6fe3c8" font-size="19">支路 A</text>
+<text class="zh" x="470" y="282" text-anchor="middle" fill="#8aa0ad" font-size="15">R = 24Ω → 1A</text></g>
+  <g><rect x="360" y="420" width="220" height="110" rx="8" fill="#0e1d27" stroke="#6fe3c8" stroke-width="2"/>
+<text class="zh" x="470" y="454" text-anchor="middle" fill="#6fe3c8" font-size="19">支路 B</text>
+<text class="zh" x="470" y="482" text-anchor="middle" fill="#8aa0ad" font-size="15">R = 12Ω → 2A</text></g>
+  <line x1="250" y1="345" x2="360" y2="275" stroke="#f2c56b" stroke-width="3"/>
+  <line x1="250" y1="405" x2="360" y2="475" stroke="#f2c56b" stroke-width="3"/>
+  <line x1="580" y1="275" x2="760" y2="330" stroke="#6fe3c8" stroke-width="3"/>
+  <line x1="580" y1="475" x2="760" y2="420" stroke="#6fe3c8" stroke-width="3"/>
+  <line x1="760" y1="375" x2="1000" y2="375" stroke="#6fe3c8" stroke-width="3"/>
+  <text class="num" x="880" y="356" fill="#f2c56b" font-size="20">总电流 3A</text>
+  <text class="zh" x="880" y="420" fill="#8aa0ad" font-size="16">I总 = I1 + I2</text>
+  <text class="zh" x="86" y="560" fill="#e8eef2" font-size="17">并联支路电压相同；电流按电阻反比分配。</text>
+</g>
+<text class="zh" x="56" y="641" fill="#8aa0ad" font-size="16">教学示例：电阻值取自教学参数；真实电路还需考虑内阻与线损。</text>
+</svg>

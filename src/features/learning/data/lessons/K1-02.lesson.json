@@ -67,11 +67,11 @@
         },
         {
           "kind": "animation",
-          "src": "assets/lessons/K1-02/parallel-current.mp4",
-          "alt": "24 秒无旁白动画：电流分流、总电流相加、一条支路断开另一条继续工作，含字幕",
-          "status": "planned",
-          "license": "original",
-          "notes": "需配 SRT 字幕与静音回退图"
+          "src": "assets/lessons/K1-02/parallel-current.svg",
+          "alt": "并联分流：两支路电压相同，总电流等于分电流之和（1A + 2A = 3A）",
+          "status": "ready",
+          "license": "CC-BY-4.0",
+          "notes": "T1.1 原创 SVG，静音可用"
         }
       ]
     },

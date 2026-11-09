@@ -7,7 +7,9 @@
     "layer": "L0",
     "pillar": "foundation",
     "oneLiner": "面包板是地图，电源轨是主干道",
-    "prereq": ["K0-01"],
+    "prereq": [
+      "K0-01"
+    ],
     "storyScene": "TrainingGround",
     "spoilerLevel": 0,
     "license": "CC-BY-4.0",
@@ -29,9 +31,24 @@
       "narration": "工坊桌面上，一只发光二极管接好了线却不亮。摊主举着它晃了晃：是不是灯泡坏了？赫菲看了一眼面包板：先别换。看看你把它插在了哪两条孔里。",
       "interaction": "choice",
       "choices": [
-        { "id": "a", "text": "先查面包板的内部连通和 LED 极性，再决定换不换", "correct": true, "feedback": "对。面包板是地图，先看懂路，再查灯。" },
-        { "id": "b", "text": "直接换一只新的发光二极管", "correct": false, "feedback": "换灯不一定解决，可能根本没接对回路。" },
-        { "id": "c", "text": "把 5V 直接怼到两个脚上试试", "correct": false, "feedback": "没有限流电阻，发光二极管可能当场烧掉。" }
+        {
+          "id": "a",
+          "text": "先查面包板的内部连通和 LED 极性，再决定换不换",
+          "correct": true,
+          "feedback": "对。面包板是地图，先看懂路，再查灯。"
+        },
+        {
+          "id": "b",
+          "text": "直接换一只新的发光二极管",
+          "correct": false,
+          "feedback": "换灯不一定解决，可能根本没接对回路。"
+        },
+        {
+          "id": "c",
+          "text": "把 5V 直接怼到两个脚上试试",
+          "correct": false,
+          "feedback": "没有限流电阻，发光二极管可能当场烧掉。"
+        }
       ]
     },
     {
@@ -41,20 +58,20 @@
       "narration": "面包板内部有现成的路。同一排中间五个孔横向连通，跨过中间的凹槽就断了；两侧标着红蓝线的长条叫电源轨，整条纵向相通，通常一边接电源正、一边接地。所以元件不是插进去就行，要插进「同一段路」才连得上。发光二极管是有方向的：长脚是正极，短脚是负极，电流从正到负才能点亮。它还不能直接接 5 伏，必须串一只限流电阻，否则电流会一路冲到烧掉。杜邦线分公母，公头插进面包板或排针，母头接排针或模块；插拔时捏住接头，不要拽线。",
       "media": [
         {
-          "kind": "card",
+          "kind": "diagram",
           "src": "assets/lessons/K0-03/breadboard-map.svg",
-          "alt": "面包板结构图：横向五孔一组、中央凹槽隔断、两侧电源轨纵向连通",
-          "status": "planned",
-          "license": "original",
-          "notes": "原创 SVG，UI 内联"
+          "alt": "面包板孔位与内部连通示意：行内五孔相连、电源轨纵向连通",
+          "status": "ready",
+          "license": "CC-BY-4.0",
+          "notes": "T1.1 原创 SVG，静音可用"
         },
         {
-          "kind": "sim",
-          "src": "assets/lessons/K0-03/led-circuit-sim.json",
-          "alt": "DOM 面包板仿真：LED 与 220Ω 电阻串联到 5V，接错时提示电源保护动作",
-          "status": "planned",
-          "license": "original",
-          "notes": "网页内 DOM 仿真，不依赖外部引擎"
+          "kind": "diagram",
+          "src": "assets/lessons/K0-03/led-circuit.svg",
+          "alt": "LED 串联限流电阻接入面包板的正确接法：长脚接电阻侧",
+          "status": "ready",
+          "license": "CC-BY-4.0",
+          "notes": "T1.1 原创 SVG，静音可用"
         }
       ]
     },
@@ -64,10 +81,26 @@
       "durationSec": 220,
       "task": "在面包板仿真里搭一个点灯电路：5V 电源轨 → 220Ω 限流电阻 → 发光二极管长脚 → 短脚 → 接地轨。再判断三张接线图里哪一张会短路。",
       "steps": [
-        { "action": "place", "target": "resistor-220", "hint": "电阻先串联，再接到 LED" },
-        { "action": "place", "target": "led-anode", "hint": "长脚接电源一侧" },
-        { "action": "place", "target": "led-cathode", "hint": "短脚接地" },
-        { "action": "check", "target": "short-circuit-diagram", "hint": "电源正负之间没有负载就是短路" }
+        {
+          "action": "place",
+          "target": "resistor-220",
+          "hint": "电阻先串联，再接到 LED"
+        },
+        {
+          "action": "place",
+          "target": "led-anode",
+          "hint": "长脚接电源一侧"
+        },
+        {
+          "action": "place",
+          "target": "led-cathode",
+          "hint": "短脚接地"
+        },
+        {
+          "action": "check",
+          "target": "short-circuit-diagram",
+          "hint": "电源正负之间没有负载就是短路"
+        }
       ],
       "failureHints": [
         "LED 插反：电流方向不对，灯不亮",
@@ -80,9 +113,30 @@
       "type": "verify",
       "durationSec": 130,
       "checks": [
-        { "id": "v_anode", "type": "measurement", "probe": "led_anode_to_resistor", "expected": 0, "tolerance": 0.5, "unit": "Ω" },
-        { "id": "v_cathode", "type": "measurement", "probe": "led_cathode_to_ground", "expected": 0, "tolerance": 0.5, "unit": "Ω" },
-        { "id": "v_5v", "type": "measurement", "probe": "rail_5v", "expected": 5.0, "tolerance": 0.2, "unit": "V" }
+        {
+          "id": "v_anode",
+          "type": "measurement",
+          "probe": "led_anode_to_resistor",
+          "expected": 0,
+          "tolerance": 0.5,
+          "unit": "Ω"
+        },
+        {
+          "id": "v_cathode",
+          "type": "measurement",
+          "probe": "led_cathode_to_ground",
+          "expected": 0,
+          "tolerance": 0.5,
+          "unit": "Ω"
+        },
+        {
+          "id": "v_5v",
+          "type": "measurement",
+          "probe": "rail_5v",
+          "expected": 5,
+          "tolerance": 0.2,
+          "unit": "V"
+        }
       ],
       "safety": "面包板教学用 5V 安全电压；实物接线前必须断电，插拔杜邦线时捏住接头；任何情况下都不得把电源正负极直接短接。"
     },
@@ -92,9 +146,24 @@
       "durationSec": 160,
       "prompt": "三张接线图里，哪一张会给 5V 电源造成短路？",
       "options": [
-        { "id": "diagram-a", "text": "图 A：电阻和发光二极管串联在正负轨之间", "correct": false, "why": "这是正常回路，有负载限流。" },
-        { "id": "diagram-b", "text": "图 B：一根杜邦线从正电源轨直接连到负电源轨", "correct": true, "why": "正负之间没有负载，电流会瞬间拉满。" },
-        { "id": "diagram-c", "text": "图 C：发光二极管接在正轨，短脚悬空", "correct": false, "why": "回路没闭合，灯不亮，但不会短路。" }
+        {
+          "id": "diagram-a",
+          "text": "图 A：电阻和发光二极管串联在正负轨之间",
+          "correct": false,
+          "why": "这是正常回路，有负载限流。"
+        },
+        {
+          "id": "diagram-b",
+          "text": "图 B：一根杜邦线从正电源轨直接连到负电源轨",
+          "correct": true,
+          "why": "正负之间没有负载，电流会瞬间拉满。"
+        },
+        {
+          "id": "diagram-c",
+          "text": "图 C：发光二极管接在正轨，短脚悬空",
+          "correct": false,
+          "why": "回路没闭合，灯不亮，但不会短路。"
+        }
       ],
       "solution": "不经过任何负载、把电源正负两端直接连通，就是短路。图 B 缺负载，电流只受导线与电源内阻限制，会触发电源保护。"
     },
@@ -110,14 +179,39 @@
     }
   ],
   "checks": [
-    { "id": "q1", "type": "sim-task", "weight": 0.4, "pass": "面包板连线正确且不短路" },
-    { "id": "q2", "type": "measurement", "weight": 0.3, "pass": "三个连接点通断检查通过（0Ω±0.5）" },
-    { "id": "q3", "type": "quiz", "weight": 0.3, "pass": "选出会短路的接线图并说明原因" }
+    {
+      "id": "q1",
+      "type": "sim-task",
+      "weight": 0.4,
+      "pass": "面包板连线正确且不短路"
+    },
+    {
+      "id": "q2",
+      "type": "measurement",
+      "weight": 0.3,
+      "pass": "三个连接点通断检查通过（0Ω±0.5）"
+    },
+    {
+      "id": "q3",
+      "type": "quiz",
+      "weight": 0.3,
+      "pass": "选出会短路的接线图并说明原因"
+    }
   ],
   "assessment": {
-    "masteryWeights": { "hook": 0.1, "practice": 0.35, "verify": 0.3, "transfer": 0.25 },
+    "masteryWeights": {
+      "hook": 0.1,
+      "practice": 0.35,
+      "verify": 0.3,
+      "transfer": 0.25
+    },
     "passScore": 0.7,
-    "retentionDays": [1, 3, 7, 21]
+    "retentionDays": [
+      1,
+      3,
+      7,
+      21
+    ]
   },
   "storyBinding": {
     "scene": "TrainingGround",
@@ -126,7 +220,13 @@
     "worldPhenomenon": "工坊桌上一只发光二极管怎么插都不亮，摊主想直接换新的。"
   },
   "redLines": {
-    "forbiddenNarrationTokens": ["第七校验", "熵", "残响", "第一编译者", "网页游戏"],
+    "forbiddenNarrationTokens": [
+      "第七校验",
+      "熵",
+      "残响",
+      "第一编译者",
+      "网页游戏"
+    ],
     "aiDoesNotDecide": true,
     "noFourthWall": true,
     "noSacrificeGlorification": true

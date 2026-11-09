@@ -29,9 +29,24 @@
       "narration": "维修间里，摊主把一只标着「220kΩ」的电阻当成「220Ω」往灯带上接。赫菲一把抢下来：这一个字母，差了一千倍。你是想让灯慢慢亮，还是想让电源当场叫？",
       "interaction": "choice",
       "choices": [
-        { "id": "a", "text": "先统一单位再算数，220kΩ 是 220,000Ω", "correct": true, "feedback": "对。k 是千，差一个前缀就是差一千倍。" },
-        { "id": "b", "text": "都是 220，接上去应该差不多", "correct": false, "feedback": "差一千倍的阻值，会影响电流、分压和发热。" },
-        { "id": "c", "text": "电阻坏了才需要看数字，新电阻不用看", "correct": false, "feedback": "新元件也可能标错、拿错、读错。" }
+        {
+          "id": "a",
+          "text": "先统一单位再算数，220kΩ 是 220,000Ω",
+          "correct": true,
+          "feedback": "对。k 是千，差一个前缀就是差一千倍。"
+        },
+        {
+          "id": "b",
+          "text": "都是 220，接上去应该差不多",
+          "correct": false,
+          "feedback": "差一千倍的阻值，会影响电流、分压和发热。"
+        },
+        {
+          "id": "c",
+          "text": "电阻坏了才需要看数字，新电阻不用看",
+          "correct": false,
+          "feedback": "新元件也可能标错、拿错、读错。"
+        }
       ]
     },
     {
@@ -41,20 +56,20 @@
       "narration": "电学单位有层级：1 伏等于 1000 毫伏，1 安等于 1000 毫安，1 千欧等于 1000 欧，1 兆欧等于 1000 千欧；电容常用微法、纳法，1 微法等于 1000 纳法。读数和写答案前，先把单位统一到同一个量级，再算数，可以避免九成以上的「差一千倍」事故。色环电阻用四道颜色表示阻值和误差：前两环是数字，第三环是倍数，第四环是误差。比如棕黑红金是 1、0、乘 100、±5%，也就是 1000 欧，允许误差 5%。颜色看不清时，用万用表复测一遍，比猜可靠。",
       "media": [
         {
-          "kind": "card",
+          "kind": "diagram",
           "src": "assets/lessons/K0-04/unit-table.svg",
-          "alt": "常用电学单位换算表：V/mV、A/mA、Ω/kΩ/MΩ、F/μF/nF",
-          "status": "planned",
-          "license": "original",
-          "notes": "原创 SVG，UI 内联"
+          "alt": "电压/电流/电阻单位换算表：V、mV、A、mA、Ω、kΩ",
+          "status": "ready",
+          "license": "CC-BY-4.0",
+          "notes": "T1.1 原创 SVG，静音可用"
         },
         {
-          "kind": "sim",
-          "src": "assets/lessons/K0-04/color-ring-sim.json",
-          "alt": "DOM 色环读取仿真：拖动四环颜色，右侧显示阻值与误差",
-          "status": "planned",
-          "license": "original",
-          "notes": "网页内 DOM 仿真，不依赖外部引擎"
+          "kind": "diagram",
+          "src": "assets/lessons/K0-04/color-ring.svg",
+          "alt": "四色环电阻读法：棕黑红金 = 1000Ω ±5%",
+          "status": "ready",
+          "license": "CC-BY-4.0",
+          "notes": "T1.1 原创 SVG，静音可用"
         }
       ]
     },
@@ -64,12 +79,36 @@
       "durationSec": 210,
       "task": "完成 5 道单位换算与 1 道色环读数：12V=?mV；0.02A=?mA；2.2kΩ=?Ω；100nF=?μF；1.5MΩ=?Ω；棕黑红金=?Ω。",
       "steps": [
-        { "action": "answer", "target": "q-12v", "hint": "1V=1000mV" },
-        { "action": "answer", "target": "q-002a", "hint": "1A=1000mA" },
-        { "action": "answer", "target": "q-22k", "hint": "1kΩ=1000Ω" },
-        { "action": "answer", "target": "q-100nf", "hint": "1μF=1000nF" },
-        { "action": "answer", "target": "q-15m", "hint": "1MΩ=1,000,000Ω" },
-        { "action": "answer", "target": "q-color-ring", "hint": "棕=1，黑=0，红=×100，金=±5%" }
+        {
+          "action": "answer",
+          "target": "q-12v",
+          "hint": "1V=1000mV"
+        },
+        {
+          "action": "answer",
+          "target": "q-002a",
+          "hint": "1A=1000mA"
+        },
+        {
+          "action": "answer",
+          "target": "q-22k",
+          "hint": "1kΩ=1000Ω"
+        },
+        {
+          "action": "answer",
+          "target": "q-100nf",
+          "hint": "1μF=1000nF"
+        },
+        {
+          "action": "answer",
+          "target": "q-15m",
+          "hint": "1MΩ=1,000,000Ω"
+        },
+        {
+          "action": "answer",
+          "target": "q-color-ring",
+          "hint": "棕=1，黑=0，红=×100，金=±5%"
+        }
       ],
       "failureHints": [
         "少写三个零：k 与 M 的进位差一位",
@@ -82,8 +121,22 @@
       "type": "verify",
       "durationSec": 140,
       "checks": [
-        { "id": "v_ring", "type": "measurement", "probe": "color_ring_resistor", "expected": 1000, "tolerance": 50, "unit": "Ω" },
-        { "id": "v_scale", "type": "quiz", "ask": "0.024A 换算成毫安是多少", "expected": [24] }
+        {
+          "id": "v_ring",
+          "type": "measurement",
+          "probe": "color_ring_resistor",
+          "expected": 1000,
+          "tolerance": 50,
+          "unit": "Ω"
+        },
+        {
+          "id": "v_scale",
+          "type": "quiz",
+          "ask": "0.024A 换算成毫安是多少",
+          "expected": [
+            24
+          ]
+        }
       ],
       "safety": "用万用表测电阻前必须断电；色环读数与实测值不一致时，以实测为准并记录原因。"
     },
@@ -93,9 +146,24 @@
       "durationSec": 150,
       "prompt": "表上读数显示 0.024A，你要把它填进一张以毫安为单位的记录表。应该填多少？",
       "options": [
-        { "id": "24", "text": "24mA", "correct": true, "why": "0.024A×1000=24mA，单位换算正确。" },
-        { "id": "240", "text": "240mA", "correct": false, "why": "多乘了 10 倍，0.024A 只有 24mA。" },
-        { "id": "0024", "text": "0.024mA", "correct": false, "why": "把安和毫安混在一起，读数会小一千倍。" }
+        {
+          "id": "24",
+          "text": "24mA",
+          "correct": true,
+          "why": "0.024A×1000=24mA，单位换算正确。"
+        },
+        {
+          "id": "240",
+          "text": "240mA",
+          "correct": false,
+          "why": "多乘了 10 倍，0.024A 只有 24mA。"
+        },
+        {
+          "id": "0024",
+          "text": "0.024mA",
+          "correct": false,
+          "why": "把安和毫安混在一起，读数会小一千倍。"
+        }
       ],
       "solution": "单位换算只动小数点：安换毫安乘 1000。0.024A = 24mA。记录时保留单位，避免下一环节再换算。"
     },
@@ -111,14 +179,39 @@
     }
   ],
   "checks": [
-    { "id": "q1", "type": "quiz", "weight": 0.4, "pass": "5 道单位换算全部正确" },
-    { "id": "q2", "type": "measurement", "weight": 0.3, "pass": "色环电阻读数 1000Ω±50" },
-    { "id": "q3", "type": "quiz", "weight": 0.3, "pass": "电流读数换算出 24mA" }
+    {
+      "id": "q1",
+      "type": "quiz",
+      "weight": 0.4,
+      "pass": "5 道单位换算全部正确"
+    },
+    {
+      "id": "q2",
+      "type": "measurement",
+      "weight": 0.3,
+      "pass": "色环电阻读数 1000Ω±50"
+    },
+    {
+      "id": "q3",
+      "type": "quiz",
+      "weight": 0.3,
+      "pass": "电流读数换算出 24mA"
+    }
   ],
   "assessment": {
-    "masteryWeights": { "hook": 0.1, "practice": 0.3, "verify": 0.3, "transfer": 0.3 },
+    "masteryWeights": {
+      "hook": 0.1,
+      "practice": 0.3,
+      "verify": 0.3,
+      "transfer": 0.3
+    },
     "passScore": 0.7,
-    "retentionDays": [1, 3, 7, 21]
+    "retentionDays": [
+      1,
+      3,
+      7,
+      21
+    ]
   },
   "storyBinding": {
     "scene": "P10-MaintenanceRoom",
@@ -127,7 +220,13 @@
     "worldPhenomenon": "摊主把 220kΩ 当成 220Ω，差点把灯带和电源一起烧掉。"
   },
   "redLines": {
-    "forbiddenNarrationTokens": ["第七校验", "熵", "残响", "第一编译者", "网页游戏"],
+    "forbiddenNarrationTokens": [
+      "第七校验",
+      "熵",
+      "残响",
+      "第一编译者",
+      "网页游戏"
+    ],
     "aiDoesNotDecide": true,
     "noFourthWall": true,
     "noSacrificeGlorification": true
