@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-label="IC-07 DAC：数字码到电压的权重与阶梯">
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#12262b" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="1200" height="675" fill="#08161a"/>
+  <rect width="1200" height="675" fill="url(#grid)"/>
+  <text x="48" y="64" fill="#4fd1c5" font-family="Consolas, monospace" font-size="17" letter-spacing="2">THE FORGE / 检修手册 · IC-07</text>
+  <text x="48" y="108" fill="#e6f7f5" font-family="Microsoft YaHei, sans-serif" font-size="38" font-weight="700">DAC：把数字送回电压</text>
+  <line x1="48" y1="128" x2="1152" y2="128" stroke="#1d3a40" stroke-width="2"/>
+
+  <g font-family="Microsoft YaHei, sans-serif">
+    <rect x="48" y="168" width="520" height="304" rx="12" fill="#0d2328" stroke="#2b5b63"/>
+    <text x="72" y="206" fill="#8fe3d8" font-size="20">① 权重相加</text>
+    <g font-family="Consolas, monospace" font-size="16" fill="#d7ece9">
+      <text x="80" y="246">B3 B2 B1 B0   权重</text>
+      <text x="80" y="280">0  0  0  1    = 1</text>
+      <text x="80" y="314">0  0  1  0    = 2</text>
+      <text x="80" y="348">0  1  0  0    = 4</text>
+      <text x="80" y="382">1  0  0  0    = 8</text>
+    </g>
+    <text x="72" y="426" fill="#f6c177" font-size="16">输出 = 码值 ÷ 16 × Vref（Vref=3.3V）</text>
+    <text x="72" y="450" fill="#6f8f99" font-size="14">码值越大，输出越接近满量程。</text>
+
+    <rect x="616" y="168" width="536" height="304" rx="12" fill="#0d2328" stroke="#2b5b63"/>
+    <text x="640" y="206" fill="#8fe3d8" font-size="20">② 阶梯与分辨率</text>
+    <g stroke="#4fd1c5" stroke-width="2" fill="none">
+      <path d="M648 420V400H672V380H696V360H720V340H744V320H768V300H792V280H816V260H840V240"/>
+    </g>
+    <text x="648" y="444" fill="#6f8f99" font-size="13">码值 →</text>
+    <text x="648" y="240" fill="#6f8f99" font-size="13">Vout</text>
+    <text x="640" y="470" fill="#e6f7f5" font-size="15">16 级台阶：0、0.206、0.413 … 3.09V</text>
+    <text x="640" y="496" fill="#9fb8bd" font-size="14">8 位 = 256 级，台阶更细，声音/画面更平滑。</text>
+
+    <rect x="48" y="500" width="1104" height="104" rx="12" fill="#12262b" stroke="#2b5b63"/>
+    <text x="72" y="534" fill="#8fe3d8" font-size="19">③ 验收要点</text>
+    <text x="72" y="566" fill="#e6f7f5" font-family="Consolas, monospace" font-size="17">code=8 → 1.65V；code=15 → 3.09V；1 LSB = Vref/16 ≈ 0.206V</text>
+    <text x="72" y="592" fill="#9fb8bd" font-size="14">数字→模拟的桥：分辨率、参考电压与码值三者对不上，输出就不对。</text>
+
+    <text x="48" y="648" fill="#6f8f99" font-size="13">教学示意：DAC 输出接负载前确认量程；参考电压要稳；实测先断电核对，再按码值逐点测。</text>
+  </g>
+</svg>

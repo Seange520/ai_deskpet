@@ -26,6 +26,7 @@ export const registry = Object.freeze({
   'logic-gates': () => import('./LogicGatesSim.jsx'),
   'flip-flop': () => import('./FlipFlopSim.jsx'),
   'counter': () => import('./CounterSim.jsx'),
+  'dac-ladder': () => import('./DacLadderSim.jsx'),
 });
 export const simIds = Object.freeze(Object.keys(registry));
 export function getSim(id) {

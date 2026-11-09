@@ -1,0 +1,111 @@
+{
+  "schema": "lesson.v2",
+  "lessonId": "L-IC-07-v2",
+  "kp": {
+    "id": "IC-07",
+    "name": "DAC：把数字送回电压",
+    "layer": "L5",
+    "pillar": "forge",
+    "oneLiner": "数字写完，还要变回电压"
+  },
+  "meta": {
+    "version": "2.0.0",
+    "updatedAt": "2026-11-09",
+    "estimatedMinutes": 12,
+    "template": "mission-seven-v1",
+    "gameMount": "P10-维修间",
+    "sourceLesson": "L-IC-07",
+    "author": "SparkMate Automation"
+  },
+  "story": {
+    "act": 2,
+    "title": "专业支线 · 芯片入门",
+    "scene": "P10-维修间",
+    "npc": "贺非",
+    "setup": "代码算完了，灯要亮、电机要转，得把 0 和 1 变回电压。数字到模拟的门口，站着一只 DAC。"
+  },
+  "segments": [
+    {
+      "id": "mission",
+      "seconds": 25,
+      "narration": ["数字只能写 0 和 1。", "电压却是连续的。", "今天的任务：把数字码换成电压。"],
+      "task": "按权重读出 DAC 输出，并算出 4 位 DAC 的最小步进。"
+    },
+    {
+      "id": "observe",
+      "seconds": 55,
+      "narration": ["4 位码，分成 16 份。", "1000 是一半。", "1111 接近满量程。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/IC-07/dac-ladder.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "check": {
+        "id": "obs-1",
+        "type": "choice",
+        "task": "4 位 DAC 的满量程码（1111）最接近？",
+        "options": ["Vref（略低一点）", "Vref/2", "0V"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "learn",
+      "seconds": 85,
+      "narration": ["权重相加就是输出。", "B3=8、B2=4、B1=2、B0=1。", "除以 16，再乘 Vref。"],
+      "media": [
+        { "kind": "svg", "src": "assets/lessons/IC-07/dac-ladder.svg", "status": "ready", "license": "CC-BY-4.0" }
+      ],
+      "term": { "text": "分辨率", "oneLine": "N 位 DAC 把 Vref 分成 2^N 份，1 LSB = Vref/2^N。" },
+      "check": {
+        "id": "learn-1",
+        "type": "choice",
+        "task": "输入码 1000（8）时，4 位 DAC 输出约是？",
+        "options": ["1.65V（Vref 的一半）", "3.3V", "0.8V"],
+        "answerIndex": 0
+      }
+    },
+    {
+      "id": "do",
+      "seconds": 200,
+      "narration": ["拨 1000，读 1.65 伏。", "拨 1111，读 3.09 伏。", "再把最小步进算出来。"],
+      "sim": {
+        "id": "dac-ladder",
+        "version": 1,
+        "task": "拨 4 位开关，写下两个码对应的输出，并算 1 LSB。",
+        "hints": ["码值 = B3×8 + B2×4 + B1×2 + B0×1。", "输出 = 码值 / 16 × 3.3V。", "1 LSB = 3.3V / 16 ≈ 0.206V。"]
+      }
+    },
+    {
+      "id": "prove",
+      "seconds": 100,
+      "mode": "numeric",
+      "narration": ["一半量程写 1.65。", "满码写 3.09。", "读数与公式一起留档。"],
+      "checks": [
+        { "id": "half", "type": "measurement", "task": "code=8 时输出", "expected": 1.65, "tolerance": 0.02, "unit": "V" },
+        { "id": "full", "type": "measurement", "task": "code=15 时输出", "expected": 3.09, "tolerance": 0.02, "unit": "V" }
+      ]
+    },
+    {
+      "id": "transfer",
+      "seconds": 90,
+      "narration": ["8 位 DAC 更细。", "它把 Vref 分成 256 份。", "同一个 1.65 伏，码值变成多少？"],
+      "prompt": "8 位 DAC（Vref=3.3V）输出 1.65V 时，码值约为？",
+      "options": ["128", "64", "255"],
+      "answerIndex": 0
+    },
+    {
+      "id": "recap",
+      "seconds": 25,
+      "narration": ["码值除满量程，再乘 Vref。", "位数越多，步进越小。", "DAC 是数字回到模拟的那道门。"],
+      "lines": ["码值除满量程，再乘 Vref。", "位数越多，步进越小。", "DAC 是数字回到模拟的那道门。"]
+    }
+  ],
+  "safety": {
+    "powerOffBeforeWiring": true,
+    "liveMeasurementBlocked": true,
+    "note": "断电接线；DAC 输出接负载前先确认量程；参考电压要稳定；实测先测电源与地，再按码值逐点核对。"
+  },
+  "redLines": {
+    "forbiddenNarrationTokens": ["玩家", "游戏", "网页", "第七校验", "熵", "残响", "第一编译者", "0x7F"],
+    "aiDoesNotDecide": true,
+    "noFourthWall": true
+  }
+}

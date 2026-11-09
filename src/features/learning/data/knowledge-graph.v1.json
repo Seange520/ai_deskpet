@@ -1974,6 +1974,35 @@
       "license": "CC-BY-4.0",
       "status": "planned",
       "priority": "P1"
+    },
+    {
+      "id": "IC-07",
+      "name": "DAC：把数字送回电压",
+      "oneLiner": "数字写完，还要变回电压",
+      "layer": "L5",
+      "pillar": "forge",
+      "prereq": [
+        "IC-06"
+      ],
+      "gatePrereq": null,
+      "lessonRef": "lessons-v2/IC-07.v2.json",
+      "lessonAvailable": true,
+      "media": [
+        "card",
+        "sim"
+      ],
+      "practice": "按权重读出 DAC 输出并计算 1 LSB",
+      "check": {
+        "type": "sim-task",
+        "task": "DAC 码值与输出",
+        "passScore": 80
+      },
+      "transfer": null,
+      "storyScene": "P10维修间",
+      "spoilerLevel": 5,
+      "license": "CC-BY-4.0",
+      "status": "planned",
+      "priority": "P1"
     }
   ],
   "edges": [
@@ -2291,11 +2320,16 @@
       "kind": "prereq",
       "from": "IC-05",
       "to": "IC-06"
+    },
+    {
+      "kind": "prereq",
+      "from": "IC-06",
+      "to": "IC-07"
     }
   ],
   "stats": {
-    "total": 64,
-    "edges": 63,
+    "total": 65,
+    "edges": 64,
     "gates": 1,
     "byLayer": {
       "L0": 7,
@@ -2303,14 +2337,14 @@
       "L2": 7,
       "L3": 10,
       "L4": 12,
-      "L5": 8,
+      "L5": 9,
       "L6": 6,
       "L7": 4,
       "L8": 3
     },
     "byPillar": {
       "craft": 11,
-      "forge": 19,
+      "forge": 20,
       "foundation": 6,
       "weave": 17,
       "echo": 4,
@@ -2319,11 +2353,11 @@
     },
     "byStatus": {
       "partial": 24,
-      "planned": 40
+      "planned": 41
     },
     "byPriority": {
       "P0": 29,
-      "P1": 21,
+      "P1": 22,
       "P2": 10,
       "P3": 4
     },
