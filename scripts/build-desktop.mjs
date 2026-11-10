@@ -48,6 +48,8 @@ const [result] = await packager({
   arch: 'x64',
   appVersion,
   electronVersion: '31.7.7',
+  // 离线构建：若本地已有 Electron zip，直接复用，避免 GitHub 下载超时。
+  ...(process.env.ELECTRON_ZIP_DIR ? { electronZipDir: process.env.ELECTRON_ZIP_DIR } : {}),
   asar: true,
   overwrite: true,
   prune: false,
