@@ -49,7 +49,12 @@ export default function Dashboard({
   onChooseRoute,
 }) {
   const route = getHardwareRoute(routeId);
-  const missionDone = readMissionProgress().completed.length;
+  const missionProgress = readMissionProgress();
+  const missionDone = missionProgress.completed.length;
+  const missionBest = Object.values(missionProgress.records ?? {}).reduce(
+    (sum, record) => sum + (Number.isFinite(record?.score) ? record.score : 0),
+    0,
+  );
   const achievementsRef = useRef(null);
   useDashboardDepth(achievementsRef);
   // 当前路线关卡与全局徽章均来自 Zustand；重复练习不重复奖励。
@@ -137,7 +142,13 @@ export default function Dashboard({
               <ArrowRight size={17} />
             </Button>
             <a className="btn mission-entry" href="/?mission=r1&quality=3">
-              校验委托 · 抢修 {missionDone > 0 && <em>{missionDone}/3</em>} <span>BETA</span>
+              校验委托 · 抢修{' '}
+              {missionDone > 0 && (
+                <em>
+                  {missionDone}/3{missionDone === 3 && missionBest > 0 ? ` · 最佳 ${missionBest}` : ''}
+                </em>
+              )}{' '}
+              <span>BETA</span>
             </a>
           </div>
           <div className="guest-entry">
