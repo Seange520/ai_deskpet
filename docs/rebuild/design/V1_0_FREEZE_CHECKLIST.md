@@ -1,4 +1,4 @@
-# V1.0 单机版冻结清单与验收口径（2026-11-10）
+﻿# V1.0 单机版冻结清单与验收口径（2026-11-10）
 
 > 定位：v1.0 是**单机离线版**，只做「一条街 + 一套课 + 一份档案」。4v1 设计保留，代码不预留联机接口。
 
@@ -40,3 +40,4 @@
 - `node --test tests/mission-r1.unit.mjs`（18/18）
 - `npx playwright test`（67/67）
 - `npm run build`（含 `dist/site/index.html`）
+
