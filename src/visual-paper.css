@@ -788,3 +788,9 @@
   text-decoration: none;
   white-space: nowrap;
 }
+
+.archive-novel-link a {
+  color: var(--brass, #a9843f);
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+}

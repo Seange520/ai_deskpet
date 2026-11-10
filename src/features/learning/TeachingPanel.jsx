@@ -279,6 +279,9 @@ export default function TeachingPanel() {
                   {s.profile.kps[k.id].evidence.length} 条证据
                 </p>
               ))}
+            <p className="archive-novel-link">
+              <a href="./novel/index.html">阅读《流明域》全稿（22 章）→</a>
+            </p>
             <button onClick={() => setConfirm(true)}>重置本档案</button>
             {confirm && (
               <div role="group" aria-label="教学档案重置确认">

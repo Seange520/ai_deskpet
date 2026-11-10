@@ -24,7 +24,7 @@
 ## 三、上线前仍缺（阻断项）
 
 1. 10–20 人封闭试玩与反馈表（用户侧）。
-2. APK v14 / 桌面包本机双击实测记录（用户侧）。
+2. APK v16 / 桌面包本机双击实测记录（用户侧）。
 3. ~~A 版胶囊 7 张 + 截图 7 张定稿~~ 已完成：`work/deliverables/store-a/`（14 文件 + MANIFEST + README）。
 4. ~~预告片 v4~~ 已完成：`work/deliverables/trailer-v4/` 中英双版（49s，1080p30，SHA 已记）。
 5. 关闭/隐藏所有「BETA」标记的时机与文案（保留内测标识至试玩结束）。
@@ -39,7 +39,7 @@
 - `node scripts/check-r1-mission.mjs`（13/13）
 - `node scripts/check-r1-flow.mjs`（全流程 1/1，含入口与返回）
 - `node scripts/check-r1-tier2.mjs`（手机门槛）
-- `node --test tests/mission-r1.unit.mjs`（18/18）
+- `node --test tests/mission-r1.unit.mjs`（21/21）
 - `npx playwright test`（67/67）
 - `npm run build`（含 `dist/site/index.html`）
 
