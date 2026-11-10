@@ -227,3 +227,41 @@ test('三单进度持久化：记录完成、拒绝非法 id、读取容错', as
   storage.setItem(MISSION_PROGRESS_KEY, '{bad json');
   assert.deepEqual(readMissionProgress(storage).completed, [], '坏档回退为空进度');
 });
+
+test('每单最佳成绩：记录分数/称号、只保留更高分、坏字段忽略', async () => {
+  const { readMissionProgress, recordMissionResult, bestMissionRecord, totalRepairedLights } =
+    await import('../src/features/mission/missionProgress.mjs');
+  const memory = new Map();
+  const storage = {
+    getItem: (k) => (memory.has(k) ? memory.get(k) : null),
+    setItem: (k, v) => memory.set(k, String(v)),
+  };
+
+  recordMissionResult('A', { score: 98, grade: '晴光校验师' }, storage);
+  let progress = readMissionProgress(storage);
+  assert.deepEqual(progress.completed, ['A']);
+  assert.equal(bestMissionRecord(progress, 'A').score, 98);
+  assert.equal(bestMissionRecord(progress, 'A').grade, '晴光校验师');
+  assert.equal(totalRepairedLights(progress), 1);
+
+  recordMissionResult('A', { score: 70, grade: '可靠维护者' }, storage);
+  progress = readMissionProgress(storage);
+  assert.equal(bestMissionRecord(progress, 'A').score, 98, '低分不覆盖最佳');
+  assert.equal(progress.completed.length, 1);
+
+  recordMissionResult('A', { score: 100, grade: '晴光校验师' }, storage);
+  assert.equal(bestMissionRecord(readMissionProgress(storage), 'A').score, 100, '更高分刷新');
+
+  recordMissionResult('B', { score: 999, grade: 'x' }, storage);
+  assert.equal(bestMissionRecord(readMissionProgress(storage), 'B').score, 100, '分数钳制 0–100');
+  recordMissionResult('B', { score: Number.NaN }, storage);
+  assert.equal(bestMissionRecord(readMissionProgress(storage), 'B').grade, 'x', 'NaN 分数不写入但完成保留');
+
+  storage.setItem(
+    'sparkmate.checksum.mission.v1',
+    JSON.stringify({ completed: ['C', 'Z'], records: { C: { score: -5 }, D: { score: 80 } } }),
+  );
+  progress = readMissionProgress(storage);
+  assert.deepEqual(progress.completed, ['C'], '非法 id 过滤');
+  assert.deepEqual(progress.records, {}, '非法分数/未知单号过滤');
+});

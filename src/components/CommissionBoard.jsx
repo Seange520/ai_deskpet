@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { ArrowRight, BookOpen, CalendarDays, ClipboardList, Trophy } from 'lucide-react';
-import { readMissionProgress } from '../features/mission/missionProgress.mjs';
+import { bestMissionRecord, readMissionProgress } from '../features/mission/missionProgress.mjs';
 import { levelFor, MAX_XP } from '../stores/useLearningStore';
 
 const MISSIONS = [
@@ -66,6 +66,7 @@ export default function CommissionBoard({ xp = 0, badges = [], routes = {} }) {
         <ul className="commission-list">
           {MISSIONS.map((mission, index) => {
             const finished = done.includes(mission.id);
+            const best = bestMissionRecord(progress, mission.id);
             return (
               <li key={mission.id} className={finished ? 'is-you' : ''}>
                 <span className="rank-number">{String(index + 1).padStart(2, '0')}</span>
@@ -73,7 +74,9 @@ export default function CommissionBoard({ xp = 0, badges = [], routes = {} }) {
                   <b>{mission.title}</b>
                   <span>{mission.note}</span>
                 </div>
-                <strong>{finished ? '已修' : '待接'}</strong>
+                <strong>
+                  {finished ? `已修${best ? ` · ${best.score} 分` : ''}` : '待接'}
+                </strong>
               </li>
             );
           })}

@@ -84,6 +84,14 @@ try {
   await shot('05-back-hub');
   assert.equal(await page.locator('[data-testid="mission-root"]').count(), 0);
   passes.push('return to hub unmounts mission');
+  // 5. 委托板显示每单最佳成绩
+  await page.getByRole('button', { name: '委托板' }).first().click();
+  await expect(page.locator('.commission-list')).toBeVisible({ timeout: 15000 });
+  await page.waitForTimeout(600);
+  const scoreText = await page.locator('.commission-list').innerText();
+  assert.match(scoreText, /已修 · \d+ 分/, '委托板显示已修成绩');
+  await shot('06-commission-scores');
+  passes.push('commission board shows best scores');
 } catch (e) {
   errors.push(e.stack || String(e));
   await page.screenshot({ path: `${out}/failure.png` }).catch(() => {});
