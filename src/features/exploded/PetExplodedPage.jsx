@@ -125,14 +125,14 @@ function PartMeshes({ id, color, active, dimmed, explode }) {
   if (id === 'screen') {
     return (
       <group>
-        <RoundedBox args={[1.14, 0.1, 0.72]} radius={0.04} smoothness={3} position={[0, 0.02, 0]}>
+        <RoundedBox args={[1.14, 0.72, 0.1]} radius={0.04} smoothness={3} position={[0, 0.02, 0]}>
           {mat()}
         </RoundedBox>
-        <mesh position={[0, 0.09, 0]}>
+        <mesh position={[0, 0.04, 0.062]}>
           <planeGeometry args={[0.98, 0.5]} />
           <meshStandardMaterial color="#15221d" emissive="#7fd8b8" emissiveIntensity={active ? 0.85 : 0.42} roughness={0.35} transparent={opacity < 1} opacity={opacity} />
         </mesh>
-        <mesh position={[0, 0.12, 0.4]}>
+        <mesh position={[0, -0.3, 0.08]}>
           <boxGeometry args={[0.98, 0.03, 0.02]} />
           {mat({ color: '#8c6a2f', metalness: 0.5 })}
         </mesh>
