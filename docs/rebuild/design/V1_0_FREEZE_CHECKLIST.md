@@ -10,7 +10,7 @@
 4. **档案/成长**：维护者档案（铭牌/外观/数据）、等级/XP、修亮灯数与掌握课节；无排行榜。
 5. **外观**：A 基线（纸/墨/黄铜 + 晴光街实景）；四模块名（校验册/街坊工坊/誊写房/委托板）；纸面主题默认。
 6. **小说切片**：22 章大版本作为游戏内「档案/阅读」可选内容（只读，不联网）。
-7. **双端包**：Web（主）、Android APK v14、Windows x64 zip；版本号 v0.9.8-alpha 对外标注「单机版」。
+7. **双端包**：Web（主）、Android APK v15（32,538,867B SHA `A2DEB04C…`）、Windows x64 zip（137,694,238B SHA `17AC0DE3…`）；版本号 v0.9.8-alpha 对外标注「单机版」。
 8. **官网**：`public/site/index.html` 落地页 + 下载区（SHA 校验、内测说明）+ 路线图（v1.0 单机 / v2.0 4v1）。
 
 ## 二、技术冻结项
@@ -25,9 +25,10 @@
 
 1. 10–20 人封闭试玩与反馈表（用户侧）。
 2. APK v14 / 桌面包本机双击实测记录（用户侧）。
-3. A 版胶囊 7 张 + 截图 6–7 张定稿（现有 6 + 工作坊 1，待审）。
-4. 预告片 v4（A 基线，60–75s，可后置但不晚于正式宣发）。
+3. ~~A 版胶囊 7 张 + 截图 7 张定稿~~ 已完成：`work/deliverables/store-a/`（14 文件 + MANIFEST + README）。
+4. ~~预告片 v4~~ 已完成：`work/deliverables/trailer-v4/` 中英双版（49s，1080p30，SHA 已记）。
 5. 关闭/隐藏所有「BETA」标记的时机与文案（保留内测标识至试玩结束）。
+6. 主界面入口 → 三单 → 返回全流程回归：**已完成**（`scripts/check-r1-flow.mjs`，5 图证据，入口回显 3/3）。
 
 ## 四、下一版本（v2.0 4v1，不在本冻结范围）
 
@@ -36,6 +37,7 @@
 ## 五、验收命令
 
 - `node scripts/check-r1-mission.mjs`（13/13）
+- `node scripts/check-r1-flow.mjs`（全流程 1/1，含入口与返回）
 - `node scripts/check-r1-tier2.mjs`（手机门槛）
 - `node --test tests/mission-r1.unit.mjs`（18/18）
 - `npx playwright test`（67/67）
