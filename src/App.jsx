@@ -445,6 +445,8 @@ function MainApp() {
               <span>
                 从 0 到 1，让好奇发生。 <a href="./site/index.html">关于本作 / 官网</a>
                 {' · '}
+                <a href="./novel/index.html">档案阅读</a>
+                {' · '}
                 <AssetPackEntry />
               </span>
             </footer>

@@ -49,3 +49,9 @@
 - 修复：hero 玻璃由 `@khvicha/react-liquid-glass` 改为纯 CSS `.hero-glass`（消除 React `lighting-color` 警告、去掉一个运行时依赖）；补 `public/favicon.svg` 并在 `index.html` / `site/index.html` 声明 icon（清除浏览器默认 favicon 404）。
 - 站点下载块版本号校准：APK 标注 v16 · 32.8MB（与 SHA 27CF1228… 一致）。
 - 仍待用户侧：APK/桌面安装实测、10–20 人试玩。
+
+## 小说切片（第 121 轮补）
+
+- 新增离线阅读页 `public/novel/index.html`：读取 `public/assets/novel/v1.md`（22 章全稿 100,418 字，416,075B），左侧章节目录、上一章/下一章、←/→ 键翻章、`sparkmate.checksum.novel.v1` 记住章节位置；纸/墨/黄铜样式与游戏一致。
+- 入口：官网导航「阅读档案」+ 游戏页脚「档案阅读」。
+- 验证：目录 22 条、切章标题正确、localStorage 记录 index、0 console error；截图 `work/acceptance/v1-smoke/novel2.png`。

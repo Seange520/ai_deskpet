@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<title>第七校验 · 流明域 档案阅读</title>
+<style>
+  :root{
+    --paper:#f3eddf; --paper-2:#ece3d2; --ink:#1b1a16; --ink-2:#4b463c;
+    --muted:#7b7263; --rule:#d8cbb3; --brass:#a9843f;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    background:
+      radial-gradient(1200px 600px at 70% -10%, #faf5e9 0%, rgba(250,245,233,0) 60%),
+      linear-gradient(180deg,var(--paper),var(--paper-2));
+    color:var(--ink);
+    font-family:"Noto Serif SC","Songti SC",Georgia,serif;
+    min-height:100vh;
+  }
+  a{color:var(--brass);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .top{
+    position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;
+    gap:16px;padding:14px 24px;border-bottom:1px solid var(--rule);
+    background:rgba(243,237,223,.92);backdrop-filter:blur(8px);
+  }
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.04em}
+  .brand svg{width:26px;height:26px}
+  .top .meta{color:var(--muted);font-size:12px;letter-spacing:.14em;text-transform:uppercase}
+  .top .back{font-size:13px;border:1px solid var(--rule);border-radius:999px;padding:6px 14px}
+  .wrap{display:grid;grid-template-columns:260px minmax(0,1fr);gap:36px;max-width:1180px;margin:0 auto;padding:28px 24px 80px}
+  @media (max-width:860px){.wrap{grid-template-columns:1fr;gap:18px;padding:18px 16px 60px}}
+  aside{position:sticky;top:74px;align-self:start;max-height:calc(100vh - 96px);overflow:auto;padding-right:8px}
+  @media (max-width:860px){aside{position:static;max-height:none;border-bottom:1px solid var(--rule);padding-bottom:12px}}
+  aside h2{font-size:12px;letter-spacing:.2em;color:var(--muted);font-weight:600;margin:0 0 10px;text-transform:uppercase}
+  .toc{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+  .toc button{
+    all:unset;cursor:pointer;display:flex;align-items:baseline;gap:8px;width:100%;
+    padding:7px 10px;border-radius:8px;font-size:14px;color:var(--ink-2);line-height:1.35;
+  }
+  .toc button:hover{background:rgba(169,132,63,.08)}
+  .toc button[aria-current="true"]{background:rgba(169,132,63,.14);color:var(--ink);font-weight:700}
+  .toc .num{font-size:11px;color:var(--muted);letter-spacing:.08em;min-width:24px}
+  article{max-width:44rem}
+  article h1{font-size:30px;line-height:1.35;margin:6px 0 8px;letter-spacing:.01em}
+  article .lead{color:var(--muted);font-size:13px;letter-spacing:.16em;text-transform:uppercase;margin:0 0 26px}
+  article p{font-size:16.5px;line-height:2.05;margin:0 0 1.15em;text-indent:2em}
+  article p.noindent{text-indent:0}
+  article hr{border:0;border-top:1px solid var(--rule);margin:34px 0}
+  article h2.sec{font-size:18px;letter-spacing:.06em;margin:28px 0 10px;color:var(--ink-2)}
+  .pager{display:flex;justify-content:space-between;gap:12px;margin-top:36px;padding-top:18px;border-top:1px solid var(--rule)}
+  .pager button{
+    cursor:pointer;font:inherit;font-size:14px;padding:9px 16px;border-radius:999px;
+    border:1px solid var(--rule);background:transparent;color:var(--ink-2);
+  }
+  .pager button:disabled{opacity:.35;cursor:default}
+  .pager button:hover:enabled{border-color:var(--brass);color:var(--brass)}
+  #status{color:var(--muted);font-size:14px;padding:40px 0}
+  .progress{font-size:11px;color:var(--muted);letter-spacing:.12em;margin-top:8px}
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="brand">
+    <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="12" fill="#f2ecdc"/><path d="M32 8 52 20v24L32 56 12 44V20Z" fill="none" stroke="#a9843f" stroke-width="3"/><text x="32" y="42" text-anchor="middle" font-family="Georgia,serif" font-size="26" fill="#1c1b17">7</text></svg>
+    <span>第七校验 · 流明域</span>
+  </div>
+  <div class="meta">Archive Reader · 单机档案</div>
+  <a class="back" href="../index.html">返回游戏 →</a>
+</div>
+<div class="wrap">
+  <aside>
+    <h2>章节目录</h2>
+    <ol class="toc" id="toc"></ol>
+    <div class="progress" id="progress"></div>
+  </aside>
+  <main>
+    <div id="status">正在读取档案……</div>
+    <article id="article" hidden></article>
+    <div class="pager" id="pager" hidden>
+      <button id="prev" type="button">← 上一章</button>
+      <button id="next" type="button">下一章 →</button>
+    </div>
+  </main>
+</div>
+<script>
+(async () => {
+  const status = document.getElementById('status');
+  const article = document.getElementById('article');
+  const pager = document.getElementById('pager');
+  const toc = document.getElementById('toc');
+  const progress = document.getElementById('progress');
+  const KEY = 'sparkmate.checksum.novel.v1';
+
+  let text = '';
+  try {
+    const res = await fetch('../assets/novel/v1.md', { cache: 'no-cache' });
+    if (!res.ok) throw new Error('http ' + res.status);
+    text = await res.text();
+  } catch (err) {
+    status.textContent = '档案读取失败：' + err.message + '。请通过本地服务器打开本页。';
+    return;
+  }
+
+  const lines = text.replace(/\r\n/g, '\n').split('\n');
+  const start = lines.findIndex((l) => /^#\s*第.+章/.test(l.trim()));
+  const bodyLines = start >= 0 ? lines.slice(start) : lines;
+  const chapters = [];
+  let current = null;
+  for (const line of bodyLines) {
+    const m = /^#\s+(.+)$/.exec(line.trim());
+    if (m) {
+      current = { title: m[1].trim(), body: [] };
+      chapters.push(current);
+    } else if (current) current.body.push(line);
+  }
+  if (!chapters.length) {
+    status.textContent = '档案为空。';
+    return;
+  }
+  status.hidden = true;
+  article.hidden = false;
+  pager.hidden = false;
+
+  let index = 0;
+  try {
+    const saved = JSON.parse(localStorage.getItem(KEY) || 'null');
+    if (saved && Number.isInteger(saved.index) && saved.index >= 0 && saved.index < chapters.length) index = saved.index;
+  } catch {}
+
+  const numLabel = (i) => String(i + 1).padStart(2, '0');
+  chapters.forEach((ch, i) => {
+    const li = document.createElement('li');
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.dataset.i = String(i);
+    btn.innerHTML = '<span class="num">' + numLabel(i) + '</span><span>' + escapeHtml(ch.title) + '</span>';
+    btn.addEventListener('click', () => show(i));
+    li.appendChild(btn);
+    toc.appendChild(li);
+  });
+
+  function escapeHtml(s) {
+    return s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  }
+
+  function renderBody(body) {
+    const out = [];
+    let tight = false;
+    for (const raw of body) {
+      const line = raw.trim();
+      if (!line) continue;
+      if (/^(---+|\*\*\*+)$/.test(line)) { out.push('<hr/>'); tight = false; continue; }
+      if (/^##\s+/.test(line)) { out.push('<h2 class="sec">' + escapeHtml(line.replace(/^##\s+/, '')) + '</h2>'); tight = false; continue; }
+      const quote = /^>\s?/.test(line);
+      const bullet = /^[*-]\s+/.test(line);
+      const clean = escapeHtml(line.replace(/^>\s?/, '').replace(/^[*-]\s+/, ''));
+      out.push('<p' + (quote || bullet ? ' class="noindent"' : '') + '>' + (bullet ? '· ' : '') + clean + '</p>');
+      tight = clean.length < 24;
+    }
+    return out.join('\n');
+  }
+
+  function show(i) {
+    index = Math.max(0, Math.min(chapters.length - 1, i));
+    const ch = chapters[index];
+    article.innerHTML =
+      '<p class="lead">THE SEVENTH CHECKSUM · LUMEN REACH</p>' +
+      '<h1>' + escapeHtml(ch.title) + '</h1>' +
+      renderBody(ch.body);
+    article.scrollIntoView({ block: 'start' });
+    window.scrollTo({ top: 0, behavior: 'auto' });
+    document.querySelectorAll('#toc button').forEach(b => {
+      b.setAttribute('aria-current', String(Number(b.dataset.i) === index));
+    });
+    progress.textContent = (index + 1) + ' / ' + chapters.length;
+    document.getElementById('prev').disabled = index === 0;
+    document.getElementById('next').disabled = index === chapters.length - 1;
+    try { localStorage.setItem(KEY, JSON.stringify({ index })); } catch {}
+    history.replaceState(null, '', '#ch' + (index + 1));
+  }
+
+  document.getElementById('prev').addEventListener('click', () => show(index - 1));
+  document.getElementById('next').addEventListener('click', () => show(index + 1));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') show(index + 1);
+    if (e.key === 'ArrowLeft') show(index - 1);
+  });
+  const hash = /^#ch(\d+)$/.exec(location.hash);
+  show(hash ? Number(hash[1]) - 1 : index);
+})();
+</script>
+</body>
+</html>
