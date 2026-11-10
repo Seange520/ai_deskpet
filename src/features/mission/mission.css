@@ -498,3 +498,13 @@
 }
 
 .mission-exit:hover { color: var(--ink, #2b2822); border-color: var(--ink, #2b2822); }
+
+@media (max-width: 560px) {
+  .mission-heading .mission-field-name {
+    display: none;
+  }
+  .mission-heading .mission-progress {
+    display: block;
+    white-space: nowrap;
+  }
+}

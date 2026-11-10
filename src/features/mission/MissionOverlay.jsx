@@ -65,8 +65,13 @@ export default function MissionOverlay() {
         </div>
         <div className="mission-heading">
           <small>
-            晴光街 / FIELD COMMISSION {order.id} · {s.orderIndex + 1} OF 3
-            <span className="mission-progress" data-progress="{(progress?.completed?.length ?? 0)}/3">
+            <span className="mission-field-name">
+              晴光街 / FIELD COMMISSION {order.id} · {s.orderIndex + 1} OF 3
+            </span>
+            <span
+              className="mission-progress"
+              data-progress={`${progress?.completed?.length ?? 0}/3`}
+            >
               · 已完成 {progress?.completed?.length ?? 0}/3
             </span>
           </small>

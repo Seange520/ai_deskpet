@@ -333,6 +333,9 @@
   transform: none;
 }
 @media (max-width: 700px) {
+  .relic-overlay {
+    display: none;
+  }
   .relic-overlay .relic-hotspot {
     left: auto;
     right: 12px;
