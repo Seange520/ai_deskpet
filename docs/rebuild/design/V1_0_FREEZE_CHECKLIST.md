@@ -61,3 +61,4 @@
 - `public/sw.js`（v1.0.2）+ `scripts/gen-sw-manifest.mjs`：首次打开后预缓存 244 个文件（8.7MB，代码/文本/GLB/小图），`package.json` build 自动生成 `dist/sw-manifest.json`；生产构建才注册 SW。
 - 实测（`npx vite preview --port 15265`，Chromium）：在线首访 → 等待 SW ready → `context.setOffline(true)` → reload，主页/委托三单/档案阅读页均可离线渲染，0 console error；缓存策略 cache-first + ignoreVary（Vite preview 的 Vary 头会导致默认匹配失败）。
 - 产物：`work/acceptance/v1-offline/offline4.png`（离线主页）、novel/mission 路由文字校验通过。
+- 复验命令：`npm run build` → `npx vite preview --port 15265` → `node scripts/check-offline.mjs`（期望 passed: true、三段路由文字非空、0 error）。
