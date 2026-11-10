@@ -11,6 +11,7 @@ import GrowthOverview from './GrowthOverview';
 import RouteTaskMatrix from './RouteTaskMatrix';
 import AchievementSummary from './AchievementSummary';
 import { getHardwareRoute } from '../data/hardwareRoutes';
+import { readMissionProgress } from '../features/mission/missionProgress.mjs';
 import {
   ArrowUpRight,
   ArrowRight,
@@ -48,6 +49,7 @@ export default function Dashboard({
   onChooseRoute,
 }) {
   const route = getHardwareRoute(routeId);
+  const missionDone = readMissionProgress().completed.length;
   const achievementsRef = useRef(null);
   useDashboardDepth(achievementsRef);
   // 当前路线关卡与全局徽章均来自 Zustand；重复练习不重复奖励。
@@ -135,7 +137,7 @@ export default function Dashboard({
               <ArrowRight size={17} />
             </Button>
             <a className="btn mission-entry" href="/?mission=r1&quality=3">
-              校验委托 · 抢修 <span>BETA</span>
+              校验委托 · 抢修 {missionDone > 0 && <em>{missionDone}/3</em>} <span>BETA</span>
             </a>
           </div>
           <div className="guest-entry">

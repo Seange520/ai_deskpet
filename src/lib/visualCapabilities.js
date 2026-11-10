@@ -25,5 +25,6 @@ export const QUALITY_BUDGETS = Object.freeze({
   0: { maxDpr: 1, environment: false },
   1: { maxDpr: 1, environment: false },
   2: { maxDpr: 1.25, environment: true },
-  3: { maxDpr: 1.5, environment: true },
+  // 无大世界开放负载：Tier 3 放开到 2× DPR（RTX/高分屏可吃满）
+  3: { maxDpr: 2, environment: true },
 });

@@ -35,6 +35,6 @@ test('GPU detection can lower but cannot promote constrained devices or auto-ena
   assert.equal(detectedQualityTier(2, { tier: 1, type: 'FALLBACK' }), 2);
   assert.deepEqual(
     Object.values(QUALITY_BUDGETS).map((b) => b.maxDpr),
-    [1, 1, 1.25, 1.5],
+    [1, 1, 1.25, 2],
   );
 });

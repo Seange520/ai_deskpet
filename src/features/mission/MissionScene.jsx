@@ -35,7 +35,8 @@ export default function MissionScene({ maxDpr }) {
       useMission.setState({ error: '无法启动 WebGL，请检查浏览器硬件加速后重试。' });
       return;
     }
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, maxDpr, 1.5));
+    // Tier 3 上限由 QUALITY_BUDGETS 给到 2×，场景内不再额外压到 1.5。
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, maxDpr));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
     renderer.toneMappingExposure = 1.05;
@@ -50,7 +51,9 @@ export default function MissionScene({ maxDpr }) {
     const sun = new THREE.DirectionalLight('#ffdab0', 3);
     sun.position.set(-6, 12, 7);
     sun.castShadow = true;
-    sun.shadow.mapSize.set(2048, 2048);
+    // 无大世界负载：Tier 3（maxDpr≥2）升到 4096 阴影图，Tier 2 以下保持 2048。
+  const shadowSize = maxDpr >= 2 ? 4096 : 2048;
+  sun.shadow.mapSize.set(shadowSize, shadowSize);
     sun.shadow.camera.left = -24;
     sun.shadow.camera.right = 24;
     sun.shadow.camera.top = 18;

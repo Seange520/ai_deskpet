@@ -20,7 +20,7 @@ export function advancedQualityEffects(tier, step) {
 
 const defaults = { manual: false, preset: 'balanced', customTier: 2, customDpr: 1.25 };
 const tiers = [1, 2, 3];
-const dprs = [1, 1.25, 1.5];
+const dprs = [1, 1.25, 1.5, 1.75, 2];
 
 export const useQualityStore = create(
   persist(
