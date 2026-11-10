@@ -116,7 +116,7 @@ export default function HardwareConnectionPanel() {
       </div>
       <BrowserDemoPanel />
       <p className="hardware-connection-help">
-        USB 接收真实 ESP32 读数；没有硬件也可直接开启上方的浏览器光感演示。离开代码工坊后断开连接。
+        USB 接收真实 ESP32 读数；没有硬件也可直接开启上方的浏览器光感演示。离开誊写房后断开连接。
       </p>
       <p
         className={

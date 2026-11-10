@@ -11,7 +11,7 @@ const results = [];
 try {
   await page.goto((process.env.SPARKMATE_SPACE_URL || 'http://127.0.0.1:15262') + '/?quality=1');
   await expect(page.locator('.render-shell')).toHaveAttribute('data-stage-ready', 'true');
-  for (const name of ['学习仪表盘', '硬件实验室', '代码魔改工坊', '创客排位', '返回大世界']) {
+  for (const name of ['校验册', '街坊工坊', '誊写房', '委托板', '返回大世界']) {
     await page.getByRole('button', { name, exact: true }).click();
     await expect(page.locator('.app-shell')).toHaveAttribute(
       'data-space-phase',

@@ -30,7 +30,7 @@ for (const width of [1440, 320]) {
     const page = await context.newPage(), errors = [];
     page.on('pageerror', (error) => errors.push(error.message));
     await page.goto(baseURL);
-    await page.getByRole('button', { name: '代码魔改工坊', exact: true }).click();
+    await page.getByRole('button', { name: '誊写房', exact: true }).click();
     const panel = page.getByRole('region', { name: '浏览器光感演示', exact: true });
     const hardware = page.getByRole('region', { name: '真实硬件连接', exact: true });
     const scene = page.getByTestId('deskpet3d-scene');

@@ -17,7 +17,7 @@ try {
     try {
       const main = await context.newPage();
       await main.goto(baseURL);
-      await expect(main.getByRole('button', { name: '代码魔改工坊', exact: true })).toBeVisible();
+      await expect(main.getByRole('button', { name: '誊写房', exact: true })).toBeVisible();
       await main.evaluate(async (scenario) => {
         const { useLearningStore } = await import('/src/stores/useLearningStore.js');
         if (scenario === 'progress') {

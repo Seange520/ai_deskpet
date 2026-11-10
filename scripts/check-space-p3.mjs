@@ -101,7 +101,7 @@ try {
       await ready(page);
       const canvas = await stage(page).locator('canvas').elementHandle();
       expect(hits).toBe(0);
-      const ranking = nav(page, '创客排位');
+      const ranking = nav(page, '委托板');
       await ranking.hover();
       await expect.poll(() => hits).toBe(1);
       await expect(warning(page)).toHaveCount(0);
@@ -110,7 +110,7 @@ try {
       await expect(shell(page)).toHaveAttribute('data-space-focus', 'ranking');
       await expect(warning(page)).toBeVisible();
       await expect.poll(() => read(page).then((s) => s.islands.ranking.placeholder)).toBe(true);
-      await expect(page.getByRole('heading', { name: /创客排位，/ })).toBeVisible();
+      await expect(page.getByRole('heading', { name: /委托板，/ })).toBeVisible();
       expect(
         await stage(page)
           .locator('canvas')
@@ -169,10 +169,10 @@ try {
       const saved = await page.evaluate(() => JSON.stringify(localStorage));
       const circuit = async () => {
         for (const [id, name] of [
-          ['hardware', '硬件实验室'],
-          ['code', '代码魔改工坊'],
-          ['ranking', '创客排位'],
-          ['dashboard', '学习仪表盘'],
+          ['hardware', '街坊工坊'],
+          ['code', '誊写房'],
+          ['ranking', '委托板'],
+          ['dashboard', '校验册'],
         ]) {
           await nav(page, name).click();
           await expect(shell(page)).toHaveAttribute('data-space-focus', id);
@@ -259,7 +259,7 @@ try {
         .toBeLessThan(second.textures);
       const third = await read(page);
       expect(third.effects).toEqual(['ToneMappingEffect', 'VignetteEffect', 'FXAAEffect']);
-      await nav(page, '硬件实验室').click();
+      await nav(page, '街坊工坊').click();
       await expect(shell(page)).toHaveAttribute('data-space-phase', 'entering');
       await expect(page.locator('.render-shell')).toHaveAttribute('data-quality-tier', '1');
       await expect(shell(page)).toHaveAttribute('data-space-phase', 'detail');

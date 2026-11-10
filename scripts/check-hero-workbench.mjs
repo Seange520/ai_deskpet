@@ -105,7 +105,7 @@ try {
   checks.push('Reduced motion and 767px fine pointer: flat static background, no particle canvas');
   await page.setViewportSize({ width: 1440, height: 1080 });
   await expect(hero).toHaveAttribute('data-active', 'true');
-  const button = page.getByRole('button', { name: '进入硬件实验室', exact: true });
+  const button = page.getByRole('button', { name: '进入街坊工坊', exact: true });
   await button.hover();
   await page.mouse.down();
   await expect(button.locator('.button-ripple')).toHaveCount(1);
@@ -117,7 +117,7 @@ try {
   for (let i = 0; i < 2; i++) {
     await page.getByRole('button', { name: 'SparkMate 首页' }).click();
     await expect(hero).toHaveAttribute('data-active', 'true');
-    await page.getByRole('button', { name: '硬件实验室', exact: true }).click();
+    await page.getByRole('button', { name: '街坊工坊', exact: true }).click();
     await expect(page.locator('.hero-particles')).toHaveCount(0);
     await stopped();
   }

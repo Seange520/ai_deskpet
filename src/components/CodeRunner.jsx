@@ -52,7 +52,7 @@ export default function CodeRunner() {
             {celebration.levelId} 通关！
             {celebration.nextId ? '已解锁 ' + celebration.nextId : '四关挑战全部完成！'}
           </strong>
-          <span>回到学习仪表盘查看路线。原有 XP 与关卡记录保持不变。</span>
+          <span>回到校验册查看路线。原有 XP 与关卡记录保持不变。</span>
           <div className="challenge-confetti" aria-hidden="true">
             {Array.from({ length: 18 }, (_, i) => (
               <i

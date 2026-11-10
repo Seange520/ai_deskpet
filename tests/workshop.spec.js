@@ -27,7 +27,7 @@ for (const route of routes) {
     ).toBeVisible();
     if (route.id === 'quadruped') await expect(page.getByRole('dialog')).toContainText('× 8');
     await page.getByRole('button', { name: '关闭弹窗' }).press('Escape');
-    await page.getByRole('button', { name: '代码魔改工坊', exact: true }).click();
+    await page.getByRole('button', { name: '誊写房', exact: true }).click();
     await expect(page.locator('.editor')).toContainText(route.code);
     await expect(page.getByRole('button', { name: '上传（模拟）' })).toBeDisabled();
     await page.getByRole('button', { name: '验证（模拟）' }).click();
@@ -72,7 +72,7 @@ for (const route of routes) {
 
 test('VCC 误接 GND 的全屏模拟烧板、键盘焦点与重置恢复', async ({ page }) => {
   await page.goto('/');
-  await page.getByRole('button', { name: '硬件实验室', exact: true }).click();
+  await page.getByRole('button', { name: '街坊工坊', exact: true }).click();
   const a = await page.getByRole('button', { name: '麦克风 VCC 引脚', exact: true }).boundingBox();
   const b = await page.getByRole('button', { name: '主板 GND 引脚', exact: true }).boundingBox();
   await page.mouse.move(a.x + a.width / 2, a.y + a.height / 2);
@@ -93,7 +93,7 @@ test('VCC 误接 GND 的全屏模拟烧板、键盘焦点与重置恢复', async
   await reset.click();
   await expect(failure).toHaveCount(0);
   await expect(page.locator('.app-shell')).not.toHaveAttribute('inert');
-  await expect(page.getByRole('button', { name: /前往代码魔改工坊/ })).toBeDisabled();
+  await expect(page.getByRole('button', { name: /前往誊写房/ })).toBeDisabled();
   for (const [source, target] of [
     ['VCC', '3V3'],
     ['GND', 'GND'],
@@ -101,14 +101,14 @@ test('VCC 误接 GND 的全屏模拟烧板、键盘焦点与重置恢复', async
     await page.getByRole('button', { name: `麦克风 ${source} 引脚`, exact: true }).press('Enter');
     await page.getByRole('button', { name: `主板 ${target} 引脚`, exact: true }).press('Enter');
   }
-  await expect(page.getByRole('button', { name: /前往代码魔改工坊/ })).toBeEnabled();
+  await expect(page.getByRole('button', { name: /前往誊写房/ })).toBeEnabled();
   await expect(page.locator('.experience-text')).toContainText('250');
 });
 
 test('避坑提示按路线切换，普通信号接错仅红线，不触发烧板', async ({ page }) => {
   await page.goto('/');
   await unlockThrough(page);
-  await page.getByRole('button', { name: '硬件实验室', exact: true }).click();
+  await page.getByRole('button', { name: '街坊工坊', exact: true }).click();
   await expect(page.getByRole('region', { name: '创客避坑指南' })).toContainText('VCC 和 GND');
   await page.getByLabel('切换路线', { exact: true }).selectOption('quadruped');
   await expect(page.getByRole('region', { name: '创客避坑指南' })).toContainText('8个舵机同时转动');

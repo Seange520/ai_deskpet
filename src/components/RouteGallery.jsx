@@ -23,7 +23,7 @@ export default function RouteGallery({ routeId, onChoose }) {
     <section className="route-gallery" aria-labelledby="route-gallery-title">
       <div className="section-title">
         <h2 id="route-gallery-title">选择你的创造路线</h2>
-        <span>从 L1 出发，在代码工坊通关后解锁下一条路线。</span>
+        <span>从 L1 出发，在誊写房通关后解锁下一条路线。</span>
       </div>
       <div className="route-grid">
         {hardwareRoutes.map((route) => {

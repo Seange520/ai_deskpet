@@ -101,7 +101,7 @@ try {
   );
   await low
     .getByRole('navigation', { name: '主导航' })
-    .getByRole('button', { name: '代码魔改工坊', exact: true })
+    .getByRole('button', { name: '誊写房', exact: true })
     .click();
   await expect(low.getByLabel('桌宠伪代码', { exact: true })).toBeVisible();
   await low.close();

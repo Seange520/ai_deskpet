@@ -90,7 +90,7 @@ for (const route of cases) {
       await expect(page.getByRole('alertdialog')).toContainText('BOOM！');
       await page.getByRole('button', { name: '重置模拟开发板' }).click();
     }
-    await expect(page.getByRole('button', { name: /前往代码魔改工坊/ })).toBeDisabled();
+    await expect(page.getByRole('button', { name: /前往誊写房/ })).toBeDisabled();
     for (const [source, target] of route.pairs) {
       if (route.id === 'spherical') {
         await page.locator('.wiring-stage').scrollIntoViewIfNeeded();
@@ -119,7 +119,7 @@ for (const route of cases) {
         })
         .press('Enter');
     }
-    await expect(page.getByRole('button', { name: /前往代码魔改工坊/ })).toBeEnabled();
+    await expect(page.getByRole('button', { name: /前往誊写房/ })).toBeEnabled();
     await expect(page.locator('.experience-text')).toContainText('250');
     if (route.id === 'quadruped' || route.id === 'spherical') {
       await page.mouse.move(1, 1);
@@ -138,9 +138,9 @@ for (const route of cases) {
     await page.reload();
     await expect(page.locator('.project-chip')).toContainText(route.name);
     await expect(page.locator('.experience-text')).toContainText('350');
-    await page.getByRole('button', { name: '硬件实验室', exact: true }).click();
+    await page.getByRole('button', { name: '街坊工坊', exact: true }).click();
     await expect(page.getByLabel('切换路线', { exact: true })).toHaveValue(route.id);
-    await expect(page.getByRole('button', { name: /前往代码魔改工坊/ })).toBeEnabled();
+    await expect(page.getByRole('button', { name: /前往誊写房/ })).toBeEnabled();
     expect(errors).toEqual([]);
   });
 }
@@ -148,14 +148,14 @@ for (const route of cases) {
 test('切换时清除未完成的接线、拖线与警告，不串用物料勾选和成就', async ({ page }) => {
   await page.goto('/');
   await unlockThrough(page);
-  await page.getByRole('button', { name: '硬件实验室', exact: true }).click();
+  await page.getByRole('button', { name: '街坊工坊', exact: true }).click();
   await page.getByRole('button', { name: '麦克风 VCC 引脚', exact: true }).press('Enter');
   await page.getByRole('button', { name: '主板 3V3 引脚', exact: true }).press('Enter');
   await page.getByRole('button', { name: '麦克风 GND 引脚', exact: true }).press('Enter');
   await page.getByLabel('切换路线', { exact: true }).selectOption('quadruped');
   await expect(page.getByRole('button', { name: '舵机 PWM 引脚', exact: true })).toBeVisible();
   await expect(page.locator('.wiring-svg path')).toHaveCount(0);
-  await expect(page.getByRole('button', { name: /前往代码魔改工坊/ })).toBeDisabled();
+  await expect(page.getByRole('button', { name: /前往誊写房/ })).toBeDisabled();
   await page.getByRole('button', { name: '准备物料 · 迷你四足机器狗', exact: true }).click();
   await page.getByRole('checkbox').first().check();
   await page.getByLabel('物料路线', { exact: true }).selectOption('spherical');
@@ -178,7 +178,7 @@ test('旧进度迁移到经典路线，其他路线独立，重置清空全部�
   await page.goto('/');
   await unlockThrough(page);
   await expect(page.locator('.experience-text')).toContainText('350');
-  await page.getByRole('button', { name: '硬件实验室', exact: true }).click();
+  await page.getByRole('button', { name: '街坊工坊', exact: true }).click();
   await page.getByLabel('切换路线', { exact: true }).selectOption('quadruped');
   await expect(page.locator('.experience-text')).toContainText('350 / 2200 XP');
   await page.getByLabel('切换路线', { exact: true }).selectOption('classic');

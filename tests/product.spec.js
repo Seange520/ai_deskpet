@@ -7,7 +7,7 @@ test('访客免登录入口与常驻伙伴的好奇反馈', async ({ page }) => 
   await expect(page.locator('.companion-bubble')).toContainText('在看什么');
   await page.getByRole('button', { name: '零门槛体验 · 虚拟连线' }).click();
   await expect(page.getByRole('heading', { name: /认识它/ })).toBeVisible();
-  await page.getByRole('button', { name: '学习仪表盘', exact: true }).click();
+  await page.getByRole('button', { name: '校验册', exact: true }).click();
   await page.getByRole('button', { name: /直接体验代码调参/ }).click();
   await expect(page.getByRole('slider')).toBeVisible();
   await page.getByRole('button', { name: '星云紫', exact: true }).click();
@@ -39,8 +39,8 @@ test('排行榜明确展示 Mock 数据与本机积分，手机不溢出', async
     ),
   );
   await page.goto('/');
-  await page.getByRole('button', { name: '创客排位', exact: true }).click();
-  await expect(page.getByRole('heading', { name: /创客排位/ })).toBeVisible();
+  await page.getByRole('button', { name: '委托板', exact: true }).click();
+  await expect(page.getByRole('heading', { name: /委托板/ })).toBeVisible();
   await expect(page.locator('.rank-board')).toContainText('示例数据');
   await expect(page.locator('.rank-board li.is-you')).toContainText('350');
   await expect(page.locator('.rank-summary')).toContainText('第 4 名');
@@ -56,7 +56,7 @@ test('毕业证书、作品卡下载和商城转化闭环', async ({ page }) => 
     Object.defineProperty(navigator, 'canShare', { value: () => false, configurable: true });
   });
   await page.goto('/');
-  await page.getByRole('button', { name: '代码魔改工坊', exact: true }).click();
+  await page.getByRole('button', { name: '誊写房', exact: true }).click();
   await page.getByRole('button', { name: '星云紫', exact: true }).click();
   await page.getByRole('button', { name: /唤醒伙伴 · 领取/ }).click();
   await expect(page.getByRole('dialog')).toContainText('毕业证书');

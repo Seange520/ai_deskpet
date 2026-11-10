@@ -38,7 +38,7 @@ for (const width of [320, 768, 1440]) {
     await expect(cards.nth(2).locator('.route-status')).toContainText('未解锁');
     await expect(cards.nth(2).getByRole('progressbar')).toHaveAttribute('value', '0');
     await cards.nth(1).getByRole('button', { name: '探索迷你四足机器狗', exact: true }).click();
-    await page.getByRole('button', { name: '学习仪表盘', exact: true }).click();
+    await page.getByRole('button', { name: '校验册', exact: true }).click();
     await expect(cards.nth(1).locator('.route-status')).toHaveText('当前路线');
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
       true,

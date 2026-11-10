@@ -238,7 +238,7 @@ try {
   await page.evaluate(() => {
     document.startViewTransition = undefined;
   });
-  await page.getByRole('button', { name: '硬件实验室', exact: true }).click();
+  await page.getByRole('button', { name: '街坊工坊', exact: true }).click();
   await expect(page.getByRole('heading', { name: /认识它/ })).toBeVisible();
   assert.equal(
     await page.locator('.page-transition').evaluate((e) => getComputedStyle(e).animationDuration),
@@ -255,10 +255,10 @@ try {
     document.startViewTransition = window.originalCameraAPI;
   });
   await page.evaluate(() => {
-    for (const name of ['代码魔改工坊', '硬件实验室', '创客排位', '学习仪表盘'])
+    for (const name of ['誊写房', '街坊工坊', '委托板', '校验册'])
       document.querySelector('button[aria-label="' + name + '"]').click();
   });
-  await expect(page.getByRole('button', { name: '学习仪表盘', exact: true })).toHaveAttribute(
+  await expect(page.getByRole('button', { name: '校验册', exact: true })).toHaveAttribute(
     'aria-current',
     'page',
   );
@@ -273,7 +273,7 @@ try {
   const reduced = await open({ reducedMotion: 'reduce' });
   await expect(reduced.locator('.aurora-field')).toHaveAttribute('data-state', 'static');
   await stableDraws(reduced);
-  await reduced.getByRole('button', { name: '硬件实验室', exact: true }).click();
+  await reduced.getByRole('button', { name: '街坊工坊', exact: true }).click();
   await expect(reduced.getByRole('heading', { name: /认识它/ })).toBeVisible();
   assert.equal(
     await reduced
@@ -295,7 +295,7 @@ try {
     const p = await open(options, fault);
     await expect(p.locator('.aurora-field')).toHaveCount(0);
     await expect(p.locator('.hero-particles')).toHaveCount(0);
-    await p.getByRole('button', { name: '硬件实验室', exact: true }).click();
+    await p.getByRole('button', { name: '街坊工坊', exact: true }).click();
     await expect(p.getByRole('heading', { name: /认识它/ })).toBeVisible();
     assert.equal(await p.evaluate(() => nativeTransitions.length), 0);
     assert(await p.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
@@ -306,7 +306,7 @@ try {
     const p = await open({}, fault);
     await expect(p.locator('.aurora-field')).toHaveAttribute('data-state', 'fallback');
     await expect(p.locator('.aurora-field')).toBeHidden();
-    await expect(p.getByRole('button', { name: '进入硬件实验室', exact: true })).toBeVisible();
+    await expect(p.getByRole('button', { name: '进入街坊工坊', exact: true })).toBeVisible();
     await p.close();
   }
   await page

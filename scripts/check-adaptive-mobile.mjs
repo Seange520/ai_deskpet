@@ -123,7 +123,7 @@ try {
       }
       await page.setViewportSize({ width: 390, height: 844 });
     }
-    await page.getByRole('button', { name: '代码魔改工坊', exact: true }).click();
+    await page.getByRole('button', { name: '誊写房', exact: true }).click();
     await noOverflow();
     await expect(page.getByRole('button', { name: '连接真实 ESP32', exact: true })).toBeDisabled();
     await expect(page.getByTestId('hardware-connection-status')).toContainText(

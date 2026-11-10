@@ -146,10 +146,10 @@ try {
       }
       if (tier !== 1) {
         // Real teaching runner lights the eyes; it awards no XP or lesson completion.
-        await page.getByRole('button', { name: '代码魔改工坊', exact: true }).click();
+        await page.getByRole('button', { name: '誊写房', exact: true }).click();
         await page.getByLabel('桌宠伪代码', { exact: true }).fill('move("stop"); light("on");');
         await page.getByRole('button', { name: '运行代码', exact: true }).click();
-        await page.getByRole('button', { name: '学习仪表盘', exact: true }).click();
+        await page.getByRole('button', { name: '校验册', exact: true }).click();
         await page.waitForTimeout(600);
         await page.screenshot({ path: out + '/tier' + tier + '.png' });
         if (tier === 0)
@@ -180,8 +180,8 @@ try {
       expect((await read(page)).time).toBe(time);
       const canvas = await page.locator('.scene-stage canvas').elementHandle();
       for (let i = 0; i < 4; i++) {
-        await page.getByRole('button', { name: '硬件实验室', exact: true }).click();
-        await page.getByRole('button', { name: '学习仪表盘', exact: true }).click();
+        await page.getByRole('button', { name: '街坊工坊', exact: true }).click();
+        await page.getByRole('button', { name: '校验册', exact: true }).click();
       }
       expect(
         await page.locator('.scene-stage canvas').evaluate((node, old) => node === old, canvas),

@@ -88,7 +88,7 @@ try {
       await import('/src/features/environment/useEnvironmentStore.js');
     useEnvironmentStore.getState().setMode('day');
   });
-  await nav('学习仪表盘').click();
+  await nav('校验册').click();
   await expect(p.locator('.app-shell')).toHaveAttribute('data-space-phase', 'detail');
   await p.getByRole('button', { name: '查看维护者石碑' }).click();
   await expect(p.locator('.relic-message')).toContainText('七道刻痕');
@@ -208,12 +208,12 @@ try {
   await expect(p.locator('[data-testid="deskpet3d-scene"]')).toHaveAttribute('data-form', 'Spark');
   check('475 XP 保持 Spark / 复位回退', boundary);
   await inject(false);
-  await nav('硬件实验室').click();
+  await nav('街坊工坊').click();
   await expect(p.locator('.app-shell')).toHaveAttribute('data-space-phase', 'detail');
   await p.getByRole('button', { name: '⌁ 残响议会的总线遗物', exact: true }).click();
   await expect(p.locator('.lore-memory')).toContainText('最后一次握手');
   await shot('m3-echo');
-  await nav('代码魔改工坊').click();
+  await nav('誊写房').click();
   await expect(p.locator('.app-shell')).toHaveAttribute('data-space-phase', 'detail');
   await p.getByRole('button', { name: '⌁ 未退出的循环残骸', exact: true }).click();
   await expect(p.locator('.lore-memory')).toContainText('为循环留下出口');

@@ -46,7 +46,7 @@ try {
     const errors = [];
     page.on('pageerror', (error) => errors.push(error.message));
     await page.goto(url);
-    await page.getByRole('button', { name: '代码魔改工坊', exact: true }).click();
+    await page.getByRole('button', { name: '誊写房', exact: true }).click();
     const panel = page.getByTestId('firmware-generator');
     const business = () =>
       page.evaluate(async () => ({
@@ -93,7 +93,7 @@ try {
     }
     await panel.locator('summary').click();
     await expect(code).not.toBeVisible();
-    await page.getByRole('button', { name: '学习仪表盘', exact: true }).click();
+    await page.getByRole('button', { name: '校验册', exact: true }).click();
     await expect(page.getByRole('heading', { name: /每个伟大的创造/ })).toBeVisible();
     expect(errors).toEqual([]);
     report[mode] =

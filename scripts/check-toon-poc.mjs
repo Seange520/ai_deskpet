@@ -153,7 +153,7 @@ try {
       read(p).then((s) => s.effects.some((e) => e.name === 'OutlineEffect' && e.count > 0)),
     )
     .toBe(true);
-  await nav(p, '学习仪表盘').click();
+  await nav(p, '校验册').click();
   await expect(p.locator('.app-shell')).toHaveAttribute('data-space-phase', 'detail');
   let s = await read(p);
   expect(
@@ -173,7 +173,7 @@ try {
   });
   const saved = await p.evaluate(() => localStorage.getItem('sparkmate.routes.v2'));
   const canvas = await p.locator('.scene-stage canvas').elementHandle();
-  for (const name of ['硬件实验室', '代码魔改工坊', '创客排位', '学习仪表盘']) {
+  for (const name of ['街坊工坊', '誊写房', '委托板', '校验册']) {
     await nav(p, name).click();
     await expect(p.locator('.app-shell')).toHaveAttribute('data-space-phase', 'detail');
     expect(
@@ -182,10 +182,10 @@ try {
   }
   expect(await p.evaluate(() => localStorage.getItem('sparkmate.routes.v2'))).toBe(saved);
   results.push({ name: 'Four-island navigation and canvas identity; learning save unchanged' });
-  await nav(p, '代码魔改工坊').click();
+  await nav(p, '誊写房').click();
   await p.getByLabel('桌宠伪代码', { exact: true }).fill('move("stop"); light("on");');
   await p.getByRole('button', { name: '运行代码', exact: true }).click();
-  await nav(p, '学习仪表盘').click();
+  await nav(p, '校验册').click();
   await expect
     .poll(() =>
       read(p).then((s) => s.pet.filter((m) => m.name === 'command-eye').map((m) => m.emission)),
@@ -244,19 +244,19 @@ try {
       .loseContext();
   });
   await expect(p.locator('canvas')).toHaveCount(0);
-  await nav(p, '硬件实验室').click();
+  await nav(p, '街坊工坊').click();
   await expect(p.getByRole('button', { name: '拆解', exact: true })).toBeVisible();
   results.push({ name: 'Real WebGL context loss falls back to functional zero-canvas DOM' });
   await p.close();
   const dom = await open('dom');
   await expect(dom.locator('canvas')).toHaveCount(0);
-  await nav(dom, '代码魔改工坊').click();
+  await nav(dom, '誊写房').click();
   await expect(dom.getByLabel('桌宠伪代码', { exact: true })).toBeVisible();
   await shot(dom, 'toon-dom');
   results.push({ name: 'Explicit quality=dom: zero canvas and working code workshop' });
   await dom.close();
   const flight = await open(3, 'no-preference');
-  await nav(flight, '学习仪表盘').click();
+  await nav(flight, '校验册').click();
   await expect(flight.locator('.app-shell')).toHaveAttribute('data-space-phase', 'detail', {
     timeout: 15000,
   });
@@ -269,9 +269,9 @@ try {
   await expect(flight.locator('.app-shell')).toHaveAttribute('data-space-phase', 'idle', {
     timeout: 15000,
   });
-  await nav(flight, '硬件实验室').click();
+  await nav(flight, '街坊工坊').click();
   await flight.waitForTimeout(200);
-  await nav(flight, '代码魔改工坊').click();
+  await nav(flight, '誊写房').click();
   await expect(flight.locator('.app-shell')).toHaveAttribute('data-space-phase', 'detail', {
     timeout: 15000,
   });

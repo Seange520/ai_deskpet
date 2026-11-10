@@ -41,12 +41,12 @@ for (const width of [320, 390, 768, 1024, 1440, 1920]) {
     });
     if (width === 1440 || width === 390)
       await page.screenshot({ path: `test-results/layout-${width}.png` });
-    await page.getByRole('button', { name: '硬件实验室', exact: true }).click();
+    await page.getByRole('button', { name: '街坊工坊', exact: true }).click();
     await expect(page.getByRole('heading', { name: /认识它/ })).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
       width,
     );
-    await page.getByRole('button', { name: '代码魔改工坊', exact: true }).click();
+    await page.getByRole('button', { name: '誊写房', exact: true }).click();
     await expect(page.getByRole('slider')).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
       width,
@@ -57,7 +57,7 @@ for (const width of [320, 390, 768, 1024, 1440, 1920]) {
 test('按钮按压缩放与卡片呼吸边缘', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await page.goto('/');
-  const button = page.getByRole('button', { name: '进入硬件实验室', exact: true });
+  const button = page.getByRole('button', { name: '进入街坊工坊', exact: true });
   await button.scrollIntoViewIfNeeded();
   await button.hover();
   await page.mouse.down();

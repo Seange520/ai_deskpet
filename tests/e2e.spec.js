@@ -68,9 +68,9 @@ function cardByTitle(page, title) {
     .filter({ has: page.getByRole('heading', { name: title, exact: true }) });
 }
 
-/** 通过主导航进入硬件实验室（语义定位：按钮的可访问名即页面名） */
+/** 通过主导航进入街坊工坊（语义定位：按钮的可访问名即页面名） */
 async function openHardwareLab(page) {
-  await page.getByRole('button', { name: '硬件实验室', exact: true }).click();
+  await page.getByRole('button', { name: '街坊工坊', exact: true }).click();
   await expect(page.getByRole('heading', { name: /认识它/ })).toBeVisible();
 }
 
@@ -150,7 +150,7 @@ test('首页渲染：三个核心卡片都存在且可见', async ({ page }) => 
 });
 
 // ============================ 场景 2：路由跳转 ==============================
-test('路由跳转：点击「动手实操」卡片后切换到硬件实验室', async ({ page }) => {
+test('路由跳转：点击「动手实操」卡片后切换到街坊工坊', async ({ page }) => {
   await page.goto('/');
   await expect(page.getByRole('heading', { name: /每个伟大的创造/ })).toBeVisible();
 
@@ -164,18 +164,18 @@ test('路由跳转：点击「动手实操」卡片后切换到硬件实验室',
   const urlBefore = page.url();
   await startButton.click();
 
-  // 断言 1：视图已切换 —— 硬件实验室标题出现，首页标题消失
+  // 断言 1：视图已切换 —— 街坊工坊标题出现，首页标题消失
   await expect(
     page.getByRole('heading', { name: /认识它/ }),
-    '点击「动手实操」后应进入硬件实验室（标题：认识它，然后连接它。）',
+    '点击「动手实操」后应进入街坊工坊（标题：认识它，然后连接它。）',
   ).toBeVisible();
   await expect(page.getByRole('heading', { name: /每个伟大的创造/ })).toBeHidden();
 
   // 断言 2：主导航状态同步（选中的导航项带 aria-current="page"），
   //         这是本项目“路由”的真实状态表达（无 URL 路由）
   await expect(
-    page.getByRole('button', { name: '硬件实验室', exact: true }),
-    '切换后主导航「硬件实验室」应处于选中态',
+    page.getByRole('button', { name: '街坊工坊', exact: true }),
+    '切换后主导航「街坊工坊」应处于选中态',
   ).toHaveAttribute('aria-current', 'page');
 
   // 回归保护：本项目不用 URL 路由，页面地址不应被改成另一个 URL
@@ -188,7 +188,7 @@ test('爆炸图交互：点击「拆解」后元素样式发生变化', async ({
   await openHardwareLab(page);
 
   const explodeButton = page.getByRole('button', { name: '拆解', exact: true });
-  await expect(explodeButton, '硬件实验室应存在「拆解」按钮').toBeVisible();
+  await expect(explodeButton, '街坊工坊应存在「拆解」按钮').toBeVisible();
 
   const parts = explodeParts(page);
   for (const [name, locator] of Object.entries(parts)) {
@@ -234,7 +234,7 @@ test('爆炸图交互：点击「拆解」后元素样式发生变化', async ({
 });
 
 // ========================= 场景 4：控制台报错监听 ==========================
-test('控制台监听：完整走查首页 → 物料弹窗 → 拆解 → 代码工坊，全程零 console error', async ({
+test('控制台监听：完整走查首页 → 物料弹窗 → 拆解 → 誊写房，全程零 console error', async ({
   page,
 }) => {
   await page.goto('/');
@@ -247,21 +247,21 @@ test('控制台监听：完整走查首页 → 物料弹窗 → 拆解 → 代�
   await page.getByRole('button', { name: '关闭弹窗' }).press('Escape');
   await expect(dialog, '按 Esc 后物料清单弹窗应关闭').toBeHidden();
 
-  // 硬件实验室：拆解 / 合拢
+  // 街坊工坊：拆解 / 合拢
   await openHardwareLab(page);
   await page.getByRole('button', { name: '拆解', exact: true }).click();
   await expect(page.getByRole('button', { name: '合拢', exact: true })).toBeVisible();
   await page.getByRole('button', { name: '合拢', exact: true }).click();
 
-  // 代码魔改工坊
-  await page.getByRole('button', { name: '代码魔改工坊', exact: true }).click();
-  await expect(page.getByRole('button', { name: '代码魔改工坊', exact: true })).toHaveAttribute(
+  // 誊写房
+  await page.getByRole('button', { name: '誊写房', exact: true }).click();
+  await expect(page.getByRole('button', { name: '誊写房', exact: true })).toHaveAttribute(
     'aria-current',
     'page',
   );
 
   // 回到首页
-  await page.getByRole('button', { name: '学习仪表盘', exact: true }).click();
+  await page.getByRole('button', { name: '校验册', exact: true }).click();
   await expect(page.getByRole('heading', { name: /每个伟大的创造/ })).toBeVisible();
 
   // afterEach 会统一断言；这里再显式断言一次，失败信息更直观

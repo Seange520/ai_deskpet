@@ -60,10 +60,10 @@ try {
   await p.waitForTimeout(1200);
   const saves = await p.evaluate(() => localStorage.getItem('sparkmate.routes.v2'));
   for (const [name, id] of [
-    ['学习仪表盘', 'dashboard'],
-    ['硬件实验室', 'hardware'],
-    ['代码魔改工坊', 'code'],
-    ['创客排位', 'ranking'],
+    ['校验册', 'dashboard'],
+    ['街坊工坊', 'hardware'],
+    ['誊写房', 'code'],
+    ['委托板', 'ranking'],
   ]) {
     await nav(name).click();
     await expect(p.locator('.app-shell')).toHaveAttribute('data-space-phase', 'detail');
@@ -116,7 +116,7 @@ try {
   results.push({ name: 'Far Toon silhouettes and fog', state: far });
   await shot('m2-world', true);
   await shot('m2-world-ui');
-  await nav('学习仪表盘').click();
+  await nav('校验册').click();
   await expect(p.locator('.app-shell')).toHaveAttribute('data-space-phase', 'detail');
   await p.waitForTimeout(500);
   const relic = p.getByRole('button', { name: '查看维护者石碑', exact: true });
@@ -248,7 +248,7 @@ try {
   await failure.goto(base + '/?quality=3');
   await expect(failure.locator('.render-shell')).toHaveAttribute('data-quality-tier', '0');
   await expect(failure.locator('canvas')).toHaveCount(0);
-  await failure.getByRole('button', { name: '代码魔改工坊', exact: true }).click();
+  await failure.getByRole('button', { name: '誊写房', exact: true }).click();
   await expect(failure.getByLabel('桌宠伪代码', { exact: true })).toBeVisible();
   await failure.close();
   results.push({ name: 'Stage module loading failure retains zero Canvas teaching fallback' });
@@ -258,7 +258,7 @@ try {
   );
   await islandFailure.goto(base + '/?quality=2');
   await expect(islandFailure.locator('.render-shell')).toHaveAttribute('data-stage-ready', 'true');
-  await islandFailure.getByRole('button', { name: '硬件实验室', exact: true }).click();
+  await islandFailure.getByRole('button', { name: '街坊工坊', exact: true }).click();
   await expect(islandFailure.locator('.app-shell')).toHaveAttribute('data-space-phase', 'detail');
   await expect
     .poll(() =>

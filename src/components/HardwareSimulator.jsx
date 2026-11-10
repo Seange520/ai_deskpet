@@ -139,7 +139,7 @@ export default function HardwareSimulator({
       {burned && <BurnoutOverlay onReset={reset} />}
       <div className="page-heading compact">
         <div>
-          <div className="eyebrow">LEVEL 02 / THE HARDWARE LAB</div>
+          <div className="eyebrow">LEVEL 02 / NEIGHBORHOOD FORGE</div>
           <h1>
             认识它，然后<span className="text-neon">连接它。</span>
           </h1>
@@ -437,7 +437,7 @@ export default function HardwareSimulator({
               )}
             </div>
             <Button className="btn primary full" disabled={!success} onClick={onNext}>
-              前往代码魔改工坊 <ArrowRight size={17} />
+              前往誊写房 <ArrowRight size={17} />
             </Button>
             <section className="workbench-warnings" aria-label="创客避坑指南">
               <h3>

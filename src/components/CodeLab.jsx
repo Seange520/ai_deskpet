@@ -61,7 +61,7 @@ export default function CodeLab({
     <div className="page min-w-0 page-hero">
       <div className="page-heading compact">
         <div>
-          <div className="eyebrow">LEVEL 03 / CREATIVE CODE LAB</div>
+          <div className="eyebrow">LEVEL 03 / SCRIPTORIUM</div>
           <h1>
             一点代码，<span className="text-neon">无限个性。</span>
           </h1>

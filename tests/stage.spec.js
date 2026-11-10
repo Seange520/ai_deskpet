@@ -32,9 +32,9 @@ test('Stage Tier 2 挂载真实 WebGL，导航复用 Canvas，Tier 0 保留 DOM'
     )
     .toBeGreaterThan(0);
   await expect(page.getByRole('article')).toHaveCount(3);
-  await page.getByRole('button', { name: '硬件实验室', exact: true }).click();
+  await page.getByRole('button', { name: '街坊工坊', exact: true }).click();
   await expect(page.getByRole('heading', { name: /认识它/ })).toBeVisible();
-  await page.getByRole('button', { name: '学习仪表盘', exact: true }).click();
+  await page.getByRole('button', { name: '校验册', exact: true }).click();
   expect(await canvas.evaluate((node, original) => node === original, original)).toBe(true);
   await page.goto('/?quality=dom');
   await expect(page.locator('.render-shell')).toHaveAttribute('data-quality-tier', '0');
@@ -61,7 +61,7 @@ test('四岛投影热点按顺序聚焦，进出工作台复用同一 Stage', as
     await expect(buttons.nth(index)).toBeFocused();
     if (index < 3) await page.keyboard.press('Tab');
   }
-  const hardware = dock.getByRole('button', { name: '硬件实验室' });
+  const hardware = dock.getByRole('button', { name: '街坊工坊' });
   await hardware.click();
   await expect(shell).toHaveAttribute('data-space-phase', 'entering');
   await expect(page.getByRole('heading', { name: /认识它/ })).toHaveCount(0);

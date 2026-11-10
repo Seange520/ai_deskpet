@@ -121,9 +121,9 @@ try {
     });
   });
 
-  const dashboardButton = nav(page, '学习仪表盘');
-  const hardwareButton = nav(page, '硬件实验室');
-  const codeButton = nav(page, '代码魔改工坊');
+  const dashboardButton = nav(page, '校验册');
+  const hardwareButton = nav(page, '街坊工坊');
+  const codeButton = nav(page, '誊写房');
   await dashboardButton.focus();
   await expect(dashboardButton).toBeFocused();
   await page.keyboard.press('Tab');
@@ -193,11 +193,11 @@ try {
     landed,
   });
 
-  await nav(page, '代码魔改工坊').click();
+  await nav(page, '誊写房').click();
   await expect(shell(page)).toHaveAttribute('data-space-phase', 'entering');
   await page.waitForTimeout(530);
   const beforeTurn = await readWorld(page);
-  await nav(page, '创客排位').click();
+  await nav(page, '委托板').click();
   const afterTurn = await readWorld(page);
   expect(distance(beforeTurn.position, afterTurn.position)).toBeLessThan(5);
   await expect(shell(page)).toHaveAttribute('data-space-focus', 'ranking');
@@ -221,7 +221,7 @@ try {
   ).toBe(true);
   expect(await page.evaluate(() => JSON.stringify(localStorage))).toBe(saved);
   results.push({ name: 'Mid-flight retarget, Canvas identity, and storage isolation' });
-  await nav(page, '学习仪表盘').click();
+  await nav(page, '校验册').click();
   await expect(shell(page)).toHaveAttribute('data-space-phase', 'entering');
   await page
     .locator('.scene-stage canvas')
@@ -252,7 +252,7 @@ try {
         if (state.phase === 'entering' || state.phase === 'leaving') window.flightStarted = true;
       });
     });
-    await nav(fallback, '硬件实验室').click();
+    await nav(fallback, '街坊工坊').click();
     await expect(fallback.getByRole('heading', { name: /认识它/ })).toBeVisible();
     await expect(shell(fallback)).toHaveAttribute('data-space-phase', 'detail');
     expect(await fallback.evaluate(() => window.flightStarted)).toBe(false);
@@ -272,7 +272,7 @@ try {
     if (tier === 3) {
       await fallback.emulateMedia({ reducedMotion: 'no-preference' });
       await expect(fallback.locator('.space-hud-panel')).toBeAttached();
-      await nav(fallback, '代码魔改工坊').click();
+      await nav(fallback, '誊写房').click();
       await expect(shell(fallback)).toHaveAttribute('data-space-phase', 'entering');
       await fallback.emulateMedia({ reducedMotion: 'reduce' });
       await expect(shell(fallback)).toHaveAttribute('data-space-phase', 'detail');

@@ -156,7 +156,7 @@ try {
       page.on('request', (r) => requests.push(r.url()));
       const panel = page.getByRole('region', { name: '桌宠动作与手势控制', exact: true });
       await page.goto(baseURL);
-      await page.getByRole('button', { name: '代码魔改工坊', exact: true }).click();
+      await page.getByRole('button', { name: '誊写房', exact: true }).click();
       await expect(panel).toBeVisible();
       expect(await page.evaluate(() => window.cameraMock.requests)).toBe(0);
       expect(

@@ -16,7 +16,7 @@ test('字体、原有主色与液态玻璃实际覆盖面积', async ({ page }) 
     await document.fonts.ready;
   });
   await page.screenshot({ path: 'test-results/micro-home.png' });
-  await page.getByRole('button', { name: '代码魔改工坊', exact: true }).click();
+  await page.getByRole('button', { name: '誊写房', exact: true }).click();
   await expect(page.locator('.code-line code').first()).toHaveCSS(
     'font-family',
     /JetBrains Mono Variable/,
@@ -26,7 +26,7 @@ test('字体、原有主色与液态玻璃实际覆盖面积', async ({ page }) 
 test('微小磁吸、鼠标与键盘涟漪保留按钮原有语义', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'no-preference' });
   await page.goto('/');
-  const button = page.getByRole('button', { name: '进入硬件实验室', exact: true });
+  const button = page.getByRole('button', { name: '进入街坊工坊', exact: true });
   const r = await button.boundingBox();
   await page.mouse.move(r.x + r.width * 0.8, r.y + r.height * 0.6);
   await expect
@@ -115,7 +115,7 @@ test('分层视差、低亮度聚光灯与实际帧间隔采样', async ({ page 
 
 test('减少动态效果时关闭空间动效与涟漪，导航仍能使用', async ({ page }) => {
   await page.goto('/');
-  const button = page.getByRole('button', { name: '进入硬件实验室', exact: true });
+  const button = page.getByRole('button', { name: '进入街坊工坊', exact: true });
   await button.hover();
   await page.mouse.down();
   await expect(button.locator('.button-ripple')).toHaveCount(0);
@@ -132,7 +132,7 @@ test.describe('触屏降级', () => {
     await page.goto('/');
     await expect(page.locator('.hero-liquid')).toHaveAttribute('data-flow', 'false');
     await expect(page.locator('.liquidGlass-effect')).toHaveCSS('filter', 'none');
-    await page.getByRole('button', { name: '硬件实验室', exact: true }).tap();
+    await page.getByRole('button', { name: '街坊工坊', exact: true }).tap();
     await expect(page.getByRole('heading', { name: /认识它/ })).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
       true,

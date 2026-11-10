@@ -54,7 +54,7 @@ for (const width of [1440, 320]) {
       } });
     }, width);
     await page.goto(baseURL);
-    await page.getByRole('button', { name: '代码魔改工坊', exact: true }).click();
+    await page.getByRole('button', { name: '誊写房', exact: true }).click();
     const hardware = page.getByRole('region', { name: '真实硬件连接', exact: true });
     const panel = page.getByRole('region', { name: '浏览器光感演示', exact: true });
     const start = panel.getByRole('button', { name: '开启浏览器演示', exact: true });
@@ -133,12 +133,12 @@ for (const width of [1440, 320]) {
     }, { url: moduleURL, cycles });
     await start.click(); await expect(hardware.getByTestId('hardware-light')).toHaveText('300');
     await dark.click(); await expect(scene).toHaveAttribute('data-sleeping', 'true');
-    await page.getByRole('button', { name: '学习仪表盘', exact: true }).click();
+    await page.getByRole('button', { name: '校验册', exact: true }).click();
     await expect.poll(resources).toEqual({ timers: 0, listeners: 0, usb: 0 });
     await expect(scene).toHaveAttribute('data-sleeping', 'false');
     expect((await hardwareState()).hardwareData).toBe(null);
     expect(await learning()).toEqual(before);
-    await page.getByRole('button', { name: '代码魔改工坊', exact: true }).click();
+    await page.getByRole('button', { name: '誊写房', exact: true }).click();
     // Existing Node bridge remains a separate, explicitly selected regression fixture.
     device = await startVirtualEsp32({ port: 0, output: { write() {} } });
     await revealDevTools(hardware);

@@ -32,7 +32,7 @@ try {
   await page.getByTestId('boot-screen').waitFor({ state: 'hidden', timeout: 120000 });
   await page.waitForTimeout(900);
   await page.screenshot({ path: out + '/00-world-paper.png' });
-  const dash = page.getByRole('button', { name: '学习仪表盘' });
+  const dash = page.getByRole('button', { name: '校验册' });
   if (await dash.count()) {
     await dash.first().click();
     await page.waitForTimeout(4200);

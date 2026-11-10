@@ -14,7 +14,7 @@ const xp = (page) => page.locator('.experience-text');
 test('全局 XP、徽章 Toast、排名、重复接线与切路重载保持一致', async ({ page }) => {
   await page.goto('/');
   await unlockThrough(page, 1);
-  await page.getByRole('button', { name: '硬件实验室', exact: true }).click();
+  await page.getByRole('button', { name: '街坊工坊', exact: true }).click();
   await classic(page);
   await expect(xp(page)).toContainText('250 / 2200 XP');
   await expect(page.locator('.kit-toast')).toContainText('解锁「电路新星」');
@@ -36,7 +36,7 @@ test('全局 XP、徽章 Toast、排名、重复接线与切路重载保持一�
   await expect(xp(page)).toContainText('500 / 2200 XP');
   await expect(page.locator('.companion-bubble')).toContainText('升级啦');
   await expect(page.locator('.kit-toast')).not.toContainText('解锁');
-  await page.getByRole('button', { name: '创客排位', exact: true }).click();
+  await page.getByRole('button', { name: '委托板', exact: true }).click();
   await expect(page.locator('.rank-summary')).toContainText('第 4 名');
   await expect(page.locator('.is-you')).toContainText('500');
   await page.reload();
@@ -47,9 +47,9 @@ test('全局 XP、徽章 Toast、排名、重复接线与切路重载保持一�
 
 test('调参只在有效修改后主动领取一次，重置参数和恢复默认不奖励', async ({ page }) => {
   await page.goto('/');
-  await page.getByRole('button', { name: '硬件实验室', exact: true }).click();
+  await page.getByRole('button', { name: '街坊工坊', exact: true }).click();
   await classic(page);
-  await page.getByRole('button', { name: /前往代码魔改工坊/ }).click();
+  await page.getByRole('button', { name: /前往誊写房/ }).click();
   const slider = page.getByRole('slider', { name: '眨眼间隔' });
   await slider.fill('600');
   await slider.fill('2400');
@@ -61,7 +61,7 @@ test('调参只在有效修改后主动领取一次，重置参数和恢复默�
   await expect(page.locator('.kit-toast')).toContainText('唤醒伙伴');
   await page.getByRole('button', { name: '查看我的成就' }).click();
   await expect(xp(page)).toContainText('400 / 2200 XP');
-  await page.getByRole('button', { name: '代码魔改工坊', exact: true }).click();
+  await page.getByRole('button', { name: '誊写房', exact: true }).click();
   await slider.fill('600');
   await expect(page.getByRole('button', { name: '伙伴已唤醒 · 成就已领取' })).toBeDisabled();
   await page.reload();
@@ -133,7 +133,7 @@ test('音效由交互创建，点击/成功/烧板不同音高，静音保存并
   });
   await page.goto('/');
   expect(await page.evaluate(() => window.audioCreated)).toBe(0);
-  await page.getByRole('button', { name: '硬件实验室', exact: true }).click();
+  await page.getByRole('button', { name: '街坊工坊', exact: true }).click();
   await classic(page);
   expect(await page.evaluate(() => window.audioNotes)).toEqual(
     expect.arrayContaining([1450, 880, 1320]),
@@ -151,7 +151,7 @@ test('音效由交互创建，点击/成功/烧板不同音高，静音保存并
     'aria-pressed',
     'true',
   );
-  await page.getByRole('button', { name: '硬件实验室', exact: true }).click();
+  await page.getByRole('button', { name: '街坊工坊', exact: true }).click();
   expect(await page.evaluate(() => window.audioCreated)).toBe(0);
 });
 
@@ -175,7 +175,7 @@ for (const mode of ['missing', 'throws', 'rejected']) {
             };
     }, mode);
     await page.goto('/');
-    await page.getByRole('button', { name: '硬件实验室', exact: true }).click();
+    await page.getByRole('button', { name: '街坊工坊', exact: true }).click();
     await wire(page, 'VCC', 'GND');
     await expect(page.getByRole('alert')).toHaveCount(1);
     await page.getByRole('button', { name: '重置模拟开发板' }).press('Escape');
@@ -186,7 +186,7 @@ for (const mode of ['missing', 'throws', 'rejected']) {
     await wire(page, 'VCC', 'GND');
     await page.getByRole('button', { name: '重置模拟开发板' }).click();
     await expect(xp(page)).toContainText('250 / 2200 XP');
-    await page.getByRole('button', { name: '学习仪表盘', exact: true }).click();
+    await page.getByRole('button', { name: '校验册', exact: true }).click();
     await expect(page.locator('.badge.unlocked')).toHaveCount(2);
     expect(errors).toEqual([]);
   });
@@ -200,7 +200,7 @@ test('存储不可用时仍能获得 XP 与徽章', async ({ page }) => {
   });
   await page.goto('/');
   await expect(page.locator('.storage-note')).toContainText('浏览器存储不可用');
-  await page.getByRole('button', { name: '硬件实验室', exact: true }).click();
+  await page.getByRole('button', { name: '街坊工坊', exact: true }).click();
   await classic(page);
   await expect(xp(page)).toContainText('250 / 2200 XP');
 });

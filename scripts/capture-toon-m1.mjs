@@ -52,7 +52,7 @@ try {
   await style.evaluate((el) => el.remove());
   await page
     .getByRole('navigation', { name: '主导航' })
-    .getByRole('button', { name: '学习仪表盘', exact: true })
+    .getByRole('button', { name: '校验册', exact: true })
     .click();
   await expect(page.locator('.app-shell')).toHaveAttribute('data-space-phase', 'detail');
   await page.waitForTimeout(700);

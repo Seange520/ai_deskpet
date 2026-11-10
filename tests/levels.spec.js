@@ -4,7 +4,7 @@ const card = (page, name) => page.getByRole('region', { name: name + '路线卡�
 const saved = (page) =>
   page.evaluate(() => JSON.parse(localStorage.getItem('sparkmate.routes.v2')));
 async function code(page, source) {
-  await page.getByRole('button', { name: '代码魔改工坊', exact: true }).click();
+  await page.getByRole('button', { name: '誊写房', exact: true }).click();
   await page.getByLabel('桌宠伪代码', { exact: true }).fill(source);
   await page.getByRole('button', { name: '运行代码', exact: true }).click();
 }
@@ -20,7 +20,7 @@ test('新用户仅 L1，锁卡点击提示，材料与下拉和 store 入口均�
   await expect(page.getByRole('heading', { name: /每个伟大的创造/ })).toBeVisible();
   await locked.getByRole('button', { name: /准备物料/ }).click();
   await expect(page.getByRole('dialog')).toHaveCount(0);
-  await page.getByRole('button', { name: '硬件实验室', exact: true }).click();
+  await page.getByRole('button', { name: '街坊工坊', exact: true }).click();
   await expect(
     page.getByLabel('切换路线', { exact: true }).locator('option[value="quadruped"]'),
   ).toHaveJSProperty('disabled', true);
@@ -95,7 +95,7 @@ test('目标须同次显式执行，最终状态匹配；失败不解锁，通�
   ).toBe(event);
   expect(await page.evaluate(() => window.successNotes)).toBe(1);
   await page.reload();
-  await page.getByRole('button', { name: '代码魔改工坊', exact: true }).click();
+  await page.getByRole('button', { name: '誊写房', exact: true }).click();
   await expect(page.locator('.challenge-celebration')).toHaveCount(0);
   await expect(page.getByRole('region', { name: '通关目标' })).toContainText('已通关');
   await expect(page.locator('.experience-text')).toContainText('0 / 2200 XP');
@@ -169,7 +169,7 @@ test('通关无音频/存储 API 仍可解锁；移动端锁卡无溢出', async
   await page.screenshot({ path: 'test-results/level-locks-mobile.png', fullPage: true });
   await code(page, levelPrograms[0]);
   await expect(page.locator('.challenge-celebration')).toContainText('已解锁 L2');
-  await page.getByRole('button', { name: '学习仪表盘', exact: true }).click();
+  await page.getByRole('button', { name: '校验册', exact: true }).click();
   await expect(page.locator('.route-card.is-locked')).toHaveCount(2);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });

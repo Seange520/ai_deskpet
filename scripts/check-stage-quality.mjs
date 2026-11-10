@@ -72,9 +72,9 @@ try {
       const canvas = await page.locator('.scene-stage canvas').elementHandle();
       await page.screenshot({ path: 'test-results/stage-p0/desktop-tier2.png' });
       for (let i = 0; i < 3; i++) {
-        await page.getByRole('button', { name: '硬件实验室', exact: true }).click();
+        await page.getByRole('button', { name: '街坊工坊', exact: true }).click();
         await expect(page.getByRole('heading', { name: /认识它/ })).toBeVisible();
-        await page.getByRole('button', { name: '学习仪表盘', exact: true }).click();
+        await page.getByRole('button', { name: '校验册', exact: true }).click();
       }
       expect(
         await page.locator('.scene-stage canvas').evaluate((node, old) => node === old, canvas),
@@ -125,7 +125,7 @@ try {
       );
     await expect(page.locator('.render-shell')).toHaveAttribute('data-quality-tier', '0');
     await expect(page.locator('canvas')).toHaveCount(0);
-    await page.getByRole('button', { name: '硬件实验室', exact: true }).click();
+    await page.getByRole('button', { name: '街坊工坊', exact: true }).click();
     await expect(page.getByRole('heading', { name: /认识它/ })).toBeVisible();
   });
   await run('Tier 1 skips environment map and clearcoat', async (page) => {
@@ -160,7 +160,7 @@ try {
       await page
         .locator('.hero-panel')
         .screenshot({ path: 'test-results/stage-p0/mobile-tier0-hero.png' });
-      await page.getByRole('button', { name: '硬件实验室', exact: true }).click();
+      await page.getByRole('button', { name: '街坊工坊', exact: true }).click();
       await expect(page.getByRole('heading', { name: /认识它/ })).toBeVisible();
     },
     { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true },
@@ -179,9 +179,9 @@ try {
       await page.goto(url + '/?quality=2');
       await expect(page.locator('.render-shell')).toHaveAttribute('data-stage-ready', 'true');
       const canvas = await page.locator('.scene-stage canvas').elementHandle();
-      await page.getByRole('button', { name: '硬件实验室', exact: true }).click();
+      await page.getByRole('button', { name: '街坊工坊', exact: true }).click();
       await expect(page.getByRole('heading', { name: /认识它/ })).toBeVisible();
-      await page.getByRole('button', { name: '学习仪表盘', exact: true }).click();
+      await page.getByRole('button', { name: '校验册', exact: true }).click();
       await expect(page.getByRole('heading', { name: /每个伟大的创造/ })).toBeVisible();
       expect(
         await page.locator('.scene-stage canvas').evaluate((node, old) => node === old, canvas),

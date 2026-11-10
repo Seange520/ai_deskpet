@@ -84,7 +84,7 @@ try {
         if (message.type() === 'error') errors.push(message.text());
       });
       await page.goto(baseURL);
-      await page.getByRole('button', { name: '代码魔改工坊', exact: true }).click();
+      await page.getByRole('button', { name: '誊写房', exact: true }).click();
       const panel = page.getByRole('region', { name: '真实硬件连接', exact: true });
       const connect = panel.getByRole('button', { name: '连接真实 ESP32', exact: true });
       await expect(panel).toBeVisible();
@@ -172,10 +172,10 @@ try {
           expect(await page.evaluate(() => window.serialMock.closes)).toBe(3);
           await connect.click();
           await expect(panel).toContainText('串口已连接');
-          await page.getByRole('button', { name: '学习仪表盘', exact: true }).click();
+          await page.getByRole('button', { name: '校验册', exact: true }).click();
           await expect.poll(() => page.evaluate(() => window.serialMock.closes)).toBe(4);
           expect(await page.evaluate(() => window.serialMock.listeners)).toBe(0);
-          await page.getByRole('button', { name: '代码魔改工坊', exact: true }).click();
+          await page.getByRole('button', { name: '誊写房', exact: true }).click();
           await expect(panel.getByTestId('hardware-temp')).toHaveText('—');
           expect(await page.evaluate(() => window.serialMock.opens)).toEqual([
             115200, 9600, 9600, 9600,

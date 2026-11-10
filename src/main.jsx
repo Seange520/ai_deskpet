@@ -6,6 +6,7 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import { QualityProvider } from './lib/qualityTier';
 import StageLayer from './features/stage/StageLayer';
+import PetExplodedPage from './features/exploded/PetExplodedPage';
 import './styles.css';
 import './design.css';
 import './product.css';
@@ -15,16 +16,23 @@ import './workshop.css';
 import './runner.css';
 import './visual-v2.css';
 import './visual-paper.css';
+import './features/exploded/exploded.css';
 import { applyTheme, readTheme } from './lib/theme.mjs';
 
 applyTheme(readTheme());
 
+const explodedView = new URLSearchParams(window.location.search).get('exploded') === '1';
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <QualityProvider>
-      <StageLayer>
-        <App />
-      </StageLayer>
-    </QualityProvider>
+    {explodedView ? (
+      <PetExplodedPage />
+    ) : (
+      <QualityProvider>
+        <StageLayer>
+          <App />
+        </StageLayer>
+      </QualityProvider>
+    )}
   </React.StrictMode>,
 );

@@ -32,13 +32,13 @@ const IslandLights = lazy(() =>
 const TravelMist = lazy(() => import('./TravelMist'));
 const TravelSpeedLines = lazy(() => import('./TravelSpeedLines'));
 
-const DUSK = '#21192f';
+const DUSK = '#2b1e17';
 const islands = Object.values(ISLANDS);
 const plaques = {
-  dashboard: ['学习仪表盘', '01 / OBSERVATORY'],
-  hardware: ['硬件实验室', '02 / HARDWARE LAB'],
-  code: ['代码魔改工坊', '03 / CODE WORKSHOP'],
-  ranking: ['创客排位', '04 / MAKER RANKING'],
+  dashboard: ['校验册', '01 / CHECKSUM LEDGER'],
+  hardware: ['街坊工坊', '02 / NEIGHBORHOOD FORGE'],
+  code: ['誊写房', '03 / CODE WORKSHOP'],
+  ranking: ['委托板', '04 / COMMISSION BOARD'],
 };
 
 function Orbit({ radius, color, opacity, y = -1.08 }) {
@@ -94,7 +94,7 @@ export default function WorldScene({ paused, reduced, tier, performanceStep, adv
   const night = useEnvironmentStore((state) => state.night);
   const focusTarget = useMemo(() => new Vector3(...ISLANDS.dashboard.camera.focus), []);
   const travelProgress = useRef(0);
-  const fogColor = tier >= 2 ? '#1b1626' : DUSK;
+  const fogColor = tier >= 2 ? '#211610' : DUSK;
   const Effects = StageEffects;
   const atmosphere = useIslandAtmosphere({
     fogColor,
@@ -133,7 +133,7 @@ export default function WorldScene({ paused, reduced, tier, performanceStep, adv
       {tier >= 2 && <LumenFish tier={tier} paused={paused} reduced={reduced} />}
       {tier === 3 && <MemoryMeteor overlay={meteor} paused={paused} reduced={reduced} />}
       <LoreObjects />
-      <Orbit radius={RING_RADIUS} color="#ae86cf" opacity={0.24} />
+      <Orbit radius={RING_RADIUS} color="#c9a35c" opacity={0.26} />
       <HubSandbox tier={tier} paused={paused} reduced={reduced} />
       <EnergyRail tier={tier} paused={paused} reduced={reduced} />
       {islands.map((island) => {

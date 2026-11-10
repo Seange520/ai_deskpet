@@ -76,7 +76,7 @@ try {
   const idle = await visual();
   await page.waitForTimeout(300);
   expect((await visual()).frames).toBe(idle.frames);
-  await page.getByRole('button', { name: '代码魔改工坊', exact: true }).click();
+  await page.getByRole('button', { name: '誊写房', exact: true }).click();
   await run('move("forward"); light("on"); play("success");');
   await expect.poll(async () => (await visual())?.z).toBeGreaterThan(0.37);
   await expect.poll(async () => (await visual())?.eyes[0]).toBeGreaterThan(2.19);
@@ -120,8 +120,8 @@ try {
     note: 'Local headless Chrome sample; not a guarantee for all devices.',
   };
   for (let i = 0; i < 8; i++) {
-    await page.getByRole('button', { name: '学习仪表盘', exact: true }).click();
-    await page.getByRole('button', { name: '代码魔改工坊', exact: true }).click();
+    await page.getByRole('button', { name: '校验册', exact: true }).click();
+    await page.getByRole('button', { name: '誊写房', exact: true }).click();
   }
   report.afterNavigation = await resources();
   expect(report.afterNavigation).toEqual(report.initial);
@@ -138,7 +138,7 @@ try {
   await page.getByRole('button', { name: '保留进度', exact: true }).click();
   await expect(scene).toHaveAttribute('data-paused', 'false');
   await expect.poll(async () => (await visual()).frames).toBeGreaterThan(modalFrame);
-  await page.getByRole('button', { name: '硬件实验室', exact: true }).click();
+  await page.getByRole('button', { name: '街坊工坊', exact: true }).click();
   await page.getByRole('button', { name: '麦克风 VCC 引脚', exact: true }).press('Enter');
   await page.getByRole('button', { name: '主板 GND 引脚', exact: true }).press('Enter');
   await expect(page.getByRole('alertdialog')).toBeVisible();
@@ -156,12 +156,12 @@ try {
     );
     await expect(page.locator('.companion canvas')).toBeVisible();
   }
-  await page.getByRole('button', { name: '代码魔改工坊', exact: true }).click();
+  await page.getByRole('button', { name: '誊写房', exact: true }).click();
   await run('move("stop"); light("off");');
   await expect.poll(async () => (await visual()).z).toBe(0);
   await expect.poll(async () => (await visual()).eyes).toEqual([0.15, 0.15]);
   report.pauseAndResume = 'PASS: modal, burnout inert, collapse/expand; same Canvas';
-  await page.getByRole('button', { name: '学习仪表盘', exact: true }).click();
+  await page.getByRole('button', { name: '校验册', exact: true }).click();
   await expect(page.getByRole('heading', { name: /每个伟大的创造/ })).toBeVisible();
   await expect(page.locator('.page-transition')).toHaveCSS('opacity', '1');
   await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
@@ -200,8 +200,8 @@ try {
   });
   await blocked.goto(url);
   await expect(blocked.locator('.companion .companion-body')).toBeVisible();
-  await expect(blocked.getByRole('button', { name: '代码魔改工坊', exact: true })).toBeVisible();
-  await blocked.getByRole('button', { name: '代码魔改工坊', exact: true }).click();
+  await expect(blocked.getByRole('button', { name: '誊写房', exact: true })).toBeVisible();
+  await blocked.getByRole('button', { name: '誊写房', exact: true }).click();
   await blocked.getByLabel('桌宠伪代码', { exact: true }).fill('move("backward"); light("on");');
   await blocked.getByRole('button', { name: '运行代码', exact: true }).click();
   await expect(blocked.locator('.companion .command-led')).toHaveClass(/is-lit/);

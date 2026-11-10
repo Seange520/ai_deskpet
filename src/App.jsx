@@ -23,7 +23,7 @@ import HardwareSimulator from './components/HardwareSimulator';
 import CodeLab from './components/CodeLab';
 import Companion from './components/Companion';
 import Materials from './components/Materials';
-import MakerRanking from './components/MakerRanking';
+import CommissionBoard from './components/CommissionBoard';
 import Graduation from './components/Graduation';
 import useHardwareProgress from './hooks/useHardwareProgress';
 import { getHardwareRoute } from './data/hardwareRoutes';
@@ -420,7 +420,7 @@ function MainApp() {
                     onNext={(event) => navigate('code', event)}
                   />
                 ) : page === 'ranking' ? (
-                  <MakerRanking xp={xp} />
+                  <CommissionBoard xp={xp} badges={badges} routes={allProgress} />
                 ) : (
                   <CodeLab
                     key={routeId}

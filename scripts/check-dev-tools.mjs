@@ -55,7 +55,7 @@ for (const width of [1440, 320]) {
       if (new URL(request.url()).pathname === '/stream') streams.push(request.url());
     });
     await page.goto(baseURL);
-    await page.getByRole('button', { name: '代码魔改工坊', exact: true }).click();
+    await page.getByRole('button', { name: '誊写房', exact: true }).click();
     const hardware = page.getByRole('region', { name: '真实硬件连接', exact: true });
     const demo = hardware.getByRole('region', { name: '浏览器光感演示', exact: true });
     const dev = hardware.getByRole('region', { name: '开发者调试', exact: true });
@@ -91,7 +91,7 @@ for (const width of [1440, 320]) {
     }
     await cleanDefault();
     expect(streams).toEqual([]);
-    await page.getByRole('button', { name: '代码魔改工坊', exact: true }).focus();
+    await page.getByRole('button', { name: '誊写房', exact: true }).focus();
     await page.keyboard.press('Control+Shift+D');
     await expect(dev).toHaveCount(0);
     for (let index = 0; index < 4; index++) await title.click();
@@ -123,7 +123,7 @@ for (const width of [1440, 320]) {
     await cleanDefault();
     expect(streams).toEqual([]);
     await page.reload();
-    await page.getByRole('button', { name: '代码魔改工坊', exact: true }).click();
+    await page.getByRole('button', { name: '誊写房', exact: true }).click();
     await cleanDefault();
     expect(await snapshot()).toEqual(before);
 
@@ -188,7 +188,7 @@ for (const width of [1440, 320]) {
     await expect(light).toHaveText('—');
     await revealDevTools(hardware);
     await page.reload();
-    await page.getByRole('button', { name: '代码魔改工坊', exact: true }).click();
+    await page.getByRole('button', { name: '誊写房', exact: true }).click();
     await cleanDefault();
     expect(await page.evaluate(() => window.devToolsUsbRequests)).toBe(0);
     expect(await snapshot()).toEqual(before);

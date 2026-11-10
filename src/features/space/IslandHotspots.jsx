@@ -2,10 +2,10 @@ import { Cpu, Code2, LayoutDashboard, Trophy } from 'lucide-react';
 import { preloadIsland } from './islandAssets';
 
 export const islandLinks = [
-  { id: 'dashboard', name: '学习仪表盘', icon: LayoutDashboard },
-  { id: 'hardware', name: '硬件实验室', icon: Cpu },
-  { id: 'code', name: '代码魔改工坊', icon: Code2 },
-  { id: 'ranking', name: '创客排位', icon: Trophy },
+  { id: 'dashboard', name: '校验册', icon: LayoutDashboard },
+  { id: 'hardware', name: '街坊工坊', icon: Cpu },
+  { id: 'code', name: '誊写房', icon: Code2 },
+  { id: 'ranking', name: '委托板', icon: Trophy },
 ];
 
 export function islandName(id) {

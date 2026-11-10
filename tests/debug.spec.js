@@ -39,7 +39,7 @@ const cases = [
 ];
 const read = (page) => page.evaluate(() => JSON.parse(localStorage.getItem('sparkmate.routes.v2')));
 async function enter(page) {
-  await page.getByRole('button', { name: '硬件实验室', exact: true }).click();
+  await page.getByRole('button', { name: '街坊工坊', exact: true }).click();
   await page.getByRole('button', { name: 'Debug 挑战', exact: true }).click();
 }
 for (const route of cases) {
@@ -55,7 +55,7 @@ for (const route of cases) {
       );
     }, route.id);
     await page.goto('/');
-    await page.getByRole('button', { name: '创客排位', exact: true }).click();
+    await page.getByRole('button', { name: '委托板', exact: true }).click();
     await expect(page.locator('.rank-summary')).toContainText('第 5 名');
     await enter(page);
     await page.getByRole('button', { name: '检查连线 GND → GND', exact: true }).click();
@@ -91,14 +91,14 @@ for (const route of cases) {
       wiring: true,
       code: false,
     });
-    await page.getByRole('button', { name: '创客排位', exact: true }).click();
+    await page.getByRole('button', { name: '委托板', exact: true }).click();
     await expect(page.locator('.rank-summary')).toContainText('第 4 名');
     await page.reload();
     await expect(page.locator('.experience-text')).toContainText('300 / 2200 XP');
     await enter(page);
     await expect(page.locator('.debug-feedback')).toContainText('本题奖励已领取');
     await page.getByRole('button', { name: '正常模式', exact: true }).click();
-    await expect(page.getByRole('button', { name: /前往代码魔改工坊/ })).toBeEnabled();
+    await expect(page.getByRole('button', { name: /前往誊写房/ })).toBeEnabled();
     expect(errors).toEqual([]);
   });
 }
@@ -236,25 +236,25 @@ test('鼠标点击 SVG 错误线路：修复、音效、重复练习防刷分与
   expect(await read(page)).toEqual(mutedSave);
   expect(await page.evaluate(() => window.notes)).toEqual([]);
   await page.getByRole('button', { name: '正常模式', exact: true }).click();
-  await expect(page.getByRole('button', { name: /前往代码魔改工坊/ })).toBeDisabled();
+  await expect(page.getByRole('button', { name: /前往誊写房/ })).toBeDisabled();
   expect(errors).toEqual([]);
 });
 
 test('正常模式未完成连线在切换 Debug 后保留，Debug 不代替接线或代码通关', async ({ page }) => {
   await page.goto('/');
-  await page.getByRole('button', { name: '硬件实验室', exact: true }).click();
+  await page.getByRole('button', { name: '街坊工坊', exact: true }).click();
   await page.getByRole('button', { name: '麦克风 VCC 引脚', exact: true }).press('Enter');
   await page.getByRole('button', { name: '主板 3V3 引脚', exact: true }).press('Enter');
   await page.getByRole('button', { name: 'Debug 挑战', exact: true }).click();
   await page.getByRole('button', { name: '检查目标引脚 GND', exact: true }).click();
   await page.getByRole('button', { name: '正常模式', exact: true }).click();
   await expect(page.locator('.wiring-svg path')).toHaveCount(3);
-  await expect(page.getByRole('button', { name: /前往代码魔改工坊/ })).toBeDisabled();
+  await expect(page.getByRole('button', { name: /前往誊写房/ })).toBeDisabled();
   expect((await read(page)).unlockedLevels).toEqual(['L1']);
   await page.getByRole('button', { name: '麦克风 GND 引脚', exact: true }).press('Enter');
   await page.getByRole('button', { name: '主板 GND 引脚', exact: true }).press('Enter');
   await expect(page.locator('.experience-text')).toContainText('275 / 2200 XP');
-  await page.getByRole('button', { name: '代码魔改工坊', exact: true }).click();
+  await page.getByRole('button', { name: '誊写房', exact: true }).click();
   await page.getByRole('button', { name: '运行代码', exact: true }).click();
   await expect(page.locator('.challenge-celebration')).toContainText('已解锁 L2');
   await expect(page.locator('.runner-console')).toContainText('运行完成');

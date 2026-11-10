@@ -3,7 +3,7 @@ import { readCompanionScene } from './deskpet3d-helpers';
 
 async function open(page) {
   await page.goto('/');
-  await page.getByRole('button', { name: '代码魔改工坊', exact: true }).click();
+  await page.getByRole('button', { name: '誊写房', exact: true }).click();
   await expect(page.getByLabel('桌宠伪代码', { exact: true })).toBeVisible();
 }
 const result = (page) => page.getByRole('region', { name: '代码运行结果', exact: true });
@@ -36,17 +36,17 @@ test.describe('保留真实模型与材质断言', () => {
     await expect.poll(async () => (await readCompanionScene(page))?.z).toBeGreaterThan(0.37);
     await expect(page.locator('.companion-bubble')).toContainText('正在前进');
     await expect(page.locator('.experience-text')).toContainText('0 / 2200 XP');
-    await page.getByRole('button', { name: '学习仪表盘', exact: true }).click();
+    await page.getByRole('button', { name: '校验册', exact: true }).click();
     await expect(page.locator('.companion canvas')).toBeVisible();
     await expect(page.locator('.companion').getByTestId('deskpet3d-scene')).toHaveAttribute(
       'data-led',
       'on',
     );
     await expect.poll(async () => (await readCompanionScene(page))?.eyes).toEqual([2.2, 2.2]);
-    await page.getByRole('button', { name: '代码魔改工坊', exact: true }).click();
+    await page.getByRole('button', { name: '誊写房', exact: true }).click();
     await expect(result(page)).toContainText('LED：亮');
     await page.reload();
-    await page.getByRole('button', { name: '代码魔改工坊', exact: true }).click();
+    await page.getByRole('button', { name: '誊写房', exact: true }).click();
     await expect(result(page)).toContainText('动作：停止');
     await expect(result(page)).toContainText('LED：灭');
     await expect.poll(async () => (await readCompanionScene(page))?.z).toBe(0);

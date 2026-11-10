@@ -429,7 +429,7 @@
 }
 .teaching-card.mission-bridge .mission-link:hover { filter: brightness(1.06); }
 
-/* 纸张主题：硬件实验室（A 基线统一，2026-11-10） */
+/* 纸张主题：街坊工坊（A 基线统一，2026-11-10） */
 :root[data-theme='light'] body:has(.page.workbench-page) {
   background: #e9dfca;
 }
@@ -540,7 +540,7 @@
   background: var(--paper-brass) !important;
 }
 
-/* 纸张主题：代码工坊与创客排位（A 基线统一） */
+/* 纸张主题：誊写房与委托板（A 基线统一） */
 :root[data-theme='light'] body:has(.page.page-hero),
 :root[data-theme='light'] body:has(.page.ranking-page) {
   background: #e9dfca;
@@ -628,7 +628,7 @@
   color: var(--paper-brass-strong) !important;
 }
 
-/* A 基线：纸面可读性加强（代码工坊/排位/硬件实验室） */
+/* A 基线：纸面可读性加强（誊写房/排位/街坊工坊） */
 :root[data-theme='light'] .page.page-hero .eyebrow,
 :root[data-theme='light'] .page.workbench-page .eyebrow,
 :root[data-theme='light'] .page.ranking-page .eyebrow {
@@ -695,4 +695,82 @@
 
 :root[data-theme='light'] .page.ranking-page .rank-summary > div > span {
   color: #6b5a3e !important;
+}
+
+
+/* 委托板 / 钟楼回望 */
+:root[data-theme='light'] .page.ranking-page .commission-list {
+  list-style: none;
+  margin: 0 0 14px;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+:root[data-theme='light'] .page.ranking-page .commission-list li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 12px;
+  border: 1px solid var(--paper-line);
+  border-radius: 10px;
+  background: rgba(255, 252, 244, 0.65);
+}
+
+:root[data-theme='light'] .page.ranking-page .commission-list b {
+  color: var(--paper-ink);
+  font-weight: 600;
+}
+
+:root[data-theme='light'] .page.ranking-page .commission-list strong {
+  margin-left: auto;
+  color: #8a611e;
+  font-size: 13px;
+}
+
+:root[data-theme='light'] .page.ranking-page .commission-cta {
+  margin-top: 4px;
+}
+
+:root[data-theme='light'] .page.ranking-page .tower-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 6px 0 14px;
+}
+
+:root[data-theme='light'] .page.ranking-page .tower-stats > div {
+  border: 1px solid var(--paper-line);
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: rgba(255, 252, 244, 0.65);
+  display: grid;
+  gap: 2px;
+}
+
+:root[data-theme='light'] .page.ranking-page .tower-stats small {
+  color: #6b5a3e;
+  font-size: 12px;
+}
+
+:root[data-theme='light'] .page.ranking-page .tower-stats b {
+  color: #8a611e;
+  font-size: 20px;
+}
+
+:root[data-theme='light'] .page.ranking-page .tower-stats span {
+  color: #6b5a3e;
+  font-size: 12px;
+}
+
+:root[data-theme='light'] .page.ranking-page .tower-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+@media (max-width: 720px) {
+  :root[data-theme='light'] .page.ranking-page .tower-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }

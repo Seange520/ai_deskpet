@@ -159,7 +159,7 @@ try {
     'Unlocked icons have a low-opacity radial halo; locked icons retain frosted grayscale',
   );
   for (let i = 0; i < 2; i++) {
-    await page.getByRole('button', { name: '硬件实验室', exact: true }).click();
+    await page.getByRole('button', { name: '街坊工坊', exact: true }).click();
     await expect(modules).toHaveCount(0);
     assert.equal(
       await page.evaluate(() =>

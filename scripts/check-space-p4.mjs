@@ -12,7 +12,7 @@ const results = [];
 const shell = (page) => page.locator('.app-shell');
 const stage = (page) => page.locator('.scene-stage');
 const hub = (page) => page.getByRole('button', { name: '返回大世界', exact: true });
-const dashboard = (page) => page.getByRole('button', { name: '学习仪表盘', exact: true });
+const dashboard = (page) => page.getByRole('button', { name: '校验册', exact: true });
 
 async function read(page, trackDepth = false) {
   return page.evaluate(async (trackDepth) => {

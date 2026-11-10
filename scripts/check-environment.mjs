@@ -118,7 +118,7 @@ try {
   await expect.poll(visual, { timeout: 15000 }).not.toBeNull();
   await expect(scene).toHaveAttribute('data-environment', 'day');
   expect(await page.evaluate(() => window.environmentAudit.contexts)).toBe(0);
-  await page.getByRole('button', { name: '代码魔改工坊', exact: true }).click();
+  await page.getByRole('button', { name: '誊写房', exact: true }).click();
   await page.getByLabel('桌宠伪代码', { exact: true }).fill('move("stop"); light("on");');
   await page.getByRole('button', { name: '运行代码', exact: true }).click();
   await expect.poll(async () => (await visual()).eyes[0].emissive).toBe(2.2);

@@ -133,7 +133,7 @@ export default function Dashboard({
               className="btn primary"
               onClick={(event) => onNavigate(progress.wiring ? 'code' : 'hardware', event)}
             >
-              {progress.wiring ? '进入代码工坊' : '进入硬件实验室'}
+              {progress.wiring ? '进入誊写房' : '进入街坊工坊'}
               <ArrowRight size={17} />
             </Button>
             <a className="btn mission-entry" href="/?mission=r1&quality=3">

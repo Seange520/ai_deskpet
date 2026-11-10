@@ -36,12 +36,12 @@ test('完整学习流程：错线警告、拖拽连线、实时参数与进度�
   await expect(page.getByRole('alert')).toContainText('危险！可能烧毁主板！');
   await expect(page.getByRole('alertdialog')).toContainText('BOOM！');
   await page.getByRole('button', { name: '重置模拟开发板' }).click();
-  await expect(page.getByRole('button', { name: /前往代码魔改工坊/ })).toBeDisabled();
+  await expect(page.getByRole('button', { name: /前往誊写房/ })).toBeDisabled();
   await wire('VCC', '3V3');
   await wire('GND', 'GND');
   await expect(page.locator('.wire-feedback')).toContainText('电源连接正确');
   await page.screenshot({ path: 'test-results/hardware.png', fullPage: true });
-  await page.getByRole('button', { name: /前往代码魔改工坊/ }).click();
+  await page.getByRole('button', { name: /前往誊写房/ }).click();
   const slider = page.getByRole('slider', { name: '眨眼间隔' });
   await slider.focus();
   await slider.press('Home');
@@ -62,7 +62,7 @@ test('完整学习流程：错线警告、拖拽连线、实时参数与进度�
 
 test('键盘连线、重置接线和成就锁定', async ({ page }) => {
   await page.goto('/');
-  await page.getByRole('button', { name: '代码魔改工坊', exact: true }).click();
+  await page.getByRole('button', { name: '誊写房', exact: true }).click();
   await expect(page.getByRole('button', { name: '完成接线后解锁成就' })).toBeDisabled();
   await page.getByRole('button', { name: '去接线' }).click();
   for (const [a, b] of [
@@ -72,9 +72,9 @@ test('键盘连线、重置接线和成就锁定', async ({ page }) => {
     await page.getByRole('button', { name: `麦克风 ${a} 引脚`, exact: true }).press('Enter');
     await page.getByRole('button', { name: `主板 ${b} 引脚`, exact: true }).press('Enter');
   }
-  await expect(page.getByRole('button', { name: /前往代码魔改工坊/ })).toBeEnabled();
+  await expect(page.getByRole('button', { name: /前往誊写房/ })).toBeEnabled();
   await page.getByRole('button', { name: '重置接线' }).click();
-  await expect(page.getByRole('button', { name: /前往代码魔改工坊/ })).toBeDisabled();
+  await expect(page.getByRole('button', { name: /前往誊写房/ })).toBeDisabled();
   await page.getByRole('button', { name: '重置学习进度' }).click();
   await page.getByRole('button', { name: '确认重置' }).click();
   await expect(page.locator('.badge.unlocked')).toHaveCount(1);
@@ -88,7 +88,7 @@ test('手机布局无横向溢出、损坏的存储可恢复', async ({ page }) 
   await expect(page.getByRole('heading', { name: /每个伟大的创造/ })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await page.screenshot({ path: 'test-results/mobile.png', fullPage: true });
-  await page.getByRole('button', { name: '硬件实验室', exact: true }).click();
+  await page.getByRole('button', { name: '街坊工坊', exact: true }).click();
   await expect(page.getByRole('heading', { name: /认识它/ })).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
