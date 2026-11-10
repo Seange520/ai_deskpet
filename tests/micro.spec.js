@@ -7,10 +7,10 @@ test('字体、原有主色与液态玻璃实际覆盖面积', async ({ page }) 
   await expect(page.locator('html')).toHaveCSS('background-color', 'rgb(27, 22, 38)');
   await expect(page.locator('html')).toHaveCSS('font-family', /Inter Variable/);
   const a = await page.locator('.hero-panel').boundingBox(),
-    b = await page.locator('.liquidGlass-effect').boundingBox();
+    b = await page.locator('.hero-glass').boundingBox();
   expect(b.width).toBeGreaterThan(a.width * 0.95);
   expect(b.height).toBeGreaterThan(a.height * 0.95);
-  await expect(page.locator('.liquidGlass-effect')).toHaveCSS('filter', /glass-distortion/);
+  await expect(page.locator('.hero-glass')).toHaveCSS('backdrop-filter', /blur\(8px\)/);
   await expect(page.locator('.page-transition')).toHaveCSS('opacity', '1');
   await page.evaluate(async () => {
     await document.fonts.ready;
@@ -131,7 +131,7 @@ test.describe('触屏降级', () => {
     await page.emulateMedia({ reducedMotion: 'no-preference' });
     await page.goto('/');
     await expect(page.locator('.hero-liquid')).toHaveAttribute('data-flow', 'false');
-    await expect(page.locator('.liquidGlass-effect')).toHaveCSS('filter', 'none');
+    await expect(page.locator('.hero-glass')).toHaveCSS('backdrop-filter', 'none');
     await page.getByRole('button', { name: '街坊工坊', exact: true }).tap();
     await expect(page.getByRole('heading', { name: /认识它/ })).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
