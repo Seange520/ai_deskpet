@@ -69,3 +69,10 @@
 - 版本口径统一：新增 `src/lib/version.mjs`（`APP_VERSION = 'v1.0.0-beta'`），启动屏右上角改为读该常量；官网两处 v0.9.8 文案改为 v1.0.0-beta。
 - SW 预缓存追加 manifest 与两枚图标；`gen-sw-manifest` 支持 `.webmanifest`。
 - 验证：`/?quality=3&boot=0` 读到 manifest（name/3 icons/theme #f2ecdc）、0 error；`node scripts/check-offline.mjs` 对 15266 预览复测 hub/mission/novel 三段离线仍 `ok:true`、0 error。
+
+## 内测试玩反馈页（第 122 轮）
+
+- `public/feedback/index.html`：纸面自包含表单（平台/设备/区域/阻断问题/体验问题/一句话/锦上添花），自动采集本机诊断（时间、UA、视口、版本、profile/mission/novel 存档摘要，只读）。
+- 行为：草稿自动存 `sparkmate.checksum.playtest.v1`；「复制反馈」生成可粘贴文本（clipboard 失败则提示改用下载）；「下载 .txt」本地落盘；「清空草稿」不动游戏存档。
+- 入口：官网页脚「内测反馈」、游戏页脚「试玩反馈」。
+- 验证（Playwright 1280×900）：填表→复制返回「已复制」、下载返回「已下载」、草稿长度 143、0 console error；截图 `work/acceptance/v1-smoke/feedback.png`。

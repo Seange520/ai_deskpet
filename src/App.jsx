@@ -447,6 +447,8 @@ function MainApp() {
                 {' · '}
                 <a href="./novel/index.html">档案阅读</a>
                 {' · '}
+                <a href="./feedback/index.html">试玩反馈</a>
+                {' · '}
                 <AssetPackEntry />
               </span>
             </footer>

@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>试玩反馈 · 第七校验</title>
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+    <style>
+      :root {
+        --paper: #f2ecdc;
+        --paper-2: #faf5e8;
+        --ink: #1c1b17;
+        --ink-2: #4a463d;
+        --muted: #8a8273;
+        --brass: #a9843f;
+        --rule: rgba(28, 27, 23, 0.14);
+        --serif: 'Noto Serif SC', 'Songti SC', Georgia, serif;
+        --mono: 'JetBrains Mono', ui-monospace, monospace;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: var(--serif);
+        background-image: linear-gradient(90deg, rgba(28,27,23,.045) 1px, transparent 1px),
+          linear-gradient(0deg, rgba(28,27,23,.045) 1px, transparent 1px);
+        background-size: 48px 48px;
+      }
+      header {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 18px 28px; border-bottom: 1px solid var(--rule);
+        background: rgba(242,236,220,.9); position: sticky; top: 0; z-index: 5;
+      }
+      header .brand { font-size: 15px; letter-spacing: .16em; }
+      header a { color: var(--ink-2); text-decoration: none; font-size: 13px; border-bottom: 1px solid var(--brass); }
+      main { max-width: 880px; margin: 0 auto; padding: 46px 24px 80px; }
+      .kicker { font-family: var(--mono); font-size: 11px; letter-spacing: .22em; color: var(--muted); }
+      h1 { font-size: 40px; margin: 10px 0 12px; font-weight: 600; letter-spacing: .04em; }
+      .lead { color: var(--ink-2); line-height: 1.9; margin: 0 0 30px; font-size: 15px; }
+      .card { background: var(--paper-2); border: 1px solid var(--rule); border-radius: 10px; padding: 22px 24px; margin-bottom: 18px; }
+      .card h2 { font-size: 16px; margin: 0 0 14px; letter-spacing: .06em; }
+      .row { display: grid; grid-template-columns: 96px 1fr; gap: 10px; align-items: start; margin-bottom: 12px; }
+      .row label { color: var(--muted); font-size: 13px; padding-top: 8px; }
+      input[type='text'], textarea, select {
+        width: 100%; background: rgba(255,255,255,.55); border: 1px solid var(--rule);
+        border-radius: 6px; padding: 9px 11px; font-family: var(--serif); font-size: 14px; color: var(--ink);
+      }
+      textarea { min-height: 96px; resize: vertical; line-height: 1.7; }
+      .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+      .chips label { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--rule); padding: 7px 10px; border-radius: 999px; font-size: 13px; cursor: pointer; background: rgba(255,255,255,.4); }
+      .chips input { accent-color: var(--brass); }
+      .diag { font-family: var(--mono); font-size: 12px; line-height: 1.8; color: var(--ink-2); white-space: pre-wrap; background: rgba(28,27,23,.045); border-radius: 6px; padding: 12px 14px; }
+      .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 6px; }
+      button, .linkbtn {
+        appearance: none; border: 1px solid var(--ink); border-radius: 6px; padding: 11px 18px;
+        background: var(--ink); color: var(--paper-2); font-family: var(--serif); font-size: 14px; cursor: pointer;
+      }
+      button.secondary { background: transparent; color: var(--ink); }
+      .hint { color: var(--muted); font-size: 12px; margin-top: 12px; }
+      .status { margin-top: 10px; font-size: 13px; color: var(--brass); min-height: 18px; }
+      footer { color: var(--muted); font-size: 12px; text-align: center; padding: 24px; }
+      @media (max-width: 640px) {
+        h1 { font-size: 30px; }
+        .row { grid-template-columns: 1fr; }
+        .row label { padding-top: 0; }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <span class="brand">第七校验 · 试玩反馈</span>
+      <a href="../index.html">返回游戏 →</a>
+    </header>
+    <main>
+      <div class="kicker">PLAYTEST FEEDBACK · 本地生成，不联网</div>
+      <h1>把卡住的地方，写下来。</h1>
+      <p class="lead">
+        这份反馈只在本机拼成一段文本，点「复制反馈」后自己粘贴到微信/邮件/GitHub Issue 即可。不上传、不需要账号。
+        请先按「阻断问题 &gt; 体验问题 &gt; 锦上添花」排序，每个问题尽量写清复现步骤。
+      </p>
+
+      <form id="fb">
+        <section class="card">
+          <h2>1 · 基本情况</h2>
+          <div class="row">
+            <label for="platform">平台</label>
+            <select id="platform">
+              <option>Web（浏览器）</option>
+              <option>Android APK</option>
+              <option>Windows 桌面版</option>
+            </select>
+          </div>
+          <div class="row">
+            <label>你现在在哪</label>
+            <div class="chips" id="areas">
+              <label><input type="checkbox" value="主界面/校验册" /> 主界面</label>
+              <label><input type="checkbox" value="晴光街三单" /> 晴光街三单</label>
+              <label><input type="checkbox" value="课程/现场课" /> 课程</label>
+              <label><input type="checkbox" value="爆炸图" /> 爆炸图</label>
+              <label><input type="checkbox" value="档案/小说" /> 档案</label>
+              <label><input type="checkbox" value="其他" /> 其他</label>
+            </div>
+          </div>
+          <div class="row">
+            <label for="device">设备</label>
+            <input id="device" type="text" placeholder="例如：Windows 11 / RTX 3060；红米 K60；iPad" />
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>2 · 阻断问题（卡住、报错、进不去）</h2>
+          <div class="row">
+            <label for="blockers">现象与复现</label>
+            <textarea id="blockers" placeholder="1. 我在…做…；2. 期望…；3. 实际…；4. 每次都能复现 / 偶发；5. 截图或录屏可另发。"></textarea>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>3 · 体验问题（不好玩、看不懂、节奏）</h2>
+          <div class="row">
+            <label for="ux">感受</label>
+            <textarea id="ux" placeholder="教程哪一步没讲清？测量/记录/合闸的反馈够不够？哪一段想跳过？"></textarea>
+          </div>
+          <div class="row">
+            <label>一句话评价</label>
+            <input id="oneLine" type="text" placeholder="如果只能改一件事，你希望是？" />
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>4 · 锦上添花（可做可不做）</h2>
+          <div class="row">
+            <label for="nice">想法</label>
+            <textarea id="nice" placeholder="美术、音效、剧情、桌面版、4v1…任何想法都行。"></textarea>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>5 · 自动诊断（只在本机生成）</h2>
+          <div class="diag" id="diag">采集设备信息中…</div>
+          <div class="actions">
+            <button type="button" id="copy">复制反馈</button>
+            <button type="button" class="secondary" id="download">下载 .txt</button>
+            <button type="button" class="secondary" id="clear">清空草稿</button>
+          </div>
+          <div class="status" id="status" role="status"></div>
+          <p class="hint">建议先安装/打开一次游戏再填反馈，诊断里会带上本机进度与最近一单成绩（只读，不改存档）。</p>
+        </section>
+      </form>
+    </main>
+    <footer>THE SEVENTH CHECKSUM · 试玩反馈 · 本地生成</footer>
+
+    <script>
+      const KEYS = ['sparkmate.checksum.profile.v1', 'sparkmate.checksum.mission.v1', 'sparkmate.checksum.novel.v1'];
+      const fields = ['platform', 'device', 'blockers', 'ux', 'oneLine', 'nice'];
+      const draftKey = 'sparkmate.checksum.playtest.v1';
+
+      function readJson(key) {
+        try {
+          return JSON.parse(localStorage.getItem(key) || 'null');
+        } catch {
+          return null;
+        }
+      }
+
+      function collectDiag() {
+        const profile = readJson(KEYS[0]);
+        const mission = readJson(KEYS[1]);
+        const novel = readJson(KEYS[2]);
+        const areas = [...document.querySelectorAll('#areas input:checked')].map((i) => i.value);
+        const lines = [
+          `时间：${new Date().toLocaleString('zh-CN')}`,
+          `平台：${document.querySelector('#platform').value}`,
+          `区域：${areas.length ? areas.join('、') : '未选'}`,
+          `UA：${navigator.userAgent}`,
+          `视口：${innerWidth}×${innerHeight} @${devicePixelRatio}x`,
+          `版本：v1.0.0-beta`,
+          `存档：profile=${profile ? '有' : '无'}；mission=${mission ? `已完成 ${(mission.completed || []).length}/3` : '无'}${mission?.records ? `；最佳 ${Object.values(mission.records).filter((r) => r && typeof r.score === 'number').map((r) => r.score).sort((a, b) => b - a)[0] ?? '-'} 分` : ''}；novel=${novel ? `第 ${(novel.index ?? 0) + 1} 章` : '无'}`,
+        ];
+        return lines.join('\n');
+      }
+
+      function buildText() {
+        const v = (id) => document.querySelector('#' + id).value.trim();
+        const areas = [...document.querySelectorAll('#areas input:checked')].map((i) => i.value).join('、') || '未选';
+        return [
+          '【第七校验 · 试玩反馈】',
+          `平台：${v('platform')}`,
+          `设备：${v('device') || '未填'}`,
+          `区域：${areas}`,
+          '',
+          '【阻断问题】',
+          v('blockers') || '（无）',
+          '',
+          '【体验问题】',
+          v('ux') || '（无）',
+          `一句话：${v('oneLine') || '（未填）'}`,
+          '',
+          '【锦上添花】',
+          v('nice') || '（无）',
+          '',
+          '【自动诊断】',
+          document.querySelector('#diag').textContent,
+        ].join('\n');
+      }
+
+      function saveDraft() {
+        const data = { areas: [...document.querySelectorAll('#areas input:checked')].map((i) => i.value) };
+        for (const f of fields) data[f] = document.querySelector('#' + f).value;
+        try {
+          localStorage.setItem(draftKey, JSON.stringify(data));
+        } catch {
+          /* 存档满时不阻断反馈 */
+        }
+      }
+
+      function loadDraft() {
+        const data = readJson(draftKey);
+        if (!data) return;
+        for (const f of fields) {
+          if (typeof data[f] === 'string') document.querySelector('#' + f).value = data[f];
+        }
+        const set = new Set(data.areas || []);
+        for (const input of document.querySelectorAll('#areas input')) input.checked = set.has(input.value);
+      }
+
+      async function copyText(text) {
+        try {
+          await navigator.clipboard.writeText(text);
+          return true;
+        } catch {
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          document.body.appendChild(ta);
+          ta.select();
+          const ok = document.execCommand('copy');
+          document.body.removeChild(ta);
+          return ok;
+        }
+      }
+
+      document.querySelector('#diag').textContent = collectDiag();
+      loadDraft();
+      document.querySelector('#platform').addEventListener('change', () => {
+        document.querySelector('#diag').textContent = collectDiag();
+        saveDraft();
+      });
+      document.querySelectorAll('#fb input, #fb textarea, #fb select').forEach((el) => {
+        el.addEventListener('input', () => {
+          saveDraft();
+          document.querySelector('#diag').textContent = collectDiag();
+        });
+        el.addEventListener('change', () => {
+          saveDraft();
+          document.querySelector('#diag').textContent = collectDiag();
+        });
+      });
+
+      document.querySelector('#copy').addEventListener('click', async () => {
+        const ok = await copyText(buildText());
+        document.querySelector('#status').textContent = ok
+          ? '已复制。把它粘贴到微信/邮件/GitHub Issue 即可。'
+          : '复制被浏览器拦截，请点「下载 .txt」。';
+      });
+
+      document.querySelector('#download').addEventListener('click', () => {
+        const blob = new Blob([buildText()], { type: 'text/plain;charset=utf-8' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `第七校验-试玩反馈-${new Date().toISOString().slice(0, 10)}.txt`;
+        a.click();
+        URL.revokeObjectURL(a.href);
+        document.querySelector('#status').textContent = '已下载，可直接发给主策划。';
+      });
+
+      document.querySelector('#clear').addEventListener('click', () => {
+        try {
+          localStorage.removeItem(draftKey);
+        } catch {
+          /* ignore */
+        }
+        document.querySelector('#fb').reset();
+        document.querySelector('#diag').textContent = collectDiag();
+        document.querySelector('#status').textContent = '草稿已清空；游戏存档不受影响。';
+      });
+    </script>
+  </body>
+</html>
