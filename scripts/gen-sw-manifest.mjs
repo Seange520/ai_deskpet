@@ -4,7 +4,7 @@ import { readdir, stat, writeFile } from 'node:fs/promises';
 import { join, relative, sep } from 'node:path';
 
 const dist = new URL('../dist/', import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1');
-const includeExt = new Set(['.js', '.css', '.svg', '.png', '.jpg', '.jpeg', '.webp', '.woff', '.woff2', '.md', '.html', '.ico']);
+const includeExt = new Set(['.js', '.css', '.svg', '.png', '.jpg', '.jpeg', '.webp', '.woff', '.woff2', '.md', '.html', '.ico', '.webmanifest']);
 const roots = ['index.html', 'favicon.svg', 'sw.js', 'site', 'novel', 'assets'];
 
 const files = [];

@@ -229,7 +229,7 @@ export function BootScreen({ onDone }) {
 
       <div className="boot-top">
         <span className="boot-top-chip">校验协议 · CHECKSUM PROTOCOL</span>
-        <span className="boot-top-right">LOCAL CORE · v0.9.8-alpha</span>
+        <span className="boot-top-right">LOCAL CORE · {APP_VERSION}</span>
       </div>
 
       <div className="boot-center">

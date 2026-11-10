@@ -62,3 +62,10 @@
 - 实测（`npx vite preview --port 15265`，Chromium）：在线首访 → 等待 SW ready → `context.setOffline(true)` → reload，主页/委托三单/档案阅读页均可离线渲染，0 console error；缓存策略 cache-first + ignoreVary（Vite preview 的 Vary 头会导致默认匹配失败）。
 - 产物：`work/acceptance/v1-offline/offline4.png`（离线主页）、novel/mission 路由文字校验通过。
 - 复验命令：`npm run build` → `npx vite preview --port 15265` → `node scripts/check-offline.mjs`（期望 passed: true、三段路由文字非空、0 error）。
+
+## PWA 安装与版本口径（第 122 轮）
+
+- `public/manifest.webmanifest`（name/short_name/主题色/standalone/横屏）+ `public/icon-192.png`、`icon-512.png`（由 favicon.svg 生成）+ `index.html` 的 `manifest`/`theme-color`/`apple-touch-icon`。
+- 版本口径统一：新增 `src/lib/version.mjs`（`APP_VERSION = 'v1.0.0-beta'`），启动屏右上角改为读该常量；官网两处 v0.9.8 文案改为 v1.0.0-beta。
+- SW 预缓存追加 manifest 与两枚图标；`gen-sw-manifest` 支持 `.webmanifest`。
+- 验证：`/?quality=3&boot=0` 读到 manifest（name/3 icons/theme #f2ecdc）、0 error；`node scripts/check-offline.mjs` 对 15266 预览复测 hub/mission/novel 三段离线仍 `ok:true`、0 error。
