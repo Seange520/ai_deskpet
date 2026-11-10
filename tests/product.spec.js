@@ -30,7 +30,7 @@ test('物料电商卡片、示例价格、套装浮窗和学习反馈', async ({
   await expect(page.locator('.companion-bubble')).toContainText('物料准备好啦');
 });
 
-test('排行榜明确展示 Mock 数据与本机积分，手机不溢出', async ({ page }) => {
+test('委托板与钟楼回望展示本机记录，手机不溢出', async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 850 });
   await page.addInitScript(() =>
     localStorage.setItem(

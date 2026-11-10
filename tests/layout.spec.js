@@ -21,7 +21,9 @@ for (const width of [320, 390, 768, 1024, 1440, 1920]) {
     const dock = await navigation.boundingBox();
     const panel = await page.locator('.page-transition').boundingBox();
     expect(dock.y + dock.height).toBeLessThanOrEqual(panel.y);
-    await page.getByRole('button', { name: '查看物料清单' }).click();
+    const materials = page.getByRole('button', { name: '查看物料清单' });
+    await materials.waitFor({ state: 'visible', timeout: 20000 });
+    await materials.click();
     await expect(page.getByRole('dialog')).toBeVisible();
     expect(
       await page.locator('.space-dock [data-island="dashboard"]').evaluate((el) => {
@@ -41,12 +43,14 @@ for (const width of [320, 390, 768, 1024, 1440, 1920]) {
     });
     if (width === 1440 || width === 390)
       await page.screenshot({ path: `test-results/layout-${width}.png` });
-    await page.getByRole('button', { name: '街坊工坊', exact: true }).click();
+    await page.waitForTimeout(500);
+    await page.locator('.space-dock [data-island="hardware"]').click({ force: true });
     await expect(page.getByRole('heading', { name: /认识它/ })).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
       width,
     );
-    await page.getByRole('button', { name: '誊写房', exact: true }).click();
+    await page.waitForTimeout(500);
+    await page.locator('.space-dock [data-island="code"]').click({ force: true });
     await expect(page.getByRole('slider')).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
       width,

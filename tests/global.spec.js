@@ -11,7 +11,7 @@ async function classic(page) {
 }
 const xp = (page) => page.locator('.experience-text');
 
-test('全局 XP、徽章 Toast、排名、重复接线与切路重载保持一致', async ({ page }) => {
+test('全局 XP、徽章 Toast、委托与钟楼回望、重复接线与切路重载保持一致', async ({ page }) => {
   await page.goto('/');
   await unlockThrough(page, 1);
   await page.getByRole('button', { name: '街坊工坊', exact: true }).click();
