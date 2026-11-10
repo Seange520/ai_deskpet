@@ -58,6 +58,18 @@ export const targets = [
     top: 103,
     portrait: true,
   },
+  {
+    name: 'cover-600x800.png',
+    width: 600,
+    height: 800,
+    title: 84,
+    eyebrow: 12,
+    english: 13,
+    tag: 18,
+    inset: 38,
+    top: 92,
+    portrait: true,
+  },
   { name: 'page-bg-1438x810.png', width: 1438, height: 810, background: true },
 ];
 
