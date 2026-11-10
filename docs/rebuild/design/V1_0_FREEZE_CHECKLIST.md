@@ -10,7 +10,7 @@
 4. **档案/成长**：维护者档案（铭牌/外观/数据）、等级/XP、修亮灯数与掌握课节；无排行榜。
 5. **外观**：A 基线（纸/墨/黄铜 + 晴光街实景）；四模块名（校验册/街坊工坊/誊写房/委托板）；纸面主题默认。
 6. **小说切片**：22 章大版本作为游戏内「档案/阅读」可选内容（只读，不联网）。
-7. **双端包**：Web（主）、Android APK v16（32,801,374B SHA `27CF1228…`）、Windows x64 zip（137,694,107B SHA `95570970…`）；版本号 v0.9.8-alpha 对外标注「单机版」。
+7. **双端包**：Web（主）、Android APK **v17**（32,925,917B SHA `28EF41CC…`）、Windows x64 zip **v17**（137,855,674B SHA `D491C81C…`）；版本口径统一 **v1.0.0-beta**（对外标注「单机版」）。
 8. **官网**：`public/site/index.html` 落地页 + 下载区（SHA 校验、内测说明）+ 路线图（v1.0 单机 / v2.0 4v1）。
 
 ## 二、技术冻结项
@@ -47,7 +47,7 @@
 
 - 路由矩阵：`?mission=r1&quality=3`、`?quality=3&boot=0`、`?exploded=1`、`/site/index.html` 四路由 1440×900 networkidle+1.5s，**0 console error / 0 pageerror / 0 失败请求**。
 - 修复：hero 玻璃由 `@khvicha/react-liquid-glass` 改为纯 CSS `.hero-glass`（消除 React `lighting-color` 警告、去掉一个运行时依赖）；补 `public/favicon.svg` 并在 `index.html` / `site/index.html` 声明 icon（清除浏览器默认 favicon 404）。
-- 站点下载块版本号校准：APK 标注 v16 · 32.8MB（与 SHA 27CF1228… 一致）。
+- 站点下载块版本号校准：APK 标注 v1.0.0-beta · 32.9MB（与 SHA 27CF1228… 一致）。
 - 仍待用户侧：APK/桌面安装实测、10–20 人试玩。
 
 ## 小说切片（第 121 轮补）
