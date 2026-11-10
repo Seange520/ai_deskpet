@@ -43,3 +43,9 @@
 - `npx playwright test`（67/67）
 - `npm run build`（含 `dist/site/index.html`）
 
+## 冒烟审计（第 121 轮）
+
+- 路由矩阵：`?mission=r1&quality=3`、`?quality=3&boot=0`、`?exploded=1`、`/site/index.html` 四路由 1440×900 networkidle+1.5s，**0 console error / 0 pageerror / 0 失败请求**。
+- 修复：hero 玻璃由 `@khvicha/react-liquid-glass` 改为纯 CSS `.hero-glass`（消除 React `lighting-color` 警告、去掉一个运行时依赖）；补 `public/favicon.svg` 并在 `index.html` / `site/index.html` 声明 icon（清除浏览器默认 favicon 404）。
+- 站点下载块版本号校准：APK 标注 v16 · 32.8MB（与 SHA 27CF1228… 一致）。
+- 仍待用户侧：APK/桌面安装实测、10–20 人试玩。
