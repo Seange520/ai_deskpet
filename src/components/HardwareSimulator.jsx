@@ -145,9 +145,14 @@ export default function HardwareSimulator({
           </h1>
           <p>{route.description}</p>
         </div>
-        <span className="pill">
-          <span className="status-dot" /> 虚拟实验环境
-        </span>
+        <div className="heading-actions">
+          <span className="pill">
+            <span className="status-dot" /> 虚拟实验环境
+          </span>
+          <a className="btn exploded-entry" href="/?exploded=1" target="_blank" rel="noreferrer">
+            全零件说明书 →
+          </a>
+        </div>
       </div>
       <div className="route-toolbar">
         <RouteSelect routeId={routeId} onChange={onRouteChange} />

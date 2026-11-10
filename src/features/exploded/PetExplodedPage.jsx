@@ -68,7 +68,7 @@ function Part({ part, explode, selected, onSelect, dimmed }) {
 }
 
 function PartMeshes({ id, color, active, dimmed, explode }) {
-  const opacity = dimmed ? 0.9 : 1;
+  const opacity = dimmed ? 0.55 : 1;
   const mat = (extra = {}) => (
     <meshStandardMaterial
       color={color}
@@ -77,7 +77,7 @@ function PartMeshes({ id, color, active, dimmed, explode }) {
       transparent={opacity < 1}
       opacity={opacity}
       emissive={active ? BRASS : '#000000'}
-      emissiveIntensity={active ? 0.22 : 0}
+      emissiveIntensity={active ? 0.42 : 0}
       {...extra}
     />
   );
