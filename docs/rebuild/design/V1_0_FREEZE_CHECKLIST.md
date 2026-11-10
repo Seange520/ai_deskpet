@@ -39,9 +39,16 @@
 - `node scripts/check-r1-mission.mjs`（13/13）
 - `node scripts/check-r1-flow.mjs`（全流程 1/1，含入口与返回）
 - `node scripts/check-r1-tier2.mjs`（手机门槛）
+- `node scripts/check-mobile-flow.mjs`（390×844 全流程：主界面→A 单完整修复→计分→返回→教学面板→AD-01 课节，7 项断言/0 overflow/0 error）
 - `node --test tests/mission-r1.unit.mjs`（21/21）
 - `npx playwright test`（67/67）
 - `npm run build`（含 `dist/site/index.html`）
+
+## 移动端全流程（第 124 轮）
+
+- 新增 `scripts/check-mobile-flow.mjs`：390×844、DPR2、isMobile/hasTouch，走完 主界面 → 校验委托 → A 单完整修复（观察/隔离/测量/记录/复测/合闸）→ 计分卡 → 返回学习枢纽（入口回显 1/3）→ 校验之径 → 课节 → AD-01 七段任务首段。
+- 断言：7 项通过、0 console error/pageerror、四个关键界面横向 overflow 均 ≤1px；证据 `work/acceptance/mobile-flow/`（5 图）。
+- 同时暴露并修正测试口径：体验轨不允许记录读数（用校验轨）、教学入口是 HUD「校验之径」而非首页导航、课节根节点为 `.teaching-run`。
 
 ## 冒烟审计（第 121 轮）
 
