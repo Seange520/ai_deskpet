@@ -265,3 +265,36 @@ test('每单最佳成绩：记录分数/称号、只保留更高分、坏字段�
   assert.deepEqual(progress.completed, ['C'], '非法 id 过滤');
   assert.deepEqual(progress.records, {}, '非法分数/未知单号过滤');
 });
+
+test('legacy progress without records migrates cleanly', async () => {
+  const { readMissionProgress, MISSION_PROGRESS_KEY } = await import(
+    '../src/features/mission/missionProgress.mjs'
+  );
+  const storage = {
+    value: JSON.stringify({ completed: ['A', 'B'] }),
+    getItem(key) {
+      return key === MISSION_PROGRESS_KEY ? this.value : null;
+    },
+    setItem(key, value) {
+      if (key === MISSION_PROGRESS_KEY) this.value = value;
+    },
+  };
+  const progress = readMissionProgress(storage);
+  assert.deepEqual(progress.completed, ['A', 'B'], '舊檔 completed 保留');
+  assert.deepEqual(progress.records, {}, '舊檔 records 補空物件');
+});
+
+test('corrupt progress storage falls back to empty state', async () => {
+  const { readMissionProgress, MISSION_PROGRESS_KEY } = await import(
+    '../src/features/mission/missionProgress.mjs'
+  );
+  const storage = {
+    getItem(key) {
+      return key === MISSION_PROGRESS_KEY ? '{not json' : null;
+    },
+    setItem() {},
+  };
+  const progress = readMissionProgress(storage);
+  assert.deepEqual(progress.completed, []);
+  assert.deepEqual(progress.records, {});
+});
