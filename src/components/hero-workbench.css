@@ -165,3 +165,18 @@ body:has(.modal-backdrop) .hero-workbench .hero-pet-float {
 .hero-workbench > .hero-copy {
   z-index: 3;
 }
+
+.hero-glass {
+  position: absolute;
+  inset: 0;
+  border-radius: 24px;
+  background: rgba(243, 237, 230, 0.018);
+  border: 1px solid rgba(243, 237, 230, 0.055);
+  backdrop-filter: blur(8px) saturate(1.05);
+  -webkit-backdrop-filter: blur(8px) saturate(1.05);
+  pointer-events: none;
+}
+.hero-glass-content {
+  position: relative;
+  z-index: 1;
+}

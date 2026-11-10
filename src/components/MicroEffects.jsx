@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useInView, useReducedMotion } from 'framer-motion';
-import { LiquidGlass } from '@khvicha/react-liquid-glass';
+
 import { Tilt, useTiltContext } from '@gfazioli/react-tilt';
 
 // 精细鼠标才启用位移；触屏保持原生滚动，减少动态效果时关闭所有空间动效。
@@ -118,26 +118,9 @@ export function HeroGlass({ enabled = true }) {
       data-flow={enabled && fine && inView && visible}
     >
       <span className="hero-ambient" />
-      <LiquidGlass
-        className="hero-glass"
-        contentClassName="hero-glass-content"
-        blur={8}
-        tint="rgba(243,237,230,0.018)"
-        borderColor="rgba(243,237,230,0.055)"
-        borderRadius={24}
-        enableBorderAnimation={false}
-        enableClickAnimation={false}
-        enableShadow={false}
-        enableGlassEffect={enabled && fine}
-        displacementScale={8}
-        turbulenceFrequency={0.009}
-        turbulenceOctaves={1}
-        blurStdDeviation={0.5}
-        surfaceScale={0.5}
-        parallaxMovement={0}
-      >
+      <div className="hero-glass">
         <span />
-      </LiquidGlass>
+      </div>
     </div>
   );
 }
