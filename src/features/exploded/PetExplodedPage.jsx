@@ -40,7 +40,8 @@ function Part({ part, explode, selected, onSelect, dimmed }) {
     if (!ref.current) return;
     const target = offset.clone().multiplyScalar(explode);
     ref.current.position.lerp(target, 0.18);
-    const s = active ? 1.035 : 1;
+    const base = part.displayScale ?? 1;
+    const s = base * (active ? 1.035 : 1);
     ref.current.scale.lerp(new THREE.Vector3(s, s, s), 0.18);
   });
 

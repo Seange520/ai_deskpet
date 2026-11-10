@@ -41,6 +41,7 @@ export const PARTS = [
     size: '23 × 12 × 22 mm',
     note: '点头、摇头都靠它。PWM 周期 20ms，脉宽 0.5–2.5ms 对应 0–180°。',
     color: '#9db7c7',
+    displayScale: 1.12,
     split: [1.45, 0.35, 0.2],
   },
   {
@@ -63,6 +64,7 @@ export const PARTS = [
     size: '12 × 10 mm',
     note: '声音从模拟波变成数字帧，再由主控决定“听不听懂”。',
     color: '#3a3f45',
+    displayScale: 1.35,
     split: [0.9, 1.15, -0.9],
   },
   {
@@ -85,6 +87,7 @@ export const PARTS = [
     size: 'M2 × 6',
     note: '对角拧，别一次拧死；塑料件拧过头会滑丝。',
     color: '#6a6f73',
+    displayScale: 2.1,
     split: [0, -1.5, 0],
   },
 ];
