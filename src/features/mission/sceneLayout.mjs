@@ -10,10 +10,9 @@
   'SM_Wall_Corner',
 ];
 // 晴光街：5 段窗墙中，中段让位给带门的店铺立面（A3 补件）。
-export const WALLS = [-8, -4, 4, 8].map((x) => [x, -1, Math.PI]);
+export const WALLS = [-8, -4, 4, 8, 12].map((x) => [x, -1, Math.PI]);
 export const CORNERS = [
-  [10.2, -1, Math.PI],
-  [-10.2, -1, Math.PI],
+  [-10.35, -1, 0],
 ];
 export const DOORS = [[0, -1, 0]];
 export const SIGNS = [[0, 3.05, -0.42, Math.PI]];
