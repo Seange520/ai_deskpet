@@ -40,10 +40,9 @@ test('委托板与钟楼回望展示本机记录，手机不溢出', async ({ pa
   );
   await page.goto('/');
   await page.getByRole('button', { name: '委托板', exact: true }).click();
-  await expect(page.getByRole('heading', { name: /委托板/ })).toBeVisible();
-  await expect(page.locator('.rank-board')).toContainText('示例数据');
-  await expect(page.locator('.rank-board li.is-you')).toContainText('350');
-  await expect(page.locator('.rank-summary')).toContainText('第 4 名');
+  await expect(page.getByRole('heading', { name: /写了单才算数/ })).toBeVisible();
+  await expect(page.locator('.commission-list')).toContainText('熄灯的晚餐');
+  await expect(page.locator('.tower-stats')).toContainText('已掌握课节');
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
 

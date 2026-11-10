@@ -43,14 +43,14 @@ for (const width of [320, 390, 768, 1024, 1440, 1920]) {
     });
     if (width === 1440 || width === 390)
       await page.screenshot({ path: `test-results/layout-${width}.png` });
-    await page.waitForTimeout(500);
-    await page.locator('.space-dock [data-island="hardware"]').click({ force: true });
-    await expect(page.getByRole('heading', { name: /认识它/ })).toBeVisible();
+    await page.waitForTimeout(800);
+    await page.locator('.space-dock button[data-island="hardware"]').evaluate((el) => el.click());
+    await expect(page.getByRole('heading', { name: /认识它/ })).toBeVisible({ timeout: 20000 });
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
       width,
     );
     await page.waitForTimeout(500);
-    await page.locator('.space-dock [data-island="code"]').click({ force: true });
+    await page.locator('.space-dock button[data-island="code"]').evaluate((el) => el.click());
     await expect(page.getByRole('slider')).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
       width,

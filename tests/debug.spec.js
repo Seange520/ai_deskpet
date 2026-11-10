@@ -56,7 +56,7 @@ for (const route of cases) {
     }, route.id);
     await page.goto('/');
     await page.getByRole('button', { name: '委托板', exact: true }).click();
-    await expect(page.locator('.rank-summary')).toContainText('第 5 名');
+    await expect(page.locator('.commission-list')).toContainText('熄灯的晚餐');
     await enter(page);
     await page.getByRole('button', { name: '检查连线 GND → GND', exact: true }).click();
     await expect(page.getByRole('alert')).toContainText('模拟短路警告');
@@ -92,7 +92,7 @@ for (const route of cases) {
       code: false,
     });
     await page.getByRole('button', { name: '委托板', exact: true }).click();
-    await expect(page.locator('.rank-summary')).toContainText('第 4 名');
+    await expect(page.locator('.tower-stats')).toContainText('已掌握课节');
     await page.reload();
     await expect(page.locator('.experience-text')).toContainText('300 / 2200 XP');
     await enter(page);

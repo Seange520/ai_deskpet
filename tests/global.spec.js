@@ -37,8 +37,8 @@ test('全局 XP、徽章 Toast、委托与钟楼回望、重复接线与切路�
   await expect(page.locator('.companion-bubble')).toContainText('升级啦');
   await expect(page.locator('.kit-toast')).not.toContainText('解锁');
   await page.getByRole('button', { name: '委托板', exact: true }).click();
-  await expect(page.locator('.rank-summary')).toContainText('第 4 名');
-  await expect(page.locator('.is-you')).toContainText('500');
+  await expect(page.locator('.commission-list')).toContainText('熄灯的晚餐');
+  await expect(page.locator('.tower-stats')).toContainText('500');
   await page.reload();
   await expect(xp(page)).toContainText('500 / 2200 XP');
   await expect(page.locator('.badge.unlocked')).toHaveCount(2);
