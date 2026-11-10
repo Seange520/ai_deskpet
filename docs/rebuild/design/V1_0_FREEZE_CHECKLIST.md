@@ -44,6 +44,12 @@
 - `npx playwright test`（67/67）
 - `npm run build`（含 `dist/site/index.html`）
 
+## 课节深链（第 125 轮）
+
+- `?lesson=<KP>` 打开校验之径并直接进入对应课节（v1/v2 自动判断）；锁着或缺席时不静默失败，显示黄铜提示条。
+- 任务计分卡「对应课节 K0-02」链接改为 `/?lesson=K0-02`，并注明「若还锁着，先完成 K0-01」。
+- `tests/deep-link.spec.js`：AD-01 深链进任务简报、K0-02 锁定提示；命令 `npx playwright test tests/deep-link.spec.js`。
+
 ## 移动端全流程（第 124 轮）
 
 - 新增 `scripts/check-mobile-flow.mjs`：390×844、DPR2、isMobile/hasTouch，走完 主界面 → 校验委托 → A 单完整修复（观察/隔离/测量/记录/复测/合闸）→ 计分卡 → 返回学习枢纽（入口回显 1/3）→ 校验之径 → 课节 → AD-01 七段任务首段。

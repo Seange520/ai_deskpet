@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { BookOpen } from 'lucide-react';
 import graph from './data/knowledge-graph.v1.json';
 import { STATES, recommendations } from './learning.mjs';
@@ -35,7 +35,7 @@ const modulesV2 = import.meta.glob('./data/lessons-v2/*.v2.json', {
 const lessonsV2 = Object.fromEntries(
   Object.values(modulesV2).map((l) => [l.kp.id, l]),
 );
-export default function TeachingPanel() {
+export default function TeachingPanel({ initialLessonId = null }) {
   const [demo] = useState(() =>
       demoEnabled({ search: typeof location === 'undefined' ? '' : location.search }),
     ),
@@ -46,12 +46,34 @@ export default function TeachingPanel() {
     [currentV2, setCurrentV2] = useState(null),
     [minutes, setMinutes] = useState(15),
     [confirm, setConfirm] = useState(false),
-    [serial, setSerial] = useState(0);
+    [linkNotice, setLinkNotice] = useState(''),
+    [serial, setSerial] = useState(0),
+    linkHandled = useRef(false);
   useEffect(() => {
     const search = typeof location === 'undefined' ? '' : location.search;
     if (demoRequested(search)) writeDemoFlag(true);
     else if (demoDisabled(search)) writeDemoFlag(false);
   }, []);
+  useEffect(() => {
+    if (!initialLessonId || linkHandled.current || !s?.profile?.kps) return;
+    const id = initialLessonId.toUpperCase();
+    const v2 = Boolean(lessonsV2[id]);
+    if (!v2 && !lessons[id]) {
+      linkHandled.current = true;
+      setLinkNotice(`没有找到课节「${id}」，已回到课节列表。`);
+      return;
+    }
+    const kp = s?.profile?.kps?.[id];
+    if (!kp || kp.status === 'locked') {
+      linkHandled.current = true;
+      setLinkNotice(`「${id}」还锁着。先完成它的前置课节，或从下面的任务链里接着走。`);
+      return;
+    }
+    linkHandled.current = true;
+    start(id, v2);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialLessonId, s?.profile]);
+
   function start(id, v2 = false) {
     if (demo && !isDemoLesson(id)) return;
     if (s.profile.kps[id].status === 'locked') return;
@@ -68,6 +90,7 @@ export default function TeachingPanel() {
         校验之径
       </h2>
       <p>先观察，留下证据，再走下一步。</p>
+      {linkNotice && <p className="deep-link-note" role="status">{linkNotice}</p>}
       {demo && (
         <section className="teaching-card" data-demo-banner>
           <h3>{DEMO_BANNER.title}</h3>

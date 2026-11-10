@@ -200,7 +200,8 @@ export default function MissionOverlay() {
               )}
               <p className="mission-study">
                 对应课节：K0-02《万用表 · 先选对档》
-                <a href="/">回学习枢纽复习 →</a>
+                <a href="/?lesson=K0-02">去学这一节 →</a>
+                <small className="mission-study-hint">若还锁着，先完成 K0-01 用电安全。</small>
               </p>
               <a href="?">返回学习枢纽</a>
             </>

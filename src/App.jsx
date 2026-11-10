@@ -94,6 +94,7 @@ function MainApp() {
   const hasNavigated = useRef(false);
   const focusOnArrival = useRef(null);
   const modalTrigger = useRef(null);
+  const lessonParam = new URLSearchParams(location.search).get('lesson');
   function openModal(type) {
     modalTrigger.current = document.activeElement;
     setModal(type);
@@ -139,6 +140,10 @@ function MainApp() {
   const [celebrations, setCelebrations] = useState(0);
   const [kitAdded, setKitAdded] = useState({});
   const [toast, setToast] = useState('');
+  useEffect(() => {
+    if (!lessonParam || booting) return;
+    setModal('teaching');
+  }, [lessonParam, booting]);
   useEffect(() => {
     if (!toast) return;
     const timer = setTimeout(() => setToast(''), 3500);
@@ -502,7 +507,7 @@ function MainApp() {
                 >
                   <X size={20} />
                 </Button>
-                {modal === 'identity' ? (<Suspense fallback={<h2 id="modal-title">维护者档案载入中</h2>}><LazyProfilePanel /></Suspense>) : modal === 'teaching' ? (<Suspense fallback={<h2 id="modal-title">校验之径载入中</h2>}><TeachingPanel /></Suspense>) : modal === 'resonance' ? (<Suspense fallback={<h2 id="modal-title">共鸣链载入中</h2>}><ResonancePanel /></Suspense>) : modal === 'materials' || modal === 'shop' ? (
+                {modal === 'identity' ? (<Suspense fallback={<h2 id="modal-title">维护者档案载入中</h2>}><LazyProfilePanel /></Suspense>) : modal === 'teaching' ? (<Suspense fallback={<h2 id="modal-title">校验之径载入中</h2>}><TeachingPanel initialLessonId={lessonParam} /></Suspense>) : modal === 'resonance' ? (<Suspense fallback={<h2 id="modal-title">共鸣链载入中</h2>}><ResonancePanel /></Suspense>) : modal === 'materials' || modal === 'shop' ? (
                   <Materials
                     key={routeId}
                     routeId={routeId}
