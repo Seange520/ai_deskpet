@@ -9,7 +9,7 @@ import { join, resolve } from 'node:path';
 const root = resolve(process.cwd(), '..');
 const src = join(root, 'work', 'handoff', 'novel');
 const outDir = join(root, 'work', 'deliverables', 'novel', 'stamp');
-const mdPath = join(root, 'work', 'deliverables', 'novel', '第七校验_流明域_第一至二十章_全稿.md');
+const mdPath = join(root, 'work', 'deliverables', 'novel', '第七校验_流明域_第一至二十二章_全稿.md');
 
 function sha256(buf) {
   return createHash('sha256').update(buf).digest('hex').toUpperCase();
@@ -43,7 +43,7 @@ let full = null;
 if (readFileSync(mdPath, 'utf8').length > 0) {
   const buf = readFileSync(mdPath);
   full = {
-    file: 'work/deliverables/novel/第七校验_流明域_第一至二十章_全稿.md',
+    file: 'work/deliverables/novel/第七校验_流明域_第一至二十二章_全稿.md',
     bytes: buf.length,
     han: han(buf),
     sha256: sha256(buf),
