@@ -428,3 +428,271 @@
   text-decoration: none;
 }
 .teaching-card.mission-bridge .mission-link:hover { filter: brightness(1.06); }
+
+/* 纸张主题：硬件实验室（A 基线统一，2026-11-10） */
+:root[data-theme='light'] body:has(.page.workbench-page) {
+  background: #e9dfca;
+}
+
+:root[data-theme='light'] .app-shell:has(.page.workbench-page) {
+  background:
+    radial-gradient(1200px 640px at 82% -10%, rgba(201, 163, 92, 0.18), transparent 62%),
+    #e9dfca;
+}
+
+:root[data-theme='light'] .page.workbench-page {
+  background: transparent !important;
+  color: var(--paper-ink);
+}
+
+:root[data-theme='light'] .page.workbench-page .page-heading h1,
+:root[data-theme='light'] .page.workbench-page .page-heading h2 {
+  color: var(--paper-ink) !important;
+  text-shadow: none !important;
+}
+
+:root[data-theme='light'] .page.workbench-page .text-neon {
+  color: var(--paper-brass-strong) !important;
+  text-shadow: none !important;
+}
+
+:root[data-theme='light'] .page.workbench-page .page-heading p,
+:root[data-theme='light'] .page.workbench-page .eyebrow,
+:root[data-theme='light'] .page.workbench-page .route-context,
+:root[data-theme='light'] .page.workbench-page .gallery-note,
+:root[data-theme='light'] .page.workbench-page .panel-description,
+:root[data-theme='light'] .page.workbench-page .learning-tip,
+:root[data-theme='light'] .page.workbench-page .pitfall-card,
+:root[data-theme='light'] .page.workbench-page .workbench-warnings,
+:root[data-theme='light'] .page.workbench-page .lab-mode .pill {
+  color: var(--paper-ink-2) !important;
+}
+
+:root[data-theme='light'] .page.workbench-page .panel,
+:root[data-theme='light'] .page.workbench-page .route-toolbar,
+:root[data-theme='light'] .page.workbench-page .learning-tip,
+:root[data-theme='light'] .page.workbench-page .pitfall-card,
+:root[data-theme='light'] .page.workbench-page .lab-mode {
+  background:
+    linear-gradient(180deg, rgba(255, 253, 246, 0.94), rgba(246, 238, 220, 0.9)) !important;
+  border: 1px solid var(--paper-line-strong) !important;
+  border-radius: 3px !important;
+  box-shadow: 0 20px 44px -34px rgba(60, 44, 18, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.7) !important;
+}
+
+:root[data-theme='light'] .page.workbench-page .panel-heading h3,
+:root[data-theme='light'] .page.workbench-page .panel-heading h2 {
+  color: var(--paper-ink) !important;
+}
+
+:root[data-theme='light'] .page.workbench-page .btn,
+:root[data-theme='light'] .page.workbench-page .icon-btn,
+:root[data-theme='light'] .page.workbench-page .lab-mode .pill {
+  background: #fbf6e9 !important;
+  border-color: var(--paper-line-strong) !important;
+  color: var(--paper-ink) !important;
+  box-shadow: none !important;
+}
+
+:root[data-theme='light'] .page.workbench-page .btn.primary {
+  background: linear-gradient(180deg, #c99a44, #a8792a) !important;
+  border-color: #8a611e !important;
+  color: #221a0d !important;
+}
+
+:root[data-theme='light'] .page.workbench-page .pin-hud,
+:root[data-theme='light'] .page.workbench-page .pin {
+  color: var(--paper-ink) !important;
+}
+
+:root[data-theme='light'] .page.workbench-page .wiring-stage,
+:root[data-theme='light'] .page.workbench-page .wiring-svg {
+  background: #141b18 !important;
+  border-color: var(--paper-line-strong) !important;
+}
+
+:root[data-theme='light'] .page.workbench-page .panel.hardware-gallery {
+  background:
+    linear-gradient(180deg, #1a2420, #101613) !important;
+  border-color: #2b3a34 !important;
+}
+
+:root[data-theme='light'] .page.workbench-page .panel.hardware-gallery .panel-heading h3,
+:root[data-theme='light'] .page.workbench-page .panel.hardware-gallery .panel-heading h2,
+:root[data-theme='light'] .page.workbench-page .panel.hardware-gallery .eyebrow {
+  color: #e7e0cf !important;
+}
+
+:root[data-theme='light'] .page.workbench-page .route-toolbar select,
+:root[data-theme='light'] .page.workbench-page select {
+  background: #fbf6e9 !important;
+  color: var(--paper-ink) !important;
+  border: 1px solid var(--paper-line-strong) !important;
+}
+
+:root[data-theme='light'] .page.workbench-page .pill,
+:root[data-theme='light'] .page.workbench-page .lab-mode .pill {
+  color: var(--paper-ink-2) !important;
+  border-color: var(--paper-line-strong) !important;
+}
+
+:root[data-theme='light'] .page.workbench-page .status-dot {
+  background: var(--paper-brass) !important;
+}
+
+/* 纸张主题：代码工坊与创客排位（A 基线统一） */
+:root[data-theme='light'] body:has(.page.page-hero),
+:root[data-theme='light'] body:has(.page.ranking-page) {
+  background: #e9dfca;
+}
+
+:root[data-theme='light'] .app-shell:has(.page.page-hero),
+:root[data-theme='light'] .app-shell:has(.page.ranking-page) {
+  background:
+    radial-gradient(1200px 640px at 82% -10%, rgba(201, 163, 92, 0.18), transparent 62%),
+    #e9dfca;
+}
+
+:root[data-theme='light'] .page.page-hero,
+:root[data-theme='light'] .page.ranking-page {
+  background: transparent !important;
+  color: var(--paper-ink);
+}
+
+:root[data-theme='light'] .page.page-hero .page-heading h1,
+:root[data-theme='light'] .page.page-hero .page-heading h2,
+:root[data-theme='light'] .page.ranking-page .page-heading h1,
+:root[data-theme='light'] .page.ranking-page .page-heading h2 {
+  color: var(--paper-ink) !important;
+  text-shadow: none !important;
+}
+
+:root[data-theme='light'] .page.page-hero .text-neon,
+:root[data-theme='light'] .page.ranking-page .text-neon {
+  color: var(--paper-brass-strong) !important;
+  text-shadow: none !important;
+}
+
+:root[data-theme='light'] .page.page-hero .page-heading p,
+:root[data-theme='light'] .page.page-hero .eyebrow,
+:root[data-theme='light'] .page.page-hero .experiment-control-note,
+:root[data-theme='light'] .page.page-hero .learning-tip,
+:root[data-theme='light'] .page.ranking-page .eyebrow,
+:root[data-theme='light'] .page.ranking-page .rank-note,
+:root[data-theme='light'] .page.ranking-page .pill {
+  color: var(--paper-ink-2) !important;
+}
+
+:root[data-theme='light'] .page.page-hero .panel,
+:root[data-theme='light'] .page.ranking-page .panel {
+  background:
+    linear-gradient(180deg, rgba(255, 253, 246, 0.94), rgba(246, 238, 220, 0.9)) !important;
+  border: 1px solid var(--paper-line-strong) !important;
+  border-radius: 3px !important;
+  box-shadow: 0 20px 44px -34px rgba(60, 44, 18, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.7) !important;
+}
+
+:root[data-theme='light'] .page.page-hero .panel-heading h3,
+:root[data-theme='light'] .page.page-hero .panel-heading h2,
+:root[data-theme='light'] .page.ranking-page .rank-board-heading h3 {
+  color: var(--paper-ink) !important;
+}
+
+:root[data-theme='light'] .page.page-hero .btn,
+:root[data-theme='light'] .page.page-hero .icon-btn,
+:root[data-theme='light'] .page.ranking-page .btn {
+  background: #fbf6e9 !important;
+  border-color: var(--paper-line-strong) !important;
+  color: var(--paper-ink) !important;
+}
+
+:root[data-theme='light'] .page.page-hero .btn.primary {
+  background: linear-gradient(180deg, #c99a44, #a8792a) !important;
+  border-color: #8a611e !important;
+  color: #221a0d !important;
+}
+
+:root[data-theme='light'] .page.page-hero .editor,
+:root[data-theme='light'] .page.page-hero .editor-panel,
+:root[data-theme='light'] .page.page-hero .ide-toolbar,
+:root[data-theme='light'] .page.page-hero .code-line {
+  background: #141b18 !important;
+}
+
+:root[data-theme='light'] .page.page-hero .editor-tab,
+:root[data-theme='light'] .page.page-hero .ide-tool {
+  color: #d9d2c2 !important;
+}
+
+:root[data-theme='light'] .page.ranking-page .rank-number {
+  color: var(--paper-brass-strong) !important;
+}
+
+/* A 基线：纸面可读性加强（代码工坊/排位/硬件实验室） */
+:root[data-theme='light'] .page.page-hero .eyebrow,
+:root[data-theme='light'] .page.workbench-page .eyebrow,
+:root[data-theme='light'] .page.ranking-page .eyebrow {
+  color: #7a6746 !important;
+  opacity: 1 !important;
+}
+
+:root[data-theme='light'] .page.page-hero .experiment-control-note,
+:root[data-theme='light'] .page.page-hero .learning-tip,
+:root[data-theme='light'] .page.page-hero .ide-feedback,
+:root[data-theme='light'] .page.page-hero .editor-status,
+:root[data-theme='light'] .page.workbench-page .page-heading p,
+:root[data-theme='light'] .page.workbench-page .gallery-note,
+:root[data-theme='light'] .page.workbench-page .panel-description,
+:root[data-theme='light'] .page.ranking-page .page-heading p,
+:root[data-theme='light'] .page.ranking-page .rank-note {
+  color: #6b5a3e !important;
+  opacity: 1 !important;
+}
+
+:root[data-theme='light'] .page.page-hero select,
+:root[data-theme='light'] .page.workbench-page select,
+:root[data-theme='light'] .page.page-hero input,
+:root[data-theme='light'] .page.page-hero textarea {
+  background: #fbf6e9 !important;
+  color: var(--paper-ink) !important;
+  border-color: var(--paper-line-strong) !important;
+}
+
+:root[data-theme='light'] .page.ranking-page .rank-summary small,
+:root[data-theme='light'] .page.ranking-page .rank-person small,
+:root[data-theme='light'] .page.ranking-page .rank-summary,
+:root[data-theme='light'] .page.ranking-page .rank-board {
+  color: var(--paper-ink) !important;
+}
+
+:root[data-theme='light'] .page.ranking-page .rank-summary small,
+:root[data-theme='light'] .page.ranking-page .rank-person small {
+  color: #6b5a3e !important;
+}
+
+/* A 基线：排位数字与强调色（可读性） */
+:root[data-theme='light'] .page.ranking-page .rank-summary h2 {
+  color: #8a611e !important;
+  text-shadow: none !important;
+}
+
+:root[data-theme='light'] .page.ranking-page .rank-summary h2 small {
+  color: #6b5a3e !important;
+}
+
+:root[data-theme='light'] .page.ranking-page .rank-board li strong {
+  color: #8a611e !important;
+  text-shadow: none !important;
+}
+
+:root[data-theme='light'] .page.ranking-page .rank-board li strong small {
+  color: #6b5a3e !important;
+}
+
+:root[data-theme='light'] .page.ranking-page .rank-number {
+  color: #8a611e !important;
+}
+
+:root[data-theme='light'] .page.ranking-page .rank-summary > div > span {
+  color: #6b5a3e !important;
+}
