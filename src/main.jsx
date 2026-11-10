@@ -36,3 +36,10 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     )}
   </React.StrictMode>,
 );
+
+// v1.0 单机壳：生产构建下注册 Service Worker，首次访问后同一浏览器可离线进入。
+if (import.meta.env.PROD && 'serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register(`${import.meta.env.BASE_URL}sw.js`).catch(() => {});
+  });
+}

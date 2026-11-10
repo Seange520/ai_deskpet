@@ -55,3 +55,9 @@
 - 新增离线阅读页 `public/novel/index.html`：读取 `public/assets/novel/v1.md`（22 章全稿 100,418 字，416,075B），左侧章节目录、上一章/下一章、←/→ 键翻章、`sparkmate.checksum.novel.v1` 记住章节位置；纸/墨/黄铜样式与游戏一致。
 - 入口：官网导航「阅读档案」+ 游戏页脚「档案阅读」。
 - 验证：目录 22 条、切章标题正确、localStorage 记录 index、0 console error；截图 `work/acceptance/v1-smoke/novel2.png`。
+
+## Web 离线壳（第 121 轮）
+
+- `public/sw.js`（v1.0.2）+ `scripts/gen-sw-manifest.mjs`：首次打开后预缓存 244 个文件（8.7MB，代码/文本/GLB/小图），`package.json` build 自动生成 `dist/sw-manifest.json`；生产构建才注册 SW。
+- 实测（`npx vite preview --port 15265`，Chromium）：在线首访 → 等待 SW ready → `context.setOffline(true)` → reload，主页/委托三单/档案阅读页均可离线渲染，0 console error；缓存策略 cache-first + ignoreVary（Vite preview 的 Vary 头会导致默认匹配失败）。
+- 产物：`work/acceptance/v1-offline/offline4.png`（离线主页）、novel/mission 路由文字校验通过。
