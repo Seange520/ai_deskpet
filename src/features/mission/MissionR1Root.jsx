@@ -1,5 +1,6 @@
-﻿import { Component, Suspense, lazy } from 'react';
+﻿import { Component, Suspense, lazy, useEffect } from 'react';
 import { useQualityTier } from '../../lib/qualityTier';
+import { isMuted, startAmbient } from '../../lib/sounds';
 import { useMission } from './missionStore.mjs';
 import MissionOverlay from './MissionOverlay.jsx';
 import './mission.css';
@@ -21,6 +22,16 @@ class SceneBoundary extends Component {
 export default function MissionR1Root() {
   const { tier, maxDpr } = useQualityTier();
   const error = useMission((s) => s.error);
+  useEffect(() => {
+    if (isMuted()) return undefined;
+    const kick = () => startAmbient();
+    window.addEventListener('pointerdown', kick, { once: true });
+    window.addEventListener('keydown', kick, { once: true });
+    return () => {
+      window.removeEventListener('pointerdown', kick);
+      window.removeEventListener('keydown', kick);
+    };
+  }, []);
   if (tier < 2) {
     const url = new URL(location.href);
     url.searchParams.set('quality', '3');

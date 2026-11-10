@@ -86,7 +86,7 @@ export async function playSound(kind, muted = false, { ambient: allowAmbient = f
       oscillator.frequency.setValueAtTime(hz, time);
       gain.gain.setValueAtTime(0, time);
       gain.gain.linearRampToValueAtTime(
-        kind === 'warning' ? 0.035 : gentle ? 0.03 : 0.07,
+        kind === 'warning' ? 0.06 : gentle ? 0.05 : 0.1,
         time + 0.008,
       );
       gain.gain.exponentialRampToValueAtTime(0.0001, time + duration);
@@ -165,7 +165,7 @@ export async function startAmbient({ force = false } = {}) {
     const now = ctx.currentTime;
     const master = ctx.createGain();
     master.gain.setValueAtTime(0.0001, now);
-    master.gain.exponentialRampToValueAtTime(0.05, now + 2.4);
+    master.gain.exponentialRampToValueAtTime(0.085, now + 2.4);
     const filter = ctx.createBiquadFilter();
     filter.type = 'lowpass';
     filter.frequency.setValueAtTime(420, now);
