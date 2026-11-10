@@ -1,7 +1,13 @@
 {
   "schema": "lesson.v2",
   "lessonId": "L-AD-01-v2",
-  "kp": { "id": "AD-01", "name": "桌宠壳体与装配顺序", "layer": "L0", "pillar": "craft", "oneLiner": "先认清零件，再开始装" },
+  "kp": {
+    "id": "AD-01",
+    "name": "桌宠壳体与装配顺序",
+    "layer": "L0",
+    "pillar": "craft",
+    "oneLiner": "先认清零件，再开始装"
+  },
   "meta": {
     "version": "2.0.0",
     "updatedAt": "2026-11-09",
@@ -22,74 +28,153 @@
     {
       "id": "mission",
       "seconds": 25,
-      "narration": ["盒子里的零件，先认全。", "装错顺序，返工最贵。", "今天的任务：装一台能亮的桌宠。"],
+      "narration": [
+        "盒子里的零件，先认全。",
+        "装错顺序，返工最贵。",
+        "今天的任务：装一台能亮的桌宠。"
+      ],
       "task": "认识六个零件，并按顺序完成装配。"
     },
     {
       "id": "observe",
       "seconds": 60,
-      "narration": ["外壳先就位，内件才有依靠。", "主控是脑，电源是胃。", "屏与舵机，最后上。"],
+      "narration": [
+        "外壳先就位，内件才有依靠。",
+        "主控是脑，电源是胃。",
+        "屏与舵机，最后上。"
+      ],
       "media": [
-        { "kind": "svg", "src": "assets/lessons/AD-01/deskpet-parts.svg", "status": "ready", "license": "CC-BY-4.0" }
+        {
+          "kind": "svg",
+          "src": "assets/lessons/AD-01/deskpet-parts.svg",
+          "status": "ready",
+          "license": "CC-BY-4.0"
+        }
       ],
       "check": {
         "id": "obs-1",
         "type": "choice",
         "task": "装配时，应该先固定哪一件？",
-        "options": ["外壳", "屏幕", "舵机"],
+        "options": [
+          "外壳",
+          "屏幕",
+          "舵机"
+        ],
         "answerIndex": 0
       }
     },
     {
       "id": "learn",
       "seconds": 90,
-      "narration": ["顺序：壳、板、电源、屏、驱动。", "传感器放最后，避免被压坏。", "每加一件，检查间隙与固定。"],
-      "media": [
-        { "kind": "svg", "src": "assets/lessons/AD-01/deskpet-parts.svg", "status": "ready", "license": "CC-BY-4.0" }
+      "narration": [
+        "顺序：壳、板、电源、屏、驱动。",
+        "传感器放最后，避免被压坏。",
+        "每加一件，检查间隙与固定。"
       ],
-      "term": { "text": "装配顺序", "oneLine": "先结构、再供电、后交互件。" },
+      "media": [
+        {
+          "kind": "svg",
+          "src": "assets/lessons/AD-01/deskpet-parts.svg",
+          "status": "ready",
+          "license": "CC-BY-4.0"
+        }
+      ],
+      "term": {
+        "text": "装配顺序",
+        "oneLine": "先结构、再供电、后交互件。"
+      },
       "check": {
         "id": "learn-1",
         "type": "choice",
         "task": "屏幕与舵机，为什么要最后装？",
-        "options": ["避免干涉与压伤", "它们最贵", "它们不需要固定"],
+        "options": [
+          "避免干涉与压伤",
+          "它们最贵",
+          "它们不需要固定"
+        ],
         "answerIndex": 0
+      },
+      "link": {
+        "href": "/?exploded=1",
+        "label": "打开全零件说明书（8 件，可拆可点）"
       }
     },
     {
       "id": "do",
       "seconds": 200,
-      "narration": ["点零件，把它放进托盘。", "顺序错了会提示，重新来。", "装完做一次安全确认。"],
+      "narration": [
+        "点零件，把它放进托盘。",
+        "顺序错了会提示，重新来。",
+        "装完做一次安全确认。"
+      ],
       "sim": {
         "id": "pet-build",
         "version": 1,
         "task": "按壳体、主控、电源、屏幕、舵机、传感器的顺序完成装配，并确认断电与极性。",
-        "hints": ["先放外壳，给内件定位。", "电源放在主控旁边，方便接线。", "传感器最后放，远离热源。"]
+        "hints": [
+          "先放外壳，给内件定位。",
+          "电源放在主控旁边，方便接线。",
+          "传感器最后放，远离热源。"
+        ]
       }
     },
     {
       "id": "prove",
       "seconds": 100,
       "mode": "numeric",
-      "narration": ["用数字确认装配完整。", "六件都在，顺序正确。", "安全项也要打勾。"],
+      "narration": [
+        "用数字确认装配完整。",
+        "六件都在，顺序正确。",
+        "安全项也要打勾。"
+      ],
       "checks": [
-        { "id": "parts-count", "type": "measurement", "task": "托盘中的零件数", "expected": 6, "tolerance": 0.5, "unit": "次" },
-        { "id": "order-steps", "type": "measurement", "task": "装配步骤数", "expected": 6, "tolerance": 0.5, "unit": "次" }
+        {
+          "id": "parts-count",
+          "type": "measurement",
+          "task": "托盘中的零件数",
+          "expected": 6,
+          "tolerance": 0.5,
+          "unit": "次"
+        },
+        {
+          "id": "order-steps",
+          "type": "measurement",
+          "task": "装配步骤数",
+          "expected": 6,
+          "tolerance": 0.5,
+          "unit": "次"
+        }
       ]
     },
     {
       "id": "transfer",
       "seconds": 90,
-      "narration": ["如果要先换电池呢？", "供电件放早了，会怎样？", "你会怎么调整顺序？"],
+      "narration": [
+        "如果要先换电池呢？",
+        "供电件放早了，会怎样？",
+        "你会怎么调整顺序？"
+      ],
       "prompt": "需要更换电源方案时，正确的做法是？",
-      "options": ["断电后先拆供电件，再装新件", "带电直接拔插", "把屏幕拆了再换"],
+      "options": [
+        "断电后先拆供电件，再装新件",
+        "带电直接拔插",
+        "把屏幕拆了再换"
+      ],
       "answerIndex": 0
     },
     {
       "id": "recap",
       "seconds": 25,
-      "narration": ["结构先立，供电随后。", "交互件最后装。", "断电、检查、再上电。"],
-      "lines": ["结构先立，供电随后。", "交互件最后装。", "断电、检查、再上电。"]
+      "narration": [
+        "结构先立，供电随后。",
+        "交互件最后装。",
+        "断电、检查、再上电。"
+      ],
+      "lines": [
+        "结构先立，供电随后。",
+        "交互件最后装。",
+        "断电、检查、再上电。"
+      ]
     }
   ],
   "safety": {
@@ -98,7 +183,16 @@
     "note": "装配教学为台面仿真；真实操作请断电、清点零件并核对图纸。"
   },
   "redLines": {
-    "forbiddenNarrationTokens": ["玩家", "游戏", "网页", "第七校验", "熵", "残响", "第一编译者", "0x7F"],
+    "forbiddenNarrationTokens": [
+      "玩家",
+      "游戏",
+      "网页",
+      "第七校验",
+      "熵",
+      "残响",
+      "第一编译者",
+      "0x7F"
+    ],
     "aiDoesNotDecide": true,
     "noFourthWall": true
   }

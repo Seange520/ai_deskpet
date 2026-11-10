@@ -266,6 +266,11 @@ export default function LessonRunnerV2({ lesson, onFinish, onLeave }) {
               <img src={'/' + m.src.replace(/^assets\//, 'assets/')} alt={m.alt || '现象示意图'} loading="lazy" />
             </figure>
           ))}
+          {seg.link && (
+            <a className="teaching-link-cta" href={seg.link.href} target="_blank" rel="noreferrer">
+              {seg.link.label} →
+            </a>
+          )}
           <TextCheck
             check={seg.check}
             value={choices.observe}
@@ -282,6 +287,11 @@ export default function LessonRunnerV2({ lesson, onFinish, onLeave }) {
               <img src={'/' + m.src.replace(/^assets\//, 'assets/')} alt={m.alt || '原理示意图'} loading="lazy" />
             </figure>
           ))}
+          {seg.link && (
+            <a className="teaching-link-cta" href={seg.link.href} target="_blank" rel="noreferrer">
+              {seg.link.label} →
+            </a>
+          )}
           {seg.term && (
             <p>
               <strong>{seg.term.text}</strong>
