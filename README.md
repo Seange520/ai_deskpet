@@ -7,15 +7,15 @@
 [![Vite](https://img.shields.io/badge/Vite-6-646CFF?style=flat-square&logo=vite&logoColor=white)](https://vite.dev)
 [![React](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react&logoColor=white)](https://react.dev)
 [![Zustand](https://img.shields.io/badge/Zustand-5-2D3748?style=flat-square)](https://zustand.docs.pmnd.rs)
-[![Release](https://img.shields.io/badge/release-v0.9.8--alpha-FFC98B?style=flat-square)](https://github.com/Seange520/ai_deskpet/tree/v0.9.8-alpha)
+[![Release](https://img.shields.io/badge/release-v1.0.0--beta-FFC98B?style=flat-square)](https://github.com/Seange520/ai_deskpet)
 ![Status](https://img.shields.io/badge/status-Compiling--Alpha-orange?style=flat-square)
 [![Vercel](https://img.shields.io/badge/Vercel-Deployed-000000?style=flat-square&logo=vercel&logoColor=white)](https://www.seange.cn)
 
-**当前版本：`v0.9.8-alpha` ·《熔炉纪元》（The Forge）· Testing / 开发中**
+**当前版本：`v1.0.0-beta` ·《流明域》单机版 · 三端可玩（Web / Android / Windows）**
 
 ### [🚀 在线体验 SparkMate](https://www.seange.cn)
 
-无需注册、硬件或 API Key，可体验虚拟接线、参数预览与桌宠互动。真实 AI 对话、网页编译烧录与实体硬件闭环尚未完成。
+无需注册、硬件或 API Key。v1.0 单机版包含晴光街三单抢修、36 节课程、3D 爆炸图、维护者档案与 22 章离线全稿；Web 首次打开后可离线重进。4v1 联机不在 v1.0 范围。
 
 </div>
 
@@ -27,7 +27,7 @@
 
 架构以业务状态隔离为边界：React 编排教学和探索，Zustand 管理原教学进度，Rapier 原生 KCC 承担 P9 角色运动，独立探索 Store 保存路灯成果。**NPR + PBR 混合渲染**将 Toon 色阶、Rim、描边与陶瓷、金属、岩面、折射水晶组织成统一视觉；高精视觉资产与碰撞真源分离，保持操作与物理结果可预测。
 
-四条硬件路线的主板、屏幕、舵机、线路与教学爆炸图继续由 **CSS / SVG / React** 绘制。原常驻桌宠使用程序化 Three.js 几何；P9 大世界另有本地原创 Blender GLB 与贴图，不能再将整个项目概括为“无模型、无纹理依赖”。字体随构建打包；尚未实现离线安装或完整缓存。
+四条硬件路线的主板、屏幕、舵机、线路与教学爆炸图继续由 **CSS / SVG / React** 绘制。原常驻桌宠使用程序化 Three.js 几何；P9 大世界另有本地原创 Blender GLB 与贴图，不能再将整个项目概括为“无模型、无纹理依赖”。字体随构建打包。v1.0 Web 端口首次访问后通过 Service Worker 预缓存（244 个文件、约 8.7MB）离线重进；Android/Windows 包本身离线运行。
 
 ### 💡 项目缘起与开发历程
 
