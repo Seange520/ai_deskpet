@@ -82,3 +82,9 @@
 - 试 5 版布局（截图保留在 `work/acceptance/r1-a4/variantA.png` 最新版）：A 右转 90°/左 0；B 双朝镜头；C 双外移；D 右侧背墙；**E 定稿：右端再加一段窗墙（x=12），删右转角；左端保留 -10.35 转角亭（rotation 0）**。
 - 定稿效果：街右侧自然延伸出画（无断面），左侧有带门转角亭作视觉句号；屋顶不再互相穿插。
 - 复测：`check-r1-mission` 13/13、0 error；mission 单测 18/18；1080p **50 DC / 38,998 tris / 165fps**。
+
+## 11. 全流程回归（主界面 → 三单 → 返回）
+
+- 新增 `scripts/check-r1-flow.mjs`：真实浏览器路径「主界面 `?quality=3&boot=0` → 点入「校验委托 · 抢修」→ 校验轨 A 单（含违规/重试/证据/复测）→ B/C 体验轨 → 三单完成面板 → 返回学习枢纽」。
+- 结果：全流程 **passed，0 console/page error**；A 单 98 分、C 单 70 分（体验轨）；返回后主界面入口显示「校验委托 · 抢修 3/3」，mission root 正确卸载。
+- 证据：`work/acceptance/r1-flow/{01-hub,02-mission-from-entry,03-A-scored,04-all-complete,05-back-hub}.png` + `report.json`。
